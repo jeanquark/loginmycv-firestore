@@ -10,6 +10,6 @@ npm-debug.log
 # Nuxt generate
 dist
 
-serviceAccountKey.js
+# serviceAccountKey.js
 
 .env
