@@ -1,0 +1,58 @@
+{ 
+	"resumes_short" : {
+		"ZLljq0Ypk5hjHl7aimdX" : {
+			"resume_long_id" : "b8tZMBicucIlMzsGdpVE",
+			"job_description" : "Develops and deploy websites & web apps.",
+			"job_title":"Web developer",
+			"image" : "jeanmarc.jpg",
+			"location" : "Switzerland",
+			"keys" : ["web, programmation", "HTML", "CSS", "PHP", "JavaScript"]
+		},
+		"xYEnLw01ANZxnRgds8h1" : {
+			"resume_long_id" : "RKHQ12izYd54KkoMLnVS",
+			"job_description" : "Transform your data into revenues",
+			"job_title" : "Data analyst",
+			"image" : "ivan.jpg",
+			"location" : "Switzerland",
+			"keys" : ["data", "econometrics", "data analysis", "market research"]
+		}
+	},
+	"resumes_long" : {
+		"b8tZMBicucIlMzsGdpVE" : {
+			"resume_short_id" : "ZLljq0Ypk5hjHl7aimdX",
+			"job_description" : "Develops and deploy websites & web apps.",
+			"job_title":"Web developer",
+			"image" : "jeanmarc.jpg",
+			"location" : "Switzerland",
+			"keys" : ["web", "programmation", "HTML", "CSS", "PHP", "JavaScript"],
+			"lastname" : "Kle",
+			"firstname" : "Jean-Marc",
+			"username" : "jeanquark",
+			"email" : "jm.kle@gmail.com",
+			"education" : [
+				{
+					"location" : "Bern",
+					"title" : "Master of Science in Economics",
+					"school" : "University of Bern"
+				},
+				{
+					"location" : "Geneva",
+					"title" : "Bachelor of Science in Economics",
+					"school" : "University of Genev"
+				}
+			]
+		},
+		"RKHQ12izYd54KkoMLnVS" : {
+			"resume_short_id" : "xYEnLw01ANZxnRgds8h1",
+			"job_description" : "Transform your data into revenues",
+			"job_title" : "Data analyst",
+			"image" : "ivan.jpg",
+			"location" : "Switzerland",
+			"keys" : ["data", "econometrics", "data analysis", "market research"],
+			"lastname" : "Wo",
+			"firstname" : "Ivan",
+			"username" : "iwan_w",
+			"email" : "iw@example.com"
+		}
+	}
+}
