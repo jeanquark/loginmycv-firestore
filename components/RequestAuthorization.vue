@@ -1,11 +1,8 @@
 <template>
     <v-card>
-        <v-card-title
-            class="headline grey lighten-2"
-            primary-title
-        >
-            Request access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume
-        </v-card-title>
+        <v-toolbar dark color="primary">
+            <v-toolbar-title>Request access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume</v-toolbar-title>
+        </v-toolbar>
 
         <v-card-text>
             <!-- Would you like to send a request to get access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume? -->
