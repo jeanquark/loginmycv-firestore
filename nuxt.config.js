@@ -69,11 +69,11 @@ module.exports = {
         },
         {
             path: '/create-resume-authorization',
-            handler: '~/serverMiddleware/createAuthorization'
+            handler: '~/serverMiddleware/createResumeAuthorization'
         },
         {
             path: '/update-resume-authorization',
-            handler: '~/serverMiddleware/updateResumeAuth'
+            handler: '~/serverMiddleware/updateResumeAuthorization'
         },
         // {
         //     path: '/create-resume-authorization', // POST request
