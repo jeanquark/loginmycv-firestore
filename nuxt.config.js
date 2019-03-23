@@ -74,7 +74,7 @@ module.exports = {
         {
             path: '/update-resume-authorization',
             handler: '~/serverMiddleware/def'
-        // },
+        },
         // {
         //     path: '/create-resume-authorization', // POST request
         //     handler: '/serverMiddleware/createResumeAuthorization'
