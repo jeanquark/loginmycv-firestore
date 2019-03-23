@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
     /*
     ** Headers of the page
@@ -92,6 +94,7 @@ module.exports = {
                 })
             }
         }
-    }
+    },
+    dev: (process.env.NODE_ENV !== 'production')
 }
 

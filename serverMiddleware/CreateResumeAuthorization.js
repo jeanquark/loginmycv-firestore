@@ -1,6 +1,6 @@
 const express = require('express'),
 	  bodyParser = require('body-parser'),
-	  admin = require('firebase-admin')
+	  admin = require('firebase-admin'),
 	  moment = require('moment');
 
 const app = express();
