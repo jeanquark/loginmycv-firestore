@@ -67,13 +67,13 @@ module.exports = {
             path: '/fetch-short-resumes',
             handler: '~/serverMiddleware/fetchShortResumes'
         },
-        // {
-        //     path: '/create-resume-authorization',
-        //     handler: '~/serverMiddleware/createResumeAuthorization'
-        // },
-        // {
-        //     path: '/update-resume-authorization',
-        //     handler: '~/serverMiddleware/updateResumeAuthorization'
+        {
+            path: '/create-resume-authorization',
+            handler: '~/serverMiddleware/abc'
+        },
+        {
+            path: '/update-resume-authorization',
+            handler: '~/serverMiddleware/def'
         // },
         // {
         //     path: '/create-resume-authorization', // POST request
