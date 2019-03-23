@@ -69,7 +69,7 @@ module.exports = {
         },
         {
             path: '/create-resume-authorization',
-            handler: '~/serverMiddleware/abc'
+            handler: '~/serverMiddleware/createAuthorization'
         },
         {
             path: '/update-resume-authorization',
