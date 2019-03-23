@@ -3,7 +3,7 @@
     	<v-toolbar dark color="primary">
 		    <v-toolbar-side-icon></v-toolbar-side-icon>
 
-		    <v-toolbar-title class="white--text">Title</v-toolbar-title>
+		    <v-toolbar-title class="white--text">LoginMyCV</v-toolbar-title>
 			
 			<v-spacer></v-spacer>
 
@@ -154,7 +154,7 @@
 			        white--text
 		        	xs12
 		      	>
-			        &copy;2019 — <strong>Vuetify</strong>
+			        &copy;2019 — <strong>LoginMyCV</strong>
 		      	</v-flex>
 		    </v-layout>
 		 </v-footer>
@@ -226,7 +226,6 @@
 			        'About Us',
 			        'Team',
 			        'Services',
-			        'Blog',
 			        'Contact Us'
 			    ],
 			    message: '',
