@@ -1,6 +1,6 @@
 <template>
     <v-card class="elevation-12">
-        <v-toolbar dark color="amber">
+        <v-toolbar dark color="primary">
             <v-toolbar-title>Register a new candidate</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -73,7 +73,7 @@
                             value="1"
                             label="Provide a password to protect my resume"
                             type="checkbox"
-                            color="amber"
+                            color="primary"
                             text-xs-center
                             v-model="form.protectResume"
                         ></v-checkbox>

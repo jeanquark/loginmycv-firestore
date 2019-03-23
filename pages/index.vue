@@ -66,6 +66,12 @@
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
+
+          						<v-layout>
+	          						<v-flex xs12>
+	          							<img src="/images/logo.jpg" width="100%" />
+	          						</v-flex>
+	          					</v-layout>
           					</v-card-text>
         				</v-card>
         			</v-flex>
