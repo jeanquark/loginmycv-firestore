@@ -16,41 +16,20 @@ export const actions = {
                 payload.email,
                 payload.password
             )
-            console.log('authData: ', authData)
+            // console.log('authData: ', authData)
             // console.log('authData.user.uid: ', authData.user.uid)
             const userId = authData.user.uid
-            console.log('userId: ', userId)
+            // console.log('userId: ', userId)
 
-            // const snapshot = firestore.collection('users').where('id', '==', userId).get().then(function(doc) {
-            //     if (doc.exists) {
-            //         console.log("Document data:", doc.data());
-            //         commit("user/setLoadedUser", doc.data(), { root: true })
-            //     } else {
-            //         // doc.data() will be undefined in this case
-            //         console.log("No such document!");
-            //     }
-            // }).catch(function(error) {
-            //     console.log("Error getting document:", error);
-            // });
+            const snapshot = await firestore.collection('users').doc(userId).get()
+            const user = {
+                ...snapshot.data(),
+                id: snapshot.id
+            }
 
-            const snapshot = await firestore.collection('users').where('id', '==', userId).get()
-            let user = {}
-            snapshot.forEach(doc => {
-                user = doc.data()
-                // users.push(doc.data())
-            })
-            console.log('snapshot: ', snapshot)
-            // console.log('snapshot.doc(): ', snapshot.doc())
-            // console.log('snapshot.data: ', snapshot.data)
-            // console.log('snapshot.docs(): ', snapshot.docs())
-            // console.log('users: ', users)
-            console.log('user: ', user)
+            // console.log('snapshot: ', snapshot)
+            // console.log('user: ', user)
 
-
-            // const snapshot = await firebase
-            //     .database()
-            //     .ref("/users/" + userId)
-            //     .once("value")
             commit('users/setLoadedUser', user, { root: true })
             commit('setLoading', false, { root: true })
         } catch (error) {

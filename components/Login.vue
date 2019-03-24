@@ -44,7 +44,7 @@
             </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
-            <v-btn flat @click="switchToRegister">
+            <v-btn flat color="primary" @click="switchToRegister">
                 Switch to register
             </v-btn>
         </v-card-actions>

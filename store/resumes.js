@@ -73,6 +73,7 @@ export const actions = {
 
 			const resume_short = await firestore.collection('resumes_short').add({
 				slug: payload.slug,
+				user_id: uthUserId,
 				resume_long_id: resume_long.id,
 				firstname: payload.personal_data.firstname,
 				lastname: payload.personal_data.lastname,

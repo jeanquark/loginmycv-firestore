@@ -137,9 +137,8 @@
         },
         async created () {
             const authUserId = this.loadedUser.id
-            console.log('authUserId: ', authUserId)
-            await this.$store.dispatch('users/fetchUser', 'OlxfESwPtlgzz4vcjiL4YKsIDZI2')
-            // await this.$store.dispatch('users/fetchUser', authUserId)
+            console.log('authUserId from layoutBack: ', authUserId)
+            await this.$store.dispatch('users/fetchUser', authUserId)
         },
 		data () {
 			return {
@@ -152,9 +151,9 @@
                     { title: 'Click Me 2' }
                 ],
                 fav: true,
-      menu: false,
-      message: false,
-      hints: true
+                menu: false,
+                message: false,
+                hints: true
 			}
 		},
 		computed: {
@@ -173,5 +172,9 @@
 <style scoped>
     .no-hover:before {
         background-color: transparent;
+    }
+    .v-list__tile--active > div {
+        /* color:#FFC107; */
+        color: var(--v-secondary-base);
     }
 </style>

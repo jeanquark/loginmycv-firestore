@@ -20,14 +20,12 @@ module.exports = admin.initializeApp({
 // module.exports = firestoreService.initializeApp(serviceAccount, databaseURL);
 
 // // Start exporting your data
-// // firestoreService
-// //  	.backup('resumes')
-// //   	.then(data => {
-// //   		// console.log(JSON.stringify(data));
-// //   		let data2 = JSON.stringify(data);
-// //   		console.log('data3: ', data2);
-// //   		fs.writeFileSync('firestore-export3.json', data2);  
-// //   	})
+// firestoreService
+//  	.backups(['resumes_long', 'resumes_short', 'authorizations', 'users', 'templates', 'key_competences', 'countries', 'languages'])
+//   	.then(data => {
+//   		let jsonData = JSON.stringify(data);
+//   		fs.writeFileSync('database/seeds.json', jsonData);  
+//   	})
 
 // // Seed database
 // // firestoreService.restore('database/seeds.json');

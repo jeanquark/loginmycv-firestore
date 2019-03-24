@@ -12,8 +12,9 @@
             <!-- error: {{ error }}<br /><br /> -->
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
+            errors: {{ errors }}
         </div>
-        <v-layout row wrap class="pa-3" style="border: 1px solid orange; border-radius: 10px;">
+        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;">
             <v-flex xs12 class="">
                 <h2 class="text-xs-center">General Info</h2>
                 <p class="text-xs-center">(public data)</p>
@@ -47,7 +48,7 @@
                     id="job_title"
                     name="job_title"
                     prepend-icon="insert_drive_file"
-                    v-validate="'required|max:50'"
+                    v-validate="'required|max:2'"
                     :error-messages="errors.collect('job_title')"
                     data-vv-as="Job title"
                     v-model="userResume.job_title"
@@ -105,10 +106,10 @@
             </v-flex>   
         </v-layout>
         <br />
-        <v-layout row wrap class="pa-3" style="border: 1px solid orange; border-radius: 10px;">
+        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;">
             <v-flex xs12>
                 <h2 class="text-xs-center">More about you</h2>
-                <p class="text-xs-center">can be public or private, you choose</p>
+                <p class="text-xs-center">(can be public or private, you choose)</p>
             </v-flex>
             <v-flex xs12 sm4>
                 <v-select

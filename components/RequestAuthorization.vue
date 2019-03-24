@@ -6,7 +6,7 @@
 
         <v-card-text>
             <!-- Would you like to send a request to get access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume? -->
-            resume: {{ this.resume }}<br />
+            <!-- resume: {{ this.resume }}<br /> -->
             <!-- loadedUser: {{ loadedUser }}<br /> -->
 
             <v-form>
@@ -72,9 +72,9 @@
         props: ['resume'],
         async mounted () {
             // await this.$store.dispatch('users/fetchAuthenticatedUser')
-            // this.form.firstname = this.loadedUser.firstname
-            // this.form.lastname = this.loadedUser.lastname
-            // this.form.email = this.loadedUser.email
+            this.form.firstname = this.loadedUser ? this.loadedUser.firstname : ''
+            this.form.lastname = this.loadedUser ? this.loadedUser.lastname : ''
+            this.form.email = this.loadedUser ? this.loadedUser.email : ''
         },
         data () {
             return {

@@ -28,21 +28,8 @@
 				<v-btn color="warning" @click="logout">Logout</v-btn>
 				<v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
 			</div>
-
-		    <v-btn icon>
-		      	<v-icon>search</v-icon>
-		    </v-btn>
-
 		    <v-btn icon>
 		      	<v-icon>apps</v-icon>
-		    </v-btn>
-
-		    <v-btn icon>
-		     	<v-icon>refresh</v-icon>
-		    </v-btn>
-
-		    <v-btn icon>
-		      	<v-icon>more_vert</v-icon>
 		    </v-btn>
 		</v-toolbar>
 
@@ -77,8 +64,9 @@
         			</v-flex>
 
         			<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
+						<!-- resume: {{ resume }}<br /> -->
         				<v-card flat hover class="card ma-2">
-        					resume.resume_long_id: {{ resume.resume_long_id }}<br />
+        					<!-- resume.resume_long_id: {{ resume.resume_long_id }}<br /> -->
         					<v-layout fill-height align-center justify-space-around class="pa-2">
                                 <v-avatar
                                     :size="78"
@@ -95,6 +83,7 @@
         					</v-card-title>
         					<v-card-actions>
         						<v-layout justify-center>
+									<v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id">View my resume</v-btn>
         							<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
 	        							<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
 	        							<v-chip color="primary white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>

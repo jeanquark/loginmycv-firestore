@@ -1,58 +1,403 @@
-{ 
-	"resumes_short" : {
-		"ZLljq0Ypk5hjHl7aimdX" : {
-			"resume_long_id" : "b8tZMBicucIlMzsGdpVE",
-			"job_description" : "Develops and deploy websites & web apps.",
-			"job_title":"Web developer",
-			"image" : "jeanmarc.jpg",
-			"location" : "Switzerland",
-			"keys" : ["web, programmation", "HTML", "CSS", "PHP", "JavaScript"]
+{
+	"resumes_long": {
+		"Fxovd75Ec3JyP28qsO6K": {
+			"_updated_at": 1553190334,
+			"education": [],
+			"user_id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+			"_created_at": 1553190334,
+			"personal_data": {
+				"country_of_residence": "Switzerland",
+				"email": "vbnvbnc@bcvxcv.vxc",
+				"languages": [
+					"French"
+				],
+				"lastname": "vcbcvbvc",
+				"firstname": "sadfsdf",
+				"key_competences": [
+					"Team management"
+				]
+			},
+			"skills": [],
+			"job_description": "fggfg",
+			"slug": "fghgfhg",
+			"template_id": "ZjzvgkAlZq9CPcXToqDK",
+			"work_experience": [],
+			"job_title": "dsfsfsd"
 		},
-		"xYEnLw01ANZxnRgds8h1" : {
-			"resume_long_id" : "RKHQ12izYd54KkoMLnVS",
-			"job_description" : "Transform your data into revenues",
-			"job_title" : "Data analyst",
-			"image" : "ivan.jpg",
-			"location" : "Switzerland",
-			"keys" : ["data", "econometrics", "data analysis", "market research"]
-		}
-	},
-	"resumes_long" : {
-		"b8tZMBicucIlMzsGdpVE" : {
-			"resume_short_id" : "ZLljq0Ypk5hjHl7aimdX",
-			"job_description" : "Develops and deploy websites & web apps.",
-			"job_title":"Web developer",
-			"image" : "jeanmarc.jpg",
-			"location" : "Switzerland",
-			"keys" : ["web", "programmation", "HTML", "CSS", "PHP", "JavaScript"],
-			"lastname" : "Kle",
-			"firstname" : "Jean-Marc",
-			"username" : "jeanquark",
-			"email" : "jm.kle@gmail.com",
-			"education" : [
+		"RKHQ12izYd54KkoMLnVS": {
+			"firstname": "Ivan",
+			"username": "ivan",
+			"location": "Switzerland",
+			"template": 2,
+			"resume_short_id": "xYEnLw01ANZxnRgds8h1",
+			"job_description": "Transform your data into revenues.",
+			"keys": [
+				"data",
+				"econometrics",
+				"data analysis",
+				"market research"
+			],
+			"image": "ivan.jpg",
+			"job_title": "Data analyst",
+			"email": "ivan@example.com",
+			"lastname": "Wo"
+		},
+		"b8tZMBicucIlMzsGdpVE": {
+			"_created_at": "1552774410",
+			"keys": [
+				"web",
+				"programmation",
+				"HTML",
+				"CSS",
+				"PHP",
+				"JavaScript"
+			],
+			"template_id": "KZn492txu3znyr8Zz4oL",
+			"job_title": "Web developer",
+			"_updated_at": "1552774410",
+			"user_id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+			"resume_short_id": "ZLljq0Ypk5hjHl7aimdX",
+			"personal_data": {
+				"firstname": "Jean-Marc",
+				"birthday": {
+					"_seconds": 446770800,
+					"_nanoseconds": 0
+				},
+				"gender": "male",
+				"city": "Lausanne",
+				"image": "jeanmarc.jpg",
+				"email": "jm.kleger@gmail.com",
+				"country": "Swizerland",
+				"lastname": "Kleger"
+			},
+			"skills": [
 				{
-					"location" : "Bern",
-					"title" : "Master of Science in Economics",
-					"school" : "University of Bern"
+					"slug": "professional_skills",
+					"name": "Professional Skills",
+					"items": [
+						{
+							"value": 20,
+							"slug": "communication",
+							"name": "Communication"
+						},
+						{
+							"name": "Leadership",
+							"value": 50,
+							"slug": "leadership"
+						},
+						{
+							"name": "Dedication",
+							"value": "70",
+							"slug": "dedication"
+						}
+					]
 				},
 				{
-					"location" : "Geneva",
-					"title" : "Bachelor of Science in Economics",
-					"school" : "University of Genev"
+					"items": [
+						{
+							"slug": "photoshop",
+							"name": "Photoshop",
+							"value": 30
+						},
+						{
+							"value": 80,
+							"slug": "html",
+							"name": "HTML"
+						},
+						{
+							"slug": "php",
+							"name": "PHP",
+							"value": "60"
+						},
+						{
+							"value": "60",
+							"slug": "javascript",
+							"name": "JavaScript"
+						}
+					],
+					"slug": "software",
+					"name": "Software"
 				}
-			]
+			],
+			"job_description": "Develops and deploy websites & web apps.",
+			"slug": "jeanquark",
+			"work_experience": [
+				{
+					"company": "Intertrade Dynamic SA",
+					"job_title": "Business developer",
+					"location": "Rolle",
+					"from": {
+						"_seconds": 1385852400,
+						"_nanoseconds": 0
+					},
+					"to": {
+						"_seconds": 1398808800,
+						"_nanoseconds": 0
+					},
+					"job_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+				},
+				{
+					"from": {
+						"_seconds": 1357513200,
+						"_nanoseconds": 0
+					},
+					"location": "Rolle",
+					"to": {
+						"_seconds": 1385852400,
+						"_nanoseconds": 0
+					},
+					"job_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+					"company": "Ichibani SA",
+					"job_title": "Assistant manager"
+				}
+			],
+			"education": [
+				{
+					"school": "University of Bern",
+					"location": "Bern",
+					"title": "Master of Science in Economics",
+					"country": "Switzerland"
+				},
+				{
+					"school": "University of Genev",
+					"location": "Geneva",
+					"title": "Bachelor of Science in Economics",
+					"country": "Switzerland"
+				}
+			],
+			"username": "jeanquark",
+			"template": 1
 		},
-		"RKHQ12izYd54KkoMLnVS" : {
-			"resume_short_id" : "xYEnLw01ANZxnRgds8h1",
-			"job_description" : "Transform your data into revenues",
-			"job_title" : "Data analyst",
-			"image" : "ivan.jpg",
-			"location" : "Switzerland",
-			"keys" : ["data", "econometrics", "data analysis", "market research"],
-			"lastname" : "Wo",
-			"firstname" : "Ivan",
-			"username" : "iwan_w",
-			"email" : "iw@example.com"
+		"vuGY61pLwTuC5AZOR695": {
+			"email": "manuercher@hotmail.com",
+			"lastname": "Manuerchen",
+			"firstname": "Manuel",
+			"username": "manuerchen"
+		}
+	},
+	"resumes_short": {
+		"ZLljq0Ypk5hjHl7aimdX": {
+			"location": "Switzerland",
+			"resume_long_id": "b8tZMBicucIlMzsGdpVE",
+			"job_description": "Develops and deploy websites & web apps.",
+			"keys": [
+				"web, programmation",
+				"HTML",
+				"CSS",
+				"PHP",
+				"JavaScript"
+			],
+			"slug": "jeanquark",
+			"image": "jeanmarc.jpg",
+			"job_title": "Web developer",
+			"lastname": "Kleger",
+			"firstname": "Jean-Marc"
+		},
+		"w5F1Gcjgmsrr9MGUYfew": {
+			"slug": "fghgfhg",
+			"job_title": "dsfsfsd",
+			"country_of_residence": "Switzerland",
+			"lastname": "vcbcvbvc",
+			"languages": [
+				"French"
+			],
+			"firstname": "sadfsdf",
+			"key_competences": [
+				"Team management"
+			],
+			"resume_long_id": "Fxovd75Ec3JyP28qsO6K",
+			"job_description": "fggfg"
+		},
+		"xYEnLw01ANZxnRgds8h1": {
+			"resume_long_id": "RKHQ12izYd54KkoMLnVS",
+			"keys": [
+				"data",
+				"econometrics",
+				"data analysis",
+				"market research"
+			],
+			"job_description": "Transform your data into revenue.",
+			"slug": "ivan",
+			"image": "ivan.jpg",
+			"job_title": "Data analyst",
+			"location": "Switzerland"
+		}
+	},
+	"authorizations": {
+		"Twf32c9Op9tynjS2XVZ6": {
+			"status": "accorded",
+			"user": {
+				"firstname": "Jean-Marc",
+				"id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+				"email": "jm.kleger@gmail.com",
+				"lastname": "Kleger"
+			},
+			"resume": {
+				"email": "ivan@example.com",
+				"lastname": "Wo",
+				"firstname": "Ivan",
+				"id": "RKHQ12izYd54KkoMLnVS",
+				"slug": "ivanw"
+			},
+			"_updated_at": "1553018809",
+			"_created_at": "1553018809",
+			"authorizations": {
+				"work_experience": false,
+				"personal_data": true,
+				"skills": true,
+				"education": true,
+				"picture": false
+			}
+		},
+		"a7e0bba19vh9cP6Zv5Vz": {
+			"status": "accepted",
+			"user": {
+				"email": "jm.kleger@gmail.com",
+				"lastname": "Kleger",
+				"firstname": "Jean-Marc",
+				"id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+				"message": "Votre CV à l'air en tous points intéressant!"
+			},
+			"resume": {
+				"firstname": "Manuel",
+				"id": "vuGY61pLwTuC5AZOR695",
+				"slug": "jeanquark",
+				"email": "manuerchen@example.com",
+				"lastname": "Manuerchen"
+			},
+			"_updated_at": "1553018809",
+			"_created_at": "1553018809",
+			"authorizations": {
+				"work_experience": true,
+				"personal_data": true,
+				"education": false,
+				"picture": true
+			}
+		},
+		"hD8nRjgPAETKTQC62AuE": {
+			"authorizations": {
+				"personal_data": false,
+				"skills": false,
+				"education": false,
+				"picture": false,
+				"work_experience": false
+			},
+			"_created_at": 1553191279,
+			"status": "in_process",
+			"user": {
+				"lastname": "Kleger",
+				"firstname": "",
+				"id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+				"message": "",
+				"email": "jm.kleger@gmail.com"
+			},
+			"resume": {
+				"slug": "jeanquark",
+				"lastname": "Kleger",
+				"firstname": "Jean-Marc",
+				"id": "b8tZMBicucIlMzsGdpVE"
+			},
+			"_updated_at": 1553191279
+		},
+		"lJu53GNsbLnd1f8ENAnT": {
+			"__updated_at": {
+				"_seconds": 1552604400,
+				"_nanoseconds": 0
+			},
+			"authorizations": {
+				"personal_data": false,
+				"skills": false,
+				"education": false,
+				"picture": false,
+				"work_experience": false
+			},
+			"_created_at": "1552668784",
+			"__created_at": {
+				"_seconds": 1552604400,
+				"_nanoseconds": 0
+			},
+			"status": "revoked",
+			"user": {
+				"email": "ivan.wo@example.com",
+				"lastname": "Wo",
+				"firstname": "Ivan",
+				"id": "eyvoKvkJdKSdc9gjXoiN"
+			},
+			"resume": {
+				"lastname": "Kleger",
+				"firstname": "Jean-Marc",
+				"id": "b8tZMBicucIlMzsGdpVE",
+				"slug": "jeanquark",
+				"email": "jm.kleger@gmail.com"
+			},
+			"_updated_at": "1553018809"
+		}
+	},
+	"users": {
+		"OlxfESwPtlgzz4vcjiL4YKsIDZI2": {
+			"city": "Lausanne",
+			"email": "jm.kleger@gmail.com",
+			"country": "Switzerland",
+			"lastname": "Kleger",
+			"_updated_at": 1552401654,
+			"firstname": "Jean-Marc",
+			"_created_at": 1552401654
+		},
+		"eyvoKvkJdKSdc9gjXoiN": {
+			"email": "ivan@hotmail.com"
+		},
+		"q78erqFtlN1mOb98YTFy": {
+			"email": "manuerchen@gmail.com"
+		}
+	},
+	"templates": {
+		"KZn492txu3znyr8Zz4oL": {
+			"name": "Template 1",
+			"slug": "template1",
+			"image": "template1.jpg"
+		},
+		"ZjzvgkAlZq9CPcXToqDK": {
+			"slug": "template2",
+			"image": "template2.jpg",
+			"name": "Template 2"
+		}
+	},
+	"key_competences": {
+		"AMRiV93ms3pJZdqF3fP4": {
+			"slug": "team_management",
+			"name": "Team management"
+		},
+		"NKaP0HVUkyOeTAc5c1PL": {
+			"slug": "office_support",
+			"name": "Office support"
+		},
+		"mJtMAcXIjmuwY9Xn1MqQ": {
+			"slug": "it_support",
+			"name": "IT Support"
+		}
+	},
+	"countries": {
+		"6BBnkVl8R2triLhyPUc8": {
+			"name": "Germany",
+			"slug": "germany"
+		},
+		"8XrsI1pGjFYYIL5cXQmI": {
+			"slug": "switzerland",
+			"name": "Switzerland"
+		}
+	},
+	"languages": {
+		"08J5vqFYKLHc9tCU8sJl": {
+			"slug": "spanish",
+			"name": "Spanish"
+		},
+		"UMTMeBKg9OGRDTamiZJ4": {
+			"slug": "english",
+			"name": "English"
+		},
+		"VBEd7iSuDXTDH21lfR58": {
+			"slug": "french",
+			"name": "French"
 		}
 	}
 }

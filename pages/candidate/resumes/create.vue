@@ -6,6 +6,7 @@
             step: {{ step }}<br />
             loadedUserResume: {{ loadedUserResume }}<br /><br />
             loadedNewResume: {{ loadedNewResume }}<br /><br />
+            errors: {{ errors }}<br /><br />
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -68,7 +69,7 @@
                     </v-btn>
                 </v-card-actions>
                 <v-layout justify-center>
-                	<v-btn class="success" :loading="loading" @click="saveResume">Save</v-btn>
+                	<v-btn class="success" :loading="loading" :disabled="errors.items.length > 0" @click="saveResume">Save</v-btn>
                 </v-layout>
             </v-stepper>
         </v-flex>
@@ -155,8 +156,26 @@
             },
             async saveResume () {
             	console.log('saveResume')
-            	console.log('this.loadedNewResume: ', this.loadedNewResume)
-                this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                console.log('this.loadedNewResume: ', this.loadedNewResume)
+                // await this.$validator.validateAll()
+                // if (!this.errors.any()) {
+                //     console.log('OK, save!')
+                //     // this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                // }
+                if (
+                    !this.loadedNewResume.template_id || 
+                    !this.loadedNewResume.slug ||
+                    !this.loadedNewResume.job_title ||
+                    !this.loadedNewResume.job_description ||
+                    !this.loadedNewResume.personal_data.firstname ||
+                    !this.loadedNewResume.personal_data.lastname ||
+                    !this.loadedNewResume.personal_data.email
+                ) {
+                    console.log('Please complete all form entries')
+                } else {
+                    // Check for slug uniqueness
+                    console.log('OK proceed to saveResume')
+                }
             },
             async saveResume2 () {
                 try {
