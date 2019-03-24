@@ -73,7 +73,7 @@ export const actions = {
 
 			const resume_short = await firestore.collection('resumes_short').add({
 				slug: payload.slug,
-				user_id: uthUserId,
+				user_id: authUserId,
 				resume_long_id: resume_long.id,
 				firstname: payload.personal_data.firstname,
 				lastname: payload.personal_data.lastname,
@@ -87,6 +87,29 @@ export const actions = {
 			new Noty({
 				type: 'success',
 				text: 'Your resume was successfully created.',
+				timeout: 5000,
+				theme: 'metroui'
+			}).show()
+		} catch (error) {
+			commit('setLoading', false, { root: true })
+			console.log('error: ', error)
+			new Noty({
+				type: 'error',
+				text: 'Your resume could not be saved',
+				timeout: 5000,
+				theme: 'metroui'
+			}).show()
+		}
+	},
+	async updateResume ({ commit }, payload) {
+		console.log('Call to updateResume: ', payload)
+		try {
+			commit('setLoading', true, { root: true })
+			await firestore.collection('resumes_long').doc(payload.id).update(payload)
+			commit('setLoading', false, { root: true })
+			new Noty({
+				type: 'success',
+				text: 'Your resume was sucessfully updated',
 				timeout: 5000,
 				theme: 'metroui'
 			}).show()
@@ -136,7 +159,10 @@ export const actions = {
 		const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).get()
 		let userResumes = []
 		snapshot.forEach(doc => {
-			userResumes.push(doc.data())
+			userResumes.push({
+				id: doc.id,
+				...doc.data()
+			})
 		})
 		commit('setUserResumes', userResumes)
 	}

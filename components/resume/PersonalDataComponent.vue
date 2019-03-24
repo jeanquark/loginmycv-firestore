@@ -4,7 +4,6 @@
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
-            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- candidateLongResume.image: {{ candidateLongResume.image }}<br /><br /> -->
             <!-- imageUrl: {{ imageUrl }}<br /><br /> -->
             <!-- imageFile: {{ imageFile }}<br /><br /> -->
@@ -12,9 +11,10 @@
             <!-- error: {{ error }}<br /><br /> -->
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
-            errors: {{ errors }}
+            <!-- userResume: {{ userResume }}<br /><br /> -->
+            <!-- errors: {{ errors }}<br /><br /> -->
         </div>
-        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;">
+        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume">
             <v-flex xs12 class="">
                 <h2 class="text-xs-center">General Info</h2>
                 <p class="text-xs-center">(public data)</p>
@@ -48,7 +48,7 @@
                     id="job_title"
                     name="job_title"
                     prepend-icon="insert_drive_file"
-                    v-validate="'required|max:2'"
+                    v-validate="'required|max:50'"
                     :error-messages="errors.collect('job_title')"
                     data-vv-as="Job title"
                     v-model="userResume.job_title"
@@ -106,7 +106,7 @@
             </v-flex>   
         </v-layout>
         <br />
-        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;">
+        <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume">
             <v-flex xs12>
                 <h2 class="text-xs-center">More about you</h2>
                 <p class="text-xs-center">(can be public or private, you choose)</p>
@@ -123,7 +123,7 @@
                 ></v-select>
             </v-flex>
 
-            <v-flex xs12 sm4>
+            <!--<v-flex xs12 sm4>
                 <v-dialog
                     v-model="modalDate"
                     persistent
@@ -144,7 +144,7 @@
                         <v-btn flat color="primary" @click="saveDate">OK</v-btn>
                     </v-date-picker>
                 </v-dialog>
-            </v-flex>
+            </v-flex>-->
 
             <v-flex xs12 sm4>
                 <v-select
@@ -152,6 +152,8 @@
                     :items="loadedCountries"
                     item-text="name"
                     prepend-icon="person"
+                    chips
+                    :deletable-chips="true"
                     label="Country of residence"
                 ></v-select>
             </v-flex>
@@ -159,7 +161,8 @@
             <v-flex xs12 sm4>
                 <v-select
                     v-model="userResume.personal_data.nationalities"
-                    :items="['Switzerland', 'Germany']"
+                    :items="loadedCountries"
+                    item-text="name"
                     prepend-icon="person"
                     label="Nationality-ies"
                     multiple
@@ -171,7 +174,8 @@
             <v-flex xs12 sm4>
                 <v-select
                     v-model="userResume.personal_data.languages"
-                    :items="['French', 'Spanish']"
+                    :items="loadedLanguages"
+                    item-text="name"
                     prepend-icon="person"
                     label="Language(s)"
                     multiple
@@ -182,8 +186,10 @@
 
             <v-flex xs12 sm4>
                 <v-select
-                    v-model="userResume.personal_data.key_competences"
-                    :items="['Team management', 'IT Support']"
+                    v-model="userResume.key_competences"
+                    :items="loadedCompetences"
+                    item-text="name"
+                    :return-object="true"
                     prepend-icon="person"
                     label="Key competences"
                     multiple
@@ -195,7 +201,7 @@
             <v-flex xs12 sm6>
                 <div v-if="resumeSlug" class="text-xs-center">
                     <span>Current image: </span><br />
-                    <img :src="`/images/resumes/${userResume.image}`" height="150" />
+                    <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" />
                 </div>                
                 <v-text-field label="My Picture" @click='pickFile' v-model='imageName' prepend-icon='folder_shared' :error-messages="error ? error.image : null"
                 ></v-text-field>
@@ -230,6 +236,8 @@
             this.resumeSlug = resumeSlug
             // this.loadedUserResume = await this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
             await this.$store.dispatch('countries/fetchCountries')
+            await this.$store.dispatch('languages/fetchLanguages')
+            await this.$store.dispatch('competences/fetchCompetences')
         },
         mounted () {},
         data () {
@@ -270,6 +278,12 @@
             },
             loadedCountries () {
                 return this.$store.getters['countries/loadedCountries']
+            },
+            loadedLanguages () {
+                return this.$store.getters['languages/loadedLanguages']
+            },
+            loadedCompetences () {
+                return this.$store.getters['competences/loadedCompetences']
             }
         },
         methods: {

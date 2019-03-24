@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-layout row wrap>
-            <h2 class="text-xs-center">Create a new resume</h2>
+        <v-layout row wrap align-center class="">
+            <h2 class="">Create a new resume</h2>
             <!-- error: {{ error }}<br /> -->
-            step: {{ step }}<br />
-            loadedUserResume: {{ loadedUserResume }}<br /><br />
-            loadedNewResume: {{ loadedNewResume }}<br /><br />
-            errors: {{ errors }}<br /><br />
+            <!-- step: {{ step }}<br /> -->
+            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
+            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
+            <!-- errors: {{ errors }}<br /><br /> -->
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -157,11 +157,6 @@
             async saveResume () {
             	console.log('saveResume')
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
-                // await this.$validator.validateAll()
-                // if (!this.errors.any()) {
-                //     console.log('OK, save!')
-                //     // this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
-                // }
                 if (
                     !this.loadedNewResume.template_id || 
                     !this.loadedNewResume.slug ||
@@ -175,6 +170,11 @@
                 } else {
                     // Check for slug uniqueness
                     console.log('OK proceed to saveResume')
+                    await this.$validator.validateAll()
+                    if (!this.errors.any()) {
+                        console.log('OK, save!')
+                        this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                    }
                 }
             },
             async saveResume2 () {

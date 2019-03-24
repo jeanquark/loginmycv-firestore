@@ -1,65 +1,69 @@
 <template>
-    <v-layout row wrap>
-        <h2 class="text-xs-center">Edit your resume</h2>
-        <v-stepper v-model="e1">
-            <v-stepper-header>
-                <template v-for="step in steps">
-                    <v-stepper-step
-                        :key="`${step.id}-header`"
-                        :complete="e1 > step"
+    <div>
+        <v-layout row wrap>
+            <h2 class="text-xs-center">Edit your resume</h2>
+        </v-layout>
+        <v-layout row xs12>
+            <v-stepper v-model="e1">
+                <v-stepper-header>
+                    <template v-for="step in steps">
+                        <v-stepper-step
+                            :key="`${step.id}-header`"
+                            :complete="e1 > step"
+                            :step="step.id"
+                            :editable="true"
+                        >
+                            {{ step.name }}
+                        </v-stepper-step>
+        
+                        <v-divider
+                            v-if="step.id !== steps.length"
+                            :key="step.slug"
+                        ></v-divider>
+                    </template>
+                </v-stepper-header>
+                <v-stepper-items>
+                    <v-stepper-content
+                        v-for="step in steps"
+                        :key="`${step.id}-content`"
                         :step="step.id"
-                        :editable="true"
                     >
-                        {{ step.name }}
-                    </v-stepper-step>
-      
-                    <v-divider
-                        v-if="step.id !== steps.length"
-                        :key="step.slug"
-                    ></v-divider>
-                </template>
-            </v-stepper-header>
-            <v-stepper-items>
-                <v-stepper-content
-                    v-for="step in steps"
-                    :key="`${step.id}-content`"
-                    :step="step.id"
-                >
-                    <v-card style="margin-bottom: 30px;">
-                        <p>
-                            step: {{ step }}<br /><br />
-                            loadedUserResume: {{ loadedUserResume }}<br /><br />
-                            <!-- resumeSlug: {{ resumeSlug }}<br /><br /> -->
-                        </p>
-                        <!-- <template-component v-if="step.id === 1" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" /> -->
-                        <template-component v-if="step.id === 1" />
-                        <!-- <personal-data-component v-if="step.id === 2" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" :personal-data="loadedUserResume ? loadedUserResume.personal_data : null" /> -->
-                        <personal-data-component v-if="step.id === 2" />
-                        <education-component v-if="step.id === 3" />
-                        <skills-component v-if="step.id === 4" />
+                        <v-card style="margin-bottom: 30px;">
+                            <p>
+                                <!-- step: {{ step }}<br /><br /> -->
+                                <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
+                                <!-- resumeSlug: {{ resumeSlug }}<br /><br /> -->
+                            </p>
+                            <!-- <template-component v-if="step.id === 1" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" /> -->
+                            <template-component v-if="step.id === 1" />
+                            <!-- <personal-data-component v-if="step.id === 2" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" :personal-data="loadedUserResume ? loadedUserResume.personal_data : null" /> -->
+                            <personal-data-component v-if="step.id === 2" />
+                            <education-component v-if="step.id === 3" />
+                            <skills-component v-if="step.id === 4" />
 
-                        <v-card-actions class="justify-center">
-                            <v-btn
-                                color="primary"
-                                @click="previousStep(step.id)"
-                            >
-                                <v-icon>keyboard_arrow_left</v-icon> Previous
-                            </v-btn>
-                            <v-btn
-                                color="primary"
-                                @click="nextStep(step.id)"
-                            >
-                                Next <v-icon>keyboard_arrow_right</v-icon>
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                    <v-layout justify-center>
-                        <v-btn color="success" @click="updateResume" :loading="loading">Update</v-btn>
-                    </v-layout>
-                </v-stepper-content>
-            </v-stepper-items>
-        </v-stepper>
-    </v-layout>
+                            <v-card-actions class="justify-center">
+                                <v-btn
+                                    color="primary"
+                                    @click="previousStep(step.id)"
+                                >
+                                    <v-icon>keyboard_arrow_left</v-icon> Previous
+                                </v-btn>
+                                <v-btn
+                                    color="primary"
+                                    @click="nextStep(step.id)"
+                                >
+                                    Next <v-icon>keyboard_arrow_right</v-icon>
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                        <v-layout justify-center>
+                            <v-btn color="success" @click="updateResume" :loading="loading">Update</v-btn>
+                        </v-layout>
+                    </v-stepper-content>
+                </v-stepper-items>
+            </v-stepper>
+        </v-layout>
+    </div>
 </template>
 
 <script>
@@ -81,6 +85,8 @@
             const resume = this.$route.params.slug
             console.log('resume: ', resume)
             this.resumeSlug = resume
+            await this.$store.dispatch('competences/fetchCompetences')
+            await this.$store.dispatch('languages/fetchLanguages')
             await this.$store.dispatch('resumes/fetchUserResumes')
         },
 		data () {
@@ -144,8 +150,9 @@
             },
             async updateResume () {
                 try {
-                    console.log('saveResume')
+                    console.log('updateResume')
                     console.log(this.loadedUserResume)
+                    await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                     // return response
                 } catch (error) {
                     // console.log('error2: ', error.response.data.message)

@@ -1,202 +1,204 @@
 <template>
     <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
-        <p>
-            loadedUserResume: {{ loadedUserResume }}<br /><br />
-            loadedNewResume: {{ loadedNewResume }}<br /><br />
-            userResume: {{ userResume }}<br /><br />
-        </p>
+        <div>
+            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
+            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
+            <!-- userResume: {{ userResume }}<br /><br /> -->
+        </div>
         <h2>Education</h2>
-        <v-alert
-            :value="true"
-            color="warning"
-            icon="priority_high"
-            outline
-            v-if="!userResume.education.length > 0"
-        >
-            You have no item here, please click on the rounded pink button to add one
-        </v-alert>
-        <v-expansion-panel style="">
-            <v-dialog
-                v-model="modalNewEducation"
-                width="500"
-                activator
+        <v-layout row wrap class="pa-3" v-if="userResume">
+            <v-alert
+                :value="true"
+                color="warning"
+                icon="priority_high"
+                outline
+                v-if="!userResume.education.length > 0"
             >
-                <v-btn
-                    fab
-                    absolute
-                    bottom
-                    right
-                    color="pink"
-                    slot="activator"
+                You have no item here, please click on the rounded pink button to add one
+            </v-alert>
+            <v-expansion-panel style="">
+                <v-dialog
+                    v-model="modalNewEducation"
+                    width="500"
+                    activator
                 >
-                    <v-icon>add</v-icon>
-                </v-btn>
-                <v-card>
-                    <v-card-title
-                        class="headline"
-                        primary-title
+                    <v-btn
+                        fab
+                        absolute
+                        bottom
+                        right
+                        color="pink"
+                        slot="activator"
                     >
-                        Add a new field in education
-                    </v-card-title>
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                    <v-card>
+                        <v-card-title
+                            class="headline"
+                            primary-title
+                        >
+                            Add a new field in education
+                        </v-card-title>
 
-                    <v-card-text>
-                        <v-text-field
-                            v-model="newEducation.title"
-                            label="Title"
-                            :counter="30"
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="newEducation.name"
-                            label="University/School name"
-                            :counter="30"
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="newEducation.location"
-                            label="Location"
-                            :counter="30"
-                        ></v-text-field>
-                        <v-textarea
-                            v-model="newEducation.description"
-                            label="Education description"
-                            :counter="60"
-                        ></v-textarea>
-                        <v-slider
-                            v-model="newEducation.duration"
-                            label="Study duration"
-                            :max="10"
-                            :min="0"
-                            :step=".5"
-                        ></v-slider>
-                        <div class="text-xs-center">
-                            <small>{{ newEducation.duration }} year(s)</small>
-                        </div>    
-                        <v-dialog
-                            v-model="modalDate"
-                            persistent
-                            lazy
-                            full-width
-                            width="290px"
-                          >
+                        <v-card-text>
                             <v-text-field
-                                slot="activator"
-                                v-model="newEducation.graduation_date"
-                                label="Graduation date"
-                                prepend-icon="event"
-                                readonly
+                                v-model="newEducation.title"
+                                label="Title"
+                                :counter="30"
                             ></v-text-field>
-                            <v-date-picker v-model="newEducation.graduation_date" type="month" scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn flat color="primary" @click="modalDate = false">Cancel</v-btn>
-                                <v-btn flat color="primary" @click="saveDate(newEducation.graduation_date, 0)">OK</v-btn>
-                            </v-date-picker>
-                        </v-dialog>
-                    </v-card-text>
-                    <v-card-actions class="justify-center" style="padding-bottom: 20px;">
-                        <v-btn class="success" @click="addNewEducation(newEducation)">Add</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <!-- candidateLongResume: {{ candidateLongResume }}<br /><br /> -->
-            <!-- candidateEducation: {{ candidateEducation }}<br /><br /> -->
-            <v-expansion-panel-content
-                v-for="(edu, index) in candidateEducation"
-                :key="index"
-            >
-                <!-- <v-icon slot="actions" color="primary"><v-icon>cross</v-icon></v-icon> -->
-                <!-- <v-icon slot="actions" color="teal">done</v-icon> -->
-                <!-- <v-icon color="teal">cross</v-icon> -->
-                <!-- @click.native.stop="delete(index)" -->
-                <div slot="header">
-                    <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>
-                    <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon>
-                    <span style="font-size: 1.5em;">{{ edu.title }}</span>                
-                </div>
+                            <v-text-field
+                                v-model="newEducation.name"
+                                label="University/School name"
+                                :counter="30"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="newEducation.location"
+                                label="Location"
+                                :counter="30"
+                            ></v-text-field>
+                            <v-textarea
+                                v-model="newEducation.description"
+                                label="Education description"
+                                :counter="60"
+                            ></v-textarea>
+                            <v-slider
+                                v-model="newEducation.duration"
+                                label="Study duration"
+                                :max="10"
+                                :min="0"
+                                :step=".5"
+                            ></v-slider>
+                            <div class="text-xs-center">
+                                <small>{{ newEducation.duration }} year(s)</small>
+                            </div>    
+                            <v-dialog
+                                v-model="modalDate"
+                                persistent
+                                lazy
+                                full-width
+                                width="290px"
+                            >
+                                <v-text-field
+                                    slot="activator"
+                                    v-model="newEducation.graduation_date"
+                                    label="Graduation date"
+                                    prepend-icon="event"
+                                    readonly
+                                ></v-text-field>
+                                <v-date-picker v-model="newEducation.graduation_date" type="month" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat color="primary" @click="modalDate = false">Cancel</v-btn>
+                                    <v-btn flat color="primary" @click="saveDate(newEducation.graduation_date, 0)">OK</v-btn>
+                                </v-date-picker>
+                            </v-dialog>
+                        </v-card-text>
+                        <v-card-actions class="justify-center" style="padding-bottom: 20px;">
+                            <v-btn class="success" @click="addNewEducation(newEducation)">Add</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <!-- candidateLongResume: {{ candidateLongResume }}<br /><br /> -->
+                <!-- candidateEducation: {{ candidateEducation }}<br /><br /> -->
+                <v-expansion-panel-content
+                    v-for="(edu, index) in candidateEducation"
+                    :key="index"
+                >
+                    <!-- <v-icon slot="actions" color="primary"><v-icon>cross</v-icon></v-icon> -->
+                    <!-- <v-icon slot="actions" color="teal">done</v-icon> -->
+                    <!-- <v-icon color="teal">cross</v-icon> -->
+                    <!-- @click.native.stop="delete(index)" -->
+                    <div slot="header">
+                        <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>
+                        <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon>
+                        <span style="font-size: 1.5em;">{{ edu.title }}</span>                
+                    </div>
 
-                <!-- form.title: {{ form.title }}<br /><br /> -->
-                <!-- form.graduationDate: {{ form.graduationDate }}<br /><br /> -->
-                <!-- index: {{ index }}<br /><br /> -->
-                <!-- reference: {{ reference }}<br /><br /> -->
-                <v-card style="margin-bottom: 30px; background: black;">
-                    <v-card-text style="">
-                        <v-layout row wrap>
-                            <!-- Name: {{ edu.name }}<br />
-                            Location: {{ edu.location }}<br />
-                            Description: {{ edu.description }}<br />
-                            Duration: {{ edu.duration }} years<br />
-                            Graduation Date: {{ edu.graduation_date }}<br /> -->
-                            <!-- candidateEducation[index].graduation_date: {{ candidateEducation[index].graduation_date }}<br /> -->
-                            <!-- abc: {{ new Date().toISOString().substr(0, 7) }} -->
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-text-field
-                                    v-model="candidateEducation[index].title"
-                                    label="Title"
-                                    :counter="30"
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-text-field
-                                    v-model="candidateEducation[index].name"
-                                    label="University/School name"
-                                    :counter="30"
-                                    :error-messages="error ? error.education_1_name : null"
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-text-field
-                                    v-model="candidateEducation[index].location"
-                                    label="Location"
-                                    :counter="30"
-                                ></v-text-field>
-                            </v-flex>   
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-textarea
-                                    v-model="candidateEducation[index].description"
-                                    label="Education description"
-                                    :counter="60"
-                                ></v-textarea>
-                            </v-flex>
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-slider
-                                    v-model="candidateEducation[index].duration"
-                                    label="Study duration"
-                                    :max="10"
-                                    :min=".5"
-                                    :step=".5"
-                                ></v-slider>
-                                <div class="text-xs-center">
-                                    <small>{{ candidateEducation[index].duration }} year(s)</small>
-                                </div>
-                            </v-flex>
-                            <v-flex xs12 sm6 style="padding: 20px;">
-                                <v-dialog
-                                    v-model="modalDate"
-                                    persistent
-                                    lazy
-                                    full-width
-                                    width="290px"
-                                  >
+                    <!-- form.title: {{ form.title }}<br /><br /> -->
+                    <!-- form.graduationDate: {{ form.graduationDate }}<br /><br /> -->
+                    <!-- index: {{ index }}<br /><br /> -->
+                    <!-- reference: {{ reference }}<br /><br /> -->
+                    <v-card style="margin-bottom: 30px; background: black;">
+                        <v-card-text style="">
+                            <v-layout row wrap>
+                                <!-- Name: {{ edu.name }}<br />
+                                Location: {{ edu.location }}<br />
+                                Description: {{ edu.description }}<br />
+                                Duration: {{ edu.duration }} years<br />
+                                Graduation Date: {{ edu.graduation_date }}<br /> -->
+                                <!-- candidateEducation[index].graduation_date: {{ candidateEducation[index].graduation_date }}<br /> -->
+                                <!-- abc: {{ new Date().toISOString().substr(0, 7) }} -->
+                                <v-flex xs12 sm6 style="padding: 20px;">
                                     <v-text-field
-                                        slot="activator"
-                                        v-model="candidateEducation[index].graduation_date"
-                                        label="Graduation date"
-                                        prepend-icon="event"
-                                        readonly
+                                        v-model="candidateEducation[index].title"
+                                        label="Title"
+                                        :counter="30"
                                     ></v-text-field>
-                                    <v-date-picker v-model="candidateEducation[index].graduation_date" type="month" scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn flat color="primary" @click="modalDate = false">Cancel</v-btn>
-                                        <v-btn flat color="primary" @click="saveDate(candidateEducation[index].graduation_date, 0)">OK</v-btn>
-                                    </v-date-picker>
-                                </v-dialog>
-                            </v-flex>
-                        </v-layout>
-                    </v-card-text>
-                </v-card>
-            </v-expansion-panel-content>
-            <!-- <v-card-actions class="justify-center">
-                <v-btn color="orange" @click="saveEducation">Save</v-btn>
-            </v-card-actions> -->
-        </v-expansion-panel>
+                                </v-flex>
+                                <v-flex xs12 sm6 style="padding: 20px;">
+                                    <v-text-field
+                                        v-model="candidateEducation[index].name"
+                                        label="University/School name"
+                                        :counter="30"
+                                        :error-messages="error ? error.education_1_name : null"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 style="padding: 20px;">
+                                    <v-text-field
+                                        v-model="candidateEducation[index].location"
+                                        label="Location"
+                                        :counter="30"
+                                    ></v-text-field>
+                                </v-flex>   
+                                <v-flex xs12 sm6 style="padding: 20px;">
+                                    <v-textarea
+                                        v-model="candidateEducation[index].description"
+                                        label="Education description"
+                                        :counter="60"
+                                    ></v-textarea>
+                                </v-flex>
+                                <v-flex xs12 sm6 style="padding: 20px;">
+                                    <v-slider
+                                        v-model="candidateEducation[index].duration"
+                                        label="Study duration"
+                                        :max="10"
+                                        :min=".5"
+                                        :step=".5"
+                                    ></v-slider>
+                                    <div class="text-xs-center">
+                                        <small>{{ candidateEducation[index].duration }} year(s)</small>
+                                    </div>
+                                </v-flex>
+                                <v-flex xs12 sm6 style="padding: 20px;">
+                                    <v-dialog
+                                        v-model="modalDate"
+                                        persistent
+                                        lazy
+                                        full-width
+                                        width="290px"
+                                    >
+                                        <v-text-field
+                                            slot="activator"
+                                            v-model="candidateEducation[index].graduation_date"
+                                            label="Graduation date"
+                                            prepend-icon="event"
+                                            readonly
+                                        ></v-text-field>
+                                        <v-date-picker v-model="candidateEducation[index].graduation_date" type="month" scrollable>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="modalDate = false">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="saveDate(candidateEducation[index].graduation_date, 0)">OK</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
+                                </v-flex>
+                            </v-layout>
+                        </v-card-text>
+                    </v-card>
+                </v-expansion-panel-content>
+                <!-- <v-card-actions class="justify-center">
+                    <v-btn color="orange" @click="saveEducation">Save</v-btn>
+                </v-card-actions> -->
+            </v-expansion-panel>
+        </v-layout>
     </div>
 </template>
 

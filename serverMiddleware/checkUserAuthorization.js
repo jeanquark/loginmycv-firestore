@@ -108,6 +108,17 @@ module.exports = app.use(async function (req, res, next) {
 			}
 		}
 
+		// Allow authenticated user to access their own resumes
+		const snapshot3 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get()
+		let resumeData3 = {};
+		snapshot3.forEach(doc => {
+			console.log('doc3.data(): ', doc.data());
+			resumeData3 = doc.data();
+		});
+		if (resumeData3.user_id === authUserId) {
+			res.send(resumeData3);
+		}
+
 		if (status === 'accorded') {
 			// 2) If authorized, fetch resume
 			const snapshot2 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();

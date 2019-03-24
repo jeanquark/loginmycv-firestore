@@ -3,7 +3,7 @@
         <p>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
         </p>
         <!-- userSkills: {{ userSkills }}<br /><br /> -->
         <h2>Skills</h2><br />

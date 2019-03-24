@@ -5,7 +5,7 @@
 		</v-layout>
 
 		<v-flex xs12 class="text-xs-center">
-			<b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br />
+			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /> -->
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
 					List of authorizations you've been asked for
@@ -56,7 +56,7 @@
 		</v-flex>
 
 		<v-flex xs12 class="text-xs-center">
-			<b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br />
+			<!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
 					List of authorizations you've asked
@@ -74,7 +74,7 @@
 					      	<td class="text-xs-left">{{ props.item.resume.email }}</td>
 					      	<td class="text-xs-left">{{ props.item.status }}</td>
 					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
+					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
 					      	</td>
 					      	<td>
 						      	<v-checkbox class="checkbox-center" v-model="props.item.authorizations['picture']" readonly></v-checkbox>

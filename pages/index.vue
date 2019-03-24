@@ -21,7 +21,8 @@
 			<!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
 			<!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
 			<div v-if="!loadedUser">
-				<v-btn color="success" @click="loginModal = true">Login</v-btn>
+				<!-- <v-btn color="success" @click="loginModal = true">Login</v-btn> -->
+				<v-btn color="success" @click="openLoginModal">Login</v-btn>
 				<v-btn color="success" @click="registerModal = true">Register</v-btn>
 			</div>
 			<div v-else>
@@ -38,25 +39,26 @@
             <!-- <v-btn color="primary" @click="addResume" :loading="loading">Add resume</v-btn> -->
             <v-container grid-list-md text-xs-center>
     			<v-layout row wrap>
-      				<v-flex xs12>
-        				<v-card>
-          					<v-card-text class="px-0">
+      				<v-flex xs12 class="">
+        				<v-card class="ma-2 pa-0">
+          					<v-card-text class="pa-0">
           						<h1>Welcome to LoginMyCV</h1>
-          						<h3>This is where you career takes off</h3>
+          						<h3>Now your career will take off</h3>
+								<br />
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
-          						<nuxt-link to="/resume/jeanquark">Go to jeanquark resume (client)</nuxt-link><br />
-          						<a href="/resume/jeanquark">Go to jeanquark resume (server)</a><br />
+          						<!-- <nuxt-link to="/resume/jeanquark">Go to jeanquark resume (client)</nuxt-link><br /> -->
+          						<!-- <a href="/resume/jeanquark">Go to jeanquark resume (server)</a><br /> -->
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
           						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
           						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
-          						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
+          						<!-- <b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br /> -->
 
           						<v-layout>
 	          						<v-flex xs12>
-	          							<img src="/images/logo.jpg" width="100%" />
+	          							<img src="/images/logo-min.jpg" width="100%" />
 	          						</v-flex>
 	          					</v-layout>
           					</v-card-text>
@@ -83,12 +85,12 @@
         					</v-card-title>
         					<v-card-actions>
         						<v-layout justify-center>
-									<v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id">View my resume</v-btn>
+									<v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id" :to="`/resume/${resume.slug}`">View my resume</v-btn>
         							<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
 	        							<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
-	        							<v-chip color="primary white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
+	        							<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
 	        						</div>
-	        						<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-else>Request access</v-btn>
+	        						<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="loadedUser && resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
 	        					</v-layout>
         					</v-card-actions>
         				</v-card>
@@ -98,6 +100,7 @@
                     <v-dialog
                         v-model="loginModal"
                         width="500"
+                    	lazy
                     >
                         <Login v-on:loginChildToParent="switchToRegister" :message="message" />
                     </v-dialog>
@@ -106,6 +109,7 @@
                     <v-dialog
                         v-model="registerModal"
                         width="750"
+                        lazy
                     >
                         <Register v-on:registerChildToParent="switchToLogin" />
                     </v-dialog>
@@ -113,6 +117,7 @@
                     <v-dialog
         				v-model="requestAuthorizationModal"
         				width="500"
+        				lazy
     				>
     					<RequestAuthorization :resume="candidateResume" />
     				</v-dialog>
@@ -255,6 +260,10 @@
 			switchToRegister () {
 				this.loginModal = false
 				this.registerModal = true
+			},
+			openLoginModal () {
+				this.message = null
+				this.loginModal = true
 			},
 			async showAuthModal (resume) {
 				console.log('resume: ', resume)

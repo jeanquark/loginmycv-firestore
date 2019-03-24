@@ -15,11 +15,15 @@
         props: ['resume'],
         created () {
         },
-        mounted () {
-            if (this.resume && this.resume.template) {
-                const templateId = this.resume.template
+        async mounted () {
+            // if (this.resume && this.resume.template) {
+            if (this.resume) {
+                const templateId = this.resume.template_id
                 console.log('templateId: ', templateId)
-                return this.component = () => import(`~/components/templates/Template${templateId}`)
+                await this.$store.dispatch('templates/fetchTemplates')
+                const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === templateId)
+                console.log('template: ', template)
+                return this.component = () => import(`~/components/templates/${template.file}`)
             } else {
                 new Noty({
                     type: 'error',

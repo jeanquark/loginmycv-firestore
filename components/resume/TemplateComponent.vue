@@ -2,8 +2,8 @@
     <div style="padding: 30px;">
         <p>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
-            edit: {{ this.edit }}<br />
-            userResume: {{ userResume }}<br />
+            <!-- edit: {{ this.edit }}<br /> -->
+            <!-- userResume: {{ userResume }}<br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
         </p>
         <v-layout wrap>

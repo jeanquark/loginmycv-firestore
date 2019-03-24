@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<h2>Template 1</h2>
-		<b>this.resume:</b> {{ this.resume }}<br /><br /><br />
-		<div style="border: 2px solid grey;">
+		<!-- <h2>Template 1</h2> -->
+		<!-- <b>this.resume:</b> {{ this.resume }}<br /><br /><br /> -->
+		<div style="">
 			<v-layout>
 			    <v-flex xs12 sm6 offset-sm3>
 			    	<!-- <v-hover> -->
@@ -21,20 +21,26 @@
 					        			{{ this.resume.job_description }}
 					        		</h3>
 					        		<br /><br />
-									<v-layout row>
+									<v-layout row class="mb-3">
 										<v-flex xs6>
-											firstname: {{ this.resume.personal_data.firstname }}
+											<b>Firstname:</b> {{ this.resume.personal_data.firstname }}
 										</v-flex>
 										<v-flex xs6>
-											lastname: {{ this.resume.personal_data.lastname }}
+											<b>Lastname:</b> {{ this.resume.personal_data.lastname }}
+										</v-flex>
+									</v-layout>
+									<v-layout row class="mb-3">
+										<v-flex xs6>
+											<b>Age:</b> {{ parseInt(this.resume.personal_data.birthday) | moment("from", "now", true) }}
+										</v-flex>
+										<v-flex xs6>
+											<b>Gender:</b> {{ this.resume.personal_data.gender }}
 										</v-flex>
 									</v-layout>
 									<v-layout row>
-										<v-flex xs6>
-											age: {{ this.resume.personal_data.birthday }}
-										</v-flex>
-										<v-flex xs6>
-											gender: {{ this.resume.personal_data.gender }}
+										<v-flex xs12>
+											<b>Key competences:</b>
+											<v-chip :color="competence.color" text-color="white" small v-for="competence in this.resume.key_competences" :key="competence.slug">{{ competence.name }}</v-chip>
 										</v-flex>
 									</v-layout>
 					        	</v-flex>
@@ -66,7 +72,7 @@
 								      :key="i"
 								    >
 								      	<template v-slot:header>
-									        <h3><v-icon color="red">school</v-icon> {{ item.title }}, {{ item.school }}, <small>{{ item.location }} - {{ item.country }}</small></h3>
+									        <h3><v-icon color="amber">school</v-icon> {{ item.title }}, {{ item.school }}, <small>{{ item.location }} - {{ item.country }}</small></h3>
 								      	</template>
 								      	<v-card>
 									        <v-card-text class="grey lighten-3">
@@ -101,7 +107,7 @@
 							            	icon
 							            	@click="toggle"
 							          	>
-								            <v-icon color="orange">work</v-icon>
+								            <v-icon color="amber">work</v-icon>
 							          	</v-btn>
 							        </div>
 					      		</v-item>
@@ -124,7 +130,7 @@
 						                			<strong class="title">{{ job.job_title }}</strong>
 						                			<v-spacer></v-spacer>
 						                			<v-btn icon>
-						                  				<v-icon color="teal">domain</v-icon>
+						                  				<v-icon color="amber">domain</v-icon>
 						                			</v-btn>
 						              			</v-layout>
 
@@ -155,7 +161,7 @@
 									      :size="100"
 									      :width="15"
 									      :value="skill.value"
-									      color="teal"
+									      color="amber"
 									    >
 								     		{{ skill.value }}
 								    	</v-progress-circular>
@@ -174,6 +180,7 @@
 </template>
 
 <script>
+	import moment from 'moment'
 	export default {
 		props: ['resume'],
 		data () {
