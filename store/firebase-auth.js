@@ -1,6 +1,6 @@
-import { firestore, auth } from "~/plugins/firebase-client-init.js"
-import axios from "axios"
-import Noty from "noty"
+import { firestore, auth } from '~/plugins/firebase-client-init.js'
+import axios from 'axios'
+import Noty from 'noty'
 // import moment from "moment"
 
 export const state = () => ({})
@@ -38,6 +38,40 @@ export const actions = {
             commit("setError", error, { root: true })
             throw new Error(error)
         }
+    },
+
+    async signVisitorIn ({ commit }, payload) {
+        console.log('payload: ', payload)
+        const slug = payload.slug
+        console.log('slug: ', slug)
+
+        try {
+            let authData = await auth.signInWithEmailAndPassword (
+                payload.form.username,
+                payload.form.password
+            )
+            const authUserId = authData.user.uid
+            console.log('authUserId: ', authUserId)
+            const user = {
+                id: authUserId,
+                email: authData.user.email,
+                type: 'visitor'
+                // ...authData.user
+            }
+            console.log('user: ', user)
+            commit('users/setLoadedUser', user, { root: true })
+            // const resume = await axios.post('/check-user-authorization', { authUserId, slug })
+            // console.log('resume: ', resume)
+            // this.$route.push(`/resume/${slug}`)
+        } catch (error) {
+            console.log('error2: ', error)
+            commit("setError", error, { root: true })
+            // throw new Error(error)
+            // return
+        }
+
+        // const authUserId = 'LiBYgaTsW9UgzNjhwu0bhQn4O883'
+        // const slug = 'greg'
     },
 
     async signUserUp({ commit }, payload) {

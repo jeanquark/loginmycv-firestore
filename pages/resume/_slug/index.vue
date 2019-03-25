@@ -14,6 +14,7 @@
 	// import { Route } from 'vue-router'
 	import DynamicResumeTemplate from '~/components/DynamicResumeTemplate'
 	import Noty from 'noty'
+	import { firestore } from '~/plugins/firebase-client-init.js'
 	export default {
 		// middleware: ['resume-check'],
 		head () {
@@ -32,9 +33,10 @@
   			// console.log('authUserId: ', authUserId)
   			// console.log('context: ', context)
   			const authUser = store.getters['users/loadedUser']
-  			console.log('authUser: ', authUser)
+			console.log('authUser: ', authUser)
+			const slug = params.slug
   			if (authUser) {
-  				const slug = params.slug
+  				// const slug = params.slug
   				const authUserId = authUser.id
   				console.log('slug: ', slug)
   				console.log('authUserId: ', authUserId)
@@ -60,13 +62,21 @@
   				} catch (error) {
   					console.log('error2: ', error)
   				}
-  			} else {
-  				console.log('params.username: ', params.username)
-  				console.log('authUser: ', authUser)
-  				console.log('Not authenticated! Stop here')
-  				// window.location.replace('/')
+  			} else { // Not authenticated
+				console.log('slug: ', slug)
+				const snapshot = await firestore.collection('authorizations').where('resume.slug', '==', slug).where('type', '==', 'visitor').get()
+				let authorizationsArray = []
+				snapshot.forEach(authorization => {
+					authorizationsArray.push(authorization.data())
+				})
+  				console.log('authorizationsArray: ', authorizationsArray)
+				if (authorizationsArray.length > 0) {
+					return redirect(`/resume/${slug}/login`)
+				} else { // No authorizations found
+					console.log('Not authenticated & no authorization! Stop here.')
+				}
   				// this.$router.push('/')
-  				return redirect('/')
+  				// return redirect('/')
   			}
   			// console.log('auth_user_id: ', auth_user_id)
   			// console.log('ip: ', ip)

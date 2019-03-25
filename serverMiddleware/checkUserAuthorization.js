@@ -16,61 +16,6 @@ module.exports = app.use(async function (req, res, next) {
 		console.log('authUserId: ', authUserId);
 		console.log('slug: ', slug);
 
-
-		// let resumeData = {};
-		// if (username === 'jeanquark') {
-		// 	resumeData = {
-		// 		"job_description" : "Develops and deploy websites & web apps.",
-		// 		"job_title":"Web developer",
-		// 		"image" : "jeanmarc.jpg",
-		// 		"location" : "Switzerland",
-		// 		"keys" : ["web", "programmation", "HTML", "CSS", "PHP", "JavaScript"],
-		// 		"lastname" : "Kle",
-		// 		"firstname" : "Jean-Marc",
-		// 		"username" : "jeanquark",
-		// 		"email" : "jm.kle@gmail.com",
-		// 		"education" : [
-		// 			{
-		// 				"location" : "Bern",
-		// 				"title" : "Master of Science in Economics",
-		// 				"school" : "University of Bern"
-		// 			},
-		// 			{
-		// 				"location" : "Geneva",
-		// 				"title" : "Bachelor of Science in Economics",
-		// 				"school" : "University of Geneva"
-		// 			}
-		// 		],
-		// 		"template" : 1
-		// 	};
-
-		// } else if (username === 'ivan') {
-		// 	resumeData = {
-		// 		"job_description" : "Transform your data into revenues.",
-		// 		"job_title":"Data analyst",
-		// 		"image" : "ivan.jpg",
-		// 		"location" : "Switzerland",
-		// 		"keys" : ["data", "econometrics", "data analysis", "market research"],
-		// 		"lastname" : "Wo",
-		// 		"firstname" : "Ivan",
-		// 		"username" : "ivan",
-		// 		"email" : "iw@example.com",
-		// 		"education" : [
-		// 			{
-		// 				"location" : "Bern",
-		// 				"title" : "Master of Science in Economics",
-		// 				"school" : "University of Bern"
-		// 			},
-		// 			{
-		// 				"location" : "Bern",
-		// 				"title" : "Bachelor of Science in Economics",
-		// 				"school" : "University of Bern"
-		// 			}
-		// 		],
-		// 		"template" : 2
-		// 	};
-		// }
-
 		// 1) Check authenticated user authorization to read user resume
 		let authorization = {};
 		const snapshot1 = await admin.firestore().collection('authorizations').where('user.id', '==', authUserId).where('resume.slug', '==', slug).get();
@@ -133,10 +78,17 @@ module.exports = app.use(async function (req, res, next) {
 		} else if (status === 'in_process' || status === 'refused' || status === 'revoked') {
 			// res.send(`You can not access resume data. Your authorization status is ${status}`);
 			// res.redirect('/');
-			res.send(`${status}`);
-
+			// res.send(`${status}`);
+			res.send({
+				slug,
+				status
+			});
 		} else {
-			res.send(`Not allowed`);
+			// res.send(`Not allowed`);
+			res.send({
+				slug,
+				status: 'not_allowed'
+			});
 		}
 
 		// const resumeData = await admin.firestore().collection('resumes_long').where('slug', '==', slug).limit(1);

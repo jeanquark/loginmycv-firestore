@@ -3,7 +3,8 @@ export const strict = false
 
 export const state = () => ({
     loading: false,
-    error: null
+    error: {},
+    errors: []
 })
 
 export const mutations = {
@@ -11,12 +12,17 @@ export const mutations = {
         state.loading = payload
     },
     setError (state, payload) {
-        console.log("setError mutation called")
-        console.log(payload)
+        console.log('setError mutation called')
         state.error = payload
+    },
+    addError (state, payload) {
+        console.log('addError mutation called')
+        console.log(payload)
+        state.errors.push(payload)
     },
     clearError (state) {
         state.error = null
+        state.errors = []
     }
 }
 
@@ -50,9 +56,6 @@ export const actions = {
         } else {
             console.log("User is not logged in from nuxtServerInit")
         }
-    },
-    clearError ({ commit }) {
-        commit("clearError")
     }
 }
 
@@ -62,5 +65,8 @@ export const getters = {
     },
     error (state) {
         return state.error
+    },
+    errors (state) {
+        return state.errors
     }
 }

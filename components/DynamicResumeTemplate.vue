@@ -18,6 +18,25 @@
         async mounted () {
             // if (this.resume && this.resume.template) {
             if (this.resume) {
+                console.log('this.resume: ', this.resume)
+                if (this.resume.status === 'in_process') {
+                    new Noty({
+                        type: 'warning',
+                        text: 'Your authorization request is being processed.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    return this.$router.push('/')
+                }
+                if (this.resume.status === 'not_allowed') {
+                    new Noty({
+                        type: 'error',
+                        text: 'You are not allowed to access this resume.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    return this.$router.push(`/resume/${this.resume.slug}/login`)
+                }
                 const templateId = this.resume.template_id
                 console.log('templateId: ', templateId)
                 await this.$store.dispatch('templates/fetchTemplates')
@@ -31,7 +50,7 @@
                     timeout: 5000,
                     theme: 'metroui'
                 }).show()
-                return this.$router.push('/')
+                return this.$router.push('/login')
             }
             
             // this.loader()

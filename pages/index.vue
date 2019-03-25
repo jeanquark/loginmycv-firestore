@@ -47,14 +47,15 @@
 								<br />
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
-          						<!-- <nuxt-link to="/resume/jeanquark">Go to jeanquark resume (client)</nuxt-link><br /> -->
-          						<!-- <a href="/resume/jeanquark">Go to jeanquark resume (server)</a><br /> -->
+          						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
+          						<a href="/resume/jeanquark">Go to jeanquark's resume (server)</a><br />
+								<a href="/resume/greg">Go to greg's resume (server)</a><br />
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
           						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
           						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
-          						<!-- <b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br /> -->
+          						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
 
           						<v-layout>
 	          						<v-flex xs12>
@@ -84,14 +85,17 @@
         						</div>
         					</v-card-title>
         					<v-card-actions>
-        						<v-layout justify-center>
+        						<v-layout justify-center v-if="loadedUser">
 									<v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id" :to="`/resume/${resume.slug}`">View my resume</v-btn>
         							<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-	        							<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
+	        							<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
 	        							<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
 	        						</div>
-	        						<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="loadedUser && resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+	        						<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
 	        					</v-layout>
+								<v-layout justify-center v-else>
+									<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+								</v-layout>
         					</v-card-actions>
         				</v-card>
         			</v-flex>
