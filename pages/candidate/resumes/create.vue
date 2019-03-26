@@ -1,7 +1,9 @@
 <template>
     <div>
-        <v-layout row wrap align-center class="">
-            <h2 class="">Create a new resume</h2>
+        <v-layout row wrap>
+            <v-flex xs12>
+                <h2 class="text-xs-center">Create a new resume</h2>
+            </v-flex>
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
@@ -24,7 +26,19 @@
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step :rules="[stepSkillsValidate]" step="4" editable>Skills</v-stepper-step>
+                    <v-stepper-step step="4" editable>Work experience</v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step step="6" editable>Files upload</v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step step="7" editable>Other</v-stepper-step>
 
                 </v-stepper-header>
 
@@ -49,7 +63,25 @@
 
                     <v-stepper-content step="4">
                         <v-card style="margin-bottom: 30px;">
+                            Work experience
+                        </v-card>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="5">
+                        <v-card style="margin-bottom: 30px;">
                             <skills-component />
+                        </v-card>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="6">
+                        <v-card style="margin-bottom: 30px;">
+                            <file-uploads-component />
+                        </v-card>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="7">
+                        <v-card style="margin-bottom: 30px;">
+                            Other
                         </v-card>
                     </v-stepper-content>
                 </v-stepper-items>
@@ -82,9 +114,10 @@
     import personalDataComponent from '~/components/resume/PersonalDataComponent'
     import educationComponent from '~/components/resume/EducationComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
+    import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import Noty from 'noty'
 	export default {
-        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent },
+        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         async created () {
             // console.log('System: ', Navigator.appversion)
