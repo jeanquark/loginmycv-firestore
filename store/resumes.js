@@ -149,22 +149,41 @@ export const actions = {
 	},
 	async fetchUserResumes ({ commit, rootState }) {
 		console.log('Call to fetchResume action')
-		// const authUserId = auth.currentUser ? auth.currentUser.uid : null
-		// const authUserId = getters['/users']
-		// const authUserId = state.resumes.resumes_short[0]
-		// console.log('rootState: ', rootState.users.user.uid)
 		const authUserId = rootState.users ? rootState.users.user.id : null
 		console.log('authUserId: ', authUserId)
 
-		const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).get()
-		let userResumes = []
-		snapshot.forEach(doc => {
-			userResumes.push({
-				id: doc.id,
-				...doc.data()
+		// Read data once
+		// const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).get()
+		// let userResumes = []
+		// snapshot.forEach(doc => {
+		// 	userResumes.push({
+		// 		id: doc.id,
+		// 		...doc.data()
+		// 	})
+		// })
+
+		// Get realtime updates
+		// const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot()
+		// let userResumes = []
+		// snapshot.forEach(doc => {
+		// 	userResumes.push({
+		// 		id: doc.id,
+		// 		...doc.data()
+		// 	})
+		// })
+		// commit('setUserResumes', userResumes)
+
+		firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot(snapshot => {
+        	const userResumes = []
+			snapshot.forEach(doc => {
+				userResumes.push({
+					id: doc.id,
+					...doc.data()
+				})
 			})
-		})
-		commit('setUserResumes', userResumes)
+			commit('setUserResumes', userResumes)
+    	})
+	
 	}
 }
 

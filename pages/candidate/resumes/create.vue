@@ -138,6 +138,9 @@
             error () {
                 return this.$store.getters['error']
             },
+            errors () {
+                return this.$store.getters['errors']
+            },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResume']
             },

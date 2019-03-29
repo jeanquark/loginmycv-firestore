@@ -6,7 +6,9 @@
 			fileName: {{ fileName }}<br /><br />
 			downloadUrl: {{ downloadUrl }}<br /><br />
 			fileName2: {{ fileName2 }}<br /><br />
-			<!-- items: {{ items }}<br /><br /> -->
+			totalUploadSize: {{ totalUploadSize }}<br /><br />
+			loadedUserResumes: {{ loadedUserResumes }}<br /><br />
+			getTotalUploadSize: {{ getTotalUploadSize }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -21,7 +23,7 @@
 				></v-text-field>
 			</v-flex>
 
-			<v-flex xs8>
+			<v-flex xs6>
 				<v-text-field label="My File" @click="pickFile2(`file${index}`)" v-model="fileName2[index]" prepend-icon='attach_file'></v-text-field>
 				<input
 					type="file"
@@ -30,6 +32,20 @@
 					accept="application/pdf"
 					@change="onFilePicked2($event, index)"
 				>
+			</v-flex>
+
+			<v-flex xs2>
+				<v-progress-linear
+      				color="amber"
+      				height="15"
+      				value="45"
+    			></v-progress-linear>
+
+				<!-- <v-progress-circular
+      				:value="80"
+					:rotate="-90"
+      				color="amber"
+    			></v-progress-circular> -->
 			</v-flex>
 			<v-divider :key="`divider-${index}`"></v-divider>
 		</v-layout>
@@ -77,12 +93,25 @@
 </template>
 
 <script>
-	import { storage } from '~/plugins/firebase-client-init'
+	import { firestore, storage } from '~/plugins/firebase-client-init'
     export default {
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
-            this.resumeSlug = resumeSlug
+			this.resumeSlug = resumeSlug
+
+			storage.ref('resumes/OlxfESwPtlgzz4vcjiL4YKsIDZI2/38959262-real3d-flipbook-jquery-plugin-license.pdf').getMetadata().then(function(metadata) {
+                // Metadata now contains the metadata for 'images/forest.jpg'
+                console.log('metadata.size: ', metadata.size)
+            }).catch(function(error) {
+				console.log('Error getting metadata: ', error)
+                // Uh-oh, an error occurred!
+			});
+			
+			// Get user total upload size
+			// if (!this.$store.getters['resumes/loadedUserResumes']) {
+				await this.$store.dispatch('resumes/fetchUserResumes')
+			// }
         },
         data () {
             return {
@@ -116,7 +145,8 @@
 					// 	title: 'Oui oui',
 					// 	subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?"
 					// }
-				]
+				],
+				totalUploadSize: 0
             }
         },
         computed: {
@@ -129,6 +159,23 @@
 			},
 			loadedUser () {
 				return this.$store.getters['users/loadedUser']
+			},
+			loadedUserResumes () {
+				return this.$store.getters['resumes/loadedUserResumes']
+			},
+			getTotalUploadSize () {
+				const userResumes = this.$store.getters['resumes/loadedUserResumes']
+				console.log('userResumes: ', userResumes)
+
+				let totalUploadSize = 0
+				userResumes.forEach(resume => {
+					resume.uploads.forEach(upload => {
+						totalUploadSize += parseInt(upload.size)
+					})
+				})
+				console.log('totalUploadSize: ', totalUploadSize)
+				// this.totalUploadSize = totalUploadSize
+				return totalUploadSize
 			}
         },
         methods: {
@@ -168,10 +215,17 @@
 						console.log('upload...')
 						try {
 							const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileName}`)
-							const snapshot = await storageFileRef.put(file)
-							console.log('snapshot: ', snapshot)
-							this.downloadUrl = await snapshot.ref.getDownloadURL()
-							console.log('this.downloadUrl: ', this.downloadUrl)
+							const snapshot = storageFileRef.put(file)
+							// console.log('snapshot: ', snapshot)
+							snapshot.on('state_changed', (childSnapshot) => {
+								let progress = (childSnapshot.bytesTransferred / childSnapshot.totalBytes) * 100;
+  								console.log('Upload is ' + progress + '% done');
+							}).then(() => {
+								// this.downloadUrl = await snapshot.ref.getDownloadURL()
+								// console.log('this.downloadUrl: ', this.downloadUrl)
+								// const fileSize = await snapshot.ref.getMetadata()
+								// console.log('fileSize: ', fileSize)
+							})
 						} catch (error) {
 							console.log('error: ', error)
 						}
@@ -235,7 +289,7 @@
                     this.imageFile = ''
                     this.imageUrl = ''
                 }
-            }
+			},
         }
     }
 </script>

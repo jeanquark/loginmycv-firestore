@@ -56,7 +56,7 @@
 		</v-flex>
 
 		<v-flex xs12 class="text-xs-center">
-			<!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
+			<b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br />
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
 					List of authorizations you've asked

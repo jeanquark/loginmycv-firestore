@@ -13,6 +13,7 @@
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
+            date: {{ date }}<br /><br />
         </div>
         <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume">
             <v-flex xs12 class="">
@@ -123,28 +124,32 @@
                 ></v-select>
             </v-flex>
 
-            <!--<v-flex xs12 sm4>
+            <v-flex xs12 sm4>
                 <v-dialog
+                    ref="dialog"
                     v-model="modalDate"
+                    :return-value.sync="date"
                     persistent
                     lazy
                     full-width
-                    width="290px"
-                  >
+                    width="300px"
+                >
+                    <template v-slot:activator="{ on }">
                     <v-text-field
-                        slot="activator"
-                        v-model="userResume.personal_data.birthday"
-                        label="Birthday"
+                        v-model="date"
+                        label="Picker in dialog"
                         prepend-icon="event"
                         readonly
+                        v-on="on"
                     ></v-text-field>
-                    <v-date-picker v-model="userResume.personal_data.birthday" scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modalDate = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="saveDate">OK</v-btn>
+                    </template>
+                    <v-date-picker v-model="date" scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
                     </v-date-picker>
                 </v-dialog>
-            </v-flex>-->
+            </v-flex>
 
             <v-flex xs12 sm4>
                 <v-select
@@ -227,6 +232,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         // props: ['resumeSlug', 'personalData'],
         async created () {
@@ -256,10 +262,8 @@
                     job_title: '',
                     job_description: ''
                 },
-                // picker: new Date().toISOString().substr(0, 10),
                 modalDate: false,
-                picker: '2000-01-01',
-                minus25years: '2000-01-01'
+                date: moment().subtract(30, 'years').format('YYYY-MM-DD')
             }
         },
         computed: {
