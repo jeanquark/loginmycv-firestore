@@ -244,8 +244,17 @@
             await this.$store.dispatch('countries/fetchCountries')
             await this.$store.dispatch('languages/fetchLanguages')
             await this.$store.dispatch('competences/fetchCompetences')
+            
         },
-        mounted () {},
+        mounted () {
+            this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
+            this.loadedNewResume.slug = 'jeanquark'
+            this.loadedNewResume.job_title = 'Web developer'
+            this.loadedNewResume.job_description = 'Develops websites'
+            this.loadedNewResume.personal_data.firstname = 'Jean-Marc'
+            this.loadedNewResume.personal_data.lastname = 'Kleger'
+            this.loadedNewResume.personal_data.email = 'jm.kleger@gmail.com'
+        },
         data () {
             return {
                 resumeSlug: '',

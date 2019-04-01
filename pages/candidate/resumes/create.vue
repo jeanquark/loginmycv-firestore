@@ -7,8 +7,18 @@
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
+            loadedNewResume: {{ loadedNewResume }}<br /><br />
             <!-- errors: {{ errors }}<br /><br /> -->
+            <input
+                type="file"
+                ref="file2"
+                accept="application/pdf"
+            ><br /><br />
+            <input
+                type="file"
+                ref="file3"
+                accept="application/pdf"
+            >
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -115,6 +125,8 @@
     import educationComponent from '~/components/resume/EducationComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
+    import axios from 'axios'
+    // import FormData from 'form-data'
     import Noty from 'noty'
 	export default {
         components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
@@ -193,7 +205,7 @@
             async saveResume () {
             	console.log('saveResume')
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
-                if (
+                if ( // Client-side validation
                     !this.loadedNewResume.template_id || 
                     !this.loadedNewResume.slug ||
                     !this.loadedNewResume.job_title ||
@@ -209,7 +221,30 @@
                     await this.$validator.validateAll()
                     if (!this.errors.any()) {
                         console.log('OK, save!')
-                        this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                        // this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                        // const abc = await axios.post('/create-new-resume', this.loadedNewResume )
+                        // const headers = {
+                        //     'Content-Type': 'application/json',
+                        // }
+                        // console.log('uploads: ', this.loadedNewResume.uploads)
+                        
+                        // const abc = await axios.post('/create-new-resume', this.loadedNewResume,
+                        //     {
+                        //         headers: {
+                        //             // 'Content-Type': 'application/json'
+                        //             'Content-Type': 'multipart/form-data'
+                        //         }
+                        //         // headers: form.getHeaders(),
+                        //     }
+                        // )
+
+                        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+                        let fd = new FormData();
+                        // fd.append('data', JSON.stringify(this.loadedNewResume))
+                        fd.append('data', this.loadedNewResume)
+                        fd.append('file', this.$refs.file2.files[0])
+                        const abc = await axios.post("/create-new-resume", fd, config)
+                        console.log('abc: ', abc)
                     }
                 }
             },

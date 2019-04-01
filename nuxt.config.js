@@ -83,6 +83,10 @@ module.exports = {
         //     path: '/update-resume-authorization', // POST request
         //     handler: '~/serverMiddleware/updateResumeAuthorization'
         // }
+        {
+            path: '/create-new-resume', // POST request
+            handler: '~/serverMiddleware/createNewResume'
+        }
     ],
     css: ["~/assets/style/app.styl"],
     /*

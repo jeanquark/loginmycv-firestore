@@ -33,7 +33,9 @@ export const mutations = {
 			personal_data: {},
 			education: [],
 			work_experience: [],
-			skills: []
+			skills: [],
+			uploads: [],
+			others: []
 		}
 	},
 	setNewResume (state, payload) {
