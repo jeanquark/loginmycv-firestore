@@ -9,6 +9,7 @@
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             loadedNewResume: {{ loadedNewResume }}<br /><br />
             <!-- errors: {{ errors }}<br /><br /> -->
+            loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br />
             <input
                 type="file"
                 ref="file2"
@@ -239,12 +240,41 @@
                         // )
 
                         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-                        let fd = new FormData();
-                        // fd.append('data', JSON.stringify(this.loadedNewResume))
-                        fd.append('data', this.loadedNewResume)
-                        fd.append('file', this.$refs.file2.files[0])
-                        const abc = await axios.post("/create-new-resume", fd, config)
+                        let formData = new FormData();
+                        formData.append('data', JSON.stringify(this.loadedNewResume))
+                        // fd.append('data', JSON.parse(this.loadedNewResume))
+                        // fd.append('data', this.loadedNewResume)
+                        // fd.append('file', this.$refs.file2.files[0])
+                        // fd.append('file', this.$refs.file3.files[0])
+                        for (let fileUpload of this.loadedNewResume.uploads) {
+                            // console.log('upload: ', upload)
+                            formData.append('file', fileUpload)
+                        }
+                        // console.log('length: ', this.loadedNewResume.uploads.length())
+                        // fd.append('file', this.loadedNewResume.uploads[0])
+                        // fd.append('file', this.loadedNewResume.uploads[1])
+                        // fd.append('file', this.$refs)
+                        const abc = await axios.post("/create-new-resume", formData, {
+                            headers: { 'Content-Type': 'multipart/form-data' }
+                        })
                         console.log('abc: ', abc)
+                        // If return is valid, resume was saved in DB, there remains to save file in firebase storage
+                        // 	try {
+                        // 		const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileName}`)
+                        // 		const snapshot = storageFileRef.put(file)
+                        // 		// console.log('snapshot: ', snapshot)
+                        // 		snapshot.on('state_changed', (childSnapshot) => {
+                        // 			let progress = (childSnapshot.bytesTransferred / childSnapshot.totalBytes) * 100;
+                        // 			console.log('Upload is ' + progress + '% done');
+                        // 		}).then(() => {
+                        // 			// this.downloadUrl = await snapshot.ref.getDownloadURL()
+                        // 			// console.log('this.downloadUrl: ', this.downloadUrl)
+                        // 			// const fileSize = await snapshot.ref.getMetadata()
+                        // 			// console.log('fileSize: ', fileSize)
+                        // 		})
+                        // 	} catch (error) {
+                        // 		console.log('error: ', error)
+                        // 	}
                     }
                 }
             },

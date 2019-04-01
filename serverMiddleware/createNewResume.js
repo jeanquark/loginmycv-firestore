@@ -1,91 +1,87 @@
 const express = require('express'),
-	  bodyParser = require('body-parser'),
       admin = require('firebase-admin'),
-      //   { check, validationResult } = require('express-validator/check');
-      expressValidator = require('express-validator'),
+      validate = require('validate.js'),
       multer = require('multer');
 
 const app = express();
-
-// app.use(bodyParser.urlencoded({ extended: true}));
-// app.use(bodyParser.json());
-app.use(expressValidator());
-// app.use(multer());
-// let upload = multer();
-app.use(multer({ dest: '/file/uploads/' }).any());
+app.use(multer().any());
 
 module.exports = app.use(async function (req, res, next) {
 	try {
-        // req
-        //     .getValidationResult() // to get the result of above validate fn
-        //     .then(validationHandler())
-        //     .then(() => {
-        //         // console.log('req.body.data: ', req.body.data);
-        //         // console.log('req.body.data.personal_data: ', req.body.data.personal_data);
-        //         const userResume = req.body.data;
-        //         console.log('userResume: ', userResume)
-
-        //         // check(userResume.personal_data.email).exists().isEmail();
-        //         // check(userResume.personal_data.firstname).exists();
-        //         // check(userResume.personal_data.firstname).isLength({ min: 5, max:5 });
-
-        //         res.send('POST request to create new resume went successfully.');
-        //     });
+        // 1) Check total file upload size
+        const totalSize = req.files.reduce((accumulator, file) => {
+            return accumulator += file.size
+        }, 0);
+        console.log('totalSize: ', totalSize);
+        if (totalSize > 10 * 1024 * 1024) {
+            console.log('Total uploaded files size is bigger than 10MB');
+        } else {
+            console.log('Total uploaded files size is smaller than 10MB');
+        }
         
-        // console.log('upload: ', upload.single())
-
-        console.log('req.body: ', req.body);
-        console.log('req.body.data: ', req.body.data);
-        // req.checkBody('personal_data.email').isEmail();
-        // req.checkBody('personal_data.firstname').exists().isLength({ min: 5, max:5 });
-        // req.checkBody('personal_data.lastname').exists().isLength({ max: 30 });
-        // req.checkBody('personal_data.username').exists();
-
-        // const errors = req.validationErrors();
+        // 2) Parse resume data
+        const newResume = JSON.parse(req.body.data);
+        console.log('newResume: ', newResume);
         
-        // if (errors) {
-        //     console.log('errors: ', errors)
-        // } else {
-        //     res.send('POST request to create new resume went successfully.');
+
+        // 2) Check if slug is already used by another resume
+        const snapshot = await admin.firestore().collection('resumes_long').where('slug', '==', newResume.slug).get();
+        // const snapshot = await admin.firestore().collection('resumes_long').where('slug', '==', 'jeanquark').get();
+        const resumesArray = []
+		snapshot.forEach(doc => {
+			resumesArray.push(doc.data())
+        })
+        console.log('resumesArray: ', resumesArray);
+        console.log('resumesArray.length: ', resumesArray.length);
+        if (resumesArray.length > 0) {
+            throw 'Slug already exists!';
+        }
+
+        // 3) Perform validation on new resume
+        const constraints = {
+            'personal_data.email': {presence: true, email: true},
+            'personal_data.firstname': {presence: true, length: {maximum: 5}},
+        };
+
+        const validation = validate(newResume, constraints);
+        console.log('validation: ', validation);
+        if (validation != undefined) {
+            console.log('Form is not valid. Here are the messages: ', validation);
+            throw validation;
+        } else {
+            console.log('Form is valid, save in DB');
+        }
+
+        // function ValidationErrors(errors, options, attributes, constraints) {
+        //     Error.captureStackTrace(this, this.constructor);
+        //     this.errors = errors;
+        //     this.options = options;
+        //     this.attributes = attributes;
+        //     this.constraints = constraints;
         // }
-        // const abc = await req.getValidationResult();
-        // console.log('abc: ', abc.array());
-        // console.log('req.getValidationResult(): ', req.getValidationResult());
-        // console.log('multer.single("personal_data.picture"): ', req.file);
-        console.log('req.files: ', req.files);
-        console.log('req.files[0]: ', req.files[0]);
-        // const abc = JSON.parse(req.files[0]);
-        // console.log('req.files[0].originalName: ', abc);
-        // console.log('picture size: ', floor((req.body.image_new + 2) / 3) * 4)
+        // ValidationErrors.prototype = new Error();
+        // validate.async(newResume, constraints, {wrapErrors: ValidationErrors})
+        //     .then(function (success) {
+        //         console.log('success: ', success);
+        //     })
+        //     .catch(ValidationErrors, function(error) {
+        //         // Handle the validation errors
+        //         console.log("ValidationErrors", error);
+        //     })
 
-        // const storageFileRef = admin.storage().bucket('resumes').child(`OlxfESwPtlgzz4vcjiL4YKsIDZI2/abc.pdf`);
-        // const storageFileRef = admin.storage().bucket('resumes/OlxfESwPtlgzz4vcjiL4YKsIDZI2');
-        // const snapshot = storageFileRef.file(req.files[0]);
-        
+        // 4) Save resume in resume_long collection
+        // const snapshot = await admin.firestore().collection('resumes_long').add(newResume);
+        // console.log('snapshot.id: ', snapshot.id);
 
-        // admin.storage().bucket('resumes/OlxfESwPtlgzz4vcjiL4YKsIDZI2').file(req.files[0]);
-        const bucket = admin.storage().bucket('resumes');
-        const file = bucket.file('my-file');
-        const contents = 'This is the contents of the file.';
 
-        file.save(contents, function(err) {
-            if (!err) {
-                console.log('File written successfully.');
-            } else {
-                console.log('error: ', err);
-            }
-        });
-                    
+        // 5) Save resume in resume_short collection
+
+        // 6) Send back new resume id
+        // res.send(snapshot.id);        
+
         res.send('POST request to create new resume went successfully.');
   	} catch (error) {
   		console.log('error: ', error);
   		res.end('POST request to create new resume failed.');
   	}
 });
-
-// module.exports = app.post('/create-new-resume', upload.none(), function (req, res) {
-//     console.log('req.body: ', req.body);
-//     console.log('req.files: ', req.files);
-// //         console.log('req.file: ', req.file);
-//     res.json({ it: 'works!' });
-// });
