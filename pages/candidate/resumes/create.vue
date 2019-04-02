@@ -122,12 +122,30 @@
                     >
                         <v-progress-circular indeterminate color="info"></v-progress-circular> Create resume...
                     </v-alert>
+
                     <v-alert
                         :value="loadingUploadFiles"
                         color="secondary"
                         outline
                     >
-                        <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files
+                        </div>
+                        <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
+                            {{ uploadedFile.name }} - {{ uploadedFile.progress }}%
+                        </div>
+                    </v-alert>
+
+                    <v-alert
+                        :value="uploadedFiles.length > 0 && !loadingCreateResume && !loadingUploadFiles"
+                        color="success"
+                        outline
+                    >
+                        <h3 class="text-xs-center">New resume created!</h3>
+                        <p class="text-xs-center">{{ uploadedFiles.length }} file(s) uploaded.</p>
+                        <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
+                            <a :href="uploadedFile.downloadUrl" target="_blank">{{ uploadedFile.name }}</a><br /><br />
+                        </div>
                     </v-alert>
                 </v-layout>
             </v-stepper>
@@ -159,7 +177,8 @@
 			return {
                 step: 1,
                 loadingCreateResume: false,
-                loadingUploadFiles: false
+                loadingUploadFiles: false,
+                uploadedFiles: []
 			}
 		},
 		computed: {
@@ -243,30 +262,10 @@
                     await this.$validator.validateAll()
                     if (!this.errors.any()) {
                         console.log('OK, save!')
-                        // this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
-                        // const abc = await axios.post('/create-new-resume', this.loadedNewResume )
-                        // const headers = {
-                        //     'Content-Type': 'application/json',
-                        // }
-                        // console.log('uploads: ', this.loadedNewResume.uploads)
-                        
-                        // const abc = await axios.post('/create-new-resume', this.loadedNewResume,
-                        //     {
-                        //         headers: {
-                        //             // 'Content-Type': 'application/json'
-                        //             'Content-Type': 'multipart/form-data'
-                        //         }
-                        //         // headers: form.getHeaders(),
-                        //     }
-                        // )
                         this.loadedNewResume.user_id = this.loadedUser.id
                         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
                         let formData = new FormData();
                         formData.append('data', JSON.stringify(this.loadedNewResume))
-                        // fd.append('data', JSON.parse(this.loadedNewResume))
-                        // fd.append('data', this.loadedNewResume)
-                        // fd.append('file', this.$refs.file2.files[0])
-                        // fd.append('file', this.$refs.file3.files[0])
                         for (let fileUpload of this.loadedNewResume.uploads) {
                             // console.log('upload: ', upload)
                             formData.append('file', fileUpload)
@@ -275,134 +274,61 @@
                         // fd.append('file', this.loadedNewResume.uploads[0])
                         // fd.append('file', this.loadedNewResume.uploads[1])
                         // fd.append('file', this.$refs)
-                        this.loadingCreateResume = true
+                        // this.loadingCreateResume = true
                         // const createNewResume = await axios.post('/create-new-resume', formData, {
                         //     headers: { 'Content-Type': 'multipart/form-data' }
                         // })
-                        const that = this
-                        setTimeout(() => {
-                            that.loadingCreateResume = false
-                            that.loadingUploadFiles = true
-                        }, 4000)
-                        setTimeout(() => {
-                            that.loadingUploadFiles = false
-                        }, 7000)
+                        // const that = this
+                        // setTimeout(() => {
+                        //     that.loadingCreateResume = false
+                        //     that.loadingUploadFiles = true
+                        // }, 4000)
+                        // setTimeout(() => {
+                        //     that.loadingUploadFiles = false
+                        // }, 8000)
                         // console.log('createNewResume: ', createNewResume)
                         // if (createNewResume.status === 200) {
                             // If return is valid, resume was saved to DB, there remains to save files in firebase storage
                             try {
                                 // 1) Save files in storage
-                                // const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${createNewResume.data.resume_long_slug}`)
-                                for (let fileUpload of this.loadedNewResume.uploads) {
-                                    console.log('fileUpload: ', fileUpload)
-                                    const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
-                                    const snapshot = storageFileRef.put(fileUpload)
-                                }
-                                // console.log('snapshot: ', snapshot)
-                                // snapshot.on('state_changed', (childSnapshot) => {
-                                //     let progress = (childSnapshot.bytesTransferred / childSnapshot.totalBytes) * 100;
-                                //     console.log('Upload is ' + progress + '% done');
-                                // }).then(() => {
-                                 // this.downloadUrl = await snapshot.ref.getDownloadURL()
-                                 // console.log('this.downloadUrl: ', this.downloadUrl)
-                                 // const fileSize = await snapshot.ref.getMetadata()
-                                 // console.log('fileSize: ', fileSize)
-                                // })
+                                const newPromise = new Promise((resolve, reject) => {
+                                    this.loadingUploadFiles = true
+                                    for (const [index, fileUpload] of this.loadedNewResume.uploads.entries()) {
+                                        console.log('fileUpload: ', fileUpload)
+                                        this.uploadedFiles.push({ name: fileUpload.name, progress: 0 })
+                                        const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
+                                        const uploadTask = storageFileRef.put(fileUpload)
+                                        // Track down upload progress. Careful: callback function...
+                                        const that = this
+                                        uploadTask.on('state_changed', function (snapshot) {
+                                            that.uploadedFiles[index]['progress'] = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                                            console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                                        }, function (error) {
+                                            console.log('upload error: ', error)
+                                        }, function () {
+                                            console.log('success')
+                                            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                                                console.log('File available at', downloadURL)
+                                                that.uploadedFiles[index]['downloadUrl'] = downloadURL
+                                            }).then(() => {
+                                                resolve()
+                                            })
+                                        })
+                                    }
+                                }).then(() => {
+                                    // 2) Save reference in firestore
+                                    console.log('Done!')
+                                    this.loadingUploadFiles = false
+                                }).catch((error) => {
+                                    throw 'error'
+                                })
 
-                                // 2) Save reference in firestore
                             } catch (error) {
                                 console.log('error: ', error)
+                                that.loadingUploadFiles = false
                             }
                         // }
                     }
-                }
-            },
-            async saveResume2 () {
-                try {
-                    console.log('saveResume')
-                    this.$store.commit('index/setLoading', true)
-                    const candidateLongResume = this.candidateLongResume
-                    console.log('candidateLongResume: ', candidateLongResume)
-
-                    let newCandidateLongResume = {
-                        template_id: candidateLongResume.template_id,
-                        firstname: candidateLongResume.firstname,
-                        lastname: candidateLongResume.lastname,
-                        email: candidateLongResume.email,
-                        phone: candidateLongResume.phone,
-                        website: candidateLongResume.website,
-                        image: candidateLongResume.image_new,
-                        job_title: candidateLongResume.job_title,
-                        job_description: candidateLongResume.job_description,
-                    }
-
-                    // Add new Profile picture
-                    if (candidateLongResume.image) {
-                        newCandidateLongResume.image = candidateLongResume.image
-                    }
-
-                    // Parse Education Data
-                    // for (let i = 1; i <= 5; i++) {
-                    candidateLongResume.education.forEach((element, index) => {
-                        newCandidateLongResume[`education_${index + 1}_title`] = element.title
-                        newCandidateLongResume[`education_${index + 1}_name`] = element.name
-                        newCandidateLongResume[`education_${index + 1}_description`] = element.description
-                        newCandidateLongResume[`education_${index + 1}_location`] = element.location
-                        newCandidateLongResume[`education_${index + 1}_duration`] = element.duration
-                        newCandidateLongResume[`education_${index + 1}_graduation_date`] = element.graduation_date
-                    })
-                    
-                    // Parse Skills Data
-                    candidateLongResume.skills.forEach((element, index) => {
-                        console.log('element: ', element)
-                        newCandidateLongResume[`skill_${index + 1}_category_name`] = element.name
-                        newCandidateLongResume[`skill_${index + 1}_category_slug`] = element.slug
-                        element.children.forEach((subElement, subIndex) => {
-                            console.log('subelement: ', subElement)
-                            newCandidateLongResume[`skill_${index + 1}_child_${subIndex + 1}_name`] = subElement.name
-                            newCandidateLongResume[`skill_${index + 1}_child_${subIndex + 1}_slug`] = subElement.slug
-                            newCandidateLongResume[`skill_${index + 1}_child_${subIndex + 1}_value`] = subElement.value
-                        })
-                    })
-
-                    console.log('newCandidateLongResume: ', newCandidateLongResume)
-
-                    // return
-
-                    // for (let i = 1; i <= 5; i++) {
-                    //     if (response.data[`skill_${i}_category_name`]) {
-                    //         abc.skills.push({
-                    //             'name': response.data[`skill_${i}_category_name`],
-                    //             'slug': response.data[`skill_${i}_category_slug`],
-                    //             'children': []
-                    //         })
-                    //         for (let j = 1; j <= 5; j++) {    
-                    //             if (response.data[`skill_${i}_child_${j}_name`]) {
-                    //                 // console.log('i: ', i)
-                    //                 abc.skills[i - 1]['children'].push({
-                    //                     'name': response.data[`skill_${i}_child_${j}_name`],
-                    //                     'slug': response.data[`skill_${i}_child_${j}_slug`],
-                    //                     'value': response.data[`skill_${i}_child_${j}_value`],
-                    //                 })
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
-                    const response = await axios.post('/resume-long', newCandidateLongResume)
-                    console.log('response.data: ', response.data)
-                    // this.$store.commit('index/setLoading', false)
-                    // this.$noty.success('Your resume has been successfully created!')
-                    window.location.href = '/candidate'
-                    // return response
-                } catch (error) {
-                    // console.log('error2: ', error.response.data.message)
-                    console.log('error2: ', error.response)
-                    // new Noty({type: 'success', text: 'Password successfully updated. Use your new credentials for the next login'}).show()
-                    this.$store.commit('index/setLoading', false)
-                    this.$store.commit('index/setError', error.response.data.errors)
-                    this.$noty.error('We\'re sorry, an error occured and your resume could not be updated')
-                    throw error
                 }
             }
 		},

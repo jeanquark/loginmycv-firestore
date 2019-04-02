@@ -66,7 +66,7 @@
                         <v-layout>
                             <v-flex xs12 sm4>
                                 <v-text-field
-                                    label="Resume identifier"
+                                    label="Resume identifier*"
                                     name="slug"
                                     prepend-icon="perm_identity"
                                     required
