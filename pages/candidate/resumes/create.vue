@@ -114,6 +114,22 @@
                 <v-layout justify-center>
                 	<v-btn class="success" :loading="loading" :disabled="errors.items.length > 0" @click="saveResume">Save</v-btn>
                 </v-layout>
+                <v-layout justify-center>
+                    <v-alert
+                        :value="loadingCreateResume"
+                        color="info"
+                        outline
+                    >
+                        <v-progress-circular indeterminate color="info"></v-progress-circular> Create resume...
+                    </v-alert>
+                    <v-alert
+                        :value="loadingUploadFiles"
+                        color="secondary"
+                        outline
+                    >
+                        <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
+                    </v-alert>
+                </v-layout>
             </v-stepper>
         </v-flex>
         </v-layout>
@@ -127,8 +143,8 @@
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import axios from 'axios'
-    // import FormData from 'form-data'
     import Noty from 'noty'
+    import { firestore, storage } from '~/plugins/firebase-client-init'
 	export default {
         components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
@@ -141,7 +157,9 @@
         },
 		data () {
 			return {
-                step: 1
+                step: 1,
+                loadingCreateResume: false,
+                loadingUploadFiles: false
 			}
 		},
 		computed: {
@@ -153,6 +171,9 @@
             },
             errors () {
                 return this.$store.getters['errors']
+            },
+            loadedUser () {
+                return this.$store.getters['users/loadedUser']
             },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResume']
@@ -238,7 +259,7 @@
                         //         // headers: form.getHeaders(),
                         //     }
                         // )
-
+                        this.loadedNewResume.user_id = this.loadedUser.id
                         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
                         let formData = new FormData();
                         formData.append('data', JSON.stringify(this.loadedNewResume))
@@ -254,27 +275,45 @@
                         // fd.append('file', this.loadedNewResume.uploads[0])
                         // fd.append('file', this.loadedNewResume.uploads[1])
                         // fd.append('file', this.$refs)
-                        const abc = await axios.post("/create-new-resume", formData, {
-                            headers: { 'Content-Type': 'multipart/form-data' }
-                        })
-                        console.log('abc: ', abc)
-                        // If return is valid, resume was saved in DB, there remains to save file in firebase storage
-                        // 	try {
-                        // 		const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileName}`)
-                        // 		const snapshot = storageFileRef.put(file)
-                        // 		// console.log('snapshot: ', snapshot)
-                        // 		snapshot.on('state_changed', (childSnapshot) => {
-                        // 			let progress = (childSnapshot.bytesTransferred / childSnapshot.totalBytes) * 100;
-                        // 			console.log('Upload is ' + progress + '% done');
-                        // 		}).then(() => {
-                        // 			// this.downloadUrl = await snapshot.ref.getDownloadURL()
-                        // 			// console.log('this.downloadUrl: ', this.downloadUrl)
-                        // 			// const fileSize = await snapshot.ref.getMetadata()
-                        // 			// console.log('fileSize: ', fileSize)
-                        // 		})
-                        // 	} catch (error) {
-                        // 		console.log('error: ', error)
-                        // 	}
+                        this.loadingCreateResume = true
+                        // const createNewResume = await axios.post('/create-new-resume', formData, {
+                        //     headers: { 'Content-Type': 'multipart/form-data' }
+                        // })
+                        const that = this
+                        setTimeout(() => {
+                            that.loadingCreateResume = false
+                            that.loadingUploadFiles = true
+                        }, 4000)
+                        setTimeout(() => {
+                            that.loadingUploadFiles = false
+                        }, 7000)
+                        // console.log('createNewResume: ', createNewResume)
+                        // if (createNewResume.status === 200) {
+                            // If return is valid, resume was saved to DB, there remains to save files in firebase storage
+                            try {
+                                // 1) Save files in storage
+                                // const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${createNewResume.data.resume_long_slug}`)
+                                for (let fileUpload of this.loadedNewResume.uploads) {
+                                    console.log('fileUpload: ', fileUpload)
+                                    const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
+                                    const snapshot = storageFileRef.put(fileUpload)
+                                }
+                                // console.log('snapshot: ', snapshot)
+                                // snapshot.on('state_changed', (childSnapshot) => {
+                                //     let progress = (childSnapshot.bytesTransferred / childSnapshot.totalBytes) * 100;
+                                //     console.log('Upload is ' + progress + '% done');
+                                // }).then(() => {
+                                 // this.downloadUrl = await snapshot.ref.getDownloadURL()
+                                 // console.log('this.downloadUrl: ', this.downloadUrl)
+                                 // const fileSize = await snapshot.ref.getMetadata()
+                                 // console.log('fileSize: ', fileSize)
+                                // })
+
+                                // 2) Save reference in firestore
+                            } catch (error) {
+                                console.log('error: ', error)
+                            }
+                        // }
                     }
                 }
             },
