@@ -12,14 +12,15 @@
                             <v-card-text>
                                 <v-form>
 									<p class="text-xs-center">Have a password? Gain direct access to {{ firstname }}'s resume now!</p>
-									error: {{ error }}<br />
-									errors: {{ errors }}<br />
+									<!-- error: {{ error }}<br /> -->
+									<!-- errors: {{ errors }}<br /> -->
                                     <v-text-field 
                                         prepend-icon="person" 
                                         name="username" 
                                         label="Username" 
                                         type="text"
                                         v-model="form.username"
+                                        style="display: none"
                                     ></v-text-field>
                                     <v-text-field
                                         prepend-icon="lock" 

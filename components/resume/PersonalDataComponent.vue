@@ -13,6 +13,7 @@
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
+            slugAlreadyInUse: {{ this.slugAlreadyInUse }}
             
         </div>
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
@@ -25,6 +26,8 @@
 
                     <v-card-text>
                         <v-layout>
+                            <v-btn color="primary" @click="validate">Validate</v-btn>
+
                             <v-flex xs10 offset-xs1 id="direct_access">
                                 <v-layout justify-center>
                                     <div>
@@ -64,12 +67,11 @@
                         </v-layout>
 
                         <v-layout>
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Resume identifier*"
                                     name="slug"
                                     prepend-icon="perm_identity"
-                                    required
                                     hint="Must be unique."
                                     :persistent-hint="true"
                                     v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
@@ -79,7 +81,7 @@
                                 ></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm8>
+                            <v-flex xs12 sm8 class="px-3">
                                 <v-text-field
                                     label="Path to your resume"
                                     :value="userResume.slug ? `https://www.loginmycv.com/resume/${userResume.slug}` : ''"
@@ -90,7 +92,7 @@
                         </v-layout>
 
                         <v-layout row wrap>
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Job title"
                                     id="job_title"
@@ -103,7 +105,7 @@
                                 ></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm8>
+                            <v-flex xs12 sm8 class="px-3">
                                 <v-text-field
                                     label="Job description"
                                     id="job_description"
@@ -118,7 +120,7 @@
                         </v-layout>
 
                         <v-layout row wrap>
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Firstname"
                                     name="firstname"
@@ -130,7 +132,7 @@
                                 ></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Lastname"
                                     name="lastname"
@@ -142,7 +144,7 @@
                                 ></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Email"
                                     name="email"
@@ -171,7 +173,6 @@
 
                     <v-card-text>
                         <v-layout row wrap>
-                            <v-text-field v-model="userResume.user_id"></v-text-field>
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.personal_data.gender"
@@ -181,6 +182,18 @@
                                     chips
                                     label="Gender"
                                     :deletable-chips="true"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-select
+                                    v-model="userResume.personal_data.country_of_residence"
+                                    :items="loadedCountries"
+                                    item-text="name"
+                                    prepend-icon="person"
+                                    chips
+                                    :deletable-chips="true"
+                                    label="Country of residence"
                                 ></v-select>
                             </v-flex>
 
@@ -197,7 +210,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             v-model="personal_data.birthday"
-                                            label="Birthday"
+                                            label="Birth date"
                                             prepend-icon="event"
                                             readonly
                                             v-on="on"
@@ -210,22 +223,10 @@
                                     </v-date-picker>
                                 </v-dialog>
                             </v-flex>
-
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-select
-                                    v-model="userResume.personal_data.country_of_residence"
-                                    :items="loadedCountries"
-                                    item-text="name"
-                                    prepend-icon="person"
-                                    chips
-                                    :deletable-chips="true"
-                                    label="Country of residence"
-                                ></v-select>
-                            </v-flex>
                         </v-layout>
 
                         <v-layout>
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.personal_data.nationalities"
                                     :items="loadedCountries"
@@ -239,7 +240,7 @@
                                 ></v-select>
                             </v-flex>
 
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.personal_data.languages"
                                     :items="loadedLanguages"
@@ -252,7 +253,7 @@
                                 ></v-select>
                             </v-flex>
 
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.key_competences"
                                     :items="loadedCompetences"
@@ -268,7 +269,7 @@
                         </v-layout>
 
                         <v-layout>
-                            <v-flex xs12 sm6>
+                            <v-flex xs12 sm6 class="px-3">
                                 <div v-if="resumeSlug" class="text-xs-center">
                                     <span>Current image: </span><br />
                                     <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" />
@@ -306,6 +307,7 @@
     import moment from 'moment'
     export default {
         // props: ['resumeSlug', 'personalData'],
+        props: ['slugAlreadyInUse'],
         async created () {
             console.log('created')
             const resumeSlug = this.$route.params.slug
@@ -325,6 +327,12 @@
             this.loadedNewResume.personal_data.firstname = 'Jean-Marc'
             this.loadedNewResume.personal_data.lastname = 'Kleger'
             this.loadedNewResume.personal_data.email = 'jm.kleger@gmail.com'
+            if (this.slugAlreadyInUse) {
+                this.errors.add({
+                    field: 'slug',
+                    msg: 'This resume identifier is already in use'
+                })
+            }
         },
         data () {
             return {
@@ -373,6 +381,10 @@
             }
         },
         methods: {
+            validate () {
+                console.log('validate')
+                this.$validator.validateAll()
+            },
             saveDate () {
                 console.log('saveDate')
                 // console.log('date: ', date)

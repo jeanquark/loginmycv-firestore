@@ -8,7 +8,7 @@
 			    	<!-- <v-hover> -->
 				      	<v-card flat hover v-if="resume.personal_data">
 							<v-layout row>
-								<v-flex xs4>
+								<v-flex xs4 v-if="resume.personal_data.image">
 							        <v-img
 						          		:src="`/images/resumes/${this.resume.personal_data.image}`" max-width=""
 						        	></v-img>

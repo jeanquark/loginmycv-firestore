@@ -26,6 +26,7 @@
 		</v-progress-circular>
 		of your total space (10 MB)
 		<br /><br />
+		<v-btn color="secondary">Buy some space</v-btn>
 
 		<v-layout row wrap>
 			<v-flex xs12 sm6 v-for="(file, index) of files" :key="index">

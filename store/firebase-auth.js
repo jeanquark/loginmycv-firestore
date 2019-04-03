@@ -50,6 +50,7 @@ export const actions = {
                 payload.form.username,
                 payload.form.password
             )
+            console.log('authData: ', authData)
             const authUserId = authData.user.uid
             console.log('authUserId: ', authUserId)
             const user = {
@@ -58,15 +59,12 @@ export const actions = {
                 type: 'visitor'
                 // ...authData.user
             }
-            console.log('user: ', user)
+            // console.log('user: ', user)
             commit('users/setLoadedUser', user, { root: true })
-            // const resume = await axios.post('/check-user-authorization', { authUserId, slug })
-            // console.log('resume: ', resume)
-            // this.$route.push(`/resume/${slug}`)
         } catch (error) {
             console.log('error2: ', error)
             commit("setError", error, { root: true })
-            // throw new Error(error)
+            throw new Error(error)
             // return
         }
 
