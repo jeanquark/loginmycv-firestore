@@ -20,14 +20,14 @@
 			
 			<!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
 			<!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
-			<div v-if="!loadedUser">
+			<div v-if="loadedUser && loadedUser.status != 'visitor'">
 				<!-- <v-btn color="success" @click="loginModal = true">Login</v-btn> -->
-				<v-btn color="success" @click="openLoginModal">Login</v-btn>
-				<v-btn color="success" @click="registerModal = true">Register</v-btn>
-			</div>
-			<div v-else>
 				<v-btn color="warning" @click="logout">Logout</v-btn>
 				<v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
+			</div>
+			<div v-else>
+				<v-btn color="success" @click="openLoginModal">Login</v-btn>
+				<v-btn color="success" @click="registerModal = true">Register</v-btn>
 			</div>
 		    <v-btn icon>
 		      	<v-icon>apps</v-icon>

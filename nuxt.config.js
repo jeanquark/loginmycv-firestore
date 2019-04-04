@@ -27,11 +27,11 @@ module.exports = {
     modules: [
         '@nuxtjs/dotenv',
         '@nuxtjs/axios', // Important! Allow us to make asyncData requests inside pages
-        [
-            'nuxt-validate', {
-                lang: 'en'
-            }
-        ],
+        // [
+        //     'nuxt-validate', {
+        //         lang: 'en'
+        //     }
+        // ],
     ],
     axios: {
         proxyHeaders: false
@@ -43,7 +43,7 @@ module.exports = {
         { src: '~/plugins/vuex-persist', ssr: false },
         { src: '~/plugins/vue-moment', ssr: false },
         { src: '~/plugins/vue-notifications', ssr: false },
-        // { src: '~/plugins/vee-validate', ssr: false }
+        { src: '~/plugins/vee-validate', ssr: false }
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
@@ -93,6 +93,7 @@ module.exports = {
     ** Build configuration
     */
     build: {
+        vendor: ['vee-validate'],
         /*
         ** Run ESLint on save
         */

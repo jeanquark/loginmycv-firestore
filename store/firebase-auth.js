@@ -56,7 +56,7 @@ export const actions = {
             const user = {
                 id: authUserId,
                 email: authData.user.email,
-                type: 'visitor'
+                status: 'visitor'
                 // ...authData.user
             }
             // console.log('user: ', user)

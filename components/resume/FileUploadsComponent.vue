@@ -2,7 +2,7 @@
     <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
         <p>
 			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
 			<!-- fileName: {{ fileName }}<br /><br /> -->
 			<!-- downloadUrl: {{ downloadUrl }}<br /><br /> -->
 			<!-- fileName2: {{ fileName2 }}<br /><br /> -->
@@ -10,8 +10,8 @@
 			<!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
 			<!-- getTotalUploadSize: {{ getTotalUploadSize }}<br /><br /> -->
 			<!-- items: {{ items }}<br /><br /> -->
-			files: {{ files }}<br /><br />
-			totalSize: {{ totalSize }}<br /><br />
+			<!-- files: {{ files }}<br /><br /> -->
+			<!-- totalSize: {{ totalSize }}<br /><br /> -->
         </p>
         <h2>File uploads</h2><br />
 
@@ -83,16 +83,7 @@
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
-			this.resumeSlug = resumeSlug
-
-			storage.ref('resumes/OlxfESwPtlgzz4vcjiL4YKsIDZI2/38959262-real3d-flipbook-jquery-plugin-license.pdf').getMetadata().then(function(metadata) {
-                // Metadata now contains the metadata for 'images/forest.jpg'
-                console.log('metadata.size: ', metadata.size)
-            }).catch(function(error) {
-				console.log('Error getting metadata: ', error)
-                // Uh-oh, an error occurred!
-			});
-			
+			this.resumeSlug = resumeSlug			
 			// Get user total upload size
 			// if (!this.$store.getters['resumes/loadedUserResumes']) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
@@ -224,7 +215,7 @@
 				// var storageRef = storage.ref('mlb2.jpg')
 				// console.log('storageRef: ', storageRef)
 
-				var files = e.target.files
+				const files = e.target.files
 
 				if (files[0] !== undefined) {
 					// console.log('file: ', file)

@@ -62,7 +62,8 @@ module.exports = app.use(async function (req, res, next) {
         if (resumesArray.length > 0) {
             throw {
                 // type: 'slug_already_exists',
-                message: 'Slug already exists. Please provide another identifier for the resume.'
+                // field: 'slug',
+                'slug': 'Slug already exists. Please provide another identifier for the resume.'
             }
         }
 
@@ -111,7 +112,6 @@ module.exports = app.use(async function (req, res, next) {
 
 
         // 5) Save resume in resumes_long collection
-        
         const resume_long = await admin.firestore().collection('resumes_long').add(newResume);
         console.log('resume_long.id: ', resume_long.id);
         // console.log('user_id: ', admin.auth().currentUser);
