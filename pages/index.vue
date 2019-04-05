@@ -35,8 +35,6 @@
 		</v-toolbar>
 
         <v-content>
-            <!-- <h1>LoginMyCV</h1> -->
-            <!-- <v-btn color="primary" @click="addResume" :loading="loading">Add resume</v-btn> -->
             <v-container grid-list-md text-xs-center>
     			<v-layout row wrap>
       				<v-flex xs12 class="">
@@ -45,7 +43,7 @@
           						<h1>Welcome to LoginMyCV</h1>
           						<h3>Now your career will take off</h3>
 								<br />
-								<h2>Deployment with clear config var</h2>
+								<h2>Deployment with clear config var 2</h2>
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
           						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
