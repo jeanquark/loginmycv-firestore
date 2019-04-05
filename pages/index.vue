@@ -43,7 +43,7 @@
           						<h1>Welcome to LoginMyCV</h1>
           						<h3>Now your career will take off</h3>
 								<br />
-								<h2>Deployment with clear config var 2</h2>
+								<h2>Deployment with clear config var 3</h2>
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
           						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
@@ -168,8 +168,6 @@
 	import firebase from 'firebase/app'
 	import { firestore } from '~/plugins/firebase-client-init.js'
 	import Noty from 'noty'
-	// import 'noty/lib/noty.css'
-	// import 'noty/lib/themes/metroui.css'
 	import axios from 'axios'
 
 	import Login from '~/components/Login'
