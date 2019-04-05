@@ -43,7 +43,8 @@
           						<h1>Welcome to LoginMyCV</h1>
           						<h3>Now your career will take off</h3>
 								<br />
-								<h2>Deployment with clear config var 3</h2>
+								<h2>Deployment with clear config var 4</h2>
+								<!-- process.env.PROJECT_ID: {{ process.env.PROJECT_ID }}<br /> -->
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
           						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
@@ -190,6 +191,7 @@
 				// await this.$store.dispatch('users/fetchAuthenticatedUser', authUser.uid)
 				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
 			}
+			console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
 			// console.log('abc: ', abc)
 			// let resumesShortArray = []
 			// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
