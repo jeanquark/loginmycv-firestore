@@ -50,12 +50,22 @@
           						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
           						<a href="/resume/jeanquark">Go to jeanquark's resume (server)</a><br />
 								<a href="/resume/greg">Go to greg's resume (server)</a><br />
+								<nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br />
+								<nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br />
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
           						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
           						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
+
+								<v-select
+            						:items="items"
+            						attach
+            						chips
+            						label="Chips"
+            						multiple
+          						></v-select>
 
           						<v-layout>
 	          						<v-flex xs12>
@@ -191,8 +201,8 @@
 				// await this.$store.dispatch('users/fetchAuthenticatedUser', authUser.uid)
 				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
 			}
-			console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
-			console.log('process.env.PRIVATE_KEY: ', process.env.PRIVATE_KEY)
+			// console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
+			// console.log('process.env.PRIVATE_KEY: ', process.env.PRIVATE_KEY)
 			// console.log('abc: ', abc)
 			// let resumesShortArray = []
 			// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
@@ -236,7 +246,8 @@
 			    candidateResume: {},
 			    loginModal: false,
     			registerModal: false,
-    			requestAuthorizationModal: false
+				requestAuthorizationModal: false,
+				items: ['foo', 'bar', 'fizz', 'buzz']
 			}
 		},
 		computed: {

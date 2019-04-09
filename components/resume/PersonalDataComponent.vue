@@ -11,7 +11,7 @@
             <!-- error: {{ error }}<br /><br /> -->
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
-            <!-- userResume: {{ userResume }}<br /><br /> -->
+            userResume: {{ userResume }}<br /><br />
             <!-- errors: {{ errors }}<br /><br /> -->
             
         </div>
@@ -102,6 +102,7 @@
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('job_title') : null"
                                     data-vv-as="Job title"
+                                    :counter="50"
                                     v-model="userResume.job_title"
                                 ></v-text-field>
                             </v-flex>
@@ -112,9 +113,10 @@
                                     id="job_description"
                                     name="job_description"
                                     prepend-icon="business_center"
-                                    v-validate="'required|max:120'"
+                                    v-validate="'required|max:100'"
                                     :error-messages="errors ? errors.collect('job_description') : null"
                                     data-vv-as="Job description"
+                                    :counter="100"
                                     v-model="userResume.job_description"
                                 ></v-text-field>
                             </v-flex>
@@ -275,8 +277,8 @@
                                     <span>Current image: </span><br />
                                     <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" />
                                 </div>                
-                                <v-text-field label="My Picture" @click='pickFile' v-model="imageName" prepend-icon='folder_shared' :error-messages="error ? error.image : null"
-                                ></v-text-field>
+                                <v-text-field label="My Picture" @click='pickFile' v-model="imageName" prepend-icon='folder_shared' :error-messages="error ? error.image : null" ></v-text-field>
+                                <!-- <v-text-field label="My Picture" @click='pickFile' v-model="userResume.personal_data.picture" prepend-icon='folder_shared' :error-messages="error ? error.image : null"></v-text-field>-->
                                 <input
                                     type="file"
                                     style="display: none"
@@ -322,7 +324,7 @@
         },
         mounted () {
             this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
-            this.loadedNewResume.slug = 'jeanquark'
+            this.loadedNewResume.slug = ''
             this.loadedNewResume.job_title = 'Web developer'
             this.loadedNewResume.job_description = 'Develops websites'
             this.loadedNewResume.personal_data.firstname = 'Jean-Marc'

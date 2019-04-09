@@ -7,9 +7,10 @@
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
+            loadedNewResume: {{ loadedNewResume }}<br /><br />
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
+            loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br />
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -252,7 +253,7 @@
                 this.steps = parseInt(val)
             },
             async saveResume () {
-            	console.log('saveResume')
+                console.log('saveResume')
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
                 // Perform vee-validate check
                 await this.$validator.validateAll()
@@ -269,6 +270,40 @@
                 } else {
                     console.log('OK proceed to saveResume')
                     this.loadedNewResume.user_id = this.loadedUser.id
+
+                    try { 
+                        await this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                    } catch (error) {
+                        console.log('error2: ', error)
+                        new Noty({
+                            type: 'error',
+                            text: 'Your resume could not be saved',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+
+                        Object.entries(error).forEach(([key, value]) => {
+                            const field = key.substr(key.indexOf('.') + 1)
+
+                            this.$validator.errors.add({
+                                field: field,
+                                msg: value,
+                            })
+
+                            new Noty({
+                                type: 'warning',
+                                text: value,
+                                timeout: 8000,
+                                theme: 'metroui'
+                            }).show()
+                        })
+                    }
+                    return
+
+
+
+
+
                     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
                     let formData = new FormData();
                     formData.append('data', JSON.stringify(this.loadedNewResume))
@@ -276,13 +311,20 @@
                         // console.log('upload: ', upload)
                         formData.append('file', fileUpload)
                     }
-                    // this.loadingCreateResume = true
-                    // const createNewResume = await axios.post('/create-new-resume', formData, {
-                    //     headers: { 'Content-Type': 'multipart/form-data' }
-                    // })
-                    // console.log('createNewResume: ', createNewResume)
-                    // const newResumeId = createNewResume.data.resume_long_id
-                    // if (newResumeId) {
+
+                    this.loadingCreateResume = true
+                    const createNewResume = await axios.post('/create-new-resume', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'app-key': process.env.APP_KEY
+                        }
+                    })
+                    console.log('createNewResume: ', createNewResume)
+                    const newResumeId = createNewResume.data.resume_long_id
+                    if (newResumeId) {
+                        this.$store.dispatch('resumes/storeNewResume', createNewResume)
+                        return
+
                         // If return is valid, resume was saved to DB, there remains to save files in firebase storage
                         if (this.loadedNewResume.personal_data.picture) {
                             console.log('Save picture')
@@ -292,18 +334,17 @@
                             console.log('uploadedPicture: ', uploadedPicture.metadata)
                             const downloadUrl = await uploadedPicture.ref.getDownloadURL()
                             const newPicture = {
-                                name: uploadedPicture.name,
-                                size: uploadedPicture.size,
+                                name: uploadedPicture.metadata.name,
+                                size_in_bytes: uploadedPicture.metadata.size,
                                 downloadUrl: downloadUrl,
                                 _created_at: moment().unix(),
                                 _updated_at: moment().unix()
                             }
                             console.log('newPicture', newPicture)
-                            firestore.collection('resumes_long').doc('ClQZH6Ifft7u11OHbRwy').update({
+                            firestore.collection('resumes_long').doc(newResumeId).update({
                                 'personal_data.picture': newPicture
                             })
                         }
-                        return
                         if (this.loadedNewResume.uploads.length > 0) {
                             // If files are to be uploaded
                             try {
@@ -322,7 +363,7 @@
                                         uploadTask.on('state_changed', function (snapshot) {
                                             that.uploadedFiles[index]['progress'] = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                                             console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-                                            that.uploadedFiles[index]['size'] = snapshot.totalBytes
+                                            that.uploadedFiles[index]['size_in_bytes'] = snapshot.totalBytes
                                         }, function (error) {
                                             console.log('upload error: ', error)
                                             reject()
@@ -360,15 +401,15 @@
                                 console.log('error2: ', error)
                                 this.loadingUploadFiles = false
                             }
-                        // } else {
-                        //     this.loadingCreateResume = false
-                        //     new Noty({
-                        //         type: 'success',
-                        //         text: 'Your resume was successfully created.',
-                        //         timeout: 5000,
-                        //         theme: 'metroui'
-                        //     }).show()
-                        // }
+                        } else {
+                            this.loadingCreateResume = false
+                            new Noty({
+                                type: 'success',
+                                text: 'Your resume was successfully created.',
+                                timeout: 5000,
+                                theme: 'metroui'
+                            }).show()
+                        }
                     } else {
                         // An error occured on the server
                         this.loadingCreateResume = false

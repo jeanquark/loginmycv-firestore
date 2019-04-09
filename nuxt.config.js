@@ -1,4 +1,5 @@
 require('dotenv').config()
+// const webpack = require('webpack')
 
 module.exports = {
     /*
@@ -43,7 +44,15 @@ module.exports = {
         { src: '~/plugins/vuex-persist', ssr: false },
         { src: '~/plugins/vue-moment', ssr: false },
         { src: '~/plugins/vue-notifications', ssr: false },
-        { src: '~/plugins/vee-validate', ssr: false }
+        { src: '~/plugins/vee-validate', ssr: false },
+        // new webpack.ProvidePlugin({
+        //     $: 'jquery',
+        //     jQuery: 'jquery',
+        //     'window.jQuery': 'jquery'
+        // })
+        { src: '~/plugins/jquery-3.3.1.min.js', ssr: false },
+        // { src: '~/plugins/jm-essai.js', ssr: false },
+        { src: '~/plugins/vue-scroll-reveal', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',

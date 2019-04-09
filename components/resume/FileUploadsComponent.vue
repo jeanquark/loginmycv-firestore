@@ -2,7 +2,7 @@
     <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
         <p>
 			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
-            <!-- userResume: {{ userResume }}<br /><br /> -->
+            userResume: {{ userResume }}<br /><br />
 			<!-- fileName: {{ fileName }}<br /><br /> -->
 			<!-- downloadUrl: {{ downloadUrl }}<br /><br /> -->
 			<!-- fileName2: {{ fileName2 }}<br /><br /> -->
@@ -12,6 +12,7 @@
 			<!-- items: {{ items }}<br /><br /> -->
 			<!-- files: {{ files }}<br /><br /> -->
 			<!-- totalSize: {{ totalSize }}<br /><br /> -->
+            userResume.personal_data.picture: {{ userResume.personal_data.picture ? userResume.personal_data.picture.size : null }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -87,6 +88,7 @@
 			// Get user total upload size
 			// if (!this.$store.getters['resumes/loadedUserResumes']) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
+				await this.$store.dispatch('app-parameters/fetchAppParameters')
 			// }
         },
         data () {
@@ -148,6 +150,9 @@
 			loadedUserResumes () {
 				return this.$store.getters['resumes/loadedUserResumes']
 			},
+			// loadedNewResume () {
+            //     return this.$store.getters['resumes/loadedNewResume']
+            // },
 			// getTotalUploadSize () {
 			// 	const userResumes = this.$store.getters['resumes/loadedUserResumes']
 			// 	console.log('userResumes: ', userResumes)
@@ -163,15 +168,26 @@
 			// 	return totalUploadSize
 			// },
 			totalSize () {
-				return this.files.reduce((accumulator, file) => {
-					return accumulator + parseInt(file.size)
-				}, 0)
+				if (this.userResume.personal_data && this.userResume.personal_data.picture) {
+					console.log('calculate')
+					return this.files.reduce((accumulator, file) => {
+						return accumulator + parseInt(file.size)
+					}, parseInt(this.userResume.personal_data.picture.size))
+				} else {
+					return this.files.reduce((accumulator, file) => {
+						return accumulator + parseInt(file.size)
+					}, 0)
+				}
+				// return this.files.reduce((accumulator, file) => {
+				// 	return accumulator + parseInt(file.size)
+				// }, 24621)
 				// return totalSize
 			},
 			totalSizePercent () {
 				const limit = 10 * 1024 * 1024
+				// const limit = this.$store.getters['app_parameters/users']['initial_space_in_bytes']
 				return Number((this.totalSize/limit) * 100).toFixed(1)
-			}
+			},
         },
         methods: {
 			addUpload () {

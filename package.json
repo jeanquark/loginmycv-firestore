@@ -21,6 +21,7 @@
     "firebase": "^5.8.5",
     "firebase-admin": "^7.0.0",
     "firestore-export-import": "^0.1.7",
+    "jquery": "^3.3.1",
     "moment": "^2.24.0",
     "multer": "^1.4.1",
     "noty": "^3.2.0-beta",
@@ -31,6 +32,7 @@
     "vee-validate": "^2.2.0",
     "vue-moment": "^4.0.0",
     "vue-notifications": "^0.9.0",
+    "vue-scroll-reveal": "^1.0.11",
     "vuetify": "^1.5.4",
     "vuex-persist": "^2.0.0"
   },

@@ -1,7 +1,8 @@
 export const strict = false
-import { firestore, auth } from '~/plugins/firebase-client-init.js'
+import { firestore, storage, auth } from '~/plugins/firebase-client-init.js'
 import moment from 'moment'
 import Noty from 'noty'
+import axios from 'axios'
 
 export const state = () => ({
 	resumes_short: [],
@@ -63,44 +64,74 @@ export const actions = {
 	// },
 	async storeNewResume ({ commit, rootState }, payload) {
 		try {
-			commit('setLoading', true, { root: true })
-			const authUserId = rootState.users.user.id
-			payload['user_id'] = authUserId
-			payload['_created_at'] = moment().unix()
-			payload['_updated_at'] = moment().unix()
+			// Resume was already created serverside, there remains to upload images and files
 			console.log('payload: ', payload)
-			const resume_long = await firestore.collection('resumes_long').add(payload)
-			console.log('resume_long: ', resume_long)
-			console.log('resume_long.id: ', resume_long.id)
 
-			const resume_short = await firestore.collection('resumes_short').add({
-				slug: payload.slug,
-				user_id: authUserId,
-				resume_long_id: resume_long.id,
-				firstname: payload.personal_data.firstname,
-				lastname: payload.personal_data.lastname,
-				job_title: payload.job_title,
-				job_description: payload.job_description,
-				country_of_residence: payload.personal_data.country_of_residence ? payload.personal_data.country_of_residence : null,
-				languages: payload.personal_data.languages ? payload.personal_data.languages : null,
-				key_competences: payload.personal_data.key_competences ? payload.personal_data.key_competences : null,
+			// 1) Send resume to server to save
+			const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+			let formData = new FormData();
+			formData.append('data', JSON.stringify(payload))
+			for (let fileUpload of payload.uploads) {
+				formData.append('file', fileUpload)
+			}
+			const createNewResume = await axios.post('/create-new-resume', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					'app-key': process.env.APP_KEY
+				}
 			})
-			commit('setLoading', false, { root: true })
-			new Noty({
-				type: 'success',
-				text: 'Your resume was successfully created.',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
+			console.log('createNewResume: ', createNewResume)
+			const newResumeId = createNewResume.data.resume_long_id
+
+			if (newResumeId) {
+				// 2) Upload & save picture
+				if (payload.personal_data.picture) {
+					console.log('Save picture')
+					const picture = payload.personal_data.picture
+					const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${picture.name}`)
+					const uploadedPicture = await storageFileRef.put(picture)
+					const downloadUrl = await uploadedPicture.ref.getDownloadURL()
+					const newPicture = {
+						name: uploadedPicture.metadata.name,
+						size_in_bytes: uploadedPicture.metadata.size,
+						downloadUrl: downloadUrl,
+						_created_at: moment().unix(),
+						_updated_at: moment().unix()
+					}
+					console.log('newPicture', newPicture)
+					// firestore.collection('resumes_long').doc(newResumeId).update({
+					// 	'personal_data.picture': newPicture
+					// })
+				}
+
+				// 3) Upload & save files
+				if (payload.uploads.length > 0) {
+					let uploadedFiles = []
+					for (const [index, file] of payload.uploads.entries()) {
+						console.log('Save files')
+						const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
+						const uploadedFile = await storageFileRef.put(file)
+						const downloadUrl = await uploadedFile.ref.getDownloadURL()
+						const newFile = {
+							name: uploadedFile.metadata.name,
+							size_in_bytes: uploadedFile.metadata.size,
+							downloadUrl: downloadUrl,
+							_created_at: moment().unix(),
+							_updated_at: moment().unix()
+						}
+						uploadedFiles.push(newFile)	
+					}
+					console.log('uploadedFiles: ', uploadedFiles)
+					// firestore.collection('resumes_long').doc(newResumeId).update({
+					// 	uploads: uploadedFiles						
+					// })
+				}
+			} else {
+				// An error occured on the server, send it back to the frontend
+				throw createNewResume.data.error
+			}
 		} catch (error) {
-			commit('setLoading', false, { root: true })
-			console.log('error: ', error)
-			new Noty({
-				type: 'error',
-				text: 'Your resume could not be saved',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
+			throw error
 		}
 	},
 	async updateResume ({ commit }, payload) {

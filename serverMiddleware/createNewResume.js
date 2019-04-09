@@ -14,16 +14,20 @@ module.exports = app.use(async function (req, res, next) {
         newResume._created_at = moment().unix();
         newResume._updated_at = moment().unix();
         console.log('newResume: ', newResume);
+        console.log('app-key: ', req.get('app-key'))
 
         // 2) Check total file upload size
         const totalSize = req.files.reduce((accumulator, file) => {
             return accumulator += file.size
         }, 0);
+        console.log('totalSize: ', totalSize);
+
+        // 3) Check size of picture
 
         // Retrieve user total space
         const userPrivateData = await admin.firestore().collection('users').doc(newResume.user_id).collection('private').doc(newResume.user_id).get();
-        const userTotalSpace = userPrivateData.data().total_space;
-        const userAvailableSpace = userPrivateData.data().free_space;
+        const userTotalSpace = userPrivateData.data().total_space_in_bytes;
+        const userAvailableSpace = userPrivateData.data().free_space_in_bytes;
         console.log('userTotalSpace: ', userTotalSpace);
         console.log('userAvailableSpace: ', userAvailableSpace);
 
@@ -78,12 +82,15 @@ module.exports = app.use(async function (req, res, next) {
                     message: "Slug can only contain a-z, 0-9 and -"
                 }
             },
-            'job_title': {presence: true, length: {maximum: 50}},
-            'job_description': {presence: true, length: {maximum: 250}},
-            'personal_data.email': {presence: true, email: true},
-            'personal_data.firstname': {presence: true, length: {maximum: 50}},
-            'personal_data.lastname': {presence: true, length: {maximum: 50}},
+            'job_title': { presence: true, length: { maximum: 50 }},
+            'job_description': { presence: true, length: { maximum: 150 }},
+            'personal_data.email': { presence: true, email: true },
+            'personal_data.firstname': { presence: true, length: { maximum: 5 }},
+            'personal_data.lastname': { presence: true, length: { maximum: 5 }},
         };
+        if (newResume.allow_visitor_access) {
+            constraints['password'] = { presence: true }
+        }
 
         const validation = validate(newResume, constraints);
         console.log('validation: ', validation);
@@ -127,7 +134,7 @@ module.exports = app.use(async function (req, res, next) {
             job_description: newResume.job_description,
             picture: '',
             key_competences: newResume.key_competences ? newResume.key_competences : [],
-            languages: newResume.languages ? newResume.languages : []
+            languages: newResume.personal_data ? newResume.personal_data.languages : []
         })
 
         // 7) Save user for password access
