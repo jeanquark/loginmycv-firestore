@@ -27,17 +27,17 @@ module.exports = app.use(async function (req, res, next) {
         // Retrieve user total space
         const userPrivateData = await admin.firestore().collection('users').doc(newResume.user_id).collection('private').doc(newResume.user_id).get();
         const userTotalSpace = userPrivateData.data().total_space_in_bytes;
-        const userAvailableSpace = userPrivateData.data().free_space_in_bytes;
+        const userUsedSpace = userPrivateData.data().used_space_in_bytes;
         console.log('userTotalSpace: ', userTotalSpace);
-        console.log('userAvailableSpace: ', userAvailableSpace);
+        console.log('userUsedSpace: ', userUsedSpace);
 
-        if (totalSize > userAvailableSpace) {
-            console.log('Total uploaded files size is bigger than 10MB');
+        if (totalSize + userUsedSpace > userTotalSpace) {
+            console.log(`Total uploaded files size is bigger than ${userTotalSpace}`);
             throw {
                 message: 'Total uploaded files size is bigger than 10MB'
             }
         } else {
-            console.log('Total uploaded files size is smaller than 10MB');
+            console.log(`Total uploaded files size is smaller than ${userTotalSpace}`);
         }
         
 

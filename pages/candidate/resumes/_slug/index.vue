@@ -1,67 +1,107 @@
 <template>
     <div>
         <v-layout row wrap>
-            <h2 class="text-xs-center">Edit your resume</h2>
+            <v-flex xs12>
+                <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
+            </v-flex>
+            loadedUserResume: {{ loadedUserResume }}<br /><br />
         </v-layout>
-        <v-layout row xs12>
-            <v-stepper v-model="e1">
-                <v-stepper-header>
-                    <template v-for="step in steps">
-                        <v-stepper-step
-                            :key="`${step.id}-header`"
-                            :complete="e1 > step"
-                            :step="step.id"
-                            :editable="true"
-                        >
-                            {{ step.name }}
-                        </v-stepper-step>
-        
-                        <v-divider
-                            v-if="step.id !== steps.length"
-                            :key="step.slug"
-                        ></v-divider>
-                    </template>
-                </v-stepper-header>
-                <v-stepper-items>
-                    <v-stepper-content
-                        v-for="step in steps"
-                        :key="`${step.id}-content`"
-                        :step="step.id"
-                    >
-                        <v-card style="margin-bottom: 30px;">
-                            <p>
-                                <!-- step: {{ step }}<br /><br /> -->
-                                <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-                                <!-- resumeSlug: {{ resumeSlug }}<br /><br /> -->
-                            </p>
-                            <!-- <template-component v-if="step.id === 1" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" /> -->
-                            <template-component v-if="step.id === 1" />
-                            <!-- <personal-data-component v-if="step.id === 2" :resume-slug="loadedUserResume ? loadedUserResume.slug : null" :personal-data="loadedUserResume ? loadedUserResume.personal_data : null" /> -->
-                            <personal-data-component v-if="step.id === 2" />
-                            <education-component v-if="step.id === 3" />
-                            <skills-component v-if="step.id === 4" />
+        <v-layout row>
+            <v-flex xs12>
+                <v-stepper v-model="step">
+ 
+                    <v-stepper-header>
+                        <v-stepper-step step="1" editable>Choose Template</v-stepper-step>
 
-                            <v-card-actions class="justify-center">
-                                <v-btn
-                                    color="primary"
-                                    @click="previousStep(step.id)"
-                                >
-                                    <v-icon>keyboard_arrow_left</v-icon> Previous
-                                </v-btn>
-                                <v-btn
-                                    color="primary"
-                                    @click="nextStep(step.id)"
-                                >
-                                    Next <v-icon>keyboard_arrow_right</v-icon>
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                        <v-layout justify-center>
-                            <v-btn color="success" @click="updateResume" :loading="loading">Update</v-btn>
-                        </v-layout>
-                    </v-stepper-content>
-                </v-stepper-items>
-            </v-stepper>
+                        <v-divider></v-divider>
+
+                        <v-stepper-step :rules="[stepPersonalDataValidate]" step="2" editable>General & Personal Data</v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step :rules="[stepEducationValidate]" step="3" editable>Education</v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step step="4" editable>Work experience</v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step step="6" editable>Files upload</v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step step="7" editable>Other</v-stepper-step>
+
+                    </v-stepper-header>
+
+                    <v-stepper-items>
+                        <v-stepper-content step="1">
+                            <v-card style="margin-bottom: 30px;">
+                                <template-component :edit="true" />
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="2">
+                            <v-card style="margin-bottom: 30px;">
+                                <personal-data-component />
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="3">
+                            <v-card style="margin-bottom: 30px;">
+                                <education-component />
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="4">
+                            <v-card style="margin-bottom: 30px;">
+                                Work experience
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="5">
+                            <v-card style="margin-bottom: 30px;">
+                                <skills-component />
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="6">
+                            <v-card style="margin-bottom: 30px;">
+                                <file-uploads-component />
+                            </v-card>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="7">
+                            <v-card style="margin-bottom: 30px;">
+                                Other
+                            </v-card>
+                        </v-stepper-content>
+                    </v-stepper-items>
+
+                    <v-card-actions class="justify-center">
+                        <v-btn
+                            color="primary"
+                            @click.stop="step -= 1"
+                        >
+                            <v-icon>keyboard_arrow_left</v-icon> Previous
+                        </v-btn>
+                        <v-btn
+                            color="primary"
+                            @click.stop="step += 1"
+                        >
+                            Next <v-icon>keyboard_arrow_right</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                    <v-layout justify-center>
+                        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn>
+                    </v-layout>          
+                </v-stepper>
+            </v-flex>
         </v-layout>
     </div>
 </template>
@@ -76,8 +116,9 @@
     import personalDataComponent from '~/components/resume/PersonalDataComponent'
     import educationComponent from '~/components/resume/EducationComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
+    import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
 	export default {
-        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent },
+        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         middleware: [],
         async created () {
@@ -91,61 +132,75 @@
         },
 		data () {
 			return {
-                e1: 1,
-                steps: [
-                    {
-                        id: 1,
-                        name: 'Choose Template',
-                        slug: 'template',
-                    },
-                    {
-                        id: 2,
-                        name: 'General & Personal Data',
-                        slug: 'personal_data'
-                    },
-                    {
-                        id: 3,
-                        name: 'Education',
-                        slug: 'education'
-                    },
-                    {
-                        id: 4,
-                        name: 'Skills',
-                        slug: 'skills'
-                    },
-                    {
-                        id: 5,
-                        name: 'Work Experience',
-                        slug: 'work_experience'
-                    }  
-                ],
-                resumeSlug: ''
+                step: 1,
+                // steps: [
+                //     {
+                //         id: 1,
+                //         name: 'Choose Template',
+                //         slug: 'template',
+                //     },
+                //     {
+                //         id: 2,
+                //         name: 'General & Personal Data',
+                //         slug: 'personal_data'
+                //     },
+                //     {
+                //         id: 3,
+                //         name: 'Education',
+                //         slug: 'education'
+                //     },
+                //     {
+                //         id: 4,
+                //         name: 'Skills',
+                //         slug: 'skills'
+                //     },
+                //     {
+                //         id: 5,
+                //         name: 'Work Experience',
+                //         slug: 'work_experience'
+                //     }  
+                // ],
+                resumeSlug: '',
+                loadingCreateResume: false,
+                loadingUploadFiles: false
 			}
 		},
 		computed: {
             loading () {
                 return this.$store.getters['loading']
             },
+            errors () {
+                return this.$store.getters['errors']
+            },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
             }
 		},
         methods: {
+            stepPersonalDataValidate () {
+                return true
+            },
+            stepEducationValidate () {
+                return true
+            },
+            stepSkillsValidate () {
+                return true
+            },
             onInput (val) {
                 this.steps = parseInt(val)
             },
             previousStep (n) {
                 if (n === 1) {
-                    this.e1 = this.steps.length
+                    this.step = this.steps.length
                 } else {
-                    this.e1 = n - 1
+                    this.step = n - 1
                 }
             },
             nextStep (n) {
                 if (n === this.steps.length) {
-                    this.e1 = 1
+                    this.step = 1
                 } else {
-                    this.e1 = n + 1
+                    this.step = n + 1
                 }
             },
             async updateResume () {
@@ -155,12 +210,13 @@
                     await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                     // return response
                 } catch (error) {
-                    // console.log('error2: ', error.response.data.message)
-                    console.log('error2: ', error.response)
-                    this.$store.commit('setLoading', false)
-                    // new Noty({type: 'success', text: 'Password successfully updated. Use your new credentials for the next login'}).show()
-                    this.$noty.error('We\'re sorry, an error occured and your resume could not be updated')
-                    throw error
+                    console.log('error updateResume: ', error)
+                    new Noty({
+                        type: 'error',
+                        text: 'Your resume could not be updated',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
                 }
             }
         },

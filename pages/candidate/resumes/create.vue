@@ -19,106 +19,156 @@
             <!-- <v-btn color="primary" @click="$validator.validateAll()">Validate</v-btn> -->
             <!-- {{ errors.items.map(e => e.msg) }} -->
 
-            <v-stepper v-model="step">
-                <v-stepper-header>
-                    <v-stepper-step step="1" editable>Choose Template</v-stepper-step>
+                <v-stepper v-model="step">
+                    <v-stepper-header>
+                        <v-stepper-step step="1" editable>Choose Template</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step :rules="[stepPersonalDataValidate]" step="2" editable>General & Personal Data</v-stepper-step>
+                        <v-stepper-step :rules="[stepPersonalDataValidate]" step="2" editable>General & Personal Data</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step :rules="[stepEducationValidate]" step="3" editable>Education</v-stepper-step>
+                        <v-stepper-step :rules="[stepEducationValidate]" step="3" editable>Education</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step step="4" editable>Work experience</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
+                        <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step step="6" editable>Files upload</v-stepper-step>
+                        <v-stepper-step step="6" editable>Files upload</v-stepper-step>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-stepper-step step="7" editable>Other</v-stepper-step>
+                        <v-stepper-step step="7" editable>Other</v-stepper-step>
 
-                </v-stepper-header>
+                    </v-stepper-header>
 
-                <v-stepper-items>
-                    <v-stepper-content step="1">
-                        <v-card style="margin-bottom: 30px;">
-                            <template-component :edit="true" />
-                        </v-card>
-                    </v-stepper-content>
+                    <v-stepper-items>
+                        <v-stepper-content step="1">
+                            <v-card style="margin-bottom: 30px;">
+                                <template-component :edit="true" />
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="2">
-                        <v-card style="margin-bottom: 30px;">
-                            <personal-data-component />
-                        </v-card>
-                    </v-stepper-content>
+                        <v-stepper-content step="2">
+                            <v-card style="margin-bottom: 30px;">
+                                <personal-data-component />
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="3">
-                        <v-card style="margin-bottom: 30px;">
-                            <education-component />
-                        </v-card>
-                    </v-stepper-content>
+                        <v-stepper-content step="3">
+                            <v-card style="margin-bottom: 30px;">
+                                <education-component />
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="4">
-                        <v-card style="margin-bottom: 30px;">
-                            Work experience
-                        </v-card>
-                    </v-stepper-content>
+                        <v-stepper-content step="4">
+                            <v-card style="margin-bottom: 30px;">
+                                Work experience
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="5">
-                        <v-card style="margin-bottom: 30px;">
-                            <skills-component />
-                        </v-card>
-                    </v-stepper-content>
+                        <v-stepper-content step="5">
+                            <v-card style="margin-bottom: 30px;">
+                                <skills-component />
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="6">
-                        <v-card style="margin-bottom: 30px;">
-                            <file-uploads-component />
-                        </v-card>
-                    </v-stepper-content>
+                        <v-stepper-content step="6">
+                            <v-card style="margin-bottom: 30px;">
+                                <file-uploads-component :picture="this.loadedNewResume.personal_data.picture" />
+                            </v-card>
+                        </v-stepper-content>
 
-                    <v-stepper-content step="7">
-                        <v-card style="margin-bottom: 30px;">
-                            Other
-                        </v-card>
-                    </v-stepper-content>
-                </v-stepper-items>
-                
-                <v-card-actions class="justify-center">
-                    <v-btn
-                        color="primary"
-                        @click.stop="step -= 1"
-                    >
-                        <v-icon>keyboard_arrow_left</v-icon> Previous
-                    </v-btn>
-                    <v-btn
-                        color="primary"
-                        @click.stop="step += 1"
-                    >
-                        Next <v-icon>keyboard_arrow_right</v-icon>
-                    </v-btn>
-                </v-card-actions>
-                <v-layout justify-center>
-                	<v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items.length > 0" @click="saveResume">Save</v-btn>
-                </v-layout>
-                <v-layout justify-center>
+                        <v-stepper-content step="7">
+                            <v-card style="margin-bottom: 30px;">
+                                Other
+                            </v-card>
+                        </v-stepper-content>
+                    </v-stepper-items>
+                    
+                    <v-card-actions class="justify-center">
+                        <v-btn
+                            color="primary"
+                            @click.stop="step -= 1"
+                        >
+                            <v-icon>keyboard_arrow_left</v-icon> Previous
+                        </v-btn>
+                        <v-btn
+                            color="primary"
+                            @click.stop="step += 1"
+                        >
+                            Next <v-icon>keyboard_arrow_right</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                    <v-layout justify-center>
+                        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="saveResume">Save</v-btn>
+                    </v-layout>
+                    <v-layout justify-center>
+                        <v-alert
+                            :value="loadingCreateResume"
+                            color="info"
+                            outline
+                        >
+                            <v-progress-circular indeterminate color="info"></v-progress-circular> Create resume...
+                        </v-alert>
+
+                        <v-alert
+                            :value="loadingUploadFiles"
+                            color="secondary"
+                            outline
+                        >
+                            <div class="text-xs-center">
+                                <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files
+                            </div>
+                            <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
+                                {{ uploadedFile.name }} - {{ uploadedFile.progress }}%
+                            </div>
+                        </v-alert>
+
+                        <v-alert
+                            :value="uploadedFiles.length > 0 && !loadingCreateResume && !loadingUploadFiles"
+                            color="success"
+                            outline
+                        >
+                            <h3 class="text-xs-center">New resume created!</h3>
+                            <p class="text-xs-center">{{ uploadedFiles.length }} file(s) uploaded.</p>
+                            <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
+                                <a :href="uploadedFile.downloadUrl" target="_blank">{{ uploadedFile.name }}</a><br /><br />
+                            </div>
+                        </v-alert>
+                    </v-layout>
+                </v-stepper>
+            </v-flex>
+        </v-layout>
+        <v-dialog
+            v-model="creatingResumeDialog"
+            width="500"
+        >
+            <v-card light>
+                <v-card-title
+                    class="headline grey lighten-2 justify-center"
+                    primary-title
+                >
+                    Creating resume...
+                </v-card-title>
+
+                <v-card-text>
                     <v-alert
                         :value="loadingCreateResume"
-                        color="info"
+                        color="primary"
                         outline
                     >
-                        <v-progress-circular indeterminate color="info"></v-progress-circular> Create resume...
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Creating resume
+                        </div>
                     </v-alert>
-
                     <v-alert
                         :value="loadingUploadFiles"
                         color="secondary"
@@ -127,26 +177,10 @@
                         <div class="text-xs-center">
                             <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files
                         </div>
-                        <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
-                            {{ uploadedFile.name }} - {{ uploadedFile.progress }}%
-                        </div>
                     </v-alert>
-
-                    <v-alert
-                        :value="uploadedFiles.length > 0 && !loadingCreateResume && !loadingUploadFiles"
-                        color="success"
-                        outline
-                    >
-                        <h3 class="text-xs-center">New resume created!</h3>
-                        <p class="text-xs-center">{{ uploadedFiles.length }} file(s) uploaded.</p>
-                        <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
-                            <a :href="uploadedFile.downloadUrl" target="_blank">{{ uploadedFile.name }}</a><br /><br />
-                        </div>
-                    </v-alert>
-                </v-layout>
-            </v-stepper>
-        </v-flex>
-        </v-layout>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -187,6 +221,7 @@
                 loadingCreateResume: false,
                 loadingUploadFiles: false,
                 uploadedFiles: [],
+                creatingResumeDialog: false
 			}
 		},
 		computed: {
@@ -219,7 +254,7 @@
                 // return true
                 const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
                 // if (this.errorsArray.some(e => inputs.includes(e))) {
-                if (this.errors.items.some(e => inputs.includes(e.field))) {
+                if (this.errors && this.errors.items && this.errors.items.some(e => inputs.includes(e.field))) {
                     return false
                 }
                 return true
@@ -255,12 +290,21 @@
             async saveResume () {
                 console.log('saveResume')
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
+                this.creatingResumeDialog = true
+                this.loadingCreateResume = true
+                const that = this
+                setTimeout(() => {
+                    that.loadingCreateResume = false
+                    that.loadingUploadFiles = true
+                }, 3000)
+                setTimeout(() => {
+                    that.loadingUploadFiles = false
+                    that.$router.push('/candidate/resumes')
+                }, 5000)
+                return
                 // Perform vee-validate check
                 await this.$validator.validateAll()
-                if (this.errors && this.errors.items.length > 0) {
-                    // this.errors.items.forEach(error => {
-                    //     this.errorsArray.push(error.field)
-                    // })
+                if (this.errors && this.errors.items && this.errors.items.length > 0) {
                     new Noty({
                         type: 'error',
                         text: 'Please check validation errors.',
@@ -271,7 +315,8 @@
                     console.log('OK proceed to saveResume')
                     this.loadedNewResume.user_id = this.loadedUser.id
 
-                    try { 
+                    try {
+                        this.loadingCreateResume = true
                         await this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
                     } catch (error) {
                         console.log('error2: ', error)
@@ -304,146 +349,146 @@
 
 
 
-                    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-                    let formData = new FormData();
-                    formData.append('data', JSON.stringify(this.loadedNewResume))
-                    for (let fileUpload of this.loadedNewResume.uploads) {
-                        // console.log('upload: ', upload)
-                        formData.append('file', fileUpload)
-                    }
+                    // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+                    // let formData = new FormData();
+                    // formData.append('data', JSON.stringify(this.loadedNewResume))
+                    // for (let fileUpload of this.loadedNewResume.uploads) {
+                    //     // console.log('upload: ', upload)
+                    //     formData.append('file', fileUpload)
+                    // }
 
-                    this.loadingCreateResume = true
-                    const createNewResume = await axios.post('/create-new-resume', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'app-key': process.env.APP_KEY
-                        }
-                    })
-                    console.log('createNewResume: ', createNewResume)
-                    const newResumeId = createNewResume.data.resume_long_id
-                    if (newResumeId) {
-                        this.$store.dispatch('resumes/storeNewResume', createNewResume)
-                        return
+                    // this.loadingCreateResume = true
+                    // const createNewResume = await axios.post('/create-new-resume', formData, {
+                    //     headers: {
+                    //         'Content-Type': 'multipart/form-data',
+                    //         'app-key': process.env.APP_KEY
+                    //     }
+                    // })
+                    // console.log('createNewResume: ', createNewResume)
+                    // const newResumeId = createNewResume.data.resume_long_id
+                    // if (newResumeId) {
+                    //     this.$store.dispatch('resumes/storeNewResume', createNewResume)
+                    //     return
 
-                        // If return is valid, resume was saved to DB, there remains to save files in firebase storage
-                        if (this.loadedNewResume.personal_data.picture) {
-                            console.log('Save picture')
-                            const picture = this.loadedNewResume.personal_data.picture
-                            const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${picture.name}`)
-                            const uploadedPicture = await storageFileRef.put(picture)
-                            console.log('uploadedPicture: ', uploadedPicture.metadata)
-                            const downloadUrl = await uploadedPicture.ref.getDownloadURL()
-                            const newPicture = {
-                                name: uploadedPicture.metadata.name,
-                                size_in_bytes: uploadedPicture.metadata.size,
-                                downloadUrl: downloadUrl,
-                                _created_at: moment().unix(),
-                                _updated_at: moment().unix()
-                            }
-                            console.log('newPicture', newPicture)
-                            firestore.collection('resumes_long').doc(newResumeId).update({
-                                'personal_data.picture': newPicture
-                            })
-                        }
-                        if (this.loadedNewResume.uploads.length > 0) {
-                            // If files are to be uploaded
-                            try {
-                                // const newResumeId = 'kJqSRstu8QyjKwEU77i5'
-                                this.loadingCreateResume = false
-                                // 1) Save files in storage
-                                const newPromise = new Promise((resolve, reject) => {
-                                    this.loadingUploadFiles = true
-                                    for (const [index, fileUpload] of this.loadedNewResume.uploads.entries()) {
-                                        console.log('fileUpload: ', fileUpload)
-                                        this.uploadedFiles.push({ name: fileUpload.name, progress: 0 })
-                                        const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
-                                        const uploadTask = storageFileRef.put(fileUpload)
-                                        // Track down upload progress. Careful: callback function...
-                                        const that = this
-                                        uploadTask.on('state_changed', function (snapshot) {
-                                            that.uploadedFiles[index]['progress'] = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                                            console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-                                            that.uploadedFiles[index]['size_in_bytes'] = snapshot.totalBytes
-                                        }, function (error) {
-                                            console.log('upload error: ', error)
-                                            reject()
-                                        }, function () {
-                                            console.log('success')
-                                            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                                                // console.log('File available at', downloadURL)
-                                                that.uploadedFiles[index]['downloadUrl'] = downloadURL
-                                            })
-                                            resolve()
-                                        })
-                                    }
-                                }).then(() => {
-                                    // 2) Save reference in firestore
-                                    firestore.collection('resumes_long').doc(newResumeId).update({
-                                        uploads: this.uploadedFiles
-                                    })
-                                }).then(() => {
-                                    // 3) Stop loader
-                                    console.log('Done!')
-                                    this.loadingUploadFiles = false
-                                    new Noty({
-                                        type: 'success',
-                                        text: 'Your resume was successfully created.',
-                                        timeout: 8000,
-                                        theme: 'metroui'
-                                    }).show()
-                                }).catch((error) => {
-                                    console.log('error: ', error)
-                                    this.loadingUploadFiles = false
-                                    throw 'error'
-                                })
+                    //     // If return is valid, resume was saved to DB, there remains to save files in firebase storage
+                    //     if (this.loadedNewResume.personal_data.picture) {
+                    //         console.log('Save picture')
+                    //         const picture = this.loadedNewResume.personal_data.picture
+                    //         const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${picture.name}`)
+                    //         const uploadedPicture = await storageFileRef.put(picture)
+                    //         console.log('uploadedPicture: ', uploadedPicture.metadata)
+                    //         const downloadUrl = await uploadedPicture.ref.getDownloadURL()
+                    //         const newPicture = {
+                    //             name: uploadedPicture.metadata.name,
+                    //             size_in_bytes: uploadedPicture.metadata.size,
+                    //             downloadUrl: downloadUrl,
+                    //             _created_at: moment().unix(),
+                    //             _updated_at: moment().unix()
+                    //         }
+                    //         console.log('newPicture', newPicture)
+                    //         firestore.collection('resumes_long').doc(newResumeId).update({
+                    //             'personal_data.picture': newPicture
+                    //         })
+                    //     }
+                    //     if (this.loadedNewResume.uploads.length > 0) {
+                    //         // If files are to be uploaded
+                    //         try {
+                    //             // const newResumeId = 'kJqSRstu8QyjKwEU77i5'
+                    //             this.loadingCreateResume = false
+                    //             // 1) Save files in storage
+                    //             const newPromise = new Promise((resolve, reject) => {
+                    //                 this.loadingUploadFiles = true
+                    //                 for (const [index, fileUpload] of this.loadedNewResume.uploads.entries()) {
+                    //                     console.log('fileUpload: ', fileUpload)
+                    //                     this.uploadedFiles.push({ name: fileUpload.name, progress: 0 })
+                    //                     const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
+                    //                     const uploadTask = storageFileRef.put(fileUpload)
+                    //                     // Track down upload progress. Careful: callback function...
+                    //                     const that = this
+                    //                     uploadTask.on('state_changed', function (snapshot) {
+                    //                         that.uploadedFiles[index]['progress'] = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    //                         console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                    //                         that.uploadedFiles[index]['size_in_bytes'] = snapshot.totalBytes
+                    //                     }, function (error) {
+                    //                         console.log('upload error: ', error)
+                    //                         reject()
+                    //                     }, function () {
+                    //                         console.log('success')
+                    //                         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    //                             // console.log('File available at', downloadURL)
+                    //                             that.uploadedFiles[index]['downloadUrl'] = downloadURL
+                    //                         })
+                    //                         resolve()
+                    //                     })
+                    //                 }
+                    //             }).then(() => {
+                    //                 // 2) Save reference in firestore
+                    //                 firestore.collection('resumes_long').doc(newResumeId).update({
+                    //                     uploads: this.uploadedFiles
+                    //                 })
+                    //             }).then(() => {
+                    //                 // 3) Stop loader
+                    //                 console.log('Done!')
+                    //                 this.loadingUploadFiles = false
+                    //                 new Noty({
+                    //                     type: 'success',
+                    //                     text: 'Your resume was successfully created.',
+                    //                     timeout: 8000,
+                    //                     theme: 'metroui'
+                    //                 }).show()
+                    //             }).catch((error) => {
+                    //                 console.log('error: ', error)
+                    //                 this.loadingUploadFiles = false
+                    //                 throw 'error'
+                    //             })
 
-                            } catch (error) {
-                                console.log('error2: ', error)
-                                this.loadingUploadFiles = false
-                            }
-                        } else {
-                            this.loadingCreateResume = false
-                            new Noty({
-                                type: 'success',
-                                text: 'Your resume was successfully created.',
-                                timeout: 5000,
-                                theme: 'metroui'
-                            }).show()
-                        }
-                    } else {
-                        // An error occured on the server
-                        this.loadingCreateResume = false
-                        console.log('An error occured on the server: ')
-                        new Noty({
-                            type: 'error',
-                            text: `${createNewResume.data.message}`,
-                            timeout: 8000,
-                            theme: 'metroui'
-                        }).show()
-                        console.log('createNewResume.data.error: ', createNewResume.data.error)
-                        // if (createNewResume.data.error.some(e => e.field === 'slug')) {
-                        //     console.log('slug error')
-                        // }
-                        Object.entries(createNewResume.data.error).forEach(([key, value]) => {
-                        // createNewResume.data.error.forEach(error => {
-                            // console.log('key: ', key.substr(key.indexOf('.') + 1))
-                            const field = key.substr(key.indexOf('.') + 1)
+                    //         } catch (error) {
+                    //             console.log('error2: ', error)
+                    //             this.loadingUploadFiles = false
+                    //         }
+                    //     } else {
+                    //         this.loadingCreateResume = false
+                    //         new Noty({
+                    //             type: 'success',
+                    //             text: 'Your resume was successfully created.',
+                    //             timeout: 5000,
+                    //             theme: 'metroui'
+                    //         }).show()
+                    //     }
+                    // } else {
+                    //     // An error occured on the server
+                    //     this.loadingCreateResume = false
+                    //     console.log('An error occured on the server: ')
+                    //     new Noty({
+                    //         type: 'error',
+                    //         text: `${createNewResume.data.message}`,
+                    //         timeout: 8000,
+                    //         theme: 'metroui'
+                    //     }).show()
+                    //     console.log('createNewResume.data.error: ', createNewResume.data.error)
+                    //     // if (createNewResume.data.error.some(e => e.field === 'slug')) {
+                    //     //     console.log('slug error')
+                    //     // }
+                    //     Object.entries(createNewResume.data.error).forEach(([key, value]) => {
+                    //     // createNewResume.data.error.forEach(error => {
+                    //         // console.log('key: ', key.substr(key.indexOf('.') + 1))
+                    //         const field = key.substr(key.indexOf('.') + 1)
 
-                            this.$validator.errors.add({
-                                // id: 1,
-                                // vmld: 4,
-                                field: field,
-                                msg: value,
-                            })
+                    //         this.$validator.errors.add({
+                    //             // id: 1,
+                    //             // vmld: 4,
+                    //             field: field,
+                    //             msg: value,
+                    //         })
 
-                            new Noty({
-                                type: 'warning',
-                                text: value,
-                                timeout: 8000,
-                                theme: 'metroui'
-                            }).show()
-                        })
-                    }
+                    //         new Noty({
+                    //             type: 'warning',
+                    //             text: value,
+                    //             timeout: 8000,
+                    //             theme: 'metroui'
+                    //         }).show()
+                    //     })
+                    // }
                 }
             }
 		}

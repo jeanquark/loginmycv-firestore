@@ -1,9 +1,9 @@
 <template>
     <v-layout row wrap>
-    	<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
+    	<b>loadedUser:</b> {{ loadedUser }}<br />
     	<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /> -->
         <v-layout justify-center>
-            <h2>Your resumes</h2><br />
+            <h2>My resumes</h2><br />
         </v-layout>
         <v-flex xs10 offset-xs1 class="text-xs-center">
         	<v-card flat class="ma-2">

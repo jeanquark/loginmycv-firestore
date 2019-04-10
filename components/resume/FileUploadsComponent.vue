@@ -1,8 +1,9 @@
 <template>
     <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
         <p>
-			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
+			loadedUser: {{ loadedUser }}<br /><br />
             userResume: {{ userResume }}<br /><br />
+            userResume.uploads: {{ userResume.uploads }}<br /><br />
 			<!-- fileName: {{ fileName }}<br /><br /> -->
 			<!-- downloadUrl: {{ downloadUrl }}<br /><br /> -->
 			<!-- fileName2: {{ fileName2 }}<br /><br /> -->
@@ -13,6 +14,9 @@
 			<!-- files: {{ files }}<br /><br /> -->
 			<!-- totalSize: {{ totalSize }}<br /><br /> -->
             userResume.personal_data.picture: {{ userResume.personal_data.picture ? userResume.personal_data.picture.size : null }}<br /><br />
+			loadedNewResume: {{ loadedNewResume }}<br /><br />
+			loadedNewResume.personal_data.picture.size: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br />
+			this.picture.size: {{ this.picture ? this.picture.size : null }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -25,12 +29,12 @@
 			>
 			{{ totalSizePercent }}%
 		</v-progress-circular>
-		of your total space (10 MB)
+		of your total space ({{ userFreeSpace }} MB)
 		<br /><br />
-		<v-btn color="secondary">Buy some space</v-btn>
+		<v-btn color="secondary">Get more space</v-btn>
 
 		<v-layout row wrap>
-			<v-flex xs12 sm6 v-for="(file, index) of files" :key="index">
+			<v-flex xs12 sm6 v-for="(file, index) of this.userResume.uploads" :key="index">
 				<v-card class="ma-2">
 					<v-card-title primary-title class="justify-center">
 						<h3 class="headline mb-0">File #{{ index + 1 }}</h3>
@@ -38,16 +42,16 @@
 
 					<v-card-text>
 						<v-text-field
-							:counter="10"
+							:counter="50"
 							label="File Title"
 							placeholder="eg. My CV, Company X recommandation letter, etc."
 							prepend-icon="title"
-							v-model="files[index].title"
+							v-model="userResume.uploads[index].title"
 						></v-text-field>
 
 						<br />
 
-						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="files[index].name" prepend-icon='attach_file'></v-text-field>
+						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file'></v-text-field>
 						<input
 							type="file"
 							style="display: none"
@@ -81,6 +85,7 @@
 <script>
 	import { firestore, storage } from '~/plugins/firebase-client-init'
     export default {
+		props: ['picture'],
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -150,9 +155,9 @@
 			loadedUserResumes () {
 				return this.$store.getters['resumes/loadedUserResumes']
 			},
-			// loadedNewResume () {
-            //     return this.$store.getters['resumes/loadedNewResume']
-            // },
+			loadedNewResume () {
+                return this.$store.getters['resumes/loadedNewResume']
+            },
 			// getTotalUploadSize () {
 			// 	const userResumes = this.$store.getters['resumes/loadedUserResumes']
 			// 	console.log('userResumes: ', userResumes)
@@ -168,39 +173,40 @@
 			// 	return totalUploadSize
 			// },
 			totalSize () {
-				if (this.userResume.personal_data && this.userResume.personal_data.picture) {
-					console.log('calculate')
-					return this.files.reduce((accumulator, file) => {
+				if (this.picture && this.picture.size) {
+					return this.userResume.uploads.reduces((accumulator, file) => {
 						return accumulator + parseInt(file.size)
-					}, parseInt(this.userResume.personal_data.picture.size))
+					}, parseInt(this.picture.size))
 				} else {
-					return this.files.reduce((accumulator, file) => {
+					return this.userResume.uploads.reduce((accumulator, file) => {
 						return accumulator + parseInt(file.size)
 					}, 0)
 				}
-				// return this.files.reduce((accumulator, file) => {
-				// 	return accumulator + parseInt(file.size)
-				// }, 24621)
-				// return totalSize
 			},
 			totalSizePercent () {
 				const limit = 10 * 1024 * 1024
 				// const limit = this.$store.getters['app_parameters/users']['initial_space_in_bytes']
 				return Number((this.totalSize/limit) * 100).toFixed(1)
 			},
+			userFreeSpace () {
+				if (this.loadedUser.private) {
+					return ((this.loadedUser.private.total_space_in_bytes - this.loadedUser.private.used_space_in_bytes) / (1024 * 1024)).toFixed(2)
+				}
+				return 0
+			}
         },
         methods: {
 			addUpload () {
-				this.files.push({
+				this.userResume.uploads.push({
 					file: '',
 					title: '',
-					size: 0,
-					downloadLink: ''
+					name: '',
+					size: 0
 				})
 			},
 			removeUpload (index) {
 				console.log('index: ', index)
-				this.files.splice(index, 1)
+				this.userResume.uploads.splice(index, 1)
 			},
 			// openFile (downloadUrl) {
 			// 	console.log('downloadUrl: ', downloadUrl)
@@ -220,9 +226,10 @@
 			async onFilePicked (e, index) {
 				const files = e.target.files
 				console.log('files: ', files)
-				this.files[index].file = files[0]
-				this.files[index].name = files[0].name
-				this.files[index].size = parseInt(files[0].size)
+				console.log('index: ', index)
+				this.userResume.uploads[index].file = files[0]
+				this.userResume.uploads[index].name = files[0].name
+				this.userResume.uploads[index].size = parseInt(files[0].size)
 				this.userResume.uploads[index] = files[0]
 				// this.loadedNewResume.uploads[index] = files
 				// console.log('this.userResume.uploads: ', this.userResume.uploads)

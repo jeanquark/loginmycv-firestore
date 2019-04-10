@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 30px;">
+    <div style="padding: 30px;" v-if="userResume">
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
@@ -24,11 +24,11 @@
                     </v-card-title>
 
                     <v-card-text>
-                        <v-layout>
+                        <v-layout v-if="!resumeSlug">
                             <!-- <v-btn color="primary" @click="validate">Validate</v-btn> -->
                             <!-- {{ errors.items.map(e => e.msg) }} -->
 
-                            <v-flex xs10 offset-xs1 id="direct_access">
+                            <v-flex xs10 offset-xs1 class="border">
                                 <v-layout justify-center>
                                     <div>
                                         <v-checkbox v-model="userResume.allow_visitor_access" label="Allow direct access for visitors" color="secondary"></v-checkbox>
@@ -63,11 +63,49 @@
                                         ></v-text-field>
                                     </v-flex>
                                 </v-layout>
-                                
                             </v-flex>
                         </v-layout>
 
-                        <v-layout>
+                        <v-layout v-else>
+                            <v-flex xs10 offset-xs1 class="border">
+                                <v-layout justify-center>
+                                    <div>
+                                        <v-switch v-model="userResume.allow_visitor_access" label="Allow visitor Access" color="secondary"></v-switch>
+                                    </div>
+                                </v-layout>
+                                <v-layout v-if="userResume.allow_visitor_access">
+                                    <v-flex xs12 sm6 mx-3>
+                                        <v-text-field
+                                            :type="showPassword ? 'text' : 'password'"
+                                            name="new_password"
+                                            label="New Password"
+                                            prepend-icon="lock"
+                                            hint="At least 8 characters"
+                                            :counter="30"
+                                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
+                                            @click:append="showPassword = !showPassword"
+                                            v-validate="'required|max:30'"
+                                            ref="password"
+                                            v-model="userResume.new_password"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 mx-3>
+                                        <v-text-field
+                                            type="password"
+                                            name="new_password_confirmation"
+                                            label="New Password confirmation"
+                                            prepend-icon="lock"
+                                            v-validate="'required|confirmed:password'"
+                                            data-vv-as="Password"
+                                            :error-messages="errors ? errors.collect('password_confirmation') : null"
+                                            v-model="userResume.new_password_confirmation"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+
+                        <v-layout v-if="resumeSlug === undefined">
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Resume identifier*"
@@ -89,6 +127,41 @@
                                     readonly
                                     prepend-icon="web"
                                 ></v-text-field>
+                            </v-flex>
+                        </v-layout>
+
+                        <v-layout v-else>
+                            <v-flex xs10 offset-xs1 class="border">
+                                <v-layout justify-center>
+                                    <div>
+                                        <v-switch v-model="userResume.updateResumeSlug" label="Update resume slug" color="secondary"></v-switch>
+                                    </div>
+                                </v-layout>
+                                
+                                <v-layout v-if="userResume.updateResumeSlug">
+                                    <v-flex xs12 sm6 mx-3>
+                                        <v-text-field
+                                            label="New resume identifier*"
+                                            name="new_slug"
+                                            prepend-icon="perm_identity"
+                                            hint="Must be unique."
+                                            :persistent-hint="true"
+                                            v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
+                                            :error-messages="errors ? errors.collect('slug') : null"
+                                            data--vv-as="Resume identifier"
+                                            v-model="userResume.new_slug"
+                                        ></v-text-field>
+                                    </v-flex>
+
+                                    <v-flex xs12 sm8 class="px-3">
+                                        <v-text-field
+                                            label="New path to your resume"
+                                            :value="userResume.new_slug ? `https://www.loginmycv.com/resume/${userResume.new_slug}` : ''"
+                                            readonly
+                                            prepend-icon="web"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
                         </v-layout>
 
@@ -273,9 +346,10 @@
 
                         <v-layout>
                             <v-flex xs12 sm6 class="px-3">
-                                <div v-if="resumeSlug" class="text-xs-center">
-                                    <span>Current image: </span><br />
-                                    <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" />
+                                <div v-if="resumeSlug && this.userResume.personal_data.picture" class="text-xs-center">
+                                    <span>Current picture: </span><br />
+                                    <!-- <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" /> -->
+                                    <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" />
                                 </div>                
                                 <v-text-field label="My Picture" @click='pickFile' v-model="imageName" prepend-icon='folder_shared' :error-messages="error ? error.image : null" ></v-text-field>
                                 <!-- <v-text-field label="My Picture" @click='pickFile' v-model="userResume.personal_data.picture" prepend-icon='folder_shared' :error-messages="error ? error.image : null"></v-text-field>-->
@@ -323,13 +397,15 @@
             
         },
         mounted () {
-            this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
-            this.loadedNewResume.slug = ''
-            this.loadedNewResume.job_title = 'Web developer'
-            this.loadedNewResume.job_description = 'Develops websites'
-            this.loadedNewResume.personal_data.firstname = 'Jean-Marc'
-            this.loadedNewResume.personal_data.lastname = 'Kleger'
-            this.loadedNewResume.personal_data.email = 'jm.kleger@gmail.com'
+            if (this.resumeSlug == undefined) {
+                this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
+                this.loadedNewResume.slug = ''
+                this.loadedNewResume.job_title = 'Web developer'
+                this.loadedNewResume.job_description = 'Develops websites'
+                this.loadedNewResume.personal_data.firstname = 'Jean-Marc'
+                this.loadedNewResume.personal_data.lastname = 'Kleger'
+                this.loadedNewResume.personal_data.email = 'jm.kleger@gmail.com'
+            }
         },
         data () {
             return {
@@ -351,7 +427,8 @@
                 },
                 modalDate: false,
                 // date: moment().subtract(30, 'years').format('YYYY-MM-DD'),
-                showPassword: false
+                showPassword: false,
+                // updateResumeSlug: false
             }
         },
         computed: {
@@ -443,7 +520,7 @@
     .abc .v-input__control .v-input__slot {
         padding-top: 12px;
     }
-    #direct_access {
+    .border {
         margin-bottom: 30px;
         padding: 10px;
         border: 1px solid var(--v-secondary-base);

@@ -64,7 +64,6 @@ export const actions = {
 	// },
 	async storeNewResume ({ commit, rootState }, payload) {
 		try {
-			// Resume was already created serverside, there remains to upload images and files
 			console.log('payload: ', payload)
 
 			// 1) Send resume to server to save
@@ -74,6 +73,9 @@ export const actions = {
 			for (let fileUpload of payload.uploads) {
 				formData.append('file', fileUpload)
 			}
+			// Also add candidate picture
+			formData.append('file', payload.personal_data.picture)
+
 			const createNewResume = await axios.post('/create-new-resume', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -137,15 +139,24 @@ export const actions = {
 	async updateResume ({ commit }, payload) {
 		console.log('Call to updateResume: ', payload)
 		try {
-			commit('setLoading', true, { root: true })
-			await firestore.collection('resumes_long').doc(payload.id).update(payload)
-			commit('setLoading', false, { root: true })
-			new Noty({
-				type: 'success',
-				text: 'Your resume was sucessfully updated',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
+			console.log('payload: ', payload)
+
+			// 1) Send resume to server to update
+			const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+			let formData = new FormData()
+			formData.append('data', JSON.stringify(payload))
+			for (let fileUpload of payload.uploads) {
+				formData.append('file', fileUpload)
+			}
+			// Also add candidate picture
+			formData.append('file', payload.personal_data.picture)
+			const updateResume = await axios.post('/update-resume', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					'app-key': process.env.APP_KEY
+				}
+			})
+			console.log('updateResume: ', updateResume)
 		} catch (error) {
 			commit('setLoading', false, { root: true })
 			console.log('error: ', error)

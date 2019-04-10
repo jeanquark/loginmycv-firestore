@@ -23,19 +23,16 @@ export const actions = {
 		// commit('setLoadedUser', snapshot.data())
 		// commit('setLoadedUser', { id: snapshot.id, ...snapshot.data() })
 	},
-	async setAuthenticatedUser ({ state, commit }, payload) {
+	async fetchAuthenticatedUser ({ state, commit }, payload) {
 		console.log('Call to fetchAuthenticatedUser action: ', payload)
-		// const authUser = state.user.id
 		const snapshot = await firestore.collection('users').doc(payload.uid).get()
-		// const user = {
-		// 	id: payload.uid,
-		// 	email: payload.email,
-		// 	firstname: payload.firstname
-		// }
-		console.log('snapshot.data(): ', snapshot.data())
-		console.log('snapshot.id: ', snapshot.id)
-		// commit('setLoadedUser', snapshot.data())
-		commit('setLoadedUser', { ...snapshot.data(), id: snapshot.id })
+		// console.log('snapshot.data(): ', snapshot.data())
+		// console.log('snapshot.id: ', snapshot.id)
+
+		// Also get private data in subcollection
+		const childSnapshot = await firestore.collection('users').doc(payload.uid).collection('private').doc(payload.uid).get()
+
+		commit('setLoadedUser', { ...snapshot.data(), private: childSnapshot.data(), id: snapshot.id })
 	}
 }
 

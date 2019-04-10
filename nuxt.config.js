@@ -95,6 +95,10 @@ module.exports = {
         {
             path: '/create-new-resume', // POST request
             handler: '~/serverMiddleware/createNewResume'
+        },
+        {
+            path: '/update-resume', // POST request
+            handler: '~/serverMiddleware/updateResume'
         }
     ],
     css: ["~/assets/style/app.styl"],

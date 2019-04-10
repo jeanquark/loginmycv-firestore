@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 30px;">
+    <div style="padding: 30px;" v-if="userResume">
         <p>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
