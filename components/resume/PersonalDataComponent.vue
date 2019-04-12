@@ -77,8 +77,8 @@
                                     <v-flex xs12 sm6 mx-3>
                                         <v-text-field
                                             :type="showPassword ? 'text' : 'password'"
-                                            name="new_password"
-                                            label="New Password"
+                                            name="password"
+                                            label="Password"
                                             prepend-icon="lock"
                                             hint="At least 8 characters"
                                             :counter="30"
@@ -92,8 +92,8 @@
                                     <v-flex xs12 sm6 mx-3>
                                         <v-text-field
                                             type="password"
-                                            name="new_password_confirmation"
-                                            label="New Password confirmation"
+                                            name="password_confirmation"
+                                            label="Password confirmation"
                                             prepend-icon="lock"
                                             v-validate="'required|confirmed:password'"
                                             data-vv-as="Password"
@@ -346,7 +346,7 @@
 
                         <v-layout>
                             <v-flex xs12 sm6 class="px-3">
-                                <div v-if="resumeSlug && this.userResume.personal_data.picture" class="text-xs-center">
+                                <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center">
                                     <span>Current picture: </span><br />
                                     <!-- <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" /> -->
                                     <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" />

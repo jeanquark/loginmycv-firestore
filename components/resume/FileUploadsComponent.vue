@@ -13,10 +13,12 @@
 			<!-- items: {{ items }}<br /><br /> -->
 			<!-- files: {{ files }}<br /><br /> -->
 			<!-- totalSize: {{ totalSize }}<br /><br /> -->
-            userResume.personal_data.picture: {{ userResume.personal_data.picture ? userResume.personal_data.picture.size : null }}<br /><br />
-			loadedNewResume: {{ loadedNewResume }}<br /><br />
-			loadedNewResume.personal_data.picture.size: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br />
+            <!-- userResume.personal_data.picture: {{ userResume.personal_data.picture ? userResume.personal_data.picture.size : null }}<br /><br /> -->
+			<!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
+			<!-- loadedNewResume.personal_data.picture.size: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
 			this.picture.size: {{ this.picture ? this.picture.size : null }}<br /><br />
+			this.totalUploadSize: {{ this.totalUploadSize }}<br /><br />
+			this.totalSize: {{ this.totalSize }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -29,7 +31,7 @@
 			>
 			{{ totalSizePercent }}%
 		</v-progress-circular>
-		of your total space ({{ userFreeSpace }} MB)
+		of your total space ({{ userFreeSpace }} MiB)
 		<br /><br />
 		<v-btn color="secondary">Get more space</v-btn>
 
@@ -51,7 +53,7 @@
 
 						<br />
 
-						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file'></v-text-field>
+						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].name ? true : false"></v-text-field>
 						<input
 							type="file"
 							style="display: none"
@@ -62,7 +64,7 @@
 					</v-card-text>
 
 					<v-card-actions class="justify-center">
-						<v-btn flat color="error" @click="removeUpload(index)">Remove</v-btn>
+						<v-btn flat color="error" @click="removeUpload(file, index)">Remove</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-flex>
@@ -95,6 +97,7 @@
 				await this.$store.dispatch('resumes/fetchUserResumes')
 				await this.$store.dispatch('app-parameters/fetchAppParameters')
 			// }
+			this.userTotalUsedSpace()
         },
         data () {
             return {
@@ -105,14 +108,14 @@
 				// fileTitle: '',
 				// downloadUrl: '',
 				// fileName2: [],
-				files: [
-					{
-						title: '',
-						file: '',
-						size: 0,
-						downloadLink: ''
-					}
-				],
+				// files: [
+				// 	{
+				// 		title: '',
+				// 		file: '',
+				// 		size_in_bytes: 0,
+				// 		downloadLink: ''
+				// 	}
+				// ],
 				// fileTitle2: [],
 				// items: [{
 				// 		title: '',
@@ -139,6 +142,7 @@
 					// }
 				// ],
 				// totalUploadSize: 0,
+				totalUploadSize: null
             }
         },
         computed: {
@@ -173,14 +177,16 @@
 			// 	return totalUploadSize
 			// },
 			totalSize () {
-				if (this.picture && this.picture.size) {
-					return this.userResume.uploads.reduces((accumulator, file) => {
-						return accumulator + parseInt(file.size)
-					}, parseInt(this.picture.size))
-				} else {
-					return this.userResume.uploads.reduce((accumulator, file) => {
-						return accumulator + parseInt(file.size)
-					}, 0)
+				if (this.userResume.uploads) {
+					if (this.picture && this.picture.size) {
+						return this.userResume.uploads.reduces((accumulator, file) => {
+							return accumulator + parseInt(file.size)
+						}, (parseInt(this.picture.size) + parseInt(this.totalUploadSize)))
+					} else {
+						return this.userResume.uploads.reduce((accumulator, file) => {
+							return accumulator + parseInt(file.size_in_bytes)
+						}, parseInt(this.totalUploadSize))
+					}
 				}
 			},
 			totalSizePercent () {
@@ -193,7 +199,7 @@
 					return ((this.loadedUser.private.total_space_in_bytes - this.loadedUser.private.used_space_in_bytes) / (1024 * 1024)).toFixed(2)
 				}
 				return 0
-			}
+			},
         },
         methods: {
 			addUpload () {
@@ -201,22 +207,35 @@
 					file: '',
 					title: '',
 					name: '',
-					size: 0
+					size_in_bytes: 0
 				})
 			},
-			removeUpload (index) {
+			async removeUpload (file, index) {
+				console.log('file: ', file)
 				console.log('index: ', index)
-				this.userResume.uploads.splice(index, 1)
+					await this.$store.dispatch('resumes/removeUpload', { ...file, resumeId: this.userResume.id })
+					// this.userResume.uploads.splice(index, 1)
+
 			},
-			// openFile (downloadUrl) {
-			// 	console.log('downloadUrl: ', downloadUrl)
-			// 	window.open(downloadUrl)
-			// },
-			
-            // pickFile () {
-			// 	console.log('abc: ', this.$refs.image)
-            //     this.$refs.image.click ()
-			// },
+			async userTotalUsedSpace () {
+				let sum = 0
+				const userResumes = await firestore.collection('resumes_long').where('user_id', '==', this.loadedUser.id).get()
+				const userResumesIds = []
+				userResumes.forEach(resume => {
+					userResumesIds.push(resume.id)
+				})
+				// console.log('userResumesIds: ', userResumesIds)
+				for (let resumeId of userResumesIds) {
+					const resumeUploads = await firestore.collection('resumes_long').doc(resumeId).collection('uploads').doc(resumeId).get()
+					// console.log('resumeUploads: ', resumeUploads.data().uploads)
+					for (let upload of resumeUploads.data().uploads) {
+						// console.log('upload: ', upload)
+						sum += upload.size_in_bytes
+					}
+				}
+				// console.log('sum: ', sum)
+				this.totalUploadSize = sum
+			},
 			pickFile (index) {
 				// console.log('index: ', index)
 				// console.log(this.$refs)
@@ -228,9 +247,9 @@
 				console.log('files: ', files)
 				console.log('index: ', index)
 				this.userResume.uploads[index].file = files[0]
+				// this.userResume.uploads[index] = files[0]
 				this.userResume.uploads[index].name = files[0].name
-				this.userResume.uploads[index].size = parseInt(files[0].size)
-				this.userResume.uploads[index] = files[0]
+				this.userResume.uploads[index].size_in_bytes = parseInt(files[0].size)
 				// this.loadedNewResume.uploads[index] = files
 				// console.log('this.userResume.uploads: ', this.userResume.uploads)
 			},

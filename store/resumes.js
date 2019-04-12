@@ -41,7 +41,9 @@ export const mutations = {
 	},
 	setNewResume (state, payload) {
 		state.newResume = payload
-	}
+	},
+	// setResumeUploads (state, payload) {
+	// }
 }
 
 export const actions = {
@@ -61,6 +63,53 @@ export const actions = {
 	//     catch (error) {
 	//         console.log('Error getting documents', error);
 	//     }
+	// },
+	async fetchShortResumes ({ commit }) {
+		console.log('Call to fetchShortResumes actions')
+		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
+		firestore.collection('resumes_short').onSnapshot(snapshot => {
+			const shortResumesArray = []
+			snapshot.forEach(doc => {
+				// shortResumesArray.push(doc.data())
+				shortResumesArray.push({...doc.data(), id: doc.id})
+			})
+			console.log('shortResumesArray: ', shortResumesArray)
+			commit('setShortResumes', shortResumesArray)
+		})
+	},
+	fetchUserResumes ({ commit, rootState }) {
+		console.log('Call to fetchUserResumes action')
+		const authUserId = rootState.users && rootState.users.user ? rootState.users.user.id : null
+		// const authUserId = auth.currentUser.uid
+		console.log('authUserId: ', authUserId)
+
+		firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot(snapshot => {
+        	const userResumes = []
+			snapshot.forEach(doc => { // Also include uploaded files
+				// doc.ref.collection('uploads').doc(doc.id).get().then(childSnapshot => {
+					userResumes.push({
+						id: doc.id,
+						// uploads: childSnapshot.data().uploads,
+						...doc.data(),
+					})
+				// })
+			})
+			commit('setUserResumes', userResumes)
+		})
+	},
+	// fetchResumeUploads ({ commit }, payload) {
+	// 	const authUserId = auth.currentUser.uid
+	// 	console.log('payload: ', payload)
+	// 	const resumeId = payload
+	// 	const resumeUploads = []
+	// 	firestore.collection('resumes_long').doc(resumeId).collection('uploads').doc(resumeId).onSnapshot(snapshot => {
+	// 		snapshot.forEach(doc => {
+	// 			resumeUploads.push(
+	// 				...doc.data()
+	// 			)
+	// 		})
+	// 	})
+	// 	commit('setResumeUploads', resumeUploads)
 	// },
 	async storeNewResume ({ commit, rootState }, payload) {
 		try {
@@ -168,66 +217,58 @@ export const actions = {
 			}).show()
 		}
 	},
-	async fetchShortResumes ({ commit }) {
-		console.log('Call to fetchShortResumes actions')
-		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
-		firestore.collection('resumes_short').onSnapshot(snapshot => {
-			const shortResumesArray = []
-			snapshot.forEach(doc => {
-				// shortResumesArray.push(doc.data())
-				shortResumesArray.push({...doc.data(), id: doc.id})
-			})
-			console.log('shortResumesArray: ', shortResumesArray)
-			commit('setShortResumes', shortResumesArray)
-		})
-	},
-	async fetchResumes ({ commit }) {
-		console.log('Call to fetchResumes action')
-		const snapshot = await firestore.collection('resumes').get()
-		const resumesArray = []
-		snapshot.forEach(doc => {
-			resumesArray.push(doc.data())
-		})
-		console.log('resumesArray: ', resumesArray)
-		commit('setResumes', resumesArray)
-	},
-	async fetchUserResumes ({ commit, rootState }) {
-		console.log('Call to fetchResume action')
-		const authUserId = rootState.users ? rootState.users.user.id : null
-		console.log('authUserId: ', authUserId)
-
-		// Read data once
-		// const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).get()
-		// let userResumes = []
-		// snapshot.forEach(doc => {
-		// 	userResumes.push({
-		// 		id: doc.id,
-		// 		...doc.data()
-		// 	})
-		// })
-
-		// Get realtime updates
-		// const snapshot = await firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot()
-		// let userResumes = []
-		// snapshot.forEach(doc => {
-		// 	userResumes.push({
-		// 		id: doc.id,
-		// 		...doc.data()
-		// 	})
-		// })
-		// commit('setUserResumes', userResumes)
-
-		firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot(snapshot => {
-        	const userResumes = []
-			snapshot.forEach(doc => {
-				userResumes.push({
-					id: doc.id,
-					...doc.data()
-				})
-			})
-			commit('setUserResumes', userResumes)
-    	})
-	
+	// async fetchResumes ({ commit }) {
+	// 	console.log('Call to fetchResumes action')
+	// 	const snapshot = await firestore.collection('resumes').get()
+	// 	const resumesArray = []
+	// 	snapshot.forEach(doc => {
+	// 		resumesArray.push(doc.data())
+	// 	})
+	// 	console.log('resumesArray: ', resumesArray)
+	// 	commit('setResumes', resumesArray)
+	// },
+	async removeUpload ({ commit }, payload) {
+		console.log('payload.name: ', payload.name)
+		const userId = auth.currentUser.uid
+		console.log('userId: ', userId)
+		console.log('payload.resumeId: ', payload.resumeId)
+		try {
+			// 1) First delete database reference
+			const resumeUploads = await firestore.collection('resumes_long').doc(`${payload.resumeId}`).get()
+			console.log('resumeUploads: ', resumeUploads.data())
+			const uploadRef = resumeUploads.data().uploads.find(upload => upload.name === payload.name)
+			console.log('uploadRef: ', uploadRef)
+			if (uploadRef) {
+				// await firestore.collection('resumes_long').doc(`${payload.resumeId}`).update({
+				// 	uploads: uploads.filter(upload => upload.name !== 'ghi')})
+				
+				let uploadRef = firestore.collection('resumes_long').doc(`${payload.resumeId}`)
+      			uploadRef.get().then(doc => {
+        			uploadRef.update({
+          				uploads: doc.data().uploads.filter(upload => upload.name !== 'def')
+        			})
+      			})
+			}
+			// await firestore.collection('resumes_long').doc(`${payload.resumeId}/uploads`)
+			
+			// 2) Then delete file in storage
+			// const fileRef = storage.ref().child(`resumes/${userId}/${payload.name}`)
+			// await fileRef.delete()
+			new Noty({
+				type: 'success',
+				text: 'File was successfully deleted',
+				timeout: 5000,
+				theme: 'metroui'
+			}).show()
+		} catch (error) {
+			new Noty({
+				type: 'error',
+				text: 'File could not be deleted',
+				timeout: 5000,
+				theme: 'metroui'
+			}).show()
+			console.log('error: ', error)
+		}
 	}
 }
 

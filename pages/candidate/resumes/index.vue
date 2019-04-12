@@ -1,7 +1,7 @@
 <template>
     <v-layout row wrap>
     	<b>loadedUser:</b> {{ loadedUser }}<br />
-    	<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /> -->
+    	<b>loadedUserResumes:</b> {{ loadedUserResumes }}<br />
         <v-layout justify-center>
             <h2>My resumes</h2><br />
         </v-layout>

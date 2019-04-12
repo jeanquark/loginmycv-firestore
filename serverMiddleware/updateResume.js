@@ -1,7 +1,8 @@
 const express = require('express'),
       admin = require('firebase-admin'),
       validate = require('validate.js'),
-      multer = require('multer'),
+	  multer = require('multer'),
+	  jsonDiff = require('json-diff'),
       moment = require('moment');
 
 const app = express();
@@ -23,6 +24,18 @@ module.exports = app.use(async function (req, res, next) {
         }, 0);
 		console.log('totalSize: ', totalSize);
 		
+		// Compare old uploads state with new uploads state to catch any difference
+		const oldResumeUploads = await admin.firestore().collection('resumes_long').doc(resume.id).get();
+		console.log('oldResumeUploads.data().uploads: ', oldResumeUploads.data().uploads);
+
+		const newResumeUploads = resume.uploads;
+		console.log('newResumeUploads: ', newResumeUploads);
+
+
+		// console.log('Are both uploads objects similar? ', JSON.stringify(oldResumeUploads.data().uploads) === JSON.stringify(newResumeUploads));
+		console.log('jsonDiff: ', jsonDiff.diff(oldResumeUploads.data().uploads, newResumeUploads));
+		console.log('json.Diff.diffString: ', jsonDiff.diffString(oldResumeUploads.data().uploads, newResumeUploads));
+
 		// Retrieve user total space
         // const userPrivateData = await admin.firestore().collection('users').doc(resume.user_id).collection('private').doc(resume.user_id).get();
         // const userTotalSpace = userPrivateData.data().total_space_in_bytes;
@@ -40,10 +53,10 @@ module.exports = app.use(async function (req, res, next) {
 		// }
 		
 		// 3) Get old resume slug to check if there is a new slug and if it is already used by another resume
-		const oldResume = await admin.firestore().collection('resumes_long').doc(resume.id).get()
-		console.log('oldResume.data(): ', oldResume.data());
+		const oldResume = await admin.firestore().collection('resumes_long').doc(resume.id).get();
+		// console.log('oldResume.data(): ', oldResume.data());
 		const oldSlug = oldResume.data().slug;
-		console.log('oldSlug: ', oldSlug);
+		// console.log('oldSlug: ', oldSlug);
 
 		if (resume.updateResumeSlug) {
 			console.log('You changed the resume slug!');

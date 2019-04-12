@@ -33,6 +33,32 @@ module.exports = {
         //         lang: 'en'
         //     }
         // ],
+        [
+            "nuxt-fontawesome",
+            {
+                component: "fa",
+                imports: [
+                    // import whole set
+                    {
+                        set: "@fortawesome/free-solid-svg-icons",
+                        icons: ["fas"]
+                    },
+                    // {
+                    //     set: "@fortawesome/free-brands-svg-icons",
+                    //     icons: ["fab"]
+                    // }
+                ]
+            },
+            // {
+            //     component: "fab",
+            //     imports: [
+            //         {
+            //             set: "@fortawesome/free-brands-svg-icons",
+            //             icons: ["fab"]
+            //         }
+            //     ]
+            // }
+        ],
     ],
     axios: {
         proxyHeaders: false
