@@ -125,7 +125,11 @@ module.exports = {
         {
             path: '/update-resume', // POST request
             handler: '~/serverMiddleware/updateResume'
-        }
+        },
+        // {
+        //     path: '/delete-resume-upload', // POST request
+        //     handler: '~/serverMiddleware/deleteResumeUpload'
+        // }
     ],
     css: ["~/assets/style/app.styl"],
     /*

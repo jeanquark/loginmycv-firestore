@@ -116,7 +116,7 @@ export const actions = {
 			console.log('payload: ', payload)
 
 			// 1) Send resume to server to save
-			const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+			// const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 			let formData = new FormData();
 			formData.append('data', JSON.stringify(payload))
 			for (let fileUpload of payload.uploads) {
@@ -158,10 +158,10 @@ export const actions = {
 				// 3) Upload & save files
 				if (payload.uploads.length > 0) {
 					let uploadedFiles = []
-					for (const [index, file] of payload.uploads.entries()) {
-						console.log('Save files')
-						const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
-						const uploadedFile = await storageFileRef.put(file)
+					for (const [index, upload] of payload.uploads.entries()) {
+						console.log('Save files: ', upload)
+						const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${upload.name}`)
+						const uploadedFile = await storageFileRef.put(upload.file)
 						const downloadUrl = await uploadedFile.ref.getDownloadURL()
 						const newFile = {
 							name: uploadedFile.metadata.name,
@@ -186,89 +186,60 @@ export const actions = {
 		}
 	},
 	async updateResume ({ commit }, payload) {
-		console.log('Call to updateResume: ', payload)
 		try {
-			console.log('payload: ', payload)
+			// console.log('payload: ', payload)
+			const oldResume = await firestore.collection('resumes_long').doc(payload.id).get();
 
-			// 1) Send resume to server to update
-			const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-			let formData = new FormData()
-			formData.append('data', JSON.stringify(payload))
-			for (let fileUpload of payload.uploads) {
-				formData.append('file', fileUpload)
+			// 1) Get all files to delete
+			const filesToDelete = []
+			oldResume.data().uploads.forEach(file => {
+				if (!payload.uploads.find(upload => upload.name === file.name && upload._updated_at === file._updated_at)) {
+					filesToDelete.push(file)
+				}
+			})
+			console.log('filesToDelete: ', filesToDelete)
+			for (let file of filesToDelete) {
+				const uploadRef = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
+				if (uploadRef) {
+					uploadRef.delete()
+				}
 			}
-			// Also add candidate picture
-			formData.append('file', payload.personal_data.picture)
-			const updateResume = await axios.post('/update-resume', formData, {
+
+			// 2) Get all files to upload
+			const filesToAdd = []
+			payload.uploads.forEach(upload => {
+				if (!oldResume.data().uploads.find(file => file.name === upload.name && file._updated_at === upload._updated_at)) {
+					filesToAdd.push(upload)
+				}
+			})
+			console.log('filesToAdd: ', filesToAdd)
+			for (let file of filesToAdd) {
+				const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+				const downloadUrl = await uploadedFile.ref.getDownloadURL()
+				const newUpload = {
+					name: uploadedFile.metadata.name,
+					size_in_bytes: uploadedFile.metadata.size,
+					downloadUrl: downloadUrl,
+					title: file.title,
+					_created_at: moment().unix(),
+					_updated_at: moment().unix()
+				}
+				console.log('newUpload: ', newUpload)
+				const index = payload.uploads.findIndex(upload => upload.name === file.name)
+				payload.uploads[index] = newUpload
+			}
+			console.log('payload2: ', payload)
+
+			// 3) Update resume on the server
+			const updatedResume = await axios.post('/update-resume', payload, {
 				headers: {
-					'Content-Type': 'multipart/form-data',
 					'app-key': process.env.APP_KEY
 				}
 			})
-			console.log('updateResume: ', updateResume)
+
 		} catch (error) {
-			commit('setLoading', false, { root: true })
 			console.log('error: ', error)
-			new Noty({
-				type: 'error',
-				text: 'Your resume could not be saved',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
-		}
-	},
-	// async fetchResumes ({ commit }) {
-	// 	console.log('Call to fetchResumes action')
-	// 	const snapshot = await firestore.collection('resumes').get()
-	// 	const resumesArray = []
-	// 	snapshot.forEach(doc => {
-	// 		resumesArray.push(doc.data())
-	// 	})
-	// 	console.log('resumesArray: ', resumesArray)
-	// 	commit('setResumes', resumesArray)
-	// },
-	async removeUpload ({ commit }, payload) {
-		console.log('payload.name: ', payload.name)
-		const userId = auth.currentUser.uid
-		console.log('userId: ', userId)
-		console.log('payload.resumeId: ', payload.resumeId)
-		try {
-			// 1) First delete database reference
-			const resumeUploads = await firestore.collection('resumes_long').doc(`${payload.resumeId}`).get()
-			console.log('resumeUploads: ', resumeUploads.data())
-			const uploadRef = resumeUploads.data().uploads.find(upload => upload.name === payload.name)
-			console.log('uploadRef: ', uploadRef)
-			if (uploadRef) {
-				// await firestore.collection('resumes_long').doc(`${payload.resumeId}`).update({
-				// 	uploads: uploads.filter(upload => upload.name !== 'ghi')})
-				
-				let uploadRef = firestore.collection('resumes_long').doc(`${payload.resumeId}`)
-      			uploadRef.get().then(doc => {
-        			uploadRef.update({
-          				uploads: doc.data().uploads.filter(upload => upload.name !== 'def')
-        			})
-      			})
-			}
-			// await firestore.collection('resumes_long').doc(`${payload.resumeId}/uploads`)
-			
-			// 2) Then delete file in storage
-			// const fileRef = storage.ref().child(`resumes/${userId}/${payload.name}`)
-			// await fileRef.delete()
-			new Noty({
-				type: 'success',
-				text: 'File was successfully deleted',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
-		} catch (error) {
-			new Noty({
-				type: 'error',
-				text: 'File could not be deleted',
-				timeout: 5000,
-				theme: 'metroui'
-			}).show()
-			console.log('error: ', error)
-		}
+		}	
 	}
 }
 

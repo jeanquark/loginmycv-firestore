@@ -85,8 +85,8 @@ module.exports = app.use(async function (req, res, next) {
             'job_title': { presence: true, length: { maximum: 50 }},
             'job_description': { presence: true, length: { maximum: 150 }},
             'personal_data.email': { presence: true, email: true },
-            'personal_data.firstname': { presence: true, length: { maximum: 5 }},
-            'personal_data.lastname': { presence: true, length: { maximum: 5 }},
+            'personal_data.firstname': { presence: true, length: { maximum: 50 }},
+            'personal_data.lastname': { presence: true, length: { maximum: 50 }},
         };
         if (newResume.allow_visitor_access) {
             constraints['password'] = { presence: true }
@@ -134,7 +134,7 @@ module.exports = app.use(async function (req, res, next) {
             job_description: newResume.job_description,
             picture: '',
             key_competences: newResume.key_competences ? newResume.key_competences : [],
-            languages: newResume.personal_data ? newResume.personal_data.languages : []
+            languages: newResume.languages ? newResume.languages : []
         })
 
         // 7) Save user for password access

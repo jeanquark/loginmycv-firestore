@@ -292,16 +292,16 @@
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
                 this.creatingResumeDialog = true
                 this.loadingCreateResume = true
-                const that = this
-                setTimeout(() => {
-                    that.loadingCreateResume = false
-                    that.loadingUploadFiles = true
-                }, 3000)
-                setTimeout(() => {
-                    that.loadingUploadFiles = false
-                    that.$router.push('/candidate/resumes')
-                }, 5000)
-                return
+                // const that = this
+                // setTimeout(() => {
+                //     that.loadingCreateResume = false
+                //     that.loadingUploadFiles = true
+                // }, 3000)
+                // setTimeout(() => {
+                //     that.loadingUploadFiles = false
+                //     that.$router.push('/candidate/resumes')
+                // }, 5000)
+                // return
                 // Perform vee-validate check
                 await this.$validator.validateAll()
                 if (this.errors && this.errors.items && this.errors.items.length > 0) {
@@ -316,9 +316,12 @@
                     this.loadedNewResume.user_id = this.loadedUser.id
 
                     try {
-                        this.loadingCreateResume = true
                         await this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
+                        this.loadingCreateResume = false
+                        this.$router.push('/candidate/resumes')
                     } catch (error) {
+                        this.loadingCreateResume = false
+                        this.creatingResumeDialog = false
                         console.log('error2: ', error)
                         new Noty({
                             type: 'error',

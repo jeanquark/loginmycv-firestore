@@ -53,7 +53,7 @@
 
 						<br />
 
-						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].name ? true : false"></v-text-field>
+						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true"></v-text-field>
 						<input
 							type="file"
 							style="display: none"
@@ -64,7 +64,7 @@
 					</v-card-text>
 
 					<v-card-actions class="justify-center">
-						<v-btn flat color="error" @click="removeUpload(file, index)">Remove</v-btn>
+						<v-btn flat color="error" @click="removeUpload(index)">Remove</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-flex>
@@ -86,6 +86,8 @@
 
 <script>
 	import { firestore, storage } from '~/plugins/firebase-client-init'
+	import moment from 'moment'
+	import Noty from 'noty'
     export default {
 		props: ['picture'],
         async created () {
@@ -96,53 +98,20 @@
 			// if (!this.$store.getters['resumes/loadedUserResumes']) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
 				await this.$store.dispatch('app-parameters/fetchAppParameters')
+
 			// }
 			this.userTotalUsedSpace()
-        },
+			// this.$store.commit('setLoading', false)
+		},
+		async mounted () {
+			const resume = await this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
+			if (resume) {
+				this.loading = new Array(resume.length)
+			}
+		},
         data () {
             return {
-				// fileName: '',
-                // imageUrl: '',
-                // imageFile: '',
-				// uploadingNewImage: false,
-				// fileTitle: '',
-				// downloadUrl: '',
-				// fileName2: [],
-				// files: [
-				// 	{
-				// 		title: '',
-				// 		file: '',
-				// 		size_in_bytes: 0,
-				// 		downloadLink: ''
-				// 	}
-				// ],
-				// fileTitle2: [],
-				// items: [{
-				// 		title: '',
-				// 		file: '',
-				// 		size: 0,
-				// 		downloadLink: ''
-				// 	}
-					// {
-					// 	avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-					// 	title: 'Brunch this weekend?',
-					// 	subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-					// },
-					// // { divider: true, inset: true },
-					// {
-					// 	avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-					// 	title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-					// 	subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend."
-					// },
-					// // { divider: true, inset: true },
-					// {
-					// 	avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-					// 	title: 'Oui oui',
-					// 	subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?"
-					// }
-				// ],
-				// totalUploadSize: 0,
-				totalUploadSize: null
+				totalUploadSize: 0
             }
         },
         computed: {
@@ -162,20 +131,6 @@
 			loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
             },
-			// getTotalUploadSize () {
-			// 	const userResumes = this.$store.getters['resumes/loadedUserResumes']
-			// 	console.log('userResumes: ', userResumes)
-
-			// 	let totalUploadSize = 0
-			// 	userResumes.forEach(resume => {
-			// 		resume.uploads.forEach(upload => {
-			// 			totalUploadSize += parseInt(upload.size)
-			// 		})
-			// 	})
-			// 	console.log('totalUploadSize: ', totalUploadSize)
-			// 	// this.totalUploadSize = totalUploadSize
-			// 	return totalUploadSize
-			// },
 			totalSize () {
 				if (this.userResume.uploads) {
 					if (this.picture && this.picture.size) {
@@ -187,12 +142,16 @@
 							return accumulator + parseInt(file.size_in_bytes)
 						}, parseInt(this.totalUploadSize))
 					}
+				} else {
+					return parseInt(this.totalUploadSize)
 				}
 			},
 			totalSizePercent () {
 				const limit = 10 * 1024 * 1024
 				// const limit = this.$store.getters['app_parameters/users']['initial_space_in_bytes']
-				return Number((this.totalSize/limit) * 100).toFixed(1)
+				// if (this.totalSize) {
+					return Number((this.totalSize/limit) * 100).toFixed(1)
+				// }
 			},
 			userFreeSpace () {
 				if (this.loadedUser.private) {
@@ -203,114 +162,46 @@
         },
         methods: {
 			addUpload () {
+				console.log('addUpload')
 				this.userResume.uploads.push({
 					file: '',
 					title: '',
 					name: '',
-					size_in_bytes: 0
+					size_in_bytes: 0,
+					new: true,
+					_updated_at: moment().unix()
 				})
 			},
-			async removeUpload (file, index) {
-				console.log('file: ', file)
-				console.log('index: ', index)
-					await this.$store.dispatch('resumes/removeUpload', { ...file, resumeId: this.userResume.id })
-					// this.userResume.uploads.splice(index, 1)
-
+			async removeUpload (index) {
+				this.userResume.uploads.splice(index, 1)
 			},
 			async userTotalUsedSpace () {
 				let sum = 0
-				const userResumes = await firestore.collection('resumes_long').where('user_id', '==', this.loadedUser.id).get()
-				const userResumesIds = []
+				const userResumes = this.$store.getters['resumes/loadedUserResumes']
 				userResumes.forEach(resume => {
-					userResumesIds.push(resume.id)
-				})
-				// console.log('userResumesIds: ', userResumesIds)
-				for (let resumeId of userResumesIds) {
-					const resumeUploads = await firestore.collection('resumes_long').doc(resumeId).collection('uploads').doc(resumeId).get()
-					// console.log('resumeUploads: ', resumeUploads.data().uploads)
-					for (let upload of resumeUploads.data().uploads) {
-						// console.log('upload: ', upload)
-						sum += upload.size_in_bytes
+					const uploadsArray = resume.uploads
+					if (uploadsArray) {
+						uploadsArray.forEach(upload => {
+							sum += upload.size_in_bytes
+						})
 					}
-				}
+				})
 				// console.log('sum: ', sum)
 				this.totalUploadSize = sum
 			},
 			pickFile (index) {
-				// console.log('index: ', index)
-				// console.log(this.$refs)
-				// console.log(this.$refs[index][0].click ())
 				this.$refs[index][0].click()
 			},
 			async onFilePicked (e, index) {
 				const files = e.target.files
 				console.log('files: ', files)
 				console.log('index: ', index)
-				this.userResume.uploads[index].file = files[0]
-				// this.userResume.uploads[index] = files[0]
-				this.userResume.uploads[index].name = files[0].name
-				this.userResume.uploads[index].size_in_bytes = parseInt(files[0].size)
-				// this.loadedNewResume.uploads[index] = files
-				// console.log('this.userResume.uploads: ', this.userResume.uploads)
-			},
-			async onFilePicked2 (e) {
-				// var storageRef = storage.ref('mlb2.jpg')
-				// console.log('storageRef: ', storageRef)
-
-				const files = e.target.files
-
-				if (files[0] !== undefined) {
-					// console.log('file: ', file)
-					const file = files[0]
-					const fileName = files[0].name
-					this.fileName = files[0].name
-					// console.log('fileName: ', fileName)
-					// console.log(fileName.substring(fileName.lastIndexOf('.') + 1)) //pdf
-					if (fileName.substring(fileName.lastIndexOf('.') + 1) === 'pdf') { // Check if file is pdf
-						// const storageResumeRef = storage.ref(`resumes`)
-						// const storageUserRef = storageResumeRef.ref(`${this.loadedUser.id}/${fileName}`)
-						// const storageFileRef = storageUserRef.ref(`${fileName}`)
-						try {
-							const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileName}`)
-							const snapshot = await storageFileRef.put(file)
-							console.log('snapshot: ', snapshot)
-							this.downloadUrl = await snapshot.ref.getDownloadURL()
-							console.log('this.downloadUrl: ', this.downloadUrl)
-						} catch (error) {
-							console.log('error: ', error)
-						}
-						// console.log('snapshot.ref.getDownloadURL(): ', snapshot.ref.getDownloadURL())
-					}
-					// console.log(this.loadedUser.id)
-					// console.log(storageRef)
+				if (files[0]) {
+					this.userResume.uploads[index].file = files[0]
+					this.userResume.uploads[index].name = files[0].name
+					this.userResume.uploads[index].size_in_bytes = parseInt(files[0].size)
 				}
-			},
-            onFilePicked3 (e) {
-                this.uploadingNewImage = true
-                const files = e.target.files
-                console.log('files: ', files)
-                if (files[0] !== undefined) {
-                    this.imageName = files[0].name
-                    if (this.imageName.lastIndexOf('.') <= 0) {
-                        return
-                    }
-                    const fr = new FileReader ()
-                    fr.readAsDataURL(files[0])
-                    console.log('fr: ', fr)
-                    fr.addEventListener('load', () => {
-                        this.imageUrl = fr.result
-                        // this.imageFile = files[0] // this is an image file that can be sent to server...
-                        // this.loadedUserResume.image_new = fr.result
-                        this.userResume.image_new = fr.result
-                        // this.candidateLongResume.image_new = 'abc'
-                        this.uploadingNewImage = false
-                    })   
-                } else {
-                    this.imageName = ''
-                    this.imageFile = ''
-                    this.imageUrl = ''
-                }
-			},
+			}
         }
     }
 </script>
