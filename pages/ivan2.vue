@@ -1,7 +1,7 @@
 <template>
 	<div v-cloak style="border: 2px solid green;">
 	    <v-toolbar
-	      color="black"
+	      color="#202026"
 	      dark
 	      fixed
 	      app
@@ -50,21 +50,23 @@
 			<!-- <v-container fluid fill-height style="border: 2px solid orange;"> -->
 				<br /><br /><br />
 				<!-- <v-layout justify-center align-center> -->
-				<v-layout>
+
+				<!-- Section Intro -->
+				<v-layout class="my-5">
 					<v-flex xs12 sm8 offset-sm2>
 						<v-layout>
 							<v-flex xs12 sm6 style="border: 1px solid orange;">
-								<v-chip color="purple" text-color="white" style="padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
+								<v-chip color="purple" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
 								<h1>Alex Johnson</h1><br />
 								<h2>Product Designer</h2><br /><br />
 
-								<fa icon="envelope" size="1x" /> getemail@email.com<br /><br />
-								<fa icon="phone" /> +12 986 987 7867<br /><br />
-								<fa icon="location-arrow" /> 37, Pollsatnd, New York, United State<br /><br />
+    							<font-awesome-icon :icon="['fas', 'envelope']" /> getemail@email.com<br />
+    							<font-awesome-icon :icon="['fas', 'phone']" /> +12 986 987 7867<br />
+    							<font-awesome-icon :icon="['fas', 'location-arrow']" /> 37, Pollsatnd, New York, United State<br />
 
-								<!-- <fa icon="facebook" /> -->
-								<fab icon="twitter" />
-								<!-- <fa icon="fab fa-github" /> -->
+								<v-chip label><font-awesome-icon :icon="['fab', 'facebook']" size="2x" /></v-chip>
+								<v-chip label><font-awesome-icon :icon="['fab', 'linkedin']" size="2x" /></v-chip>
+    							<v-chip label><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip>
 
 							</v-flex>
 							<v-flex xs12 sm6 style="border: 1px solid red;">
@@ -80,7 +82,96 @@
 						</v-layout>
 					</v-flex>
 				</v-layout>
-			<!-- </v-container> -->
+
+				<!-- Section About -->
+				<v-layout row wrap style="border: 1px solid orangered;" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout align-center>
+							<v-flex xs12 sm6>
+								<v-img src="/images/ab-img.png"></v-img>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<h2>About Me</h2>
+								<p>Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at</p>
+								<v-chip label outline :color="primaryColor" class="label">php</v-chip>
+								<v-chip label outline color="red" class="label">html</v-chip>
+								<v-chip label outline color="red" class="label">css</v-chip>
+								<v-chip label outline color="red" class="label">wordpress</v-chip>
+								<v-chip label outline color="red" class="label">react</v-chip>
+								<v-chip label outline color="red" class="label">javascript</v-chip>
+								<br />
+								<v-chip :color="primaryColor" text-color="white" style="padding: 6px 20px; border-radius: 25px;"><b>Download CV</b></v-chip><br />
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<!-- Section What I do -->
+				<v-layout row wrap style="border: 1px dashed orangered;" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout>
+							<v-flex xs12 sm6 v-for="index in 3" :key="index" class="ma-2">
+								<v-card color="#202026">
+									<v-card-title primary-title>
+										<div>
+											<h3 class="headline mb-0 white--text">UI Design</h3>
+										</div>
+									</v-card-title>
+
+									<v-card-text class="white--text">
+										Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+									</v-card-text>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<!-- Section Skills -->
+				<v-layout row wrap style="border: 1px dashed orangered;" class="my-5">
+					<v-flex xs12 sm8 offset-sm2 style="border: 1px solid green;">
+						<v-layout>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Technical Skills</h2><br /><br />
+								<div class="mx-5" v-for="index in 5" :key="index">
+									<!-- <v-layout align-center> -->
+										<v-layout>
+											<v-flex class="text-xs-left">
+												<span>JavaScript</span>
+											</v-flex>
+											<v-flex class="text-xs-right">
+												<span>86%</span>
+											</v-flex>
+										</v-layout>
+										<v-progress-linear
+											color="red"
+											height="10"
+											value="60"
+											style="border-radius: 10px; margin: 6px 0px;"
+										></v-progress-linear>
+									<!-- </v-layout> -->
+								</div>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Professional Skills</h2><br /><br />
+								<v-layout row wrap class="">
+									<v-flex xs6 v-for="index in 4" :key="index" class="pa-3 text-xs-center">
+										<v-progress-circular
+											:rotate="270"
+											:size="100"
+											:width="5"
+											value="95"
+											color="purple"
+										>
+											95%
+										</v-progress-circular><br /><br />
+										Communication
+									</v-flex>
+								</v-layout>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
 		</v-content>
 
 		<v-footer color="blue-grey" class="white--text" app>
@@ -132,6 +223,7 @@
 		 //            return false;
 		 //        });
    //      	});
+			this.primaryColor = 'red'
 		},
 		data () {
 		    return {
@@ -149,7 +241,8 @@
 		      	drawer: false,
       			// drawerRight: null,
       			// right: false,
-      			// left: false
+				  // left: false
+				primaryColor: ''
 		    }
 		},
 		computed: {
@@ -177,5 +270,12 @@
 		cursor: pointer;
 		color: purple;
 		border-bottom: white solid 1px;
+	}
+	.label {
+		margin: 5px 15px;
+	}
+	.label:hover {
+		color: yellow;
+		background-color: yellow;
 	}
 </style>
