@@ -1,7 +1,7 @@
 <template>
-	<div v-cloak style="border: 2px solid green;">
+	<div v-cloak style="border: 2px solid green;" :style="cssProps">
 	    <v-toolbar
-	      color="#202026"
+	      :color="secondaryColor"
 	      dark
 	      fixed
 	      app
@@ -56,8 +56,8 @@
 					<v-flex xs12 sm8 offset-sm2>
 						<v-layout>
 							<v-flex xs12 sm6 style="border: 1px solid orange;">
-								<v-chip color="purple" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
-								<h1>Alex Johnson</h1><br />
+								<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
+								<h1 id="fullName">Alex Johnson</h1><br />
 								<h2>Product Designer</h2><br /><br />
 
     							<font-awesome-icon :icon="['fas', 'envelope']" /> getemail@email.com<br />
@@ -223,7 +223,9 @@
 		 //            return false;
 		 //        });
    //      	});
-			this.primaryColor = 'red'
+			this.primaryColor = '#a97afd'
+			this.secondaryColor = '#202026',
+			this.backgroundColor = '#000'
 		},
 		data () {
 		    return {
@@ -242,11 +244,19 @@
       			// drawerRight: null,
       			// right: false,
 				  // left: false
-				primaryColor: ''
+				primaryColor: '',
+				secondaryColor: '',
+				backgroundColor: ''
 		    }
 		},
 		computed: {
-
+			cssProps() { 
+				return {
+					'--primary-color': this.primaryColor,
+					'--secondary-color': this.secondaryColor,
+					'--background-collor': this.backgroundColor
+				}
+			}
 		},
 		methods: {
 			abc () {
@@ -277,5 +287,11 @@
 	.label:hover {
 		color: yellow;
 		background-color: yellow;
+	}
+	#fullName {
+		color: var(--primary-color)
+	}
+	.primary-color {
+		background: var(--primary-color)
 	}
 </style>
