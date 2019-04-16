@@ -1,7 +1,7 @@
 const express = require('express'),
 	  bodyParser = require('body-parser');
 
-const API_KEY = 'key-6986156f0b484115f801123be503938e';
+const API_KEY = '';
 const DOMAIN = 'sandboxaf5a7f5d612a43e9b8f115ddb78e033d.mailgun.org';
 const mailgun = require('mailgun-js')({apiKey: API_KEY, domain: DOMAIN});
 
