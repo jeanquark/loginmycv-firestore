@@ -98,11 +98,42 @@
                         </v-btn>
                     </v-card-actions>
                     <v-layout justify-center>
-                        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn>
+                        <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn>
                     </v-layout>          
                 </v-stepper>
             </v-flex>
         </v-layout>
+
+        <!-- Modal to create resume -->
+        <v-dialog
+            v-model="updatingResumeDialog"
+            width="500"
+        >
+            <!-- <v-container fill-height>
+                <v-layout row wrap align-center>
+                    <v-flex>  -->
+            <v-card light>
+
+                <v-card-title
+                    class="headline justify-center primary white--text"
+                    primary-title
+                >
+                    Updating resume
+                </v-card-title>
+
+                <v-card-text style="min-height: 300px;">        
+                    <v-alert
+                        value="true"
+                        color="primary"
+                        outline
+                    >
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume
+                        </div>
+                    </v-alert>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -117,6 +148,7 @@
     import educationComponent from '~/components/resume/EducationComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
+    import Noty from 'noty'
 	export default {
         components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
@@ -161,8 +193,9 @@
                 //     }  
                 // ],
                 resumeSlug: '',
-                loadingCreateResume: false,
-                loadingUploadFiles: false
+                loadingUpdateResume: false,
+                loadingUploadFiles: false,
+                updatingResumeDialog: false
 			}
 		},
 		computed: {
@@ -207,13 +240,23 @@
                 try {
                     console.log('updateResume')
                     console.log(this.loadedUserResume)
+                    this.updatingResumeDialog = true
+                    this.loadingUpdateResume = true
                     await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
-                    // return response
+                    this.updatingResumeDialog = false
+                    this.loadingUpdateResume = false
+                    
+                    new Noty({
+                        type: 'success',
+                        text: 'Your resume was successfully updated.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
                 } catch (error) {
                     console.log('error updateResume: ', error)
                     new Noty({
                         type: 'error',
-                        text: 'Your resume could not be updated',
+                        text: 'Your resume could not be updated.',
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()

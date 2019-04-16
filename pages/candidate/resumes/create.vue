@@ -147,6 +147,8 @@
                 </v-stepper>
             </v-flex>
         </v-layout>
+
+        <!-- Modal to create resume -->
         <v-dialog
             v-model="creatingResumeDialog"
             width="500"

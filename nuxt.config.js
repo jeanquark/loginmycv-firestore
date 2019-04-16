@@ -124,6 +124,10 @@ module.exports = {
         //     path: '/delete-resume-upload', // POST request
         //     handler: '~/serverMiddleware/deleteResumeUpload'
         // }
+        {
+            path: '/send-contact-form-message', // POST request
+            handler: '~/serverMiddleware/sendContactFormMessage'
+        },
     ],
     css: ["~/assets/style/app.styl"],
     /*

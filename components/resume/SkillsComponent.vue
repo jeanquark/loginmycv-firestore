@@ -12,7 +12,7 @@
             color="warning"
             icon="priority_high"
             outline
-            v-if="!userResume.skills.length > 0"
+            v-if="!userResume.skills || userResume.skills.length < 1"
         >
             You have no item here, please click on the rounded pink button to add one
         </v-alert>
@@ -34,30 +34,89 @@
                 </v-btn>
                 <v-card>
                     <v-card-title
-                        class="headline"
+                        class="headline justify-center"
                         primary-title
                     >
-                        Add a new skill category
+                        Add a new skill
                     </v-card-title>
+                
 
                     <v-card-text>
+                        userSkillsCategories: {{ userSkillsCategories }}<br />
+                        userSkillsSubCategories: {{ userSkillsSubCategories }}<br />
+                        <v-layout row wrap align-center>
+                            <v-flex xs8>
+                                <v-text-field
+                                    v-model="newSkillCategory.name"
+                                    label="Category name"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row wrap align-center>
+                            <v-flex xs8>
+                                <v-text-field
+                                    v-model="newSkillSubCategory.name"
+                                    label="Subcategory name"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-btn small color="secondary" @click="addSkillSubCategory">Add subcategory</v-btn>
+                            </v-flex>
+                        </v-layout>
+
+                        Color?<br />
+                        Provide measure?<br />
+                        Pie or Bar?<br />
+                        Max value?<br />
+
+                        <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
+
+                        <v-layout row wrap>
+                            <v-flex xs6 class="pr-2">
+                                <v-select
+                                    :items="userSkillsCategories"
+                                    label="Category"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs6 class="pl-2">
+                                <v-select
+                                    :items="userSkillsSubCategories"
+                                    label="Subcategory"
+                                ></v-select>
+                            </v-flex>
+                        </v-layout>
+
                         <v-text-field
-                            v-model="newSkillCategory.name"
-                            label="Category name"
-                            :counter="10"
+                            v-model="newSkill.name"
+                            label="Skill name"
+                            :counter="30"
                         ></v-text-field>
-                        <!-- <v-text-field
-                            v-model="newSkillCategory.slug"
-                            label="Category slug"
-                            :counter="10"
-                        ></v-text-field> -->
+
+                        <v-slider
+                            v-model="newSkill.value"
+                            label="Skill Value"
+                            :max="100"
+                            :min="0"
+                            :step="10"
+                        ></v-slider>
+                        <div class="text-xs-center">
+                            {{ newSkill.value }}/100
+                        </div>
                     </v-card-text>
                     <v-card-actions class="justify-center">
-                        <v-btn class="success" @click="addSkillCategory(newSkillCategory)">Add Skill Category</v-btn>
+                        <v-btn class="success" @click="addSkillCategory(newSkillCategory)">Add Skill</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
             
+
+
             
             <v-expansion-panel-content
                 v-for="(skillCategory, parentIndex) in userSkills" :key="parentIndex"
@@ -139,7 +198,7 @@
                                 color="warning"
                                 icon="priority_high"
                                 outline
-                                v-if="!userSkills[parentIndex].items.length > 0"
+                                v-if="!userSkills[parentIndex].items || userSkills[parentIndex].items.length < 1"
                             >
                                 You have no item in this category, please hit the small rounded pink button to add one
                             </v-alert>
@@ -203,6 +262,19 @@
             console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
         },
+        mounted () {
+            // this.userSkillsCategories.push(this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null))
+            this.userResume.skills.forEach(skill => {
+                if (!this.userSkillsCategories.includes(skill.category)) {
+                    this.userSkillsCategories.push(skill.category)
+                }
+            })
+            this.userResume.skills.forEach(skill => {
+                if (skill.subcategory != null && !this.userSkillsSubCategories.includes(skill.subcategory)) {
+                    this.userSkillsSubCategories.push(skill.subcategory)
+                }
+            })
+        },
         data () {
             return {
                 resumeSlug: '',
@@ -211,14 +283,23 @@
                 reference: '',
                 newSkillCategory: {
                     name: '',
-                    slug: '',
-                    children: []
+                    // slug: '',
+                    // children: []
+                },
+                newSkillSubCategory: {
+                    name: ''
                 },
                 newSkill: {
                     name: '',
                     slug: '',
                     value: null
                 },
+                items: [
+                    'abc',
+                    'def'
+                ],
+                userSkillsCategories: [],
+                userSkillsSubCategories: []
                 // skills: [
                 //     {
                 //         name: 'Professional skills',
@@ -271,10 +352,6 @@
             }
         },
         computed: {
-            candidateSkills () {
-                return this.userResume.skills
-                // return this.$store.getters['index/candidateLongResume'].skills
-            },
             userSkills () {
                 return this.userResume.skills
                 // const userResume = this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
@@ -283,6 +360,14 @@
                 // }
                 // return null
             },
+            // fetchUserSkillsCategories () {
+            //     this.userSkillsCategories.push(this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null))
+            //     return
+            //     // return this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null)
+            // },
+            // userSkillsSubCategories () {
+            //     return this.userResume.skills.map(skill => skill.subcategory).filter((v, i, a) => a.indexOf(v) === i && v != null)
+            // },
             userResume () {
                 if (this.resumeSlug) {
                     return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
@@ -296,7 +381,20 @@
                 console.log('saveSkills')
                 console.log(this.skills)
             },
-            addSkillCategory (newSkillCategory) {
+            addSkillCategory () {
+                console.log('addSkillCategory')
+                if (this.newSkillCategory.name && !this.userSkillsCategories.includes(this.newSkillCategory.name)) {
+                    this.userSkillsCategories.push(this.newSkillCategory.name)
+                    this.newSkillCategory = {}
+                }
+            },
+            addSkillSubCategory () {
+                if (this.newSkillSubCategory && !this.userSkillsSubCategories.includes(this.newSkillSubCategory.name)) {
+                    this.userSkillsSubCategories.push(this.newSkillSubCategory.name)
+                    this.newSkillSubCategory = {}
+                }
+            },
+            addSkillCategory2 (newSkillCategory) {
                 console.log('addSkillCategory')
                 // this.candidateSkills.push({
                 this.userResume.skills.push({
@@ -306,6 +404,7 @@
                 })
                 this.modalCategory = false
             },
+            
             addSkill (parentIndex, newSkill) {
                 // console.log('addSkill')
                 // console.log('parentIndex: ', parentIndex)

@@ -1,5 +1,5 @@
 <template>
-	<div v-cloak style="border: 2px solid green;" :style="cssProps" id="content2">
+	<v-app v-cloak style="border: 2px solid green;" :style="cssProps" id="app">
 	    <v-toolbar
 	      :color="secondaryColor"
 	      dark
@@ -67,7 +67,7 @@
 						<v-list-tile-title style="color: red;">Open Temporary Drawer 2</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile @click="abc">
+				<v-list-tile>
 					<v-list-tile-action>
 						<v-icon>home</v-icon>
 					</v-list-tile-action>
@@ -84,149 +84,191 @@
 			<!-- <v-layout justify-center align-center> -->
 			<div v-scroll-spy="{offset: 150}">
 			
-			<!-- Section Intro -->
-			<v-layout class="my-5" id="top">
-				<v-flex xs12 sm8 offset-sm2>
-					<v-layout>
-						<v-flex xs12 sm6 style="border: 1px solid orange;">
-							<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
-							<h1 id="fullName">Alex Johnson</h1><br />
-							<h2>Product Designer</h2><br /><br />
+				<!-- Section Intro -->
+				<v-layout class="my-5" id="top">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout>
+							<v-flex xs12 sm6 style="border: 1px solid orange;">
+								<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br />
+								<h1 id="fullName">Alex Johnson</h1><br />
+								<h2>Product Designer</h2><br /><br />
 
-							<font-awesome-icon :icon="['fas', 'envelope']" /> getemail@email.com<br />
-							<font-awesome-icon :icon="['fas', 'phone']" /> +12 986 987 7867<br />
-							<font-awesome-icon :icon="['fas', 'location-arrow']" /> 37, Pollsatnd, New York, United State<br />
+								<font-awesome-icon :icon="['fas', 'envelope']" /> getemail@email.com<br />
+								<font-awesome-icon :icon="['fas', 'phone']" /> +12 986 987 7867<br />
+								<font-awesome-icon :icon="['fas', 'location-arrow']" /> 37, Pollsatnd, New York, United State<br />
 
-							<v-chip label><font-awesome-icon :icon="['fab', 'facebook']" size="2x" /></v-chip>
-							<v-chip label><font-awesome-icon :icon="['fab', 'linkedin']" size="2x" /></v-chip>
-							<v-chip label><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip>
+								<v-chip label><font-awesome-icon :icon="['fab', 'facebook']" size="2x" /></v-chip>
+								<v-chip label><font-awesome-icon :icon="['fab', 'linkedin']" size="2x" /></v-chip>
+								<v-chip label><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip>
 
-						</v-flex>
-						<v-flex xs12 sm6 style="border: 1px solid red;">
-							<v-layout justify-center>
-								<v-avatar
-									size="350"
-									color="grey lighten-4"
-								>
-									<img src="/images/hero.png" alt="avatar">
-								</v-avatar>
-							</v-layout>
-						</v-flex>
-					</v-layout>
-				</v-flex>
-			</v-layout>
+							</v-flex>
+							<v-flex xs12 sm6 style="border: 1px solid red;">
+								<v-layout justify-center>
+									<v-avatar
+										size="350"
+										color="grey lighten-4"
+									>
+										<img src="/images/hero.png" alt="avatar">
+									</v-avatar>
+								</v-layout>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
 
-			<!-- Section About -->
-			<v-layout row wrap style="border: 1px solid orangered;" id="about" class="my-5">
-				<v-flex xs12 sm8 offset-sm2>
-					<v-layout align-center>
-						<v-flex xs12 sm6>
-							<v-img src="/images/ab-img.png"></v-img>
-						</v-flex>
-						<v-flex xs12 sm6>
-							<h2>About Me</h2>
-							<p>Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at</p>
-							<v-chip label outline :color="primaryColor" class="label">php</v-chip>
-							<v-chip label outline color="red" class="label">html</v-chip>
-							<v-chip label outline color="red" class="label">css</v-chip>
-							<v-chip label outline color="red" class="label">wordpress</v-chip>
-							<v-chip label outline color="red" class="label">react</v-chip>
-							<v-chip label outline color="red" class="label">javascript</v-chip>
-							<br />
-							<v-chip :color="primaryColor" text-color="white" style="padding: 6px 20px; border-radius: 25px;"><b>Download CV</b></v-chip><br />
-						</v-flex>
-					</v-layout>
-				</v-flex>
-			</v-layout>
-
-
-			<!-- Section What I do -->
-			<v-layout row wrap style="border: 1px dashed orangered;" id="whatIdo" class="my-5">
-				<v-flex xs12 sm8 offset-sm2>
-					<h2 class="text-xs-center">What I do</h2><br /><br />
-					<v-layout>
-						<v-flex xs12 sm6 v-for="index in 3" :key="index" class="ma-2">
-							<v-card color="#202026">
-								<v-card-title primary-title>
-									<div>
-										<h3 class="headline mb-0 white--text">UI Design</h3>
-									</div>
-								</v-card-title>
-
-								<v-card-text class="white--text">
-									Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-								</v-card-text>
-							</v-card>
-						</v-flex>
-					</v-layout>
-				</v-flex>
-			</v-layout>
+				<!-- Section About -->
+				<v-layout row wrap style="border: 1px solid orangered;" id="about" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout align-center>
+							<v-flex xs12 sm6>
+								<v-img src="/images/ab-img.png"></v-img>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<h2>About Me</h2>
+								<p>Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at</p>
+								<v-chip label outline :color="primaryColor" class="label">php</v-chip>
+								<v-chip label outline :color="primaryColor" class="label">html</v-chip>
+								<v-chip label outline :color="primaryColor" class="label">css</v-chip>
+								<v-chip label outline :color="primaryColor" class="label">wordpress</v-chip>
+								<v-chip label outline :color="primaryColor" class="label">react</v-chip>
+								<v-chip label outline :color="primaryColor" class="label">javascript</v-chip>
+								<br />
+								<v-chip :color="primaryColor" text-color="white" style="padding: 6px 20px; border-radius: 25px;"><b>Download CV</b></v-chip><br />
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
 
 
-			<!-- Section Skills -->
-			<v-layout row wrap style="border: 1px dashed orangered;" id="skills" class="my-5">
-				<v-flex xs12 sm8 offset-sm2 style="border: 1px solid green;">
-					<v-layout row wrap justify-center align-center>
-						<v-flex xs12 sm6>
-							<h2 class="text-xs-center">Technical Skills</h2>
-						</v-flex>
-						<v-flex xs12 sm6>
-							<h2 class="text-xs-center">Professional Skills</h2>
-						</v-flex>
-					</v-layout>
-					
-					<v-layout row wrap align-center>
-						<v-flex xs12 sm6>
-							<div class="mx-5" v-for="index in 5" :key="index">
-								<v-layout>
-									<v-flex class="text-xs-left">
-										<span>JavaScript</span>
-									</v-flex>
-									<v-flex class="text-xs-right">
-										<span>86%</span>
+				<!-- Section What I do -->
+				<v-layout row wrap style="border: 1px dashed orangered;" id="whatIdo" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<h2 class="text-xs-center">What I do</h2><br /><br />
+						<v-layout>
+							<v-flex xs12 sm6 v-for="index in 3" :key="index" class="ma-2">
+								<v-card color="#202026">
+									<v-card-title primary-title>
+										<div>
+											<h3 class="headline mb-0 white--text">UI Design</h3>
+										</div>
+									</v-card-title>
+
+									<v-card-text class="white--text">
+										Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+									</v-card-text>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+
+				<!-- Section Skills -->
+				<v-layout row wrap style="border: 1px dashed orangered;" id="skills" class="my-5">
+					<v-flex xs12 sm8 offset-sm2 style="border: 1px solid green;">
+						<v-layout row wrap justify-center align-center>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Technical Skills</h2>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Professional Skills</h2>
+							</v-flex>
+						</v-layout>
+						
+						<v-layout row wrap align-center>
+							<v-flex xs12 sm6>
+								<div class="mx-5" v-for="index in 5" :key="index">
+									<v-layout>
+										<v-flex class="text-xs-left">
+											<span>JavaScript</span>
+										</v-flex>
+										<v-flex class="text-xs-right">
+											<span>86%</span>
+										</v-flex>
+									</v-layout>
+									<v-progress-linear
+										:color="primaryColor"
+										height="10"
+										value="60"
+										style="border-radius: 10px; margin: 6px 0px;"
+									></v-progress-linear>
+								</div>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<v-layout row wrap class="">
+									<v-flex xs6 v-for="index in 4" :key="index" class="pa-3 text-xs-center">
+										<v-progress-circular
+											:rotate="270"
+											:size="100"
+											:width="5"
+											value="95"
+											:color="primaryColor"
+										>
+											95%
+										</v-progress-circular><br /><br />
+										Communication
 									</v-flex>
 								</v-layout>
-								<v-progress-linear
-									color="red"
-									height="10"
-									value="60"
-									style="border-radius: 10px; margin: 6px 0px;"
-								></v-progress-linear>
-							</div>
-						</v-flex>
-						<v-flex xs12 sm6>
-							<v-layout row wrap class="">
-								<v-flex xs6 v-for="index in 4" :key="index" class="pa-3 text-xs-center">
-									<v-progress-circular
-										:rotate="270"
-										:size="100"
-										:width="5"
-										value="95"
-										color="purple"
-									>
-										95%
-									</v-progress-circular><br /><br />
-									Communication
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<v-layout row wrap id="contact">
+					<v-flex xs12 sm8 offset-sm2>
+						<h2 class="text-xs-center">Contact</h2>
+						<br /><br />
+						<v-form>
+							<v-layout row wrap>
+								<v-flex xs6 class="pr-3">
+									<v-text-field
+										outline
+										label="First Name"
+										v-model="form.firstname"
+									></v-text-field>
 								</v-flex>
+								<v-flex xs6 class="pl-3">
+									<v-text-field
+										outline
+										label="Last name"
+										v-model="form.lastname"
+									></v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-text-field
+										outline
+										label="Your Email"
+										v-model="form.email"
+									></v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-textarea
+										outline
+										label="Your message"
+										v-model="form.message"
+									></v-textarea>
+								</v-flex>
+								<v-btn round block class="white--text" :color="primaryColor" @click.prevent="sendMessage">Send message</v-btn>
 							</v-layout>
-						</v-flex>
-					</v-layout>
-				</v-flex>
-			</v-layout>
+						</v-form>
+					</v-flex>		
+				</v-layout>
 			</div>
 		</v-content>
 
 		<v-footer color="blue-grey" class="white--text" app>
 			<span>Vuetify</span>
 			<v-spacer></v-spacer>
-			<span>&copy; 2017</span>
+			<span>&copy; 2019</span>
 		</v-footer>
-    </div>
+    </v-app>
 </template>
 
 <script>
 	// import abc from '~/plugins/jm-essai.js'
 	// import jQuery from 'jquery'
+	import axios from 'axios'
+	import Noty from 'noty'
 	export default {
 		head () {
 		    return {
@@ -288,7 +330,13 @@
 				  // left: false
 				primaryColor: '',
 				secondaryColor: '',
-				backgroundColor: ''
+				backgroundColor: '',
+				form: {
+					firstname: '',
+					lastname: '',
+					email: '',
+					message: ''
+				}
 		    }
 		},
 		computed: {
@@ -301,8 +349,29 @@
 			}
 		},
 		methods: {
-			abc () {
-
+			async sendMessage () {
+				try {
+					console.log('sendMessage: ', this.form)
+					await axios.post('/send-contact-form-message', { data: this.form, receiverAddress: 'me@example.com', slug: 'ivan' }, {
+						headers: {
+							'app-key': process.env.APP_KEY
+						}
+					})
+					new Noty({
+						type: 'success',
+						text: 'Your message was successfully sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				} catch (error) {
+					console.log('error: ', error)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error ocurred and your message could not be sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
 			}
 		}
 	}
@@ -329,10 +398,6 @@
 		padding-bottom: 10px;
 		border-bottom: white solid 1px;
 	}
-	.nuxt-link-exact-active {
-		/* padding-bottom: 10px;
-		border-bottom: white solid 1px; */
-	}
 	.label {
 		margin: 5px 15px;
 	}
@@ -344,6 +409,7 @@
 		color: var(--primary-color)
 	}
 	.primary-color {
-		background: var(--primary-color)
+		background: var(--primary-color);
+		/* background-color: blue; */
 	}
 </style>

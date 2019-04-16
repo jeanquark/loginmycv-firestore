@@ -52,6 +52,7 @@
 								<a href="/resume/greg">Go to greg's resume (server)</a><br />
 								<nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br />
 								<nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br />
+								<v-btn color="success">Success button</v-btn>
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
           						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
           						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
