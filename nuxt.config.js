@@ -33,6 +33,7 @@ module.exports = {
         //         lang: 'en'
         //     }
         // ],
+        // ['vue-scrollto/nuxt', { duration: 1500 }],
         [
             "nuxt-fontawesome",
             {
@@ -48,16 +49,7 @@ module.exports = {
                         icons: ["fab"]
                     }
                 ]
-            },
-            // {
-            //     component: "fab",
-            //     imports: [
-            //         {
-            //             set: "@fortawesome/free-brands-svg-icons",
-            //             icons: ["fab"]
-            //         }
-            //     ]
-            // }
+            }
         ],
     ],
     axios: {
@@ -79,6 +71,8 @@ module.exports = {
         { src: '~/plugins/jquery-3.3.1.min.js', ssr: false },
         // { src: '~/plugins/jm-essai.js', ssr: false },
         { src: '~/plugins/vue-scroll-reveal', ssr: false },
+        { src: '~/plugins/vue-scrollto', ssr: false },
+        { src: '~/plugins/vue2-scrollspy', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
