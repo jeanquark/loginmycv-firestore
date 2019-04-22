@@ -4,8 +4,8 @@
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
+            userSkills: {{ userSkills }}<br /><br />
         </p>
-        <!-- userSkills: {{ userSkills }}<br /><br /> -->
         <h2>Skills</h2><br />
         <v-alert
             :value="true"
@@ -69,12 +69,39 @@
                             </v-flex>
                         </v-layout>
 
-                        Color?<br />
-                        Provide measure?<br />
-                        Pie or Bar?<br />
-                        Max value?<br />
-
-                        <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
+                        <br />
+                        <v-layout row wrap class="justify-center">
+                            <!-- <v-flex xs4 offset-xs8 class="justify-center">
+                                <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
+                            </v-flex> -->
+                            <v-flex xs8 offset-xs1 class="text-xs-center" style="border: 1px solid orange; border-radius: 10px; padding: 0px 10px;">
+                                <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
+                                <v-radio-group row v-model="newSkill.type" v-if="newSkill.measure">
+                                    <v-radio
+                                        label="Pie"
+                                        value="pie"
+                                        color="secondary"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="Bar"
+                                        value="bar"
+                                        color="secondary"
+                                    ></v-radio>
+                                </v-radio-group>
+                                <v-radio-group row v-model="newSkill.maxValue" v-if="newSkill.measure">
+                                    <v-radio
+                                        label="Max 10"
+                                        value="max10"
+                                        color="secondary"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="Max 100"
+                                        value="max100"
+                                        color="secondary"
+                                    ></v-radio>
+                                </v-radio-group>
+                            </v-flex>
+                        </v-layout>
 
                         <v-layout row wrap>
                             <v-flex xs6 class="pr-2">
@@ -104,6 +131,7 @@
                             :max="100"
                             :min="0"
                             :step="10"
+                            color="secondary"
                         ></v-slider>
                         <div class="text-xs-center">
                             {{ newSkill.value }}/100
@@ -118,79 +146,26 @@
 
 
             
+
+
             <v-expansion-panel-content
-                v-for="(skillCategory, parentIndex) in userSkills" :key="parentIndex"
+                v-for="(skillCategory, index) in userSkills" :key="index"
             >
-                <div slot="header">{{ skillCategory.name }}</div>
+                <div slot="header">
+                    <v-icon small @click.native.stop="deleteItem(index)">cancel</v-icon>
+                    {{ skillCategory.name }}
+                </div>
                 <!-- index: {{ parentIndex }}<br /><br /> -->
                 <!-- skills: {{ skills }}<br /><br /> -->
                 <!-- skills[parentIndex]: {{ skills[parentIndex] }}<br /><br /> -->
                 <!-- candidateSkills[parentIndex]['children']: {{ candidateSkills[parentIndex]['children'] }}<br /><br /> -->
                 <!-- skills[parentIndex]['children'][0]: {{ skills[parentIndex]['children'][0] }}<br /><br /> -->
                 <!-- candidateSkills: {{ candidateSkills }}<br /><br /> -->
-                skillCategory: {{ skillCategory }}<br /><br />
-                parentIndex: {{ parentIndex }}<br /><br />
+                <!-- skillCategory: {{ skillCategory }}<br /><br /> -->
+                <!-- parentIndex: {{ parentIndex }}<br /><br /> -->
                 
                 
                 <v-card>
-                    <v-dialog
-                        v-model="modalSkill"
-                        width="500"
-                        activator
-                    >
-                        <v-btn
-                            fab
-                            absolute
-                            bottom
-                            right
-                            small
-                            color="pink"
-                            slot="activator"
-                            @click="reference = parentIndex"
-                        >
-                            <v-icon>add</v-icon>
-                        </v-btn>
-                        <v-card>
-                            <v-card-title
-                                class="headline"
-                                primary-title
-                            >
-                                Add a new skill for {{ userSkills[parentIndex].name }}
-                            </v-card-title>
-
-                            <v-card-text>
-                                <v-text-field
-                                    v-model="newSkill.name"
-                                    label="Skill name"
-                                    :counter="10"
-                                ></v-text-field>
-                                <!-- <v-text-field
-                                    v-model="newSkill.slug"
-                                    label="Skill slug"
-                                    :counter="10"
-                                ></v-text-field> -->
-                                <!-- <v-text-field
-                                    v-model="newSkill.value"
-                                    label="Skill value"
-                                    number
-                                ></v-text-field> -->
-                                <v-slider
-                                    v-model="newSkill.value"
-                                    label="Skill Value"
-                                    :max="100"
-                                    :min="0"
-                                    :step="10"
-                                ></v-slider>
-                                <div class="text-xs-center">
-                                    {{ newSkill.value }}/100
-                                </div>
-                            </v-card-text>
-                            <v-card-actions class="justify-center">
-                                <v-btn class="success" @click="addSkill(reference, newSkill)">Add Skill</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-
                     <v-card-text style="background: black; margin-bottom: 30px;">
                         <v-layout row wrap>
                             <v-alert
@@ -198,51 +173,52 @@
                                 color="warning"
                                 icon="priority_high"
                                 outline
-                                v-if="!userSkills[parentIndex].items || userSkills[parentIndex].items.length < 1"
+                                v-if="!userSkills[index] || userSkills[index].length < 1"
                             >
                                 You have no item in this category, please hit the small rounded pink button to add one
                             </v-alert>
-                            <v-flex xs12 sm4 style="padding: 10px;;" v-for="(skill, childIndex) in skillCategory.items" :key="childIndex">
-                                parentIndex: {{ parentIndex }}<br />
-                                childIndex: {{ childIndex }}<br />
-                                <!-- <v-chip label @click="remove(index)">-</v-chip> -->
-                                <!-- <v-progress-linear
-                                    v-model="skills[parentIndex]['children'][childIndex]"
-                                    color="primary"
-                                    height="20"
-                                    value="50"
-                                ></v-progress-linear> -->
-                                <!-- <v-chip label>+</v-chip> -->
+                            <!-- <v-flex xs12 sm4 style="padding: 10px;" v-for="(skill, childIndex) in userSkills" :key="childIndex"> -->
+                            <v-flex xs12 sm6 style="padding: 10px;">
+                                index: {{ index }}<br />
+                                <!-- parentIndex: {{ parentIndex }}<br /> -->
+                                <!-- childIndex: {{ childIndex }}<br /> -->
+                                <!-- skill: {{ skill }}<br /> -->
 
-                                <!-- <v-flex xs12 sm4 style="padding: 20px;"> -->
-                                    <v-text-field
-                                        v-model="userSkills[parentIndex].items[childIndex].name"
-                                        label="Name"
-                                        :counter="30"
-                                    ></v-text-field>
-                                <!-- </v-flex> -->
-                                <!-- <v-flex xs12 sm4 style="padding: 20px;"> -->
-                                    <!-- <v-text-field
-                                        v-model="skills[parentIndex].children[childIndex].value"
-                                        label="Value"
-                                        :counter="30"
-                                    ></v-text-field> -->
+                                <v-text-field
+                                    v-model="userSkills[index].name"
+                                    label="Skill name"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
 
-                                    <v-slider
-                                        v-model="userSkills[parentIndex].items[childIndex].value"
-                                        label="Value"
-                                        :max="100"
-                                        :min="0"
-                                        :step="10"
-                                    ></v-slider>
-                                    <div class="text-xs-center">
-                                        {{ userSkills[parentIndex].items[childIndex].value }}/100
-                                    </div>
+                            <v-flex xs12 sm6 style="padding: 10px;">
+                                <v-slider
+                                    v-model="userSkills[index].value"
+                                    label="Skill Value"
+                                    :max="100"
+                                    :min="0"
+                                    :step="10"
+                                    color="secondary"
+                                ></v-slider>
+                                <div class="text-xs-center">
+                                    {{ userSkills[index].value }}/100
+                                </div>
+                            </v-flex>
 
-                                    <div class="text-xs-center">
-                                        <v-btn flat color="error" @click="deleteSkill(parentIndex, childIndex)">Delete</v-btn>
-                                    </div>
-                                <!-- </v-flex> -->
+                            <v-flex xs12 sm6 style="padding: 10px;">
+                                <v-text-field
+                                    v-model="userSkills[index].category"
+                                    label="Skill category"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs12 sm6 style="padding: 10px;">
+                                <v-text-field
+                                    v-model="userSkills[index].subcategory"
+                                    label="Skill subcategory"
+                                    :counter="30"
+                                ></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -416,16 +392,16 @@
                 })
                 this.modalSkill = false
             },
-            deleteSkill (parentIndex, childIndex) {
-                // console.log('parentIndex: ', parentIndex)
-                // console.log('childIndex: ', childIndex)
-                // console.log(this.candidateSkills[0])
-                this.candidateSkills[parentIndex].children.splice(childIndex, 1)
+            deleteItem (index) {
+                console.log('index: ', index)
+                this.userSkills.splice(index, 1)
             }
         }
     }
 </script>
 
 <style scoped>
-
+    .v-input--selection-controls {
+        margin-top: 10px;
+    }
 </style>

@@ -134,7 +134,7 @@
                             <v-flex xs10 offset-xs1 class="border">
                                 <v-layout justify-center>
                                     <div>
-                                        <v-switch v-model="userResume.updateResumeSlug" label="Update resume slug" color="secondary"></v-switch>
+                                        <v-switch v-model="userResume.updateResumeSlug" label="Modify resume slug" color="secondary"></v-switch>
                                     </div>
                                 </v-layout>
                                 
