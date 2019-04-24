@@ -1,6 +1,6 @@
 const express = require('express'),
 	  bodyParser = require('body-parser'),
-	  env = require("dotenv").config();
+	  env = require('dotenv').config();
 
 const MAILGUN_API = process.env.MAILGUN_API;
 const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN;
