@@ -109,30 +109,32 @@
             v-model="updatingResumeDialog"
             width="500"
         >
-            <!-- <v-container fill-height>
-                <v-layout row wrap align-center>
-                    <v-flex>  -->
-            <v-card light>
+            <v-layout>
+                <v-flex xs12> 
+                    <v-card light>
+                        <v-card-title
+                            class="headline justify-center primary white--text"
+                            primary-title
+                        >
+                            Updating resume
+                        </v-card-title>
 
-                <v-card-title
-                    class="headline justify-center primary white--text"
-                    primary-title
-                >
-                    Updating resume
-                </v-card-title>
-
-                <v-card-text style="min-height: 300px;">        
-                    <v-alert
-                        value="true"
-                        color="primary"
-                        outline
-                    >
-                        <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume
-                        </div>
-                    </v-alert>
-                </v-card-text>
-            </v-card>
+                        <v-card-text style="min-height: 280px;" class="align-center">
+                            <br /><br /><br />
+                            <v-alert
+                                value="true"
+                                color="primary"
+                                outline
+                            >
+                                <div class="text-xs-center">
+                                    <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume
+                                </div>
+                            </v-alert>
+                            <br /><br /><br />
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+            </v-layout>
         </v-dialog>
     </div>
 </template>

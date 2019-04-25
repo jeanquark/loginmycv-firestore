@@ -51,7 +51,7 @@
           						<a href="/resume/jeanquark">Go to jeanquark's resume (server)</a><br />
 								<a href="/resume/greg">Go to greg's resume (server)</a><br />
 								<nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br />
-								<nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br />
+								<!-- <nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br /> -->
 								<v-btn color="success">Success button</v-btn>
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
           						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
@@ -59,14 +59,6 @@
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
-
-								<v-select
-            						:items="items"
-            						attach
-            						chips
-            						label="Chips"
-            						multiple
-          						></v-select>
 
           						<v-layout>
 	          						<v-flex xs12>

@@ -1,1092 +1,375 @@
 <template>
-	<div v-cloak>
-		<h2>{{ title }}</h2>
+	<v-app v-cloak style="border: 2px solid green;" :style="cssProps" id="app">
+	    <v-toolbar
+	      :color="secondaryColor"
+	      dark
+	      fixed
+	      app
+	      clipped-right
+		  height="80px"
+	    >
+	      	<v-toolbar-side-icon @click.stop="sidemenu = !sidemenu"></v-toolbar-side-icon>
+	      	<!-- <v-toolbar-title>Toolbar</v-toolbar-title> -->
+      		<v-layout align-center justify-center fill-height hidden-sm-and-down>
+		   		<v-flex xs12>
+		           <div class="text-xs-center" style="vertical-align: middle;" v-scroll-spy-active="{selector: '.nav-item', class: 'custom-active'}">
+						<!-- <span class="nav-item">Home</span>
+						<span class="nav-item">About</span>
+						<span class="nav-item">What I do</span>
+						<span class="nav-item">Skills</span>
+						<span class="nav-item">Contact</span> -->
 
-        <!--
-        ===================
-           NAVIGATION
-        ===================
-        -->
-        <!--<header class="black-bg mh-header mh-fixed-nav nav-scroll mh-xs-mobile-nav" id="mh-header">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <nav class="navbar navbar-expand-lg mh-nav nav-btn">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon icon"></span>
-                        </button>
-                    
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto ml-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="#mh-home">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#mh-about">About</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#mh-skills">Skills</a>
-                                </li>                                
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#mh-experience">Experiences</a>
-                                </li>                                
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#mh-portfolio">Portfolio</a>
-                                </li>                               
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#mh-pricing">Pricing</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#mh-blog">Blog</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#mh-contact">Contact</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-		
+						<nuxt-link class="nav-item" to="#top" v-scroll-to="{
+							el: '#top',
+							container: '',
+							duration: '1000',
+							offset: -100
+						}">Home</nuxt-link>
+						<nuxt-link class="nav-item" to="#about" v-scroll-to="{
+							el: '#about',
+							container: '',
+							duration: '1000',
+							offset: -100
+						}">About</nuxt-link>
+						<nuxt-link class="nav-item" to="#whatIdo" v-scroll-to="{
+							el: '#whatIdo',
+							container: '',
+							duration: '1000',
+							offset: -100
+						}">What I do</nuxt-link>
+						<nuxt-link class="nav-item" to="#skills" v-scroll-to="{
+							el: '#skills',
+							container: '',
+							duration: '1000',
+							offset: -100
+						}">Skills</nuxt-link>
+						<nuxt-link class="nav-item" to="#contact" v-scroll-to="{
+							el: '#contact',
+							container: '',						
+							duration: '1000',
+							offset: -100
+						}">Contact</nuxt-link>
+		            </div>
+	            </v-flex>
+	        </v-layout>
+		</v-toolbar>
+		<v-navigation-drawer
+			v-model="sidemenu"
+			fixed
+			app
+		>
+			<v-list dense>
+				<v-list-tile 
+					to="#top"
+					v-scroll-to="{
+						el: '#top',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+				>
+					<v-list-tile-action>
+						<v-icon>home</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>Home</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile 
+					to="#about" 
+					v-scroll-to="{
+						el: '#about',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+				>
+					<v-list-tile-action>
+						<v-icon>perm_identity</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>About</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile 
+					to="#whatIdo"
+					v-scroll-to="{
+						el: '#whatIdo',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+				>
+					<v-list-tile-action>
+						<v-icon>view_list</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>What I do</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile 
+					to="#skills"
+					v-scroll-to="{
+						el: '#skills',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+				>
+					<v-list-tile-action>
+						<v-icon>build</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>Skills</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile 
+					to="#contact"
+					v-scroll-to="{
+						el: '#contact',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+				>
+					<v-list-tile-action>
+						<v-icon>contact_mail</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>Contact</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile @click.stop="sidemenu = !sidemenu">
+					<v-list-tile-action>
+						<v-icon>exit_to_app</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>Close sidemenu</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+			</v-list>
+		</v-navigation-drawer>
 
-            
-        </header>-->
+		<v-content style="background: black;">
+			<!-- <v-container fluid fill-height style="border: 2px solid orange;"> -->
+			<br /><br /><br />
+			<!-- <v-layout justify-center align-center> -->
+			<div v-scroll-spy="{offset: 150}">
+			
+				<!-- Section Intro -->
+				<v-layout class="my-5" id="top">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout>
+							<v-flex xs12 sm6 style="border: 1px solid orange; color: white;">
+								<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br /><br />
+								<h1 id="fullName" class="">Alex Johnson</h1>
+								<h2 class="white--text">Product Designer</h2><br />
+
+								<font-awesome-icon :icon="['fas', 'envelope']" class="icon" />getemail@email.com<br />
+								<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> +12 986 987 7867<br />
+								<font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" /> 37, Pollsatnd, New York, United State<br />
+								
+								<br />
+								<v-layout class="justify-center">
+									<v-chip label class="chip"><font-awesome-icon :icon="['fab', 'facebook-f']" size="2x" /></v-chip>
+									<v-chip label class="chip"><font-awesome-icon :icon="['fab', 'linkedin-in']" size="2x" /></v-chip>
+									<v-chip label class="chip"><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip>
+								</v-layout>
+
+							</v-flex>
+							<v-flex xs12 sm6 style="border: 1px solid red;">
+								<v-layout justify-center>
+									<v-avatar
+										size="350"
+										color="grey lighten-4"
+									>
+										<img src="/images/hero.png" alt="avatar">
+									</v-avatar>
+								</v-layout>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<!-- Section About -->
+				<v-layout row wrap style="border: 1px solid orangered;" id="about" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<v-layout align-center>
+							<v-flex xs12 sm6>
+								<v-img src="/images/ab-img.png"></v-img>
+							</v-flex>
+							<v-flex xs12 sm6 style="color: white;">
+								<h2>About Me</h2>
+								<p>Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at</p>
+								<v-chip class="chip">php</v-chip>
+								<v-chip class="chip">html</v-chip>
+								<v-chip class="chip">css</v-chip>
+								<v-chip class="chip">wordpress</v-chip>
+								<v-chip class="chip">react</v-chip>
+								<v-chip class="chip">javascript</v-chip>
+								<br /><br />
+								<v-chip :color="primaryColor" text-color="white" style="padding: 6px 20px; border-radius: 25px;"><b>Download CV</b></v-chip><br />
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
 
 
-        
+				<!-- Section What I do -->
+				<v-layout row wrap style="border: 1px dashed orangered; color: white;" id="whatIdo" class="my-5">
+					<v-flex xs12 sm8 offset-sm2>
+						<h2 class="text-xs-center">What I do</h2><br /><br />
+						<v-layout>
+							<v-flex xs12 sm6 v-for="index in 3" :key="index" class="ma-2">
+								<v-card color="#202026">
+									<v-card-title primary-title>
+										<div>
+											<h3 class="headline mb-0 white--text">UI Design</h3>
+										</div>
+									</v-card-title>
 
-			<v-toolbar 
-				:fixed="true"
-				height="80px"
-				class="justify-center"
-				style="z-index: 1000; background: #202026; color: #fff;"
-			>
-	  			<v-layout align-center justify-center fill-height>
-		            <v-flex xs12>
-		            <!--- v-flex is centered now, but we need to center button inside v-flex -->
-		                <div class="text-xs-center" style="vertical-align: middle;">
-		                    <span class="nav-item">Home</span>
-		      				<v-btn flat>About</v-btn>
-	      					<v-btn flat>Skills</v-btn>
-	      					<v-btn flat>Experience</v-btn>
-		                </div>
-		            </v-flex>
-		        </v-layout>
-		    </v-toolbar>
-        <!--
-        ===================
-           Home
-        ===================
-        -->
-        <section class="mh-home image-bg home-2-img" id="mh-home" v-scroll-reveal.reset="{ delay: 2500, useDelay: 'once', reset: false }">
-            <div class="img-foverlay img-color-overlay">
-                <div class="container">
-                    <div class="row section-separator xs-column-reverse vertical-middle-content home-padding">
-                        <div class="col-sm-6">
-                            <div class="mh-header-info">
-                                <div class="mh-promo wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">
-                                    <span>Hello I'm</span>
-                                </div>
-                                
-                                <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Alex Johnson</h2>
-                                <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Product Designer</h4>
-                                
-                                <ul>
-                                    <li class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s"><i class="fa fa-envelope"></i><a href="mailto:">getemail@email.com</a></li>
-                                    <li class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s"><i class="fa fa-phone"></i><a href="callto:">+12 986 987 7867</a></li>
-                                    <li class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s"><i class="fa fa-map-marker"></i><address>37, Pollsatnd, New York, United State</address></li>
-                                </ul>
-                                
-                                <ul class="social-icon wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                    <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href=""><i class="fa fa-github"></i></a></li>
-                                    <li><a href=""><i class="fa fa-dribbble"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="hero-img wow fadeInUp">
-                                <div class="img-border">
-                                    <img src="/images/resumes/ivan.jpg" alt="ivan" class="img-fluid">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           ABOUT
-        ===================
-        -->
-        <section class="mh-about" id="mh-about">
-        <!-- v-scroll-reveal.reset="{ delay: 500, useDelay: 'once', reset: false }"> -->
-            <div class="container">
-                <div class="row section-separator">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="mh-about-img shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                            <img src="images/ab-img.png" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="mh-about-inner">
-                            <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">About Me</h2>
-                            <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Hello, I’m a Patrick, web-developer based on Paris. 
-                            I have rich experience in web site design & building 
-                            and customization. Also I am good at</p>
-                            <div class="mh-about-tag wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                <ul>
-                                    <li><span>php</span></li>
-                                    <li><span>html</span></li>
-                                    <li><span>css</span></li>
-                                    <li><span>php</span></li>
-                                    <li><span>wordpress</span></li>
-                                    <li><span>React</span></li>
-                                    <li><span>Javascript</span></li>
-                                </ul>
-                            </div>
-                            <a href="" class="btn btn-fill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Downlaod CV <i class="fa fa-download"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           SERVICE
-        ===================
-        -->
-        <section class="mh-service">
-            <div class="container">
-                <div class="row section-separator">
-                    <div class="col-sm-12 text-center section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                        <h2>What I do</h2>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mh-service-item shadow-1 dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                            <i class="fa fa-bullseye purple-color"></i>
-                            <h3>UI Design</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                                magna aliquam erat volutpat.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mh-service-item shadow-1 dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                            <i class="fa fa-code iron-color"></i>
-                            <h3>Web Development</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                                magna aliquam erat volutpat.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mh-service-item shadow-1 dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                            <i class="fa fa-object-ungroup sky-color"></i>
-                            <h3>App Development</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                                magna aliquam erat volutpat.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-          FEATURE PROJECTS
-        ===================
-        -->
-        <section class="mh-featured-project image-bg featured-img-one">
-            <div class="img-color-overlay">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="section-title col-sm-12">
-                            <h3>Featured Projects</h3>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="mh-single-project-slide-by-side row">
-                                <!-- Project Items -->
-                                <div class="col-sm-12 mh-featured-item">
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <div class="mh-featured-project-img shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                                <img src="assets/images/p-2.png" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <div class="mh-featured-project-content">
-                                                <h4 class="project-category wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Web Design</h4>
-                                                <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">Wrap</h2>
-                                                <span class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Design & Development</span>
-                                                <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">Stamp is a clean and elegant Multipurpose Landing Page Template. 
-                                                It will fit perfectly for Startup, Web App or any type of Web Services.
-                                                It has 4 background styles with 6 homepage styles. 6 pre-defined color scheme. 
-                                                All variations are organized separately so you can use / customize the template very easily.</p>
-                                                <a href="" class="btn btn-fill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">View Details</a>
-                                                <div class="mh-testimonial mh-project-testimonial wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">
-                                                    <blockquote>
-                                    					<q>Excellent Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Creative Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Organize Code - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Project Items -->
-                                <div class="col-sm-12 mh-featured-item">
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <div class="mh-featured-project-img shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                                <img src="assets/images/p-2.png" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <div class="mh-featured-project-content">
-                                                <h4 class="project-category wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Web Design</h4>
-                                                <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">Wrap</h2>
-                                                <span class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Design & Development</span>
-                                                <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">Stamp is a clean and elegant Multipurpose Landing Page Template. 
-                                                It will fit perfectly for Startup, Web App or any type of Web Services.
-                                                It has 4 background styles with 6 homepage styles. 6 pre-defined color scheme. 
-                                                All variations are organized separately so you can use / customize the template very easily.</p>
-                                                <a href="" class="btn btn-fill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">View Details</a>
-                                                <div class="mh-testimonial mh-project-testimonial wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">
-                                                    <blockquote>
-                                    					<q>Excellent Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Creative Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Organize Code - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Project Items -->
-                                <div class="col-sm-12 mh-featured-item">
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <div class="mh-featured-project-img shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                                <img src="assets/images/p-2.png" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <div class="mh-featured-project-content">
-                                                <h4 class="project-category wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Web Design</h4>
-                                                <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">Wrap</h2>
-                                                <span class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Design & Development</span>
-                                                <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">Stamp is a clean and elegant Multipurpose Landing Page Template. 
-                                                It will fit perfectly for Startup, Web App or any type of Web Services.
-                                                It has 4 background styles with 6 homepage styles. 6 pre-defined color scheme. 
-                                                All variations are organized separately so you can use / customize the template very easily.</p>
-                                                <a href="" class="btn btn-fill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">View Details</a>
-                                                <div class="mh-testimonial mh-project-testimonial wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">
-                                                    <blockquote>
-                                    					<q>Excellent Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Creative Template - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                    				<blockquote>
-                                    					<q>Organize Code - suits my needs perfectly whilst allowing me to learn some new technology first hand.</q>
-                                    					<cite>- Shane Kavanagh</cite>
-                                    				</blockquote>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- End: .row -->
-                </div>
-            </div>
-        </section>  
-        
-        <!--
-        ===================
-           SKILLS
-        ===================
-        -->
-        <section class="mh-skills" id="mh-skills">
-            <div class="home-v-img">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="section-title text-center col-sm-12">
-                            <!--<h2>Skills</h2>-->
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="mh-skills-inner">
-                                <div class="mh-professional-skill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                    <h3>Technical Skills</h3>
-                                    <div class="each-skills">
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">Javascript</div>
-                                                    <div class="percentagem-num">86%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 86%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">Java</div>
-                                                    <div class="percentagem-num">46%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 46%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">Python</div>
-                                                    <div class="percentagem-num">38%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 38%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">PHP</div>
-                                                    <div class="percentagem-num">17%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 17%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>                                    
-                                        
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">Python</div>
-                                                    <div class="percentagem-num">38%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 38%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="candidatos">
-                                            <div class="parcial">
-                                                <div class="info">
-                                                    <div class="nome">PHP</div>
-                                                    <div class="percentagem-num">17%</div>
-                                                </div>
-                                                <div class="progressBar">
-                                                    <div class="percentagem" style="width: 17%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="mh-professional-skills wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                <h3>Professional Skills</h3>
-                                <ul class="mh-professional-progress">
-                                    <li>
-                                        <div class="mh-progress mh-progress-circle" data-progress="95"></div>
-                                        <div class="pr-skill-name">Communication</div>
-                                    </li>
-                                    <li>
-                                        <div class="mh-progress mh-progress-circle" data-progress="55"></div> 
-                                        <div class="pr-skill-name">Team Work</div>
-                                    </li>
-                                    <li>
-                                        <div class="mh-progress mh-progress-circle" data-progress="86"></div>
-                                        <div class="pr-skill-name">Project Management</div>
-                                    </li> 
-                                    <li>
-                                        <div class="mh-progress mh-progress-circle" data-progress="60"></div>
-                                        <div class="pr-skill-name">Creativity</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           EXPERIENCES
-        ===================
-        -->
-        <section class="mh-experince image-bg featured-img-one" id="mh-experience">
-            <div class="img-color-overlay">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="mh-education">
-                                <h3 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Education</h3>
-                                <div class="mh-education-deatils">
-                                    <!-- Education Institutes-->
-                                    <div class="mh-education-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                        <h4>Art & Multimedia From <a href="">Oxford University</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a 
-                                        page when looking at its layout. The point of using  Lorem Ipsum </p>
-                                    </div>                                
-                                    <!-- Education Institutes-->
-                                    <div class="mh-education-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                        <h4>Art & Multimedia From <a href="">Oxford University</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a 
-                                        page when looking at its layout. The point of using  Lorem Ipsum </p>
-                                    </div>                                
-                                    <!-- Education Institutes-->
-                                    <div class="mh-education-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">
-                                        <h4>Art & Multimedia From <a href="">Oxford University</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a 
-                                        page when looking at its layout. The point of using L orem Ipsum </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="mh-work">
-                                 <h3>Work Experience</h3>
-                                <div class="mh-experience-deatils">
-                                    <!-- Education Institutes-->
-                                    <div class="mh-work-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                                        <h4>UI/UX Designer <a href="">IronSketch</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <span>Responsibility :</span>
-                                        <ul class="work-responsibility">
-                                            <li><i class="fa fa-circle"></i>Validate CSS</li>
-                                            <li><i class="fa fa-circle"></i>Project Management</li>
-                                        </ul>
-                                    </div>                                
-                                    <!-- Education Institutes-->
-                                    <div class="mh-work-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">
-                                        <h4>Art & Multimedia From <a href="">Oxford University</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <span>Responsibility :</span>
-                                        <ul class="work-responsibility">
-                                            <li><i class="fa fa-circle"></i>Validate CSS</li>
-                                            <li><i class="fa fa-circle"></i>Project Management</li>
-                                        </ul>
-                                    </div>                                
-                                    <!-- Education Institutes-->
-                                    <div class="mh-work-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                        <h4>Art & Multimedia From <a href="">Oxford University</a></h4>
-                                        <div class="mh-eduyear">2005-2008</div>
-                                        <span>Responsibility :</span>
-                                        <ul class="work-responsibility">
-                                            <li><i class="fa fa-circle"></i>Validate CSS</li>
-                                            <li><i class="fa fa-circle"></i>Project Management</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>       
-        
-        <!--
-        ===================
-           PORTFOLIO
-        ===================
-        -->
-        <section class="mh-portfolio" id="mh-portfolio">
-            <div class="container">
-                <div class="row section-separator">
-                    <div class="section-title col-sm-12 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">
-                        <h3>Recent Portfolio</h3>
-                    </div>
-                    <div class="part col-sm-12">
-                        <div class="portfolio-nav col-sm-12" id="filter-button">
-                            <ul>
-                                <li data-filter="*" class="current wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s"> <span>All Categories</span></li>
-                                <li data-filter=".user-interface" class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s"><span>Web Design</span></li>
-                                <li data-filter=".branding" class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s"><span>Branding</span></li>
-                                <li data-filter=".mockup" class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s"><span>Mockups</span></li>
-                                <li data-filter=".ui" class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s"><span>Photography</span></li>
-                            </ul>
-                        </div>
-                        <div class="mh-project-gallery col-sm-12 wow fadeInUp" id="project-gallery" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                            <div class="portfolioContainer row">
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 user-interface">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g1.jpg" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 ui mockup">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g2.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g2.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 user-interface">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g3.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g3.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 branding">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g5.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g5.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 user-interface">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g4.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g4.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 branding">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g6.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g6.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 branding">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g8.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g8.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 ui">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g9.png" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g9.png" data-fancybox data-src="#mh"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                                <div class="grid-item col-md-4 col-sm-6 col-xs-12 branding">
-                                    <figure>
-                                        <img src="assets/images/portfolio/g7.jpg" alt="img04">
-                                        <figcaption class="fig-caption">
-                                            <i class="fa fa-search"></i>
-                                            <h5 class="title">Creative Design</h5>
-                                            <span class="sub-title">Photograpy</span>
-                                            <a href="assets/images/portfolio/g7.jpg" data-fancybox="gallery"></a>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div> <!-- End: .grid .project-gallery -->
-                        </div> <!-- End: .grid .project-gallery -->
-                    </div> <!-- End: .part -->
-                </div> <!-- End: .row -->
-            </div>
-            <div class="mh-portfolio-modal" id="mh">
-                <div class="container">
-                    <div class="row mh-portfolio-modal-inner">
-                        <div class="col-sm-5">
-                            <h2>Wrap - A campanion plugin</h2>
-                            <p>Wrap is a clean and elegant Multipurpose Landing Page Template. 
-                            It will fit perfectly for Startup, Web App or any type of Web Services.
-                            It has 4 background styles with 6 homepage styles. 6 pre-defined color scheme. 
-                            All variations are organized separately so you can use / customize the template very easily.</p>       
-                            
-                            <p>It is a clean and elegant Multipurpose Landing Page Template. 
-                            It will fit perfectly for Startup, Web App or any type of Web Services.
-                            It has 4 background styles with 6 homepage styles. 6 pre-defined color scheme. 
-                            All variations are organized separately so you can use / customize the template very easily.</p>      
-                            <div class="mh-about-tag">
-                                <ul>
-                                    <li><span>php</span></li>
-                                    <li><span>html</span></li>
-                                    <li><span>css</span></li>
-                                    <li><span>php</span></li>
-                                    <li><span>wordpress</span></li>
-                                    <li><span>React</span></li>
-                                    <li><span>Javascript</span></li>
-                                </ul>
-                            </div>
-                            <a href="" class="btn btn-fill">Live Demo</a>
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="mh-portfolio-modal-img">
-                                <img src="assets/images/pr-0.jif" alt="" class="img-fluid">
-                                <p>All variations are organized separately so you can use / customize the template very easily.</p>    
-                                <img src="assets/images/pr-1.jif" alt="" class="img-fluid">
-                                <p>All variations are organized separately so you can use / customize the template very easily.</p>     
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           QUATES
-        ===================
-        -->
-        <section class="mh-quates image-bg home-2-img">
-            <div class="img-color-overlay">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="each-quates col-sm-12 col-md-6">
-                            <h3 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Interested to Work?</h3>
-                            <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat. Mirum est notare quam littera gothica.
-                            quam nunc putamus parum claram,</p>
-                            <a href="#mh-contact" class="btn btn-fill wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">Contact</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           PRICING
-        ===================
-        -->
-        <section class="mh-pricing" id="mh-pricing">
-            <div class="">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                            <h3>Pricing Table</h3>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="mh-pricing dark-bg shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                <i class="fa fa-calendar"></i>
-                                <h4>Full-time work</h4>
-                                <p>I am available for full time</p>
-                                <h5>$1500</h5>
-                                <ul>
-                                    <li>Web Development</li>
-                                    <li>Advetising</li>
-                                    <li>Game Development</li>
-                                    <li>Music Writing</li>
-                                </ul>
-                                <a href="" class="btn btn-fill">Hire Me</a>
-                            </div>  
-                        </div>                    
-                        <div class="col-sm-12 col-md-4">
-                            <div class="mh-pricing dark-bg shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                <i class="fa fa-file"></i>
-                                <h4>Fixed Price Project</h4>
-                                <p>I am available for fixed roles</p>
-                                <h5>$500</h5>
-                                <ul>
-                                    <li>Web Development</li>
-                                    <li>Advetising</li>
-                                    <li>Game Development</li>
-                                    <li>Music Writing</li>
-                                </ul>
-                                <a href="" class="btn btn-fill">Hire Me</a>
-                            </div>  
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="mh-pricing dark-bg shadow-2 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                <i class="fa fa-hourglass"></i>
-                                <h4>Hourley work</h4>
-                                <p>I am available for Hourley projets</p>
-                                <h5>$50</h5>
-                                <ul>
-                                    <li>Web Development</li>
-                                    <li>Advetising</li>
-                                    <li>Game Development</li>
-                                    <li>Music Writing</li>
-                                </ul>
-                                <a href="" class="btn btn-fill">Hire Me</a>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           BLOG
-        ===================
-        -->
-        <section class="mh-blog image-bg featured-img-two" id="mh-blog">
-            <div class="img-color-overlay">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                            <h3>Featured Posts</h3>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                             <div class="mh-blog-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                <img src="assets/images/b-3.png" alt="" class="img-fluid">
-                                <div class="blog-inner">
-                                    <h2><a href="blog-single.html">A life without the daily traffic jams</a></h2>
-                                    <div class="mh-blog-post-info">
-                                        <ul>
-                                            <li><strong>Post On</strong><a href="">24.11.19</a></li>
-                                            <li><strong>By</strong><a href="">ThemeSpiders</a></li>
-                                        </ul>
-                                    </div>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout</p>
-                                    <a href="blog-single.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="mh-blog-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                <img src="assets/images/b-2.png" alt="" class="img-fluid">
-                                <div class="blog-inner">
-                                    <h2><a href="blog-single.html">Proportion are what’s really needed</a></h2>
-                                    <div class="mh-blog-post-info">
-                                        <ul>
-                                            <li><strong>Post On</strong><a href="">24.11.19</a></li>
-                                            <li><strong>By</strong><a href="">ThemeSpiders</a></li>
-                                        </ul>
-                                    </div>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout</p>
-                                    <a href="blog-single.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="mh-blog-item dark-bg wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                <img src="assets/images/b-1.png" alt="" class="img-fluid">
-                                <div class="blog-inner">
-                                    <h2><a href="blog-single.html">Mounts of paper work to remember the way</a></h2>
-                                    <div class="mh-blog-post-info">
-                                        <ul>
-                                            <li><strong>Post On</strong><a href="">24.11.19</a></li>
-                                            <li><strong>By</strong><a href="">ThemeSpiders</a></li>
-                                        </ul>
-                                    </div>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout</p>
-                                    <a href="blog-single.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> 
-        
-        <!--
-        ===================
-           Testimonial
-        ===================
-        -->
-        <section class="mh-testimonial" id="mh-testimonial">
-            <div class="home-v-img">
-                <div class="container">
-                    <div class="row section-separator">
-                        <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                            <h3>Client Reviews</h3>
-                        </div>
-                        <div class="col-sm-12 wow fadeInUp" id="mh-client-review" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>                    
-                            
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>                    
-                            
-                            <div class="each-client-item">
-                                <div class="mh-client-item dark-bg black-shadow-1">
-                                    <img src="assets/images/c-1.png" alt="" class="img-fluid">
-                                    <p>Absolute wonderful ! I am completely
-                                    blown away.The very best.I was amazed
-                                    at the quality</p>
-                                    <h4>John Mike</h4>
-                                    <span>CEO, Author.Inc</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--
-        ===================
-           FOOTER 3
-        ===================
-        -->
-        <footer class="mh-footer mh-footer-3">
-            <div class="container-fluid">
-                <div class="row section-separator">
-                    <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                        <h3>Contact Me</h3>
-                    </div>
-                    <div class="map-image image-bg col-sm-12">
-                        <div class="container mt-30">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6 mh-footer-address">
-                                    <div class="col-sm-12 xs-no-padding">
-                                        <div class="mh-address-footer-item dark-bg shadow-1 media wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                            <div class="each-icon">
-                                                <i class="fa fa-location-arrow"></i>
-                                            </div>
-                                            <div class="each-info media-body">
-                                                <h4>Address</h4>
-                                                <address>
-                                                    5th Avenue, 34th floor, <br> 
-                                                     New york
-                                                </address>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 xs-no-padding">
-                                        <div class="mh-address-footer-item media dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                                            <div class="each-icon">
-                                                <i class="fa fa-envelope-o"></i>
-                                            </div>
-                                            <div class="each-info media-body">
-                                                <h4>Email</h4>
-                                                <a href="mailto:yourmail@email.com">yourmail@email.com</a><br>
-                                                <a href="mailto:yourmail@email.com">yourmail@email.com</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 xs-no-padding">
-                                        <div class="mh-address-footer-item media dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">
-                                            <div class="each-icon">
-                                                <i class="fa fa-phone"></i>
-                                            </div>
-                                            <div class="each-info media-body">
-                                                <h4>Phone</h4>
-                                                <a href="callto:(880)-8976-987">(880)-8976-987</a><br>
-                                                <a href="callto:(880)-8976-987">(880)-8976-987</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                    <form id="contactForm" class="single-form quate-form wow fadeInUp" data-toggle="validator">
-                                        <div id="msgSubmit" class="h3 text-center hidden"></div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <input name="name" class="contact-name form-control" id="name" type="text" placeholder="First Name" required>
-                                            </div>
-                
-                                            <div class="col-sm-12">
-                                                <input name="name" class="contact-email form-control" id="L_name" type="text" placeholder="Last Name" required>
-                                            </div>
-                
-                                            <div class="col-sm-12">
-                                                <input name="name" class="contact-subject form-control" id="email" type="email" placeholder="Your Email" required>
-                                            </div>
-                
-                                            <div class="col-sm-12">
-                                                <textarea class="contact-message" id="message" rows="6" placeholder="Your Message" required></textarea>
-                                            </div>
-                                            
-                                            <!-- Subject Button -->
-                                            <div class="btn-form col-sm-12">
-                                                <button type="submit" class="btn btn-fill btn-block" id="form-submit">Send Message</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-sm-12 mh-copyright wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="text-left text-xs-center">
-                                                <p>All right reserved Siful Islam @ 2018</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <ul class="social-icon">
-                                                <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                                                <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                                                <li><a href=""><i class="fa fa-github"></i></a></li>
-                                                <li><a href=""><i class="fa fa-dribbble"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
+									<v-card-text class="white--text">
+										Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+									</v-card-text>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+
+				<!-- Section Skills -->
+				<v-layout row wrap style="border: 1px dashed orangered;" id="skills" class="my-5 white--text">
+					<v-flex xs12 sm8 offset-sm2 style="border: 1px solid green;">
+						<v-layout row wrap justify-center align-center>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Technical Skills</h2>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<h2 class="text-xs-center">Professional Skills</h2>
+							</v-flex>
+						</v-layout>
+						
+						<v-layout row wrap align-center>
+							<v-flex xs12 sm6>
+								<div class="mx-5" v-for="index in 5" :key="index">
+									<v-layout>
+										<v-flex class="text-xs-left">
+											<span>JavaScript</span>
+										</v-flex>
+										<v-flex class="text-xs-right">
+											<span>86%</span>
+										</v-flex>
+									</v-layout>
+									<v-progress-linear
+										:color="primaryColor"
+										height="10"
+										value="60"
+										style="border-radius: 10px; margin: 6px 0px;"
+									></v-progress-linear>
+								</div>
+							</v-flex>
+							<v-flex xs12 sm6>
+								<v-layout row wrap class="">
+									<v-flex xs6 v-for="index in 4" :key="index" class="pa-3 text-xs-center">
+										<v-progress-circular
+											:rotate="270"
+											:size="100"
+											:width="5"
+											value="95"
+											:color="primaryColor"
+										>
+											95%
+										</v-progress-circular><br /><br />
+										Communication
+									</v-flex>
+								</v-layout>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<v-layout row wrap id="contact" class="white--text">
+					<v-flex xs12 sm8 offset-sm2>
+						<h2 class="text-xs-center">Contact me</h2>
+						<br /><br />
+						errors: {{ errors }}<br />
+						<!-- <span>{{ errors.first('firstname') }}</span> -->
+						<v-form style="background: black;">
+							<v-layout row wrap>
+								<v-flex xs6 class="pr-3">
+									<v-text-field
+										outline
+										name="firstname"
+										label="First Name"
+										v-model="form.firstname"
+										v-validate="'required|max:10'"
+										:color="primaryColor"
+										:background-color="primaryColor"
+										dark
+									></v-text-field>
+								</v-flex>
+								<v-flex xs6 class="pl-3">
+									<v-text-field
+										outline
+										label="Last name"
+										v-model="form.lastname"
+										:color="primaryColor"
+										:background-color="primaryColor"
+										dark
+									></v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-text-field
+										outline
+										label="Your Email"
+										v-model="form.email"
+										:color="primaryColor"
+										:background-color="primaryColor"
+										dark
+									></v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-textarea
+										outline
+										label="Your message"
+										v-model="form.message"
+										:color="primaryColor"
+										:background-color="primaryColor"
+										dark
+									></v-textarea>
+								</v-flex>
+								<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" @click.prevent="sendMessage">Send message</v-btn>
+							</v-layout>
+						</v-form>
+					</v-flex>
+				</v-layout>
+			</div>
+			<br />
+		</v-content>
+
+		<v-footer color="blue-grey" class="white--text justify-center" style="padding: 30px 0px;">
+			<h3>LoginMyCV</h3>&nbsp;
+			<span>&copy; {{ new Date() | moment('Y') }}</span>
+		</v-footer>
+    </v-app>
 </template>
 
 <script>
 	// import abc from '~/plugins/jm-essai.js'
 	// import jQuery from 'jquery'
+	import axios from 'axios'
+	import Noty from 'noty'
 	export default {
 		head () {
 		    return {
 		      	title: this.title,
 		      	meta: [
 			        { hid: 'description', name: 'description', content: 'Ma description personnalisée' }
-		      	],
-		      	bodyAttrs: {
-      				class: 'dark-vertion black-bg'
-    			},
-		      	link: [
-		      		{
-		      			rel: "stylesheet",
-		      			href: "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-		      		},
-		      		{ 
-		      			rel: 'stylesheet', 
-		      			href: 'Maha_CV/css/styles.css' 
-		      		},
-		      		{ 
-		      			rel: 'stylesheet', 
-		      			href: 'Maha_CV/css/responsive.css' 
-		      		},
-		      		{ 
-		      			rel: 'stylesheet', 
-		      			href: 'Maha_CV/css/colors/defauld.css',
-		      			title: 'defauld' 
-		      		},
-		      		{
-		      			rel: 'stylesheet',
-		      			href: 'Maha_CV/icons/font-awesome-4.7.0/css/font-awesome.min.css'
-		      		}
-		      	],
-		      	script: [
-		      // 		{
-		      // 			src: "https://code.jquery.com/jquery-3.3.1.slim.min.js",
-		      // 			type: "text/javascript"
-		      // 		},
-		      // 		{
-				    //     src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
-				    //     type: "text/javascript"
-				    // },
-				    // {
-				    //     src: "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
-				    //     type: "text/javascript"
-				    // },
-				    	// {
-				    	// 	src: "Maha_CV/js/isotope.pkgd.js",
-				    	// 	type: "text/javascript"
-				    	// }
-				    // {
-				    //     src: "Maha_CV/js/custom-scripts.js",
-				    //     type: "text/javascript"
-				    // }
-		      	]
+				],
+				link: [
+					// { type: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.8.1/css/all.css' }
+				]
 		    }
 		},
 		mounted () {
@@ -1115,6 +398,9 @@
 		 //            return false;
 		 //        });
    //      	});
+			this.primaryColor = '#a97afd'
+			this.secondaryColor = '#202026',
+			this.backgroundColor = '#000'
 		},
 		data () {
 		    return {
@@ -1128,8 +414,61 @@
 		      			name: 'DEF',
 		      			slug: 'def'
 		      		}
-		      	]
+		      	],
+				//   drawer: false,
+				sidemenu: false,
+      			// drawerRight: null,
+      			// right: false,
+				  // left: false
+				primaryColor: '',
+				secondaryColor: '',
+				backgroundColor: '',
+				form: {
+					firstname: '',
+					lastname: '',
+					email: '',
+					message: ''
+				},
+				errors: []
 		    }
+		},
+		computed: {
+			cssProps() { 
+				return {
+					'--primary-color': this.primaryColor,
+					'--secondary-color': this.secondaryColor,
+					'--background-collor': this.backgroundColor
+				}
+			},
+			// errors () {
+            //     return this.$store.getters['errors']
+            // }
+		},
+		methods: {
+			async sendMessage () {
+				try {
+					console.log('sendMessage: ', this.form)
+					await axios.post('/send-contact-form-message', { data: this.form, receiverAddress: 'me@example.com', slug: 'ivan' }, {
+						headers: {
+							'app-key': process.env.APP_KEY
+						}
+					})
+					new Noty({
+						type: 'success',
+						text: 'Your message was successfully sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				} catch (error) {
+					console.log('error: ', error)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error ocurred and your message could not be sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
+			}
 		}
 	}
 </script>
@@ -1139,13 +478,60 @@
 		display: none;
 	}
 	.nav-item {
+		color: #fff;
+		text-decoration: none;
 		font-size: 1.5em;
-
+		font-weight: bolder;
+		margin: 0px 20px;
 	}
 	.nav-item:hover {
 		padding-bottom: 10px;
 		cursor: pointer;
-		color: red;
-		border-bottom: yellow solid 1px;
+		color: var(--primary-color);
+	}
+	.custom-active {
+		/* color: red; */
+		padding-bottom: 10px;
+		border-bottom: white solid 1px;
+	}
+	.label {
+		margin-top: 5px;
+		margin-right: 10px;
+	}
+	.label:hover {
+		background-color: var(--primary-color);
+	}
+	#fullName {
+		color: var(--primary-color)
+	}
+	.primary-color {
+		background: var(--primary-color);
+		/* background-color: blue; */
+	}
+	.icon {
+		margin-right: 10px;
+		/* background-color: #000; */
+	}
+	.icon:hover {
+		color: var(--primary-color);
+	}
+	/* .chip {
+		background-color: #000;
+		padding: 3px;
+		border-radius: 8px;
+	}
+	.chip:hover {
+		background-color: var(--primary-color);
+		cursor: pointer;
+	} */
+	.chip {
+		color: var(--primary-color);
+		background-color: #fff;
+		/* border: 1px solid var(--primary-color); */
+		border-radius: 2px;
+	}
+	.chip:hover {
+		color: #fff;
+		background-color: var(--primary-color);
 	}
 </style>

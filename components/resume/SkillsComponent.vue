@@ -69,13 +69,13 @@
                             </v-flex>
                         </v-layout>
 
-                        <br />
+                        <br /><br />
                         <v-layout row wrap class="justify-center">
                             <!-- <v-flex xs4 offset-xs8 class="justify-center">
                                 <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
                             </v-flex> -->
                             <v-flex xs8 offset-xs1 class="text-xs-center" style="border: 1px solid orange; border-radius: 10px; padding: 0px 10px;">
-                                <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
+                                <v-checkbox class="text-xs-center" color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
                                 <v-radio-group row v-model="newSkill.type" v-if="newSkill.measure">
                                     <v-radio
                                         label="Pie"
@@ -91,17 +91,18 @@
                                 <v-radio-group row v-model="newSkill.maxValue" v-if="newSkill.measure">
                                     <v-radio
                                         label="Max 10"
-                                        value="max10"
+                                        :value="10"
                                         color="secondary"
                                     ></v-radio>
                                     <v-radio
                                         label="Max 100"
-                                        value="max100"
+                                        :value="100"
                                         color="secondary"
                                     ></v-radio>
                                 </v-radio-group>
                             </v-flex>
                         </v-layout>
+                        <br />
 
                         <v-layout row wrap>
                             <v-flex xs6 class="pr-2">
@@ -128,13 +129,13 @@
                         <v-slider
                             v-model="newSkill.value"
                             label="Skill Value"
-                            :max="100"
+                            :max="newSkill.maxValue ? newSkill.maxValue : 100"
                             :min="0"
-                            :step="10"
+                            :step="newSkill.maxValue ? newSkill.maxValue/10 : 10"
                             color="secondary"
                         ></v-slider>
                         <div class="text-xs-center">
-                            {{ newSkill.value }}/100
+                            {{ newSkill.value }}/{{ newSkill.maxValue ? newSkill.maxValue : 10 }}
                         </div>
                     </v-card-text>
                     <v-card-actions class="justify-center">
@@ -143,11 +144,6 @@
                 </v-card>
             </v-dialog>
             
-
-
-            
-
-
             <v-expansion-panel-content
                 v-for="(skillCategory, index) in userSkills" :key="index"
             >
@@ -163,8 +159,6 @@
                 <!-- candidateSkills: {{ candidateSkills }}<br /><br /> -->
                 <!-- skillCategory: {{ skillCategory }}<br /><br /> -->
                 <!-- parentIndex: {{ parentIndex }}<br /><br /> -->
-                
-                
                 <v-card>
                     <v-card-text style="background: black; margin-bottom: 30px;">
                         <v-layout row wrap>
@@ -192,33 +186,101 @@
                             </v-flex>
 
                             <v-flex xs12 sm6 style="padding: 10px;">
+                                <!-- <v-text-field
+                                    v-model="userSkills[index].category"
+                                    label="Skill category"
+                                    :counter="30"
+                                ></v-text-field> -->
+                                <!-- userSkillsCategories: {{ userSkillsCategories }}<br /> -->
+                                <v-select
+                                    v-model="userSkills[index].category"
+                                    :items="userSkillsCategories"
+                                    label="Skill Category"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs12 sm6 style="padding: 10px;">
+                                <!-- <v-text-field
+                                    v-model="userSkills[index].subcategory"
+                                    label="Skill subcategory"
+                                    :counter="30"
+                                ></v-text-field> -->
+                                <v-select
+                                    v-model="userSkills[index].subcategory"
+                                    :items="userSkillsSubCategories"
+                                    label="Skill Subcategory"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs12 sm6 style="padding: 10px;">
                                 <v-slider
                                     v-model="userSkills[index].value"
                                     label="Skill Value"
-                                    :max="100"
+                                    :max="userSkills[index].maxValue ? userSkills[index].maxValue : 100"
                                     :min="0"
-                                    :step="10"
+                                    :step="userSkills[index].maxValue ? userSkills[index].maxValue/10 : 10"
                                     color="secondary"
                                 ></v-slider>
                                 <div class="text-xs-center">
-                                    {{ userSkills[index].value }}/100
+                                    {{ userSkills[index].value }}/{{ userSkills[index].maxValue ? userSkills[index].maxValue : 100 }}
                                 </div>
                             </v-flex>
 
                             <v-flex xs12 sm6 style="padding: 10px;">
-                                <v-text-field
-                                    v-model="userSkills[index].category"
-                                    label="Skill category"
-                                    :counter="30"
-                                ></v-text-field>
+                                Graphical representation
+                                <v-radio-group row v-model="userSkills[index].type">
+                                    <v-radio
+                                        label="Pie"
+                                        value="pie"
+                                        color="secondary"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="Bar"
+                                        value="bar"
+                                        color="secondary"
+                                    ></v-radio>
+                                </v-radio-group>
                             </v-flex>
 
                             <v-flex xs12 sm6 style="padding: 10px;">
+                                Max value
+                                <v-radio-group row v-model="userSkills[index].maxValue">
+                                    <v-radio
+                                        label="10 - increment by 1"
+                                        :value="10"
+                                        color="secondary"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="100 - increment by 10"
+                                        :value="100"
+                                        color="secondary"
+                                    ></v-radio>
+                                </v-radio-group>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row wrap align-center>
+                            
+                        </v-layout>
+                        <v-layout row wrap align-center>
+                            <v-flex xs8 sm4>
                                 <v-text-field
-                                    v-model="userSkills[index].subcategory"
-                                    label="Skill subcategory"
+                                    v-model="newSkillCategory.name"
+                                    label="Category name"
                                     :counter="30"
                                 ></v-text-field>
+                            </v-flex>
+                            <v-flex xs4 sm2>
+                                <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
+                            </v-flex>
+                            <v-flex xs8 sm4>
+                                <v-text-field
+                                    v-model="newSkillSubCategory.name"
+                                    label="Subcategory name"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs4 sm2>
+                                <v-btn small color="secondary" @click="addSkillSubCategory">Add subcategory</v-btn>
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -268,7 +330,10 @@
                 newSkill: {
                     name: '',
                     slug: '',
-                    value: null
+                    value: null,
+                    measure: true,
+                    type: 'bar',
+                    maxValue: 100,
                 },
                 items: [
                     'abc',
