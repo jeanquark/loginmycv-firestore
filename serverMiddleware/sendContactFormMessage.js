@@ -2,9 +2,9 @@ const express = require('express'),
 	  bodyParser = require('body-parser'),
 	  env = require('dotenv').config();
 
-const MAILGUN_API = process.env.MAILGUN_API;
+const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY;
 const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN;
-const mailgun = require('mailgun-js')({apiKey: MAILGUN_API, domain: MAILGUN_DOMAIN});
+const mailgun = require('mailgun-js')({apiKey: MAILGUN_API_KEY, domain: MAILGUN_DOMAIN});
 
 // global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const app = express();

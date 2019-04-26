@@ -1,24 +1,19 @@
 <template>
     <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
-        <div>
-            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
-            <!-- userResume: {{ userResume }}<br /><br /> -->
-        </div>
-        <h2>Education</h2>
+        <h2>Work Experience</h2>
         <v-layout row wrap class="pa-3" v-if="userResume">
             <v-alert
                 :value="true"
                 color="warning"
                 icon="priority_high"
                 outline
-                v-if="!userResume.education.length > 0"
+                v-if="!userResume.work_experience.length > 0"
             >
                 You have no item here, please click on the rounded pink button to add one
             </v-alert>
             <v-expansion-panel style="">
                 <v-dialog
-                    v-model="modalNewEducation"
+                    v-model="modalNewWorkExperience"
                     width="500"
                     activator
                 >
@@ -38,58 +33,48 @@
                             primary-title
                         >
                             <v-layout class="justify-center">
-                                Add a new education entry
+                                Add a new work experience entry
                             </v-layout>
                         </v-card-title>
 
                         <v-card-text>
                             <v-text-field
-                                v-model="newEducation.title"
-                                label="Title"
-                                placeholder="Bachelor in Geography"
+                                v-model="newWorkExperience.company"
+                                label="Company"
+                                placeholder="Google Inc."
                                 :counter="50"
                             ></v-text-field>
                             <v-text-field
-                                v-model="newEducation.school"
-                                label="University/School name"
-                                placeholder="University of Geneva"
+                                v-model="newWorkExperience.job_title"
+                                label="Job title"
+                                placeholder="Sofware engineer"
                                 :counter="50"
                             ></v-text-field>
+							<v-flex xs12>
+								<v-textarea
+									v-model="newWorkExperience.job_description"
+									label="Job description/responsibility"
+									:counter="200"
+								></v-textarea>
+							</v-flex>
                             <v-layout row>
                                 <v-flex xs6 class="pr-2">
                                     <v-text-field
-                                        v-model="newEducation.city"
+                                        v-model="newWorkExperience.city"
                                         label="City"
-                                        placeholder="Geneva"
+                                        placeholder="San Francisco CA"
                                         :counter="30"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field
-                                        v-model="newEducation.country"
+                                        v-model="newWorkExperience.country"
                                         label="Country"
-                                        placeholder="Switzerland"
+                                        placeholder="USA"
                                         :counter="30"
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
-                            <v-flex xs12>
-                                <v-textarea
-                                    v-model="newEducation.description"
-                                    label="Education description"
-                                    :counter="200"
-                                ></v-textarea>
-                            </v-flex>
-                            <!-- <v-slider
-                                v-model="newEducation.duration"
-                                label="Study duration"
-                                :max="10"
-                                :min="0"
-                                :step=".25"
-                            ></v-slider>
-                            <div class="text-xs-center">
-                                <small>{{ newEducation.duration }} year(s)</small>
-                            </div> -->
                             <v-layout row>
                                 <v-flex xs6>
                                     <v-dialog
@@ -101,13 +86,12 @@
                                     >
                                         <v-text-field
                                             slot="activator"
-                                            v-model="newEducation.start_date"
+                                            v-model="newWorkExperience.start_date"
                                             label="Start date"
                                             prepend-icon="event"
                                             readonly
                                         ></v-text-field>
                                         <v-date-picker v-model="form.startDate" :type="form.startDateType" color="primary" :scrollable="false">
-                                            <!-- <v-spacer></v-spacer> -->
                                             <v-layout justify-center>
                                                 <v-btn flat color="error" @click="deleteNewStartDate">Remove</v-btn>
                                                 <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
@@ -138,13 +122,12 @@
                                     >
                                         <v-text-field
                                             slot="activator"
-                                            v-model="newEducation.end_date"
-                                            label="Graduation date"
+                                            v-model="newWorkExperience.end_date"
+                                            label="End date"
                                             prepend-icon="event"
                                             readonly
                                         ></v-text-field>
                                         <v-date-picker v-model="form.endDate" :type="form.endDateType" color="primary" :scrollable="false">
-                                            <!-- <v-spacer></v-spacer> -->
                                             <v-layout justify-center>
                                                 <v-btn flat color="error" @click="deleteNewEndDate">Remove</v-btn>
                                                 <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
@@ -164,77 +147,63 @@
                                     </v-layout>
                                 </v-flex>
                             </v-layout>
-                        
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
-                            <v-btn class="success" @click="addNewEducation(newEducation)">Add</v-btn>
+                            <v-btn class="success" @click="addNewWorkExperience(newWorkExperience)">Add</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-                <!-- candidateLongResume: {{ candidateLongResume }}<br /><br /> -->
-                <!-- candidateEducation: {{ candidateEducation }}<br /><br /> -->
                 <v-expansion-panel-content
-                    v-for="(edu, index) in candidateEducation"
+                    v-for="(workExperience, index) in candidateWorkExperience"
                     :key="index"
                 >
-                    <!-- <v-icon slot="actions" color="primary"><v-icon>cross</v-icon></v-icon> -->
-                    <!-- <v-icon slot="actions" color="teal">done</v-icon> -->
-                    <!-- <v-icon color="teal">cross</v-icon> -->
-                    <!-- @click.native.stop="delete(index)" -->
                     <div slot="header">
-                        <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>
-                        <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon>
-                        <span style="font-size: 1.5em;">{{ edu.title }}</span>                
+						<v-layout align-center>
+							<v-icon>drag_indicator</v-icon>&nbsp;
+							<v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>&nbsp;&nbsp;
+							<!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
+							<span style="font-size: 1.5em;">{{ workExperience.company }}</span>
+							<!-- <v-btn small color="secondary">Order</v-btn> -->
+						</v-layout>         
                     </div>
 
-                    <!-- form.title: {{ form.title }}<br /><br /> -->
-                    <!-- form.graduationDate: {{ form.graduationDate }}<br /><br /> -->
-                    <!-- index: {{ index }}<br /><br /> -->
-                    <!-- reference: {{ reference }}<br /><br /> -->
                     <v-card style="margin-bottom: 30px; background: black;">
                         <v-card-text style="">
                             <v-layout row wrap>
-                                <!-- Name: {{ edu.name }}<br />
-                                Location: {{ edu.location }}<br />
-                                Description: {{ edu.description }}<br />
-                                Duration: {{ edu.duration }} years<br />
-                                Graduation Date: {{ edu.graduation_date }}<br /> -->
-                                <!-- abc: {{ new Date().toISOString().substr(0, 7) }} -->
-                                <!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /> -->
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].title"
-                                        label="Title"
+                                        v-model="candidateWorkExperience[index].company"
+                                        label="Company"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].school"
-                                        label="University/School name"
+                                        v-model="candidateWorkExperience[index].job_title"
+                                        label="Job title"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
+								<v-flex xs12 class="pa-3">
+									<v-textarea
+										v-model="candidateWorkExperience[index].job_description"
+										label="Job description/responsibility"
+										:counter="200"
+									></v-textarea>
+								</v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].city"
+                                        v-model="candidateWorkExperience[index].city"
                                         label="City"
                                         :counter="30"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].country"
+                                        v-model="candidateWorkExperience[index].country"
                                         label="Country"
                                         :counter="30"
                                     ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 class="pa-3">
-                                    <v-textarea
-                                        v-model="candidateEducation[index].description"
-                                        label="Education description"
-                                        :counter="200"
-                                    ></v-textarea>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-layout row>
@@ -248,12 +217,12 @@
                                             >
                                                 <v-text-field
                                                     slot="activator"
-                                                    v-model="candidateEducation[index].start_date"
+                                                    v-model="candidateWorkExperience[index].start_date"
                                                     label="Start date"
                                                     prepend-icon="event"
                                                     readonly
                                                 ></v-text-field>
-                                                <v-date-picker v-model="candidateEducation[index].start_date" :type="form.editStartDateType" :scrollable="false">
+                                                <v-date-picker v-model="candidateWorkExperience[index].start_date" :type="form.editStartDateType" :scrollable="false">
                                                     <v-layout justify-center>
                                                         <v-btn flat color="error" @click="deleteStartDate(index)">Remove</v-btn>
                                                         <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
@@ -286,12 +255,12 @@
                                             >
                                                 <v-text-field
                                                     slot="activator"
-                                                    v-model="candidateEducation[index].end_date"
-                                                    label="Graduation date"
+                                                    v-model="candidateWorkExperience[index].end_date"
+                                                    label="End date"
                                                     prepend-icon="event"
                                                     readonly
                                                 ></v-text-field>
-                                                <v-date-picker v-model="candidateEducation[index].end_date" :type="form.editEndDateType" :scrollable="false">
+                                                <v-date-picker v-model="candidateWorkExperience[index].end_date" :type="form.editEndDateType" :scrollable="false">
                                                     <v-layout justify-center>
                                                         <v-btn flat color="error" @click="deleteEndDate(index)">Remove</v-btn>
                                                         <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
@@ -316,9 +285,6 @@
                         </v-card-text>
                     </v-card>
                 </v-expansion-panel-content>
-                <!-- <v-card-actions class="justify-center">
-                    <v-btn color="orange" @click="saveEducation">Save</v-btn>
-                </v-card-actions> -->
             </v-expansion-panel>
         </v-layout>
     </div>
@@ -335,19 +301,25 @@
         data () {
             return {
                 resumeSlug: '',
-                modalNewEducation: false,
-                modalEditEducation: false,
-                modalDate: false,
-                reference: 0,
+                modalNewWorkExperience: false,
+				modalEditWorkExperience: false,
+				newWorkExperience: {
+					// company: ''
+				},
+
+
+
+                // modalDate: false,
+                // reference: 0,
                 // picker: new Date().toISOString().substr(0, 7),
-                picker: '2019-01',
-                newEducation: {
-                    name: '',
-                    title: '',
-                    graduation_date: new Date().toISOString().substr(0, 7),
-                    duration: '',
-                    description: ''
-                },
+                // picker: '2019-01',
+                // newEducation: {
+                //     name: '',
+                //     title: '',
+                //     graduation_date: new Date().toISOString().substr(0, 7),
+                //     duration: '',
+                //     description: ''
+                // },
                 // education: [
                 //     {
                 //         name: 'Graphic Design',
@@ -367,11 +339,11 @@
                 //     }
                 // ],
                 form: {
-                    title: [],
-                    subtitle: [],
-                    description: [],
-                    studyDuration: [],
-                    graduationDate: [],
+                    // title: [],
+                    // subtitle: [],
+                    // description: [],
+                    // studyDuration: [],
+                    // graduationDate: [],
                     // date: [new Date().toISOString().substr(0, 7)],
                     // dateMenu: [false],
                     modalStartDate: false,
@@ -389,9 +361,6 @@
             error () {
                 return this.$store.getters['index/error']
             },
-            // candidateLongResume () {
-            //     return this.$store.getters['index/candidateLongResume']
-            // },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
             },
@@ -405,103 +374,68 @@
             loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
             },
-            candidateEducation () {
-                return this.userResume.education
-                const educationEmptyArray = []
-                // const education = this.$store.getters['index/candidateLongResume'].education
-                // const education = this.loadedUserResume.education
-                // return education ? education : educationEmptyArray
-                // return education
-                // return this.$store.getters['index/candidateLongResume'].education
-
-
-                // const candidateLongResume = this.$store.getters['index/candidateLongResume']
-                // console.log('candidateLongResume: ', candidateLongResume)
-                // const abc = []
-                // for (let i = 1; i <= 5; i++) {
-                //     const a = `education_${i}_name`
-                //     // console.log('a: ', a)
-                //     if (candidateLongResume[`education_${i}_name`]) {
-                //         abc.push({
-                //             'name': candidateLongResume[`education_${i}_name`],
-                //             'slug': candidateLongResume[`education_${i}_slug`],
-                //             'description': candidateLongResume[`education_${i}description`],
-                //             'location': candidateLongResume[`education_${i}_location`],
-                //             'duration': candidateLongResume[`education_${i}_duration`],
-                //             'graduation_date': candidateLongResume[`education_${i}_graduation_date`]
-                //         })
-                //     }
-                // }
-                // return abc
+            candidateWorkExperience () {
+                return this.userResume.work_experience
             }
         },
         methods: {
-            saveEducation () {
-                console.log('saveEducation')
-                console.log(this.form)
-            },
-            addNewEducation (newEducation) {
-                console.log('addNewEducation: ', newEducation)
-                // this.candidateEducation.push(
-                //     newEducation
-                // )
-                // if (!this.loadedNewResume.education) {
-                //     this.loadedNewResume.education = []
-                // }
-                // this.loadedNewResume.education.push(newEducation)
-                // this.newEducation = {}
-                this.userResume.education.push(newEducation)
-                this.modalNewEducation = false
+            // saveEducation () {
+            //     console.log('saveEducation')
+            //     console.log(this.form)
+            // },
+            addNewWorkExperience (newWorkExperience) {
+                this.userResume.work_experience.push(newWorkExperience)
+                this.modalNewWorkExperience = false
                 new Noty({
                     type: 'success',
-                    text: 'New Education field added!',
+                    text: 'New work experience field added!',
                     timeout: 5000,
                     theme: 'metroui'
                 }).show()
             },
-            editEducation (education, reference) {
-                console.log('editEducation')
-                console.log('reference: ', reference)
-                this.modalEditEducation = false
-            },
+            // editEducation (education, reference) {
+            //     console.log('editEducation')
+            //     console.log('reference: ', reference)
+            //     this.modalEditWorkExperience = false
+            // },
             saveNewStartDate () {
-                this.newEducation.start_date = this.form.startDate
+                this.newWorkExperience.start_date = this.form.startDate
                 this.form.modalStartDate = false
             },
             deleteStartDate (index) {
-                this.candidateEducation[index].start_date = ''
+                this.candidateWorkExperience[index].start_date = ''
                 this.form.modalStartDate = false
             },
             deleteNewStartDate () {
-                this.newEducation.start_date = ''
+                this.newWorkExperience.start_date = ''
                 this.form.modalStartDate = false
             },
             saveNewEndDate () {
-                this.newEducation.end_date = this.form.endDate
+                this.newWorkExperience.end_date = this.form.endDate
                 this.form.modalEndDate = false
             },
             deleteEndDate (index) {
-                this.candidateEducation[index].end_date = ''
+                this.candidateWorkExperience[index].end_date = ''
                 this.form.modalEndDate = false
             },
             deleteNewEndDate () {
-                this.newEducation.end_date = ''
+                this.newWorkExperience.end_date = ''
                 this.form.modalEndDate = false
             },
-            saveDate2 (date, index) {
-                console.log('saveDate')
-                console.log('date: ', date)
-                console.log('index: ', index)
-                if (!index) {
-                    this.newEducation.graduation_date = date
-                } else {
-                    this.education[index].graduation_date = date                    
-                }
-                this.modalDate = false
-            },
+            // saveDate2 (date, index) {
+            //     console.log('saveDate')
+            //     console.log('date: ', date)
+            //     console.log('index: ', index)
+            //     if (!index) {
+            //         this.newEducation.graduation_date = date
+            //     } else {
+            //         this.education[index].graduation_date = date                    
+            //     }
+            //     this.modalDate = false
+            // },
             deleteItem (index) {
                 console.log('delete: ', index)
-                this.candidateEducation.splice(index, 1)
+                this.candidateWorkExperience.splice(index, 1)
             }
         }
     }

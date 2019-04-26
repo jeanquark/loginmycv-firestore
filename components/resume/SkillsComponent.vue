@@ -302,16 +302,18 @@
         },
         mounted () {
             // this.userSkillsCategories.push(this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null))
-            this.userResume.skills.forEach(skill => {
-                if (!this.userSkillsCategories.includes(skill.category)) {
-                    this.userSkillsCategories.push(skill.category)
-                }
-            })
-            this.userResume.skills.forEach(skill => {
-                if (skill.subcategory != null && !this.userSkillsSubCategories.includes(skill.subcategory)) {
-                    this.userSkillsSubCategories.push(skill.subcategory)
-                }
-            })
+            if (this.userResume) {
+                this.userResume.skills.forEach(skill => {
+                    if (!this.userSkillsCategories.includes(skill.category)) {
+                        this.userSkillsCategories.push(skill.category)
+                    }
+                })
+                this.userResume.skills.forEach(skill => {
+                    if (skill.subcategory != null && !this.userSkillsSubCategories.includes(skill.subcategory)) {
+                        this.userSkillsSubCategories.push(skill.subcategory)
+                    }
+                })
+            }
         },
         data () {
             return {

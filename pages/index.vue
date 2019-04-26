@@ -47,10 +47,10 @@
 								<!-- process.env.PROJECT_ID: {{ process.env.PROJECT_ID }}<br /> -->
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
-          						<nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (client)</nuxt-link><br />
+          						<nuxt-link to="/resume/jeanquark2">Go to jeanquark's second resume (client)</nuxt-link><br />
           						<a href="/resume/jeanquark">Go to jeanquark's resume (server)</a><br />
-								<a href="/resume/greg">Go to greg's resume (server)</a><br />
-								<nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br />
+								<!-- <a href="/resume/greg">Go to greg's resume (server)</a><br /> -->
+								<!-- <nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br /> -->
 								<!-- <nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br /> -->
 								<v-btn color="success">Success button</v-btn>
           						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
@@ -59,6 +59,18 @@
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
+								<v-text-field
+									name="password"
+									label="Password"
+									prepend-icon="lock"
+									hint="At least 8 characters"
+									:counter="30"
+									v-validate="'required|max:30'"
+									ref="password"
+									v-model="password"
+                                    :error-messages="errors ? errors.collect('password') : null"
+
+								></v-text-field>
 
           						<v-layout>
 	          						<v-flex xs12>
@@ -178,6 +190,7 @@
 	import Register from '~/components/Register'
 	import RequestAuthorization from '~/components/RequestAuthorization'
 	export default {
+		inject: ['$validator'], // inject parent validator
 		components: { Login, Register, RequestAuthorization },
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
@@ -240,7 +253,8 @@
 			    loginModal: false,
     			registerModal: false,
 				requestAuthorizationModal: false,
-				items: ['foo', 'bar', 'fizz', 'buzz']
+				items: ['foo', 'bar', 'fizz', 'buzz'],
+				password: ''
 			}
 		},
 		computed: {

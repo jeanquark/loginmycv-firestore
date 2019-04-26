@@ -23,7 +23,7 @@
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step :rules="[stepWorkExperienceValidate]" step="4" editable>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
@@ -48,37 +48,37 @@
 
                         <v-stepper-content step="2">
                             <v-card style="margin-bottom: 30px;">
-                                <personal-data-component />
+                                <personal-data-component v-if="step == 2" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
                             <v-card style="margin-bottom: 30px;">
-                                <education-component />
+                                <education-component v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="4">
                             <v-card style="margin-bottom: 30px;">
-                                Work experience
+                                <work-experience-component v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="5">
                             <v-card style="margin-bottom: 30px;">
-                                <skills-component />
+                                <skills-component v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="6">
                             <v-card style="margin-bottom: 30px;">
-                                <file-uploads-component />
+                                <file-uploads-component v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="7">
                             <v-card style="margin-bottom: 30px;">
-                                Other
+                                <h2>Other</h2>
                             </v-card>
                         </v-stepper-content>
                     </v-stepper-items>
@@ -148,11 +148,12 @@
     import templateComponent from '~/components/resume/TemplateComponent'
     import personalDataComponent from '~/components/resume/PersonalDataComponent'
     import educationComponent from '~/components/resume/EducationComponent'
+    import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import Noty from 'noty'
 	export default {
-        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
+        components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         middleware: [],
         async created () {
@@ -216,6 +217,9 @@
                 return true
             },
             stepEducationValidate () {
+                return true
+            },
+            stepWorkExperienceValidate () {
                 return true
             },
             stepSkillsValidate () {
