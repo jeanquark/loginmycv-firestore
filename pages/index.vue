@@ -218,6 +218,57 @@
 			// })
 			// console.log('resumeShortArray: ', resumesShortArray)
 			// this.$store.commit('resumes/setShortResumes', resumesShortArray)
+			const data2 = [
+				{
+					"category": "Technical skills",
+					"name": "JavaScript",
+					"type": "pie",
+					"value": 50
+				},
+				{
+					"category": "Technical skills",
+					"name": "PHP",
+					"type": "bar",
+					"value": 30
+				},
+				{
+					"category": "Software skills",
+					"name": "Photoshop",
+					"type": "bar",
+					"value": 20
+				},
+				{
+					"name": "Communication",
+					"type": "pie",
+					"value": 60
+				}
+			];
+			const data = [ 
+				{ 
+					"type": "pie", 
+					"value": 50, 
+					"category": "Technical skills", 
+					"subcategory": "Software", 
+					"name": "Photoshop" 
+				}, 
+				{ 
+					"name": "Communication", 
+					"maxValue": 10, 
+					"type": "pie", 
+					"value": 30, 
+					"category": "Soft skills", 
+					"subcategory": "Social interactions" 
+				} 
+			]
+
+			const res = data.reduce((acc, curr) => {
+				if(!acc[curr.category]) acc[curr.category] = []; //If this type wasn't previously stored
+				acc[curr.category].push(curr);
+				return acc;
+			},{});
+
+			console.log('res: ', res);
+
 		},
 		data () {
 			return {

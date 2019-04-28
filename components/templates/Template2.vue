@@ -179,6 +179,7 @@
 				<!-- color: {{ this.resume.color }}<br /> -->
 				<!-- categories: {{ categories }}<br /> -->
 				<!-- subcategories: {{ subcategories }}<br /> -->
+				<!-- skills: {{ skills }}<br /> -->
 			</p>
 			<br /><br /><br />
 			<!-- <v-layout justify-center align-center> -->
@@ -189,13 +190,13 @@
 					<v-flex xs12 sm8 offset-sm2>
 						<v-layout>
 							<v-flex xs12 sm6 style="">
-								<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>Hello, I'm</b></v-chip><br /><br />
-								<h1 id="fullName" class="">Alex Johnson</h1>
-								<h2 class="white--text">Product Designer</h2><br />
+								<v-chip class="primary-color" text-color="white" style="margin: 0px; padding: 6px 20px; border-bottom-left-radius: 0px;"><b>{{ resume.personal_data.greeting_phrase }}</b></v-chip><br /><br />
+								<h1 id="fullName" class="">{{ resume.personal_data.firstname }} {{ resume.personal_data.lastname }}</h1>
+								<h2 class="">{{ resume.job_title }}</h2><br />
 
-								<font-awesome-icon :icon="['fas', 'envelope']" class="icon" />getemail@email.com<br />
-								<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> +12 986 987 7867<br />
-								<font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" /> 37, Pollsatnd, New York, United State<br />
+								<font-awesome-icon :icon="['fas', 'envelope']" class="icon" />{{ resume.personal_data.email }}<br />
+								<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}<br />
+								<font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country }}<br />
 								
 								<br />
 								<v-layout class="justify-center">
@@ -228,7 +229,7 @@
 							</v-flex>
 							<v-flex xs12 sm6 style="">
 								<h2>About Me</h2>
-								<p>Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at</p>
+								<p>{{ resume.personal_data.short_description }}</p>
 								<v-chip class="skill">php</v-chip>
 								<v-chip class="skill">html</v-chip>
 								<v-chip class="skill">css</v-chip>
@@ -400,6 +401,53 @@
 				</v-layout>
 
 
+				<!-- Section Skills 4 -->
+				<v-layout row wrap style="border: 2px solid green;" id="skills" class="my-5 section">
+					<v-flex xs12 sm8 offset-sm2 style="">
+						<v-layout row wrap justify-center>
+							<v-flex xs12 sm6 v-for="(skill, index) in skills" :key="index" class="pa-3 text-xs-center" style="border: 1px dotted orange; margin: 0px; padding: 0px;">
+								<div style="border: 1px solid green;">
+									<!-- index: {{ index }} -->
+									<h2 class="text-xs-center">{{ skill[0].category }}</h2>
+									<div class="mx-0" v-for="s in skill" :key="s.name">
+										<div v-if="s.type === 'pie'">
+											<v-progress-circular
+												:rotate="270"
+												:size="100"
+												:width="5"
+												:value="s.value"
+												:color="primaryColor"
+												style="background: #191919; border-radius: 50px;"
+											>
+												{{ s.value }}%
+											</v-progress-circular><br /><br />
+											{{ s.name }}
+										</div>
+										<div v-else>
+											<v-layout>
+												<v-flex class="text-xs-left">
+													<span>{{ s.name }}</span>
+												</v-flex>
+												<v-flex class="text-xs-right">
+													<span>{{ s.value }}%</span>
+												</v-flex>
+											</v-layout>
+											<v-progress-linear
+												:color="primaryColor"
+												height="10"
+												:value="s.value"
+												style="border-radius: 10px; margin: 0px 0px;"
+											></v-progress-linear>
+										</div>
+										
+									</div>
+								</div>
+							</v-flex>
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+
 				<!-- Section Contact -->
 				<v-layout row wrap id="contact" class="section">
 					<v-flex xs12 sm8 offset-sm2>
@@ -497,10 +545,15 @@
 		props: ['resume'],
 		mounted () {
 			// this.primaryColor = '#a97afd'
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#fff'
-			this.secondaryColor = '#202026'
-			this.backgroundColor = '#000'
-			this.textColor = '#fff'
+			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
+			// this.secondaryColor = '#202026'
+			// this.backgroundColor = '#000'
+			// this.textColor = '#fff'
+
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#000'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#fff'
 
 
 		},
@@ -532,7 +585,7 @@
 					email: '',
 					message: ''
 				},
-				skills: {
+				skills2: {
 					technical_skills: {
 						name: 'Technical skills',
 						slug: 'technical_skills',
@@ -570,6 +623,15 @@
 		    }
 		},
 		computed: {
+			skills () {
+				// return this.resume.skills
+				const res = this.resume.skills.reduce((acc, curr) => {
+					if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
+					acc[curr.category].push(curr)
+					return acc
+				},{})
+				return res
+			},
 			cssProps() { 
 				return {
 					'--primary-color': this.primaryColor,
