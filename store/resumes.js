@@ -69,9 +69,10 @@ export const actions = {
 		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
 		firestore.collection('resumes_short').onSnapshot(snapshot => {
 			const shortResumesArray = []
-			snapshot.forEach(doc => {
-				// shortResumesArray.push(doc.data())
-				shortResumesArray.push({...doc.data(), id: doc.id})
+			snapshot.forEach(resume => {
+				if (resume.data().privacy !== 'private') {
+					shortResumesArray.push({...resume.data(), id: resume.id})
+				}
 			})
 			console.log('shortResumesArray: ', shortResumesArray)
 			commit('setShortResumes', shortResumesArray)
@@ -236,9 +237,9 @@ export const actions = {
 					'app-key': process.env.APP_KEY
 				}
 			})
-
 		} catch (error) {
-			console.log('error: ', error)
+			console.log('error from client: ', error)
+			throw new Error(error)
 		}	
 	}
 }

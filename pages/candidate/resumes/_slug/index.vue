@@ -161,6 +161,8 @@
             const resume = this.$route.params.slug
             console.log('resume: ', resume)
             this.resumeSlug = resume
+        },
+        async mounted () {
             await this.$store.dispatch('competences/fetchCompetences')
             await this.$store.dispatch('languages/fetchLanguages')
             await this.$store.dispatch('resumes/fetchUserResumes')
@@ -248,9 +250,10 @@
                     console.log(this.loadedUserResume)
                     this.updatingResumeDialog = true
                     this.loadingUpdateResume = true
-                    await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
+                    const updateResume = await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                     this.updatingResumeDialog = false
                     this.loadingUpdateResume = false
+                    console.log('updateResume: ', updateResume)
                     
                     new Noty({
                         type: 'success',
@@ -259,10 +262,12 @@
                         theme: 'metroui'
                     }).show()
                 } catch (error) {
-                    console.log('error updateResume: ', error)
+                    // console.log('error updateResume: ', error)
+                    this.updatingResumeDialog = false
+                    this.loadingUpdateResume = false
                     new Noty({
                         type: 'error',
-                        text: 'Your resume could not be updated.',
+                        text: 'Sorry, an error occured and your resume could not be updated.',
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()

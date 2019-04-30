@@ -1,7 +1,7 @@
 <template>
     <div style="padding: 30px;" v-if="userResume">
         <div>
-            <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
+            resumeSlug: {{ this.resumeSlug }}<br /><br />
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- candidateLongResume.image: {{ candidateLongResume.image }}<br /><br /> -->
@@ -20,7 +20,7 @@
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">General Info <small>(public data)</small></h2>
+                        <h2 class="headline mb-0">General Info</h2>
                     </v-card-title>
 
                     <v-card-text>
@@ -245,7 +245,7 @@
                     <v-card-title class="justify-center">
                         <h2 class="headline mb-0">More about you </h2>
                     </v-card-title>
-                    <p class="text-xs-center">(can be public or private, you choose)</p>
+                    <!-- <p class="text-xs-center">(can be public or private, you choose)</p> -->
 
                     <v-card-text>
                         <v-layout row wrap>
@@ -318,7 +318,7 @@
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
-                                    v-model="userResume.personal_data.languages"
+                                    v-model="userResume.languages"
                                     :items="loadedLanguages"
                                     item-text="name"
                                     prepend-icon="person"
@@ -372,49 +372,64 @@
                                 </div>
                             </v-flex>
                         </v-layout>
-
-                        <v-layout style="border: 1px solid red;">
-                            <h2>Color picker</h2>
-                            userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br />
-                            <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
-                            <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
-                            <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
-                            <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
-                        </v-layout>
                     </v-card-text>
-
                 </v-card>
             </v-flex>            
         </v-layout>
 
         <v-layout row wrap pa-2 class="">
             <v-flex xs12 class="">
-                <v-card :elevation="12" color="red lighten-2" class="black--text" style="border: 1px solid red;">
+                <v-card :elevation="12" color="red lighten-2" class="white--text" style="border: 1px solid red;">
                     <v-card-title class="justify-center" style="">
                         <h2 class="headline mb-0">Privacy & Security</h2>
                     </v-card-title>
 
                     <v-card-text class="">
-                        <v-layout justify-center>
-                            <div>
-                                <v-radio-group v-model="userResume.privacy" row>
-                                    <v-radio label="Public" value="public" color="primary"></v-radio>
-                                    <v-radio label="Private" value="private" color="primary"></v-radio>
+                        <v-layout justify-center class="black--text">
+                            <div class="justify-center">
+                                <v-radio-group v-model="userResume.privacy" row style="color: black;">
+                                    <v-radio label="Public resume" value="public" color="success"></v-radio>
+                                    <v-radio label="Semi-private resume" value="semi-private" color="primary"></v-radio>
+                                    <v-radio label="Private resume" value="private" color="warning"></v-radio>
                                 </v-radio-group>
                             </div>
                         </v-layout>
-
-                        <v-layout justify-center>
-                            <div>
-                                <v-switch v-model="userResume.allow_visitor_access" label="Allow visitor Access" color="primary"></v-switch>
-                            </div>
+                        <v-layout row wrap>
+                            <v-alert
+                                :value="true"
+                                type="success"
+                                v-if="userResume.privacy === 'public'"
+                                >
+                                <span>An excerpt of your resume with full access to your public data will appear on the frontpage (recommanded option).</span>
+                            </v-alert>
+                            <v-alert
+                                :value="true"
+                                color="primary"
+                                icon="info"
+                                v-if="userResume.privacy === 'semi-private'"
+                                >
+                                <span>An excerpt of your resume will appear on the frontpage. But to gain full access, visitors need to have been granted an authorization.</span>
+                            </v-alert>
+                            <v-alert
+                                :value="true"
+                                type="warning"
+                                v-if="userResume.privacy === 'private'"
+                                >
+                                <span>Your resume will be hidden (visitors will not be able to found you without prior knowledge of your resume slug). To gain access to your resume, visitors need to have been granted an authorization.</span>
+                            </v-alert>
                         </v-layout>
-                        <v-layout v-if="userResume.allow_visitor_access">
-                            <v-flex xs12 sm6 mx-3>
+
+                        <v-layout row wrap justify-center v-if="userResume.privacy != 'public'" style="margin-top: 20px;">
+                            <v-flex xs12>
+                                <div class="text-xs-center">
+                                    Provide password for visitors' access:
+                                </div>
+                            </v-flex>
+                            <v-flex xs12 sm6 mx-5>
                                 <v-text-field
                                     :type="showPassword ? 'text' : 'password'"
                                     name="password"
-                                    label="Password"
+                                    :label="resumeSlug ? 'New password' : 'Password'"
                                     prepend-icon="lock"
                                     hint="At least 8 characters"
                                     :counter="30"
@@ -425,11 +440,11 @@
                                     v-model="userResume.new_password"
                                 ></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6 mx-3>
+                            <v-flex xs12 sm6 mx-5>
                                 <v-text-field
                                     type="password"
                                     name="password_confirmation"
-                                    label="Password confirmation"
+                                    :label="resumeSlug ? 'New Password confirmation' : 'Password confirmation'"
                                     prepend-icon="lock"
                                     v-validate="'required|confirmed:password'"
                                     data-vv-as="Password"
@@ -458,14 +473,14 @@
             console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
             // this.loadedUserResume = await this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
+        },
+        async mounted () {
             await this.$store.dispatch('countries/fetchCountries')
             await this.$store.dispatch('languages/fetchLanguages')
             await this.$store.dispatch('competences/fetchCompetences')
-            
-        },
-        mounted () {
+
             if (this.resumeSlug == undefined) {
-                this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
+                // this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
                 this.loadedNewResume.slug = ''
                 // this.loadedNewResume.job_title = 'Web developer'
                 // this.loadedNewResume.job_description = 'Develops websites'

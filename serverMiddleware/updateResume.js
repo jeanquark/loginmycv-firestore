@@ -13,8 +13,13 @@ module.exports = app.use(async function (req, res, next) {
         // 1) Parse resume data
         let updatedResume = req.body;
         updatedResume._updated_at = moment().unix();
-        console.log('updatedResume: ', updatedResume);
-		console.log('app-key: ', req.get('app-key'))
+        // console.log('updatedResume: ', updatedResume);
+		console.log('app-key: ', req.get('app-key'));
+		if (req.get('app-key') !== 'Economics2009!') {
+			throw {
+				'wrong-app-key': 'You are not sending this request from an authorized server.'
+			}
+		}
 
 		// 2) Check total file upload size
 		// console.log('req.files: ', req.files);
@@ -67,10 +72,49 @@ module.exports = app.use(async function (req, res, next) {
 			}
 			// Update visitor profile data
 		} else {
-			console.log('It is the same resume slug');
+			console.log('It is the same resume slug.');
 		}
-        
-		await admin.firestore().collection('resumes_long').doc(updatedResume.id).update(updatedResume);
+
+		// Check to see if resume password needs to be updated
+		if (updatedResume.password) {
+			console.log('You changed the resume password!');
+		} else {
+			console.log('It is the same resume password.');
+		}
+		
+		// Update both long and short resumes at the same time (do a batch)
+		const batch = admin.firestore().batch();
+
+		// Update long resume
+		const updatedLongResume = admin.firestore().collection('resumes_long').doc(updatedResume.id);
+		batch.update(updatedLongResume, updatedResume);
+
+		// Update short resume
+		var updatedShortResume = admin.firestore().collection('resumes_short').doc(updatedResume.resume_short_id);
+		batch.update(updatedShortResume, {
+			slug: updatedResume.slug,
+			job_title: updatedResume.job_title,
+			job_description: updatedResume.job_description,
+			// gender: updatedResume.gender,
+			country: updatedResume.personal_data.country,
+			city: updatedResume.personal_data.city,
+			// picture: updatedResume.personal_data.picture,
+			keys: updatedResume.skills,
+			// languages: updatedResume.languages,
+			privacy: updatedResume.privacy,
+			user_id: updatedResume.user_id
+		});
+
+		// Commit the batch
+		// try {
+			await batch.commit();
+		// } catch {
+			// throw {
+				// 'resume_update_error': 'An error occured while attempting to update your resume.'
+			// }
+		// }
+
+		// await admin.firestore().collection('resumes_long').doc(updatedResume.id).update(updatedResume);
 
         // 8) Send back new resume id & new resume slug
         // res.send(snapshot.id);        
@@ -82,11 +126,17 @@ module.exports = app.use(async function (req, res, next) {
         });
         // res.send('POST request to create new resume went successfully.');
   	} catch (error) {
-  		console.log('error: ', error);
-        res.send({
-            message: 'Update resume failed.',
-            error: error
-        });
-  		// res.end(`POST request to create new resume failed: ${error}`);
+		console.log('error from server: ', error);
+		// throw {
+		// 	'resume_update_error': 'An error occured while attempting to update your resu.'
+		// }
+        // res.send({
+        //     message: 'Update resume failed.',
+        //     error: error
+        // });
+		//   res.end(`POST request to update a resume failed: ${error}`);
+		// res.send(500, { error: 'POST request to update resume failed.' });
+		res.status(500).send(`POST request to update resume failed: ${error}`);
+		// res.status(500).send((results[0].id).toString());
   	}
 });
