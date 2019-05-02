@@ -4,7 +4,8 @@ export const strict = false
 export const state = () => ({
     loading: false,
     error: {},
-    errors: []
+    errors: [],
+    notification: {} 
 })
 
 export const mutations = {
@@ -14,6 +15,9 @@ export const mutations = {
     setError (state, payload) {
         console.log('setError mutation called')
         state.error = payload
+    },
+    setNotification (state, payload) {
+        state.notification = payload
     },
     addError (state, payload) {
         console.log('addError mutation called')
@@ -68,5 +72,8 @@ export const getters = {
     },
     errors (state) {
         return state.errors
+    },
+    notification (state) {
+        return state.notification
     }
 }

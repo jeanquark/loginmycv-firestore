@@ -8,7 +8,7 @@
                 app
             >
                 <v-list dense>
-                    <v-list-tile to="/candidate/resumes" class="">
+                    <v-list-tile to="/candidate/resumes" v-ripple>
                         <v-list-tile-action>
                             <v-icon>folder_shared</v-icon>
                         </v-list-tile-action>
@@ -16,7 +16,7 @@
                             <v-list-tile-title>My Resumes</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-list-tile to="/candidate/authorizations">
+                    <v-list-tile to="/candidate/authorizations" v-ripple>
                         <v-list-tile-action>
                             <v-icon>pan_tool</v-icon>
                         </v-list-tile-action>
@@ -24,7 +24,7 @@
                             <v-list-tile-title>Authorizations</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-list-tile to="/">
+                    <v-list-tile to="/" v-ripple>
                         <v-list-tile-action>
                             <v-icon>arrow_back</v-icon>
                         </v-list-tile-action>
@@ -35,7 +35,7 @@
                     <v-divider></v-divider>
                 </v-list>
                 <v-list subheader>
-                    <v-list-tile @click="logoutCandidate()">
+                    <v-list-tile @click="logoutCandidate()" v-ripple>
                         <v-list-tile-action>
                             <v-icon>exit_to_app</v-icon>
                         </v-list-tile-action>
@@ -162,8 +162,10 @@
             }
 		},
 		methods: {
-			logoutCandidate () {
-				console.log('logoutCandidate')
+			async logoutCandidate () {
+                console.log('logoutCandidate')
+                await this.$store.dispatch('firebase-auth/signOut')
+		    	this.$router.replace('/')
 			}
 		}
 	}

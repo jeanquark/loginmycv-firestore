@@ -152,7 +152,9 @@
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import Noty from 'noty'
+
 	export default {
+        inject: ['$validator'], // inject parent validator
         components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         middleware: [],
@@ -246,8 +248,54 @@
             },
             async updateResume () {
                 try {
-                    console.log('updateResume')
-                    console.log(this.loadedUserResume)
+                    this.updatingResumeDialog = true
+                    this.loadingUpdateResume = true
+                    await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
+                    this.updatingResumeDialog = false
+                    this.loadingUpdateResume = false
+                    new Noty({
+                        type: 'success',
+                        text: 'Your resume was successfully updated.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    this.$router.push('/candidate/resumes')
+                } catch (error) {
+                    this.updatingResumeDialog = false
+                    this.loadingUpdateResume = false
+                    console.log('error from client: ', error)
+                    console.log('error.response: ', error.response)
+                    console.log('error.response.data: ', error.response.data)
+                    console.log('error.response.data.error: ', error.response.data.error)
+                    new Noty({
+                        type: 'error',
+                        text: 'Your resume could not be updated.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+
+                    Object.entries(error.response.data.error).forEach(([key, value]) => {
+                        console.log('key: ', key)
+                        console.log('value: ', value)
+                        const field = key.substr(key.indexOf('.') + 1)
+
+                        this.$validator.errors.add({
+                            field: field,
+                            msg: value,
+                        })
+
+                        new Noty({
+                            type: 'warning',
+                            text: value,
+                            timeout: 8000,
+                            theme: 'metroui'
+                        }).show()
+                    })
+                }
+            },
+            async updateResume2 () {
+                try {
+                    console.log('this.loadedUserResume: ', this.loadedUserResume)
                     this.updatingResumeDialog = true
                     this.loadingUpdateResume = true
                     const updateResume = await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
@@ -261,6 +309,7 @@
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()
+                    this.$router.push('/candidate/resumes')
                 } catch (error) {
                     // console.log('error updateResume: ', error)
                     this.updatingResumeDialog = false

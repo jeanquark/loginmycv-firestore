@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-        <v-content>
+        <v-content v-if="firstname">
             <v-container fluid fill-height>
                 <v-layout align-center justify-center>
                     <v-flex xs12 sm8 md4>
@@ -56,17 +56,27 @@
 			const slug = this.$route.params.slug
 			this.slug = slug
 
-			let user = {}
+			let candidate = {}
 			const snapshot = await firestore.collection('resumes_short').where('slug', '==', slug).get()
 			snapshot.forEach(doc => {
-				user = doc.data()
+				candidate = doc.data()
 				// console.log('doc.data(): ', doc.data())
 
 			})
-			// console.log('snapshot: ', snapshot)
-			console.log('user: ', user)
-			this.firstname = user.firstname
-			this.form.username = `${user.slug}@visitor.loginmycv.com`
+            console.log('candidate: ', candidate)
+            if (candidate.firstname) {
+                this.firstname = candidate.firstname
+			    this.form.username = `${candidate.slug}@visitor.loginmycv.com`
+            } else {
+                console.log('No resume with this slug')
+                new Noty({
+                    type: 'error',
+                    text: 'Resume not found.',
+                    timeout: 5000,
+                    theme: 'metroui'
+                }).show()
+                this.$router.push('/')
+            }
 		},
         data () {
             return {
@@ -94,12 +104,12 @@
                 try {
                     await this.$store.dispatch('firebase-auth/signVisitorIn', { slug: this.slug, form: this.form})
                     // console.log('Success!')
-                    new Noty({
-                        type: 'success',
-                        text: 'Log in successfully!',
-                        timeout: 5000,
-                        theme: 'metroui'
-					}).show()
+                    // new Noty({
+                    //     type: 'success',
+                    //     text: 'Access allowed!',
+                    //     timeout: 5000,
+                    //     theme: 'metroui'
+					// }).show()
 					this.$router.push(`/resume/${this.slug}`)
 					// this.$router.push(`/`)
 					// redirect(`/resume/${this.slug}`)

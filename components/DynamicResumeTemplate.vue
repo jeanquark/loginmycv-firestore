@@ -43,6 +43,7 @@
                 const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === templateId)
                 console.log('template: ', template)
                 return this.component = () => import(`~/components/templates/${template.file}`)
+                // return this.component = () => import(`~/components/templates/template2`)
             } else {
                 new Noty({
                     type: 'error',

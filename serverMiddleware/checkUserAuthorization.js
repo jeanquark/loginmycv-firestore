@@ -96,6 +96,6 @@ module.exports = app.use(async function (req, res, next) {
 
   	} catch (error) {
   		console.log('error: ', error);
-  		res.end('POST request to get resume failed.');
+  		res.end('POST request to check user authorization failed.');
   	}
 });

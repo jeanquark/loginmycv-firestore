@@ -34,7 +34,7 @@
                                         <v-checkbox v-model="userResume.allow_visitor_access" label="Allow direct access for visitors" color="secondary"></v-checkbox>
                                     </div>
                                 </v-layout>
-                                <v-layout v-if="userResume.allow_visitor_access">
+                                <!-- <v-layout v-if="userResume.allow_visitor_access">
                                     <v-flex xs12 sm6 mx-3>
                                         <v-text-field
                                             :type="showPassword ? 'text' : 'password'"
@@ -62,7 +62,7 @@
                                             v-model="userResume.password_confirmation"
                                         ></v-text-field>
                                     </v-flex>
-                                </v-layout>
+                                </v-layout> -->
                             </v-flex>
                         </v-layout>
 
@@ -73,7 +73,7 @@
                                         <v-switch v-model="userResume.allow_visitor_access" label="Allow visitor Access" color="secondary"></v-switch>
                                     </div>
                                 </v-layout>
-                                <v-layout v-if="userResume.allow_visitor_access">
+                                <!-- <v-layout v-if="userResume.allow_visitor_access">
                                     <v-flex xs12 sm6 mx-3>
                                         <v-text-field
                                             :type="showPassword ? 'text' : 'password'"
@@ -101,7 +101,7 @@
                                             v-model="userResume.new_password_confirmation"
                                         ></v-text-field>
                                     </v-flex>
-                                </v-layout>
+                                </v-layout> -->
                             </v-flex>
                         </v-layout>
 
@@ -147,7 +147,7 @@
                                             hint="Must be unique."
                                             :persistent-hint="true"
                                             v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
-                                            :error-messages="errors ? errors.collect('slug') : null"
+                                            :error-messages="errors ? errors.collect('new_slug') : null"
                                             data--vv-as="Resume identifier"
                                             v-model="userResume.new_slug"
                                         ></v-text-field>
@@ -387,7 +387,7 @@
                     <v-card-text class="">
                         <v-layout justify-center class="black--text">
                             <div class="justify-center">
-                                <v-radio-group v-model="userResume.privacy" row style="color: black;">
+                                <v-radio-group v-model="userResume.visibility" row style="color: black;">
                                     <v-radio label="Public resume" value="public" color="success"></v-radio>
                                     <v-radio label="Semi-private resume" value="semi-private" color="primary"></v-radio>
                                     <v-radio label="Private resume" value="private" color="warning"></v-radio>
@@ -396,30 +396,30 @@
                         </v-layout>
                         <v-layout row wrap>
                             <v-alert
-                                :value="true"
+                                value="public"
                                 type="success"
-                                v-if="userResume.privacy === 'public'"
+                                v-if="userResume.visibility === 'public'"
                                 >
                                 <span>An excerpt of your resume with full access to your public data will appear on the frontpage (recommanded option).</span>
                             </v-alert>
                             <v-alert
-                                :value="true"
+                                value="semi-private"
                                 color="primary"
                                 icon="info"
-                                v-if="userResume.privacy === 'semi-private'"
+                                v-if="userResume.visibility === 'semi-private'"
                                 >
-                                <span>An excerpt of your resume will appear on the frontpage. But to gain full access, visitors need to have been granted an authorization.</span>
+                                <span>An excerpt of your resume will appear on the frontpage. But to gain full access, visitors need to ask for your authorization.</span>
                             </v-alert>
                             <v-alert
-                                :value="true"
+                                value="private"
                                 type="warning"
-                                v-if="userResume.privacy === 'private'"
+                                v-if="userResume.visibility === 'private'"
                                 >
-                                <span>Your resume will be hidden (visitors will not be able to found you without prior knowledge of your resume slug). To gain access to your resume, visitors need to have been granted an authorization.</span>
+                                <span>Your resume will be hidden (visitors will not be able to found you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization.</span>
                             </v-alert>
                         </v-layout>
 
-                        <v-layout row wrap justify-center v-if="userResume.privacy != 'public'" style="margin-top: 20px;">
+                        <v-layout row wrap justify-center v-if="userResume.visibility != 'public'" style="margin-top: 20px;">
                             <v-flex xs12>
                                 <div class="text-xs-center">
                                     Provide password for visitors' access:
@@ -431,13 +431,14 @@
                                     name="password"
                                     :label="resumeSlug ? 'New password' : 'Password'"
                                     prepend-icon="lock"
-                                    hint="At least 8 characters"
+                                    hint="At least 4 characters"
                                     :counter="30"
                                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                     @click:append="showPassword = !showPassword"
-                                    v-validate="'required|max:30'"
+                                    v-validate="'required|min:4|max:30'"
                                     ref="password"
-                                    v-model="userResume.new_password"
+                                    v-model="userResume.password"
+                                    :error-messages="errors ? errors.collect('password') : null"
                                 ></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 mx-5>
@@ -449,7 +450,7 @@
                                     v-validate="'required|confirmed:password'"
                                     data-vv-as="Password"
                                     :error-messages="errors ? errors.collect('password_confirmation') : null"
-                                    v-model="userResume.new_password_confirmation"
+                                    v-model="userResume.password_confirmation"
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>

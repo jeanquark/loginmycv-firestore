@@ -48,7 +48,7 @@
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
           						<nuxt-link to="/resume/jeanquark2">Go to jeanquark's second resume (client)</nuxt-link><br />
-          						<a href="/resume/jeanquark">Go to jeanquark's resume (server)</a><br />
+          						<a href="/resume/jeanquark3">Go to jeanquark's resume (server)</a><br />
 								<!-- <a href="/resume/greg">Go to greg's resume (server)</a><br /> -->
 								<!-- <nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br /> -->
 								<!-- <nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br /> -->
@@ -59,6 +59,7 @@
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
+								loadedNotification: {{ loadedNotification }}<br />
 								<v-text-field
 									name="password"
 									label="Password"
@@ -101,15 +102,22 @@
         					</v-card-title>
         					<v-card-actions>
         						<v-layout justify-center v-if="loadedUser">
-									<v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id" :to="`/resume/${resume.slug}`">View my resume</v-btn>
-        							<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-	        							<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
-	        							<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
-	        						</div>
-	        						<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+									<!-- <v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id" :to="`/resume/${resume.slug}`">View my resume</v-btn> -->
+									<!-- <v-btn color="success" class="white--text elevation-2" @click="redirectToResume(resume.slug, resume.id)" v-if="resume.privacy === 'public'">View resume</v-btn> -->
+									<v-btn color="success" class="white--text elevation-2" nuxt :to="`/resume/${resume.slug}`" v-if="resume.visibility === 'public'">View resume</v-btn>
+									<div v-if="resume.visibility === 'semi-private'">
+        								<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
+											<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
+											<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
+	        							</div>
+	        							<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+										<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+									</div>
 	        					</v-layout>
 								<v-layout justify-center v-else>
-									<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+									<!-- <v-btn color="success" class="white--text elevation-2" nuxt :to="`/resume/${resume.resume_long_id}`" v-if="resume.privacy === 'public'">View resume</v-btn> -->
+									<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.visibility === 'public'">View resume</v-btn>
+									<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.visibility === 'semi-private'">Request access</v-btn>
 								</v-layout>
         					</v-card-actions>
         				</v-card>
@@ -141,10 +149,31 @@
     					<RequestAuthorization :resume="candidateResume" />
     				</v-dialog>
 
+					
+
         		</v-layout>
 
         		
         	</v-container>
+
+			<!-- <div v-for="(notification, index) in loadedNotifications" :key="index"> -->
+				<v-snackbar
+					v-model="loadedNotification"
+					top
+					right
+					v-if="loadedNotification"
+				>
+					{{ loadedNotification.text }}
+					<v-btn
+						color="pink"
+						flat
+						@click="loadedNotification = false"
+					>
+						Close
+					</v-btn>
+				</v-snackbar>
+			<!-- </div> -->
+			
         </v-content>
 
         <v-footer
@@ -207,6 +236,16 @@
 				// await this.$store.dispatch('users/fetchAuthenticatedUser', authUser.uid)
 				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
 			}
+			this.$store.commit('setNotification', 
+				{
+					text: 'Hello, I\'m a notification',
+					color: 'primary',
+					timeout: 8000
+				},
+				// {
+				// 	text: 'Hello, I\'m a second notification'
+				// }
+			)
 			// console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
 			// console.log('process.env.PRIVATE_KEY: ', process.env.PRIVATE_KEY)
 			// console.log('abc: ', abc)
@@ -218,56 +257,56 @@
 			// })
 			// console.log('resumeShortArray: ', resumesShortArray)
 			// this.$store.commit('resumes/setShortResumes', resumesShortArray)
-			const data2 = [
-				{
-					"category": "Technical skills",
-					"name": "JavaScript",
-					"type": "pie",
-					"value": 50
-				},
-				{
-					"category": "Technical skills",
-					"name": "PHP",
-					"type": "bar",
-					"value": 30
-				},
-				{
-					"category": "Software skills",
-					"name": "Photoshop",
-					"type": "bar",
-					"value": 20
-				},
-				{
-					"name": "Communication",
-					"type": "pie",
-					"value": 60
-				}
-			];
-			const data = [ 
-				{ 
-					"type": "pie", 
-					"value": 50, 
-					"category": "Technical skills", 
-					"subcategory": "Software", 
-					"name": "Photoshop" 
-				}, 
-				{ 
-					"name": "Communication", 
-					"maxValue": 10, 
-					"type": "pie", 
-					"value": 30, 
-					"category": "Soft skills", 
-					"subcategory": "Social interactions" 
-				} 
-			]
+			// const data2 = [
+			// 	{
+			// 		"category": "Technical skills",
+			// 		"name": "JavaScript",
+			// 		"type": "pie",
+			// 		"value": 50
+			// 	},
+			// 	{
+			// 		"category": "Technical skills",
+			// 		"name": "PHP",
+			// 		"type": "bar",
+			// 		"value": 30
+			// 	},
+			// 	{
+			// 		"category": "Software skills",
+			// 		"name": "Photoshop",
+			// 		"type": "bar",
+			// 		"value": 20
+			// 	},
+			// 	{
+			// 		"name": "Communication",
+			// 		"type": "pie",
+			// 		"value": 60
+			// 	}
+			// ];
+			// const data = [ 
+			// 	{ 
+			// 		"type": "pie", 
+			// 		"value": 50, 
+			// 		"category": "Technical skills", 
+			// 		"subcategory": "Software", 
+			// 		"name": "Photoshop" 
+			// 	}, 
+			// 	{ 
+			// 		"name": "Communication", 
+			// 		"maxValue": 10, 
+			// 		"type": "pie", 
+			// 		"value": 30, 
+			// 		"category": "Soft skills", 
+			// 		"subcategory": "Social interactions" 
+			// 	} 
+			// ]
 
-			const res = data.reduce((acc, curr) => {
-				if(!acc[curr.category]) acc[curr.category] = []; //If this type wasn't previously stored
-				acc[curr.category].push(curr);
-				return acc;
-			},{});
+			// const res = data.reduce((acc, curr) => {
+			// 	if(!acc[curr.category]) acc[curr.category] = []; //If this type wasn't previously stored
+			// 	acc[curr.category].push(curr);
+			// 	return acc;
+			// },{});
 
-			console.log('res: ', res);
+			// console.log('res: ', res);
 
 		},
 		data () {
@@ -305,7 +344,8 @@
     			registerModal: false,
 				requestAuthorizationModal: false,
 				items: ['foo', 'bar', 'fizz', 'buzz'],
-				password: ''
+				password: '',
+				snackbar: true
 			}
 		},
 		computed: {
@@ -324,6 +364,9 @@
 			// loadedUserAuthorizationsArray () {
 			// 	return this.$store.getters['authorizations/loadedUserAuthorizationsArray']
 			// }
+			loadedNotification () {
+				return this.$store.getters['notification']
+			}
 		},
 		methods: {
 			switchToLogin () {
@@ -396,7 +439,11 @@
 		    	const abc = await this.$store.dispatch('firebase-auth/currentUserIdToken')
 		    	console.log('abc: ', abc)
 		    	console.log('Done!')
-		    },
+			},
+			redirectToResume (slug, id) {
+				console.log('redirectToResume: ', slug, id)
+
+			},
 		    async logout () {
 		    	await this.$store.dispatch('firebase-auth/signOut')
 		    	this.$router.replace('/')

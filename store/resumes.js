@@ -64,14 +64,44 @@ export const actions = {
 	//         console.log('Error getting documents', error);
 	//     }
 	// },
+	async fetchLongResume ({ commit }, payload) {
+		try {
+			console.log('Call to fetchLongResume action: ', payload)
+			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
+			// console.log('snapshot.data(): ', snapshot.data())
+			const resume = snapshot.data()
+			console.log('resume: ', resume)
+			return resume
+		} catch (error) {
+			console.log('error from fetchLongResume action: ', error)
+			// new Noty({
+			// 	type: 'error',
+			// 	text: 'Sorry, an error occured and the resume could not be retrieved.',
+			// 	timeout: 5000,
+			// 	theme: 'metroui'
+			// }).show()
+			throw error
+		}
+
+		// const snapshot = await firestore.collection('resumes_long').where('visibility', '==', 'public').get()
+		// const resumesArray = []
+		// snapshot.forEach(doc => {
+		// 	if (doc.data().slug === 'jeanquark2') {
+		// 		resumesArray.push({ ...doc.data(), id: doc.id })
+		// 	}
+		// })
+		// console.log('resumesArray: ', resumesArray)
+		// // commit('setLongResumes', resumesArray)
+		// return resumesArray[0]
+	},
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
 		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
 		firestore.collection('resumes_short').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
-				if (resume.data().privacy !== 'private') {
-					shortResumesArray.push({...resume.data(), id: resume.id})
+				if (resume.data().visibility !== 'private') {
+					shortResumesArray.push({ ...resume.data(), id: resume.id })
 				}
 			})
 			console.log('shortResumesArray: ', shortResumesArray)
@@ -188,8 +218,8 @@ export const actions = {
 	},
 	async updateResume ({ commit }, payload) {
 		try {
-			// console.log('payload: ', payload)
-			const oldResume = await firestore.collection('resumes_long').doc(payload.id).get();
+			console.log('payload: ', payload)
+			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
 
 			// 1) Get all files to delete
 			const filesToDelete = []
@@ -238,8 +268,7 @@ export const actions = {
 				}
 			})
 		} catch (error) {
-			console.log('error from client: ', error)
-			throw new Error(error)
+			throw error
 		}	
 	}
 }
