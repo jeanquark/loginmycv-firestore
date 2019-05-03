@@ -18,15 +18,15 @@ module.exports = app.use(async function (req, res, next) {
 
 		// 1) Check authenticated user authorization to read user resume
 		let authorization = {};
-		const snapshot1 = await admin.firestore().collection('authorizations').where('user.id', '==', authUserId).where('resume.slug', '==', slug).get();
-		snapshot1.forEach(doc => {
-			console.log('doc1.data(): ', doc.data());
+		const authorizations = await admin.firestore().collection('authorizations').where('user.id', '==', authUserId).where('resume.id', '==', slug).get();
+		authorizations.forEach(doc => {
+			console.log('doc.data(): ', doc.data());
 			authorization = doc.data();
 		});
 		console.log('authorization: ', authorization);
 		let status = ''
 
-		switch(authorization.status) {
+		switch (authorization.status) {
 			case 'accorded': {
 				status = 'accorded';
 				console.log('Accorded');
@@ -53,28 +53,35 @@ module.exports = app.use(async function (req, res, next) {
 			}
 		}
 
-		// Allow authenticated user to access their own resumes
-		const snapshot3 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get()
-		let resumeData3 = {};
-		snapshot3.forEach(doc => {
-			console.log('doc3.data(): ', doc.data());
-			resumeData3 = doc.data();
-		});
-		if (resumeData3.user_id === authUserId) {
-			res.send(resumeData3);
+		// Allow authenticated user to access her own resumes
+		// const userResumes = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
+		// let userResume = {};
+		// userResumes.forEach(doc => {
+		// 	console.log('doc3.data(): ', doc.data());
+		// 	userResume = doc.data();
+		// });
+		// if (userResume.user_id === authUserId) {
+		// 	res.send(userResume);
+		// }
+		const userResume = await admin.firestore().collection('resumes_long').doc(slug).get();
+		console.log('userResume.data(): ', userResume.data());
+		if (userResume.data() && userResume.data().user_id === authUserId) {
+			res.send(userResume.data());
 		}
 
 		if (status === 'accorded') {
 			// 2) If authorized, fetch resume
-			const snapshot2 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
-			// const snapshot = await admin.firestore().collection('resumes_long').get();
-			let resumeData = {};
-			snapshot2.forEach(doc => {
-				console.log('doc2.data(): ', doc.data());
-				resumeData = doc.data();
-			});
+			// const snapshot2 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
+			// let resumeData = {};
+			// snapshot2.forEach(doc => {
+			// 	console.log('doc2.data(): ', doc.data());
+			// 	resumeData = doc.data();
+			// });
+			// res.send(resumeData);
 
-			res.send(resumeData);
+			if (userResume.data()) {
+				res.send(userResume.data())
+			}
 		} else if (status === 'in_process' || status === 'refused' || status === 'revoked') {
 			// res.send(`You can not access resume data. Your authorization status is ${status}`);
 			// res.redirect('/');

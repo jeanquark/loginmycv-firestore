@@ -19,7 +19,8 @@ module.exports = app.use(async function (req, res, next) {
 			picture: false,
 			education: false,
 			work_experience: false,
-			skills: false
+			skills: false,
+			documents: false
 		};
 		authorization._created_at = moment().unix();
 		authorization._updated_at = moment().unix();

@@ -23,6 +23,8 @@ module.exports = app.use(async function (req, res, next) {
 		}
 
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug
+
+			// Do not forget to update authorizations collection
 			console.log('You changed the resume slug!');
 			// const snapshot = await admin.firestore().collection('resumes_long').where('slug', '==', updatedResume.new_slug).get();
 			// const resumesArray = [];
@@ -80,14 +82,15 @@ module.exports = app.use(async function (req, res, next) {
 	
 				const updatedShortResume = admin.firestore().collection('resumes_short').doc(updatedResume.resume_short_id);
 				batch.update(updatedShortResume, {
-					slug: newSlug,
-					firstname: updatedResume.personal_data.firstname,
-					lastname: updatedResume.personal_data.lastname,
+					resume_long_id: newSlug,
 					job_title: updatedResume.job_title,
 					job_description: updatedResume.job_description,
+					personal_data['firstname']: updatedResume.personal_data ? updatedResume.personal_data.firstname : '',
+					personal_data['lastname']: updatedResume.personal_data ? updatedResume.personal_data.lastname : '',
+					personal_data['email']: updatedResume.personal_data ? updatedResume.personal_data.email : '',
+					personal_data['country']: updatedResume.personal_data ? updatedResume.personal_data.country : '',
+					personal_data['city']: updatedResume.personal_data ? updatedResume.personal_data.city : '',
 					// gender: updatedResume.gender,
-					country: updatedResume.personal_data.country,
-					city: updatedResume.personal_data.city,
 					// picture: updatedResume.personal_data.picture,
 					keys: updatedResume.skills,
 					// languages: updatedResume.languages,
@@ -156,13 +159,14 @@ module.exports = app.use(async function (req, res, next) {
 
 			const updatedShortResume = admin.firestore().collection('resumes_short').doc(updatedResume.resume_short_id);
 			batch.update(updatedShortResume, {
-				firstname: updatedResume.personal_data.firstname,
-				lastname: updatedResume.personal_data.lastname,
 				job_title: updatedResume.job_title,
 				job_description: updatedResume.job_description,
+				personal_data['firstname']: updatedResume['personal_data']['firstname'],
+				personal_data['lastname']: updatedResume['personal_data']['lastname'],
+				personal_data['email']: updatedResume['personal_data']['email'],
+				personal_data['country']: updatedResume['personal_data']['country'],
+				personal_data['city']: updatedResume['personal_data']['city'],
 				// gender: updatedResume.gender,
-				country: updatedResume.personal_data.country,
-				city: updatedResume.personal_data.city,
 				// picture: updatedResume.personal_data.picture,
 				keys: updatedResume.skills,
 				// languages: updatedResume.languages,

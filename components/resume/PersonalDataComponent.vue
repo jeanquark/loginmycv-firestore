@@ -400,7 +400,7 @@
                                 type="success"
                                 v-if="userResume.visibility === 'public'"
                                 >
-                                <span>An excerpt of your resume with full access to your public data will appear on the frontpage (recommanded option).</span>
+                                <span>An excerpt of your resume with full access to your public data appears on the frontpage (recommanded option).</span>
                             </v-alert>
                             <v-alert
                                 value="semi-private"
@@ -408,14 +408,14 @@
                                 icon="info"
                                 v-if="userResume.visibility === 'semi-private'"
                                 >
-                                <span>An excerpt of your resume will appear on the frontpage. But to gain full access, visitors need to ask for your authorization.</span>
+                                <span>An excerpt of your resume appears on the frontpage. But to gain full access, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
                             </v-alert>
                             <v-alert
                                 value="private"
                                 type="warning"
                                 v-if="userResume.visibility === 'private'"
                                 >
-                                <span>Your resume will be hidden (visitors will not be able to found you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization.</span>
+                                <span>Your resume is hidden (visitors are not able to find you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
                             </v-alert>
                         </v-layout>
 

@@ -1,9 +1,10 @@
 <template>
     <v-app id="inspire">
-        <v-content v-if="firstname">
+        <v-content>
             <v-container fluid fill-height>
                 <v-layout align-center justify-center>
-                    <v-flex xs12 sm8 md4>
+                    <v-img src="/images/loader.gif" max-width="200px" v-if="!candidate.resume_long_id"></v-img>
+                    <v-flex xs12 sm8 md4 v-cloak v-else>
                         <v-card class="elevation-12">
                             <v-toolbar dark color="primary">
                                 <v-toolbar-title>Login form</v-toolbar-title>
@@ -11,7 +12,7 @@
                             </v-toolbar>
                             <v-card-text>
                                 <v-form>
-									<p class="text-xs-center">Have a password? Gain direct access to {{ firstname }}'s resume now!</p>
+									<p class="text-xs-center">Have a password? Gain direct access <span v-if="candidate.personal_data && candidate.personal_data.firstname">to {{ candidate.personal_data.firstname }}'s resume now!</span></p>
 									<!-- error: {{ error }}<br /> -->
 									<!-- errors: {{ errors }}<br /> -->
                                     <v-text-field 
@@ -57,17 +58,12 @@
 			this.slug = slug
 
 			let candidate = {}
-			const snapshot = await firestore.collection('resumes_short').where('slug', '==', slug).get()
+			const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
 			snapshot.forEach(doc => {
 				candidate = doc.data()
-				// console.log('doc.data(): ', doc.data())
-
 			})
             console.log('candidate: ', candidate)
-            if (candidate.firstname) {
-                this.firstname = candidate.firstname
-			    this.form.username = `${candidate.slug}@visitor.loginmycv.com`
-            } else {
+            if (!candidate.resume_long_id) {
                 console.log('No resume with this slug')
                 new Noty({
                     type: 'error',
@@ -76,12 +72,18 @@
                     theme: 'metroui'
                 }).show()
                 this.$router.push('/')
+            } else {
+                console.log('candidate exists.')
+                this.candidate = candidate
+                // this.firstname = candidate.firstname
+                // this.form.username = `${candidate.slug}@visitor.loginmycv.com`
             }
 		},
         data () {
             return {
 				// user: '',
 				slug: '',
+                candidate: {},
 				firstname: '',
                 form: {
                     username: '',
@@ -114,15 +116,21 @@
 					// this.$router.push(`/`)
 					// redirect(`/resume/${this.slug}`)
                 } catch (error) {
-                    console.log('error3: ', error)
-                    new Noty({
-                        type: "error",
-                        text: "Sorry, an error occured and you could not log in.",
-                        timeout: 5000,
-                        theme: "metroui"
-                    }).show()
+                    console.log('error login: ', error)
+                    // new Noty({
+                    //     type: "error",
+                    //     text: "Sorry, an error occured and you could not log in.",
+                    //     timeout: 5000,
+                    //     theme: "metroui"
+                    // }).show()
                 }
             }
         }
     }
 </script>
+
+<style scoped>
+    [v-cloak] {
+        display: none;
+    }
+</style>

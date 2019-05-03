@@ -1,17 +1,11 @@
 <template>
 	<div>
-		<!-- \pages\resume\_user_id\index<br /> -->
-		<!-- <b>type:</b> {{ type }}<br /> -->
-		<!-- <b>resume:</b> {{ resume }}<br /> -->
 		<dynamic-resume-template :resume="resume" />
-		<!-- <nuxt-link to="/">Go back home</nuxt-link><br /> -->
-		<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
 	</div>
 </template>
 
 <script>
 	import axios from 'axios'
-	// import { Route } from 'vue-router'
 	import DynamicResumeTemplate from '~/components/DynamicResumeTemplate'
 	import Noty from 'noty'
 	import { firestore } from '~/plugins/firebase-client-init.js'
@@ -27,77 +21,41 @@
 		    }
 		},
 		components: { DynamicResumeTemplate },
-		async asyncData({ redirect, params, $axios, store }) {
-  			// const ip = await $axios.$get('http://icanhazip.com')
-  			// const authUserId = store.getters['users/loadedUser'] ? store.getters['users/loadedUser'].id : null
-  			// console.log('authUserId: ', authUserId)
-			// console.log('context: ', context)
-			
+		async asyncData({ redirect, params, $axios, store }) {			
 			try {
 				const slug = params.slug
 				console.log('slug: ', slug)
-				const authUser = store.getters['users/loadedUser']
-				console.log('authUser: ', authUser)
 				const resume = await store.dispatch('resumes/fetchLongResume', slug)
-				console.log('resume: ', resume)
+				// console.log('resume: ', resume)
 				return { resume }
-			} catch (error) {
+			} catch (error) { // Resume visibility is not public, check user authorization
 				console.log('error from asyncData: ', error)
 				const slug = params.slug
-				// return
-				// return redirect('/')
-
-				return redirect(`/resume/${slug}/login`)
+				const authUser = store.getters['users/loadedUser']
+				console.log('authUser: ', authUser)
+				if (authUser) {
+	  				const authUserId = authUser.id
+	  				console.log('slug: ', slug)
+	  				console.log('authUserId: ', authUserId)
+					console.log('User is authenticated. Go ahead!')
+	  				try {
+	  					const resume = await $axios.$post('/check-user-authorization', { authUserId, slug })
+	  					console.log('resume3: ', resume)
+	  					return { resume }
+	  				} catch (error) {
+	  					console.log('error check-user-authorization: ', error)
+	  					new Noty({
+	  						type: 'error',
+	  						text: 'Sorry, an error occured during the authorization checking process.',
+	  						timeout: 5000,
+	  						theme: 'metroui'
+	  					}).show()
+	  				}
+	  			} else { // Not authenticated, redirect to visitor login
+					console.log('Not authenticated, check visitor access')
+					return redirect(`/resume/${slug}/login`)
+	  			}
 			}
-  			// if (authUser) {
-  			// 	// const slug = params.slug
-  			// 	const authUserId = authUser.id
-  			// 	console.log('slug: ', slug)
-  			// 	console.log('authUserId: ', authUserId)
-			// 	console.log('User is authenticated. Go ahead!')
-  			// 	try {
-  			// 		const resume = await $axios.$post('/check-user-authorization', { authUserId, slug })
-  			// 		console.log('resume3: ', resume)
-  			// 		return { resume }
-  			// 		// if (!resume.slug) {
-  			// 		// 	console.log('redirect with status: ', resume)
-  			// 		// 	store.commit('setError', { abc: 'abc2'})
-  			// 		// 	// console.log(store.getters['index/error'])
-  			// 		// 	// new Noty({
-  			// 		// 	// 	type: 'error',
-  			// 		// 	// 	text: 'redirect',
-  			// 		// 	// 	timeout: 5000,
-  			// 		// 	// 	theme: 'metroui'
-  			// 		// 	// }).show()
-  			// 		// 	// return redirect('/')
-  			// 		// } else {
-  			// 		// 	return { resume }
-  			// 		// }
-  			// 	} catch (error) {
-  			// 		console.log('error $axios.$post /check-user-authorization: ', error)
-  			// 	}
-  			// } else { // Not authenticated
-			// 	console.log('slug: ', slug)
-			// 	const snapshot = await firestore.collection('authorizations').where('resume.slug', '==', slug).where('type', '==', 'visitor').get()
-			// 	let authorizationsArray = []
-			// 	snapshot.forEach(authorization => {
-			// 		authorizationsArray.push(authorization.data())
-			// 	})
-  			// 	console.log('authorizationsArray: ', authorizationsArray)
-			// 	if (authorizationsArray.length > 0) {
-			// 		return redirect(`/resume/${slug}/login`)
-			// 	} else { // No authorizations found
-			// 		console.log('Not authenticated & no authorization! Stop here.')
-			// 		const resume = await firestore.collection('resumes_long').doc('vXAb57YC2iQbOITxvhsW').get()
-			// 	}
-  			// 	// this.$router.push('/')
-			// 	  // return redirect('/')
-  			// }
-  			// console.log('auth_user_id: ', auth_user_id)
-  			// console.log('ip: ', ip)
-  			// console.log('resume: ', resume)
-  			// return { ip }
-  			// return { resume }
 		},
 		async created () {
     		// await this.$store.commit('resumes/setResume', {firstname: 'Jean-Marc'})

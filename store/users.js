@@ -16,13 +16,13 @@ export const mutations = {
 }
 
 export const actions = {
-	async fetchUser ({ commit }, payload) {
-		console.log('Call to fetchUser action: ', payload)
-		const snapshot = await firestore.collection('users').doc(payload).get()
-		console.log('snapshot.id: ', snapshot.id)
-		// commit('setLoadedUser', snapshot.data())
-		// commit('setLoadedUser', { id: snapshot.id, ...snapshot.data() })
-	},
+	// async fetchUser ({ commit }, payload) { // Not necessary?
+	// 	console.log('Call to fetchUser action: ', payload)
+	// 	const snapshot = await firestore.collection('users').doc(payload).get()
+	// 	console.log('snapshot.id: ', snapshot.id)
+	// 	// commit('setLoadedUser', snapshot.data())
+	// 	// commit('setLoadedUser', { id: snapshot.id, ...snapshot.data() })
+	// },
 	async fetchAuthenticatedUser ({ state, commit }, payload) {
 		console.log('Call to fetchAuthenticatedUser action: ', payload)
 		const snapshot = await firestore.collection('users').doc(payload.uid).get()

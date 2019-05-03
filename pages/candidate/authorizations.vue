@@ -5,10 +5,10 @@
 		</v-layout>
 
 		<v-flex xs12 class="text-xs-center">
-			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /> -->
+			<b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br />
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
-					List of authorizations you've been asked for
+					List of authorizations people asked you for
 				</v-card-title>
 				<v-card-text>
 					<v-data-table
@@ -59,7 +59,7 @@
 			<b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br />
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
-					List of authorizations you've asked
+					List of authorizations you requested
 				</v-card-title>
 				<v-card-text>
 					<v-data-table
@@ -174,16 +174,22 @@
 	import moment from 'vue-moment'
 	import { auth } from '~/plugins/firebase-client-init'
 	import axios from 'axios'
+	import Noty from 'noty'
 	export default {
 		layout: 'layoutBack',
 		middleware: [],
-		async created () {
-			const authUser = this.$store.getters['users/loadedUser']
-			// const authUser = {
-			// 	id: 'OlxfESwPtlgzz4vcjiL4YKsIDZI2'
-			// }
-			await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
-			await this.$store.dispatch('authorizations/fetchUserGivenAuthorizations', authUser.id)
+		async mounted () {
+			try {
+				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations')
+				await this.$store.dispatch('authorizations/fetchUserGivenAuthorizations')
+			} catch (error) {
+				new Noty({
+					type: 'error',
+					text: 'Sorry, an error occured while trying to fetch your authorizations.',
+					timeout: 5000,
+					theme: 'metroui'
+				}).show()
+			}			
 		},
 		data () {
 			return {
@@ -251,7 +257,7 @@
 				return this.$store.getters['authorizations/loadedUserReceivedAuthorizationsArray']
 			},
 			loadedUserGivenAuthorizations () {
-				return this.$store.getters['authorizations/loadedUserGivenAuthorizations']
+				return this.$store.getters['authorizations/loadedUserGivenAuthorizationsArray']
 			}
 		},
 		methods: {

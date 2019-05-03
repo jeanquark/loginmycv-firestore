@@ -7,7 +7,7 @@
                 fixed
                 app
             >
-                <v-list dense>
+                <v-list :dense="true" :two-line="true">
                     <v-list-tile to="/candidate/resumes" v-ripple>
                         <v-list-tile-action>
                             <v-icon>folder_shared</v-icon>
@@ -18,7 +18,13 @@
                     </v-list-tile>
                     <v-list-tile to="/candidate/authorizations" v-ripple>
                         <v-list-tile-action>
-                            <v-icon>pan_tool</v-icon>
+                            <v-icon v-if="getUserAuthorizationsNotifications < 1">pan_tool</v-icon>
+                            <v-badge color="primary" v-else>
+                                <template v-slot:badge>
+                                    <span>2</span>
+                                </template>
+                                <v-icon>pan_tool</v-icon>
+                            </v-badge>
                         </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>Authorizations</v-list-tile-title>
@@ -118,6 +124,7 @@
             <v-content>
                 <!-- <v-container fluid fill-height> -->
                 <v-container>
+                    <!-- loadedUser.notifications: {{ loadedUser.notifications }} -->
             		<nuxt />
                 </v-container>
             </v-content>
@@ -136,9 +143,9 @@
             ]
         },
         async created () {
-            const authUserId = this.loadedUser.id
-            console.log('authUserId from layoutBack: ', authUserId)
-            await this.$store.dispatch('users/fetchUser', authUserId)
+            // const authUserId = this.loadedUser.id
+            // console.log('authUserId from layoutBack: ', authUserId)
+            // await this.$store.dispatch('users/fetchUser', authUserId)
         },
 		data () {
 			return {
@@ -159,6 +166,9 @@
 		computed: {
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
+            },
+            getUserAuthorizationsNotifications () {
+                return 2
             }
 		},
 		methods: {

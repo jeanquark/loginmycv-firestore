@@ -13,9 +13,9 @@
                             id="firstname"
                             name="firstname"
                             prepend-icon="person"
-                            v-validate="'required|max:50'"
+                            v-validate="'required|max:5'"
                             :counter="50"
-                            :error-messages="errors.collect('firstname')"
+                            :error-messages="errors ? errors.collect('firstname') : null"
                             v-model="form.firstname"
                         ></v-text-field>
 
@@ -26,7 +26,7 @@
                             prepend-icon="person"
                             v-validate="'required|max:50'"
                             :counter="50"
-                            :error-messages="errors.collect('lastname')"
+                            :error-messages="errors ? errors.collect('lastname') : null"
                             v-model="form.lastname"
                         ></v-text-field>
                     
@@ -36,7 +36,7 @@
                             name="email"
                             prepend-icon="person"
                             v-validate="'required|email'"
-                            :error-messages="errors.collect('email')"
+                            :error-messages="errors ? errors.collect('email') : null"
                             v-model="form.email"
                         ></v-text-field>
                     </v-flex>
@@ -70,7 +70,7 @@
                             prepend-icon="lock" 
                             type="password"
                             v-validate="'required|confirmed:password'"
-                            :error-messages="errors.collect('password_confirmation')"
+                            :error-messages="errors ? errors.collect('password_confirmation') : null"
                             data-vv-as="Password"
                             v-model="form.password_confirmation"
                         ></v-text-field>        
@@ -78,7 +78,7 @@
                 </v-layout>
 
                 <v-layout justify-center>
-                    <v-btn color="primary" type="submit" :loading="loading" :disabled="errors.items.length > 0">Register</v-btn>
+                    <v-btn color="primary" type="submit" :loading="loading" :disabled="errors && errors.items.length > 0">Register</v-btn>
                 </v-layout>    
             </form>
         </v-card-text>
@@ -93,6 +93,7 @@
 <script>
 	import axios from 'axios'
 	export default {
+        inject: ['$validator'], // inject parent validator
         created () {
             this.$store.commit('clearError')
             this.$store.commit('setLoading', false)

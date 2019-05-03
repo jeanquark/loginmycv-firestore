@@ -33,6 +33,7 @@
                     prepend-icon="lock" 
                     required
                     v-model="form.password"
+                    :error-messages="error ? error.message : ''"
                 ></v-text-field>
 
                 <v-layout justify-center>
@@ -54,6 +55,7 @@
 <script>
 	import axios from 'axios'
 	export default {
+        inject: ['$validator'], // inject parent validator
         props: ['message'],
         created () {
             this.$store.commit('clearError')

@@ -49,6 +49,7 @@
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
           						<nuxt-link to="/resume/jeanquark2">Go to jeanquark's second resume (client)</nuxt-link><br />
           						<a href="/resume/jeanquark3">Go to jeanquark's resume (server)</a><br />
+          						<a href="/resume/ivan">Go to ivan's resume (server)</a><br />
 								<!-- <a href="/resume/greg">Go to greg's resume (server)</a><br /> -->
 								<!-- <nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br /> -->
 								<!-- <nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br /> -->
@@ -58,20 +59,8 @@
           						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
           						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
+          						loadedUser:{{ loadedUser }}<br />
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
-								loadedNotification: {{ loadedNotification }}<br />
-								<v-text-field
-									name="password"
-									label="Password"
-									prepend-icon="lock"
-									hint="At least 8 characters"
-									:counter="30"
-									v-validate="'required|max:30'"
-									ref="password"
-									v-model="password"
-                                    :error-messages="errors ? errors.collect('password') : null"
-
-								></v-text-field>
 
           						<v-layout>
 	          						<v-flex xs12>
@@ -101,23 +90,21 @@
         						</div>
         					</v-card-title>
         					<v-card-actions>
-        						<v-layout justify-center v-if="loadedUser">
-									<!-- <v-btn color="green" class="white--text elevation-2" v-if="loadedUser && resume.user_id === loadedUser.id" :to="`/resume/${resume.slug}`">View my resume</v-btn> -->
-									<!-- <v-btn color="success" class="white--text elevation-2" @click="redirectToResume(resume.slug, resume.id)" v-if="resume.privacy === 'public'">View resume</v-btn> -->
-									<v-btn color="success" class="white--text elevation-2" nuxt :to="`/resume/${resume.slug}`" v-if="resume.visibility === 'public'">View resume</v-btn>
-									<div v-if="resume.visibility === 'semi-private'">
-        								<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
+								<v-layout justify-center v-if="resume.visibility === 'public'">
+									<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
+								</v-layout>
+								<v-layout justify-center v-if="resume.visibility === 'semi-private'">
+									<div v-if="loadedUser">
+										<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
 											<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
 											<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
 	        							</div>
-	        							<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+										<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
 										<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
 									</div>
-	        					</v-layout>
-								<v-layout justify-center v-else>
-									<!-- <v-btn color="success" class="white--text elevation-2" nuxt :to="`/resume/${resume.resume_long_id}`" v-if="resume.privacy === 'public'">View resume</v-btn> -->
-									<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.visibility === 'public'">View resume</v-btn>
-									<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.visibility === 'semi-private'">Request access</v-btn>
+									<div v-else>
+										<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+									</div>
 								</v-layout>
         					</v-card-actions>
         				</v-card>
@@ -146,7 +133,7 @@
         				width="500"
         				lazy
     				>
-    					<RequestAuthorization :resume="candidateResume" />
+    					<RequestAuthorization v-on:closeModal="requestAuthorizationModal = false" :resume="candidateResume" />
     				</v-dialog>
 
 					
@@ -155,24 +142,6 @@
 
         		
         	</v-container>
-
-			<!-- <div v-for="(notification, index) in loadedNotifications" :key="index"> -->
-				<v-snackbar
-					v-model="loadedNotification"
-					top
-					right
-					v-if="loadedNotification"
-				>
-					{{ loadedNotification.text }}
-					<v-btn
-						color="pink"
-						flat
-						@click="loadedNotification = false"
-					>
-						Close
-					</v-btn>
-				</v-snackbar>
-			<!-- </div> -->
 			
         </v-content>
 
@@ -219,7 +188,7 @@
 	import Register from '~/components/Register'
 	import RequestAuthorization from '~/components/RequestAuthorization'
 	export default {
-		inject: ['$validator'], // inject parent validator
+		inject: ['$validator'], // inject vee-validate validator
 		components: { Login, Register, RequestAuthorization },
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
@@ -236,16 +205,6 @@
 				// await this.$store.dispatch('users/fetchAuthenticatedUser', authUser.uid)
 				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
 			}
-			this.$store.commit('setNotification', 
-				{
-					text: 'Hello, I\'m a notification',
-					color: 'primary',
-					timeout: 8000
-				},
-				// {
-				// 	text: 'Hello, I\'m a second notification'
-				// }
-			)
 			// console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
 			// console.log('process.env.PRIVATE_KEY: ', process.env.PRIVATE_KEY)
 			// console.log('abc: ', abc)
@@ -345,7 +304,6 @@
 				requestAuthorizationModal: false,
 				items: ['foo', 'bar', 'fizz', 'buzz'],
 				password: '',
-				snackbar: true
 			}
 		},
 		computed: {
@@ -364,9 +322,6 @@
 			// loadedUserAuthorizationsArray () {
 			// 	return this.$store.getters['authorizations/loadedUserAuthorizationsArray']
 			// }
-			loadedNotification () {
-				return this.$store.getters['notification']
-			}
 		},
 		methods: {
 			switchToLogin () {

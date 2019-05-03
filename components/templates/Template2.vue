@@ -1,5 +1,5 @@
 <template>
-	<v-app v-cloak style="" :style="cssProps" id="app">
+	<v-app v-cloak :style="cssProps" id="app">
 	    <v-toolbar
 	      :color="secondaryColor"
 	      dark
@@ -625,12 +625,14 @@
 		computed: {
 			skills () {
 				// return this.resume.skills
-				const res = this.resume.skills.reduce((acc, curr) => {
-					if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
-					acc[curr.category].push(curr)
-					return acc
-				},{})
-				return res
+				if (this.resume.skills) {
+					const res = this.resume.skills.reduce((acc, curr) => {
+						if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
+						acc[curr.category].push(curr)
+						return acc
+					},{})
+					return res
+				}
 			},
 			cssProps() { 
 				return {

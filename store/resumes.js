@@ -68,10 +68,10 @@ export const actions = {
 		try {
 			console.log('Call to fetchLongResume action: ', payload)
 			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-			// console.log('snapshot.data(): ', snapshot.data())
 			const resume = snapshot.data()
 			console.log('resume: ', resume)
 			return resume
+
 		} catch (error) {
 			console.log('error from fetchLongResume action: ', error)
 			// new Noty({

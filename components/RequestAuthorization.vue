@@ -1,14 +1,10 @@
 <template>
     <v-card>
         <v-toolbar dark color="primary">
-            <v-toolbar-title>Request access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume</v-toolbar-title>
+            <v-toolbar-title>Request access <span if="this.resume.firstname">to {{ this.resume.firstname }}'s resume</span></v-toolbar-title>
         </v-toolbar>
 
         <v-card-text>
-            <!-- Would you like to send a request to get access to {{ this.resume.firstname }} {{ this.resume.lastname }}'s resume? -->
-            <!-- resume: {{ this.resume }}<br /> -->
-            <!-- loadedUser: {{ loadedUser }}<br /> -->
-
             <v-form>
                 <v-text-field
                     name="firstname"
@@ -17,6 +13,10 @@
                     prepend-icon="person"
                     required
                     v-model="form.firstname"
+                    :counter="50"
+                    v-validate="'required|max:50'"
+                    data-vv-as="Firstname"
+                    :error-messages="errors ? errors.collect('firstname') : null"
                 ></v-text-field>
 
                 <v-text-field
@@ -26,6 +26,10 @@
                     prepend-icon="lock" 
                     required
                     v-model="form.lastname"
+                    :counter="50"
+                    v-validate="'required|max:50'"
+                    data-vv-as="Lastname"
+                    :error-messages="errors ? errors.collect('lastname') : null"
                 ></v-text-field>
 
                 <v-text-field
@@ -35,6 +39,9 @@
                     prepend-icon="person"
                     required
                     v-model="form.email"
+                    v-validate="'required|email'"
+                    data-vv-as="Email"
+                    :error-messages="errors ? errors.collect('email') : null"
                 ></v-text-field>
 
                 <v-textarea
@@ -42,26 +49,25 @@
                     label="Your message"
                     prepend-icon="person"
                     v-model="form.message"
+                    :counter="500"
+                    v-validate="'max:500'"
+                    data-vv-as="Message"
+                    :error-messages="errors ? errors.collect('message') : null"
                 ></v-textarea>
 
-                <!-- <v-layout justify-center>
-                    <v-btn color="primary" type="submit" :loading="loading">Sej</v-btn>
-                </v-layout> -->
             </v-form>
         </v-card-text>
 
-        <v-divider></v-divider>
-
         <v-card-actions class="justify-center">
-            <!-- <v-spacer></v-spacer> -->
             <v-btn
                 color="primary"
-                flat
                 @click="sendRequest"
+                :loading="loading"
+                :disabled="errors && errors.items.length > 0"
             >
                 Send request
             </v-btn>
-        </v-card-actions>
+        </v-card-actions><br />
     </v-card>
 </template>
 
@@ -69,9 +75,10 @@
     import axios from 'axios'
     import Noty from 'noty'
     export default {
+        inject: ['$validator'], // inject vee-validate validator
         props: ['resume'],
         async mounted () {
-            // await this.$store.dispatch('users/fetchAuthenticatedUser')
+            this.$store.commit('setLoading', false)
             this.form.firstname = this.loadedUser ? this.loadedUser.firstname : ''
             this.form.lastname = this.loadedUser ? this.loadedUser.lastname : ''
             this.form.email = this.loadedUser ? this.loadedUser.email : ''
@@ -96,54 +103,45 @@
         },
         methods: {
             async sendRequest () {
-                console.log(this.form)
-                // this.$store.dispatch('authorizations/sendAuthorizationRequest', {
-                //     resume: {
-                //         id: this.resume.id,
-                //         firstname: this.resume.firstname,
-                //         lastname: this.resume.lastname,
-                //         email: this.resume.email,
-                //         slug: this.resume.slug
-                //     },
-                //     user: {
-                //         id: this.loadedUser.id,
-                //         firstname: this.form.firstname,
-                //         lastname: this.form.lastname,
-                //         email: this.form.email,
-                //         message: this.form.message
-                //     }
-                // })
-                const authorization = {
-                    resume: {
-                        id: this.resume.resume_long_id,
-                        firstname: this.resume.firstname,
-                        lastname: this.resume.lastname,
-                        email: this.resume.email,
-                        slug: this.resume.slug
-                    },
-                    user: {
-                        id: this.loadedUser.id,
-                        firstname: this.form.firstname,
-                        lastname: this.form.lastname,
-                        email: this.form.email,
-                        message: this.form.message
+                this.$store.commit('setLoading', true)
+                await this.$validator.validateAll()
+
+                if (!this.errors.any()) {
+                    const authorization = {
+                        resume: {
+                            id: this.resume.resume_long_id,
+                            user_id: this.resume.user_id,
+                            firstname: this.resume.personal_data ? this.resume.personal_data.firstname : '',
+                            lastname: this.resume.personal_data ? this.resume.personal_data.lastname : '',
+                            email: this.resume.personal_data ? this.resume.personal_data.email : '',
+                        },
+                        user: {
+                            id: this.loadedUser.id,
+                            firstname: this.form.firstname,
+                            lastname: this.form.lastname,
+                            email: this.form.email,
+                            message: this.form.message
+                        }
                     }
-                }
-                try {
-                    await axios.post('/create-resume-authorization', { authorization })
-                    new Noty({
-                        type: 'success',
-                        text: 'Request sent successfully.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
-                } catch (error) {
-                    new Noty({
-                        type: 'error',
-                        text: 'Sorry, an error occured and your resume could not be created.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
+                    try {
+                        await axios.post('/create-resume-authorization', { authorization })
+                        this.$store.commit('setLoading', false)
+                        this.$emit('closeModal')
+                        new Noty({
+                            type: 'success',
+                            text: 'Your authorization request was sent successfully.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                    } catch (error) {
+                        this.$store.commit('setLoading', false)
+                        new Noty({
+                            type: 'error',
+                            text: 'Sorry, an error occured and your request could not be processed.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                    }
                 }
             }
         }

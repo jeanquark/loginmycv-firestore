@@ -253,7 +253,7 @@ export const actions = {
         commit('setLoading', true, { root: true })
         await auth.signOut()
         commit('users/setLoadedUser', null, { root: true })
-        commit('authorizations/setUserAuthorizations', null, { root: true })
+        // commit('authorizations/setUserAuthorizations', null, { root: true })
         commit('setLoading', false, { root: true })
     },
     async currentUserIdToken () {
