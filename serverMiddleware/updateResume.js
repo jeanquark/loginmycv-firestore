@@ -85,11 +85,13 @@ module.exports = app.use(async function (req, res, next) {
 					resume_long_id: newSlug,
 					job_title: updatedResume.job_title,
 					job_description: updatedResume.job_description,
-					personal_data['firstname']: updatedResume.personal_data ? updatedResume.personal_data.firstname : '',
-					personal_data['lastname']: updatedResume.personal_data ? updatedResume.personal_data.lastname : '',
-					personal_data['email']: updatedResume.personal_data ? updatedResume.personal_data.email : '',
-					personal_data['country']: updatedResume.personal_data ? updatedResume.personal_data.country : '',
-					personal_data['city']: updatedResume.personal_data ? updatedResume.personal_data.city : '',
+					personal_data: {
+						firstname: updatedResume['personal_data']['firstname'],
+						lastname: updatedResume['personal_data']['lastname'],
+						email: updatedResume['personal_data']['email'],
+						country: updatedResume['personal_data']['country'],
+						city: updatedResume['personal_data']['city']
+					},
 					// gender: updatedResume.gender,
 					// picture: updatedResume.personal_data.picture,
 					keys: updatedResume.skills,
@@ -161,11 +163,13 @@ module.exports = app.use(async function (req, res, next) {
 			batch.update(updatedShortResume, {
 				job_title: updatedResume.job_title,
 				job_description: updatedResume.job_description,
-				personal_data['firstname']: updatedResume['personal_data']['firstname'],
-				personal_data['lastname']: updatedResume['personal_data']['lastname'],
-				personal_data['email']: updatedResume['personal_data']['email'],
-				personal_data['country']: updatedResume['personal_data']['country'],
-				personal_data['city']: updatedResume['personal_data']['city'],
+				personal_data: {
+					firstname: updatedResume['personal_data']['firstname'],
+					lastname: updatedResume['personal_data']['lastname'],
+					email: updatedResume['personal_data']['email'],
+					country: updatedResume['personal_data']['country'],
+					city: updatedResume['personal_data']['city']
+				},
 				// gender: updatedResume.gender,
 				// picture: updatedResume.personal_data.picture,
 				keys: updatedResume.skills,

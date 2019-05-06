@@ -153,138 +153,147 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-                <v-expansion-panel-content
-                    v-for="(workExperience, index) in candidateWorkExperience"
-                    :key="index"
-                >
-                    <div slot="header">
-						<v-layout align-center>
-							<v-icon>drag_indicator</v-icon>&nbsp;
-							<v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>&nbsp;&nbsp;
-							<!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
-							<span style="font-size: 1.5em;">{{ workExperience.company }}</span>
-							<!-- <v-btn small color="secondary">Order</v-btn> -->
-						</v-layout>         
-                    </div>
 
-                    <v-card style="margin-bottom: 30px; background: black;">
-                        <v-card-text style="">
-                            <v-layout row wrap>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-text-field
-                                        v-model="candidateWorkExperience[index].company"
-                                        label="Company"
-                                        :counter="50"
-                                    ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-text-field
-                                        v-model="candidateWorkExperience[index].job_title"
-                                        label="Job title"
-                                        :counter="50"
-                                    ></v-text-field>
-                                </v-flex>
-								<v-flex xs12 class="pa-3">
-									<v-textarea
-										v-model="candidateWorkExperience[index].job_description"
-										label="Job description/responsibility"
-										:counter="200"
-									></v-textarea>
-								</v-flex>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-text-field
-                                        v-model="candidateWorkExperience[index].city"
-                                        label="City"
-                                        :counter="30"
-                                    ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-text-field
-                                        v-model="candidateWorkExperience[index].country"
-                                        label="Country"
-                                        :counter="30"
-                                    ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-layout row>
-                                        <v-flex xs6>
-                                            <v-dialog
-                                                v-model="form.modalStartDate"
-                                                persistent
-                                                lazy
-                                                full-width
-                                                width="300px"
-                                            >
-                                                <v-text-field
-                                                    slot="activator"
-                                                    v-model="candidateWorkExperience[index].start_date"
-                                                    label="Start date"
-                                                    prepend-icon="event"
-                                                    readonly
-                                                ></v-text-field>
-                                                <v-date-picker v-model="candidateWorkExperience[index].start_date" :type="form.editStartDateType" :scrollable="false">
-                                                    <v-layout justify-center>
-                                                        <v-btn flat color="error" @click="deleteStartDate(index)">Remove</v-btn>
-                                                        <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
-                                                        <v-btn flat color="success" @click="form.modalStartDate = false">OK</v-btn>
-                                                    </v-layout>
-                                                </v-date-picker>
-                                            </v-dialog>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout justify-center>
-                                                <div>
-                                                    <v-radio-group v-model="form.editStartDateType" row>
-                                                        <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                        <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                    </v-radio-group>
-                                                </div>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-flex>
-                                <v-flex xs12 sm6 class="pa-3">
-                                    <v-layout row>
-                                        <v-flex xs6>
-                                            <v-dialog
-                                                v-model="form.modalEndDate"
-                                                persistent
-                                                lazy
-                                                full-width
-                                                width="300px"
-                                            >
-                                                <v-text-field
-                                                    slot="activator"
-                                                    v-model="candidateWorkExperience[index].end_date"
-                                                    label="End date"
-                                                    prepend-icon="event"
-                                                    readonly
-                                                ></v-text-field>
-                                                <v-date-picker v-model="candidateWorkExperience[index].end_date" :type="form.editEndDateType" :scrollable="false">
-                                                    <v-layout justify-center>
-                                                        <v-btn flat color="error" @click="deleteEndDate(index)">Remove</v-btn>
-                                                        <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
-                                                        <v-btn flat color="success" @click="form.modalEndDate = false">OK</v-btn>
-                                                    </v-layout>
-                                                </v-date-picker>
-                                            </v-dialog>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout justify-center>
-                                                <div>
-                                                    <v-radio-group v-model="form.editEndDateType" row>
-                                                        <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                        <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                    </v-radio-group>
-                                                </div>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                        </v-card-text>
-                    </v-card>
-                </v-expansion-panel-content>
+
+
+                <draggable v-model="candidateWorkExperience" group="experience" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
+                    <v-expansion-panel-content
+                        v-for="(workExperience, index) in candidateWorkExperience"
+                        :key="index"
+                    >
+                        <div slot="header">
+                            <v-layout align-center>
+                                <!-- <v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp; -->
+                                <v-btn style="cursor: move; margin-left: 0px;" icon class="handle"><v-icon>drag_indicator</v-icon></v-btn>
+                                <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>&nbsp;&nbsp;
+                                <!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
+                                <span style="font-size: 1.5em;">{{ workExperience.company }}</span>
+                                <!-- <v-btn small color="secondary">Order</v-btn> -->
+                            </v-layout>         
+                        </div>
+
+                        <v-card style="margin-bottom: 30px; background: black;">
+                            <v-card-text style="">
+                                <v-layout row wrap>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-text-field
+                                            v-model="candidateWorkExperience[index].company"
+                                            label="Company"
+                                            :counter="50"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-text-field
+                                            v-model="candidateWorkExperience[index].job_title"
+                                            label="Job title"
+                                            :counter="50"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 class="pa-3">
+                                        <v-textarea
+                                            v-model="candidateWorkExperience[index].job_description"
+                                            label="Job description/responsibility"
+                                            :counter="200"
+                                        ></v-textarea>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-text-field
+                                            v-model="candidateWorkExperience[index].city"
+                                            label="City"
+                                            :counter="30"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-text-field
+                                            v-model="candidateWorkExperience[index].country"
+                                            label="Country"
+                                            :counter="30"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-layout row>
+                                            <v-flex xs6>
+                                                <v-dialog
+                                                    v-model="form.modalStartDate"
+                                                    persistent
+                                                    lazy
+                                                    full-width
+                                                    width="300px"
+                                                >
+                                                    <v-text-field
+                                                        slot="activator"
+                                                        v-model="candidateWorkExperience[index].start_date"
+                                                        label="Start date"
+                                                        prepend-icon="event"
+                                                        readonly
+                                                    ></v-text-field>
+                                                    <v-date-picker v-model="candidateWorkExperience[index].start_date" :type="form.editStartDateType" :scrollable="false">
+                                                        <v-layout justify-center>
+                                                            <v-btn flat color="error" @click="deleteStartDate(index)">Remove</v-btn>
+                                                            <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
+                                                            <v-btn flat color="success" @click="form.modalStartDate = false">OK</v-btn>
+                                                        </v-layout>
+                                                    </v-date-picker>
+                                                </v-dialog>
+                                            </v-flex>
+                                            <v-flex xs6>
+                                                <v-layout justify-center>
+                                                    <div>
+                                                        <v-radio-group v-model="form.editStartDateType" row>
+                                                            <v-radio label="Month" value="month" color="secondary"></v-radio>
+                                                            <v-radio label="Day" value="date" color="secondary"></v-radio>
+                                                        </v-radio-group>
+                                                    </div>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 class="pa-3">
+                                        <v-layout row>
+                                            <v-flex xs6>
+                                                <v-dialog
+                                                    v-model="form.modalEndDate"
+                                                    persistent
+                                                    lazy
+                                                    full-width
+                                                    width="300px"
+                                                >
+                                                    <v-text-field
+                                                        slot="activator"
+                                                        v-model="candidateWorkExperience[index].end_date"
+                                                        label="End date"
+                                                        prepend-icon="event"
+                                                        readonly
+                                                    ></v-text-field>
+                                                    <v-date-picker v-model="candidateWorkExperience[index].end_date" :type="form.editEndDateType" :scrollable="false">
+                                                        <v-layout justify-center>
+                                                            <v-btn flat color="error" @click="deleteEndDate(index)">Remove</v-btn>
+                                                            <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
+                                                            <v-btn flat color="success" @click="form.modalEndDate = false">OK</v-btn>
+                                                        </v-layout>
+                                                    </v-date-picker>
+                                                </v-dialog>
+                                            </v-flex>
+                                            <v-flex xs6>
+                                                <v-layout justify-center>
+                                                    <div>
+                                                        <v-radio-group v-model="form.editEndDateType" row>
+                                                            <v-radio label="Month" value="month" color="secondary"></v-radio>
+                                                            <v-radio label="Day" value="date" color="secondary"></v-radio>
+                                                        </v-radio-group>
+                                                    </div>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card-text>
+                        </v-card>
+                    </v-expansion-panel-content>
+                </draggable>
+
+
+
             </v-expansion-panel>
         </v-layout>
     </div>
@@ -292,7 +301,9 @@
 
 <script>
     import Noty from 'noty'
+	import Draggable from 'vuedraggable'
     export default {
+        components: { Draggable },
         created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -354,7 +365,12 @@
                     endDateType: 'month',
                     editStartDateType: 'month',
                     editEndDateType: 'month'
-                }
+                },
+                candidateWorkExperience2: [
+                    { "city": "San Francisco", "company": "Google Inc", "country": "USA", "end_date": "2019-06-30", "job_description": "Worked on the Chrome browser", "job_title": "Software engineer", "start_date": "2019-05-16" }, 
+                    { "city": "Los Angeles", "company": "ABC media Group Ltd", "country": "USA", "end_date": "2018-10-15", "job_description": "Worked on improving media quality", "job_title": "Media Analyst", "start_date": "2017" } 
+                ],
+                // candidateWorkExperience3: []
             }
         },
         computed: {
@@ -374,8 +390,16 @@
             loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
             },
-            candidateWorkExperience () {
-                return this.userResume.work_experience
+            // candidateWorkExperience () {
+            //     return this.userResume.work_experience
+            // },
+            candidateWorkExperience : {
+                get () {
+                    return this.userResume.work_experience
+                },
+                set (value) {
+                    this.userResume.work_experience = value
+                }
             }
         },
         methods: {

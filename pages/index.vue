@@ -61,6 +61,47 @@
           						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
           						loadedUser:{{ loadedUser }}<br />
           						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
+								<b>myArray:</b> {{ myArray }}<br />
+
+								<br /><br />
+								<draggable v-model="myArray" group="people" @start="drag=true" @end="drag=false">
+   									<div v-for="element in myArray" :key="element.id" style="border: 1px solid grey;">{{ element.name }}</div>
+								</draggable>
+
+								<br /><br />
+								<v-expansion-panel>
+									<v-expansion-panel-content
+										v-for="(item, i) in myArray"
+										:key="i"
+									>
+										<template v-slot:header>
+											<div>{{ item.title }}</div>
+										</template>
+										<v-card>
+											<v-card-text>{{ item.text }}</v-card-text>
+										</v-card>
+									</v-expansion-panel-content>
+								</v-expansion-panel>
+
+								<br /><br />
+								<v-expansion-panel>
+									<draggable v-model="myArray" group="experience" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
+										<v-expansion-panel-content
+											v-for="(item, i) in myArray"
+											:key="i"
+										>
+											<template v-slot:header>
+												<v-layout align-center>
+													<v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp;
+													<div>{{ item.title }}</div>
+												</v-layout>
+											</template>
+											<v-card>
+												<v-card-text>{{ item.text }}</v-card-text>
+											</v-card>
+										</v-expansion-panel-content>
+									</draggable>
+								</v-expansion-panel>
 
           						<v-layout>
 	          						<v-flex xs12>
@@ -187,9 +228,10 @@
 	import Login from '~/components/Login'
 	import Register from '~/components/Register'
 	import RequestAuthorization from '~/components/RequestAuthorization'
+	import Draggable from 'vuedraggable'
 	export default {
 		inject: ['$validator'], // inject vee-validate validator
-		components: { Login, Register, RequestAuthorization },
+		components: { Login, Register, RequestAuthorization, Draggable },
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
 			// console.log('shortResumes: ', shortResumes)
@@ -304,6 +346,24 @@
 				requestAuthorizationModal: false,
 				items: ['foo', 'bar', 'fizz', 'buzz'],
 				password: '',
+				myArray2: [
+					{
+						id: 1,
+						title: 'ABC',
+						text: 'Some random text'
+					},
+					{
+						id: 2,
+						title: 'DEF',
+						text: 'Some random text'
+					},
+					{
+						id: 3,
+						title: 'GHI',
+						text: 'Some random text'
+					}
+				],
+				myArray3: this.myArray
 			}
 		},
 		computed: {
@@ -322,6 +382,30 @@
 			// loadedUserAuthorizationsArray () {
 			// 	return this.$store.getters['authorizations/loadedUserAuthorizationsArray']
 			// }
+			myArray: {
+				get () { 
+					return [
+						{
+							id: 1,
+							title: 'ABC',
+							text: 'Some random text'
+						},
+						{
+							id: 2,
+							title: 'DEF',
+							text: 'Some random text'
+						},
+						{
+							id: 3,
+							title: 'GHI',
+							text: 'Some random text'
+						}
+					]
+				},
+				set (value) {
+					console.log(value)
+				}
+			}
 		},
 		methods: {
 			switchToLogin () {

@@ -5,7 +5,12 @@
 		</v-layout>
 
 		<v-flex xs12 class="text-xs-center">
-			<b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br />
+
+			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
+			<!-- authorizations_sent_new: {{ authorizations_sent_new }}<br /><br /> -->
+			<!-- authorizations_sent_new_status: {{ authorizations_sent_new_status }}<br /><br /> -->
+			<!-- authorizations_received_new: {{ authorizations_received_new }}<br /><br /> -->
+
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
 					List of authorizations people asked you for
@@ -18,37 +23,38 @@
 					    :expand="true"
 					>
 					    <template v-slot:items="props">
-					    	<td>{{ props.item.id }}</td>
-					     	<td class="text-xs-left">{{ props.item.user.firstname }}</td>
-					      	<td class="text-xs-left">{{ props.item.user.lastname }}</td>
-					      	<td class="text-xs-left">{{ props.item.user.email }}</td>
-					      	<td class="text-xs-left">{{ props.item.status }}</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
-					      	</td>
-					      	<td>
-						      	<v-checkbox class="checkbox-center" v-model="props.item.authorizations['picture']"></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']"></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']"></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']"></v-checkbox>
-					      	</td>
-					      	<td>{{ props.item._created_at }}</td>					      
-							<td>{{ props.item._updated_at }}</td>
-							<td class="">
-								<v-layout class="justify-center">
-									<v-btn color="success" small @click="updateAuthorization(props.item, 'grant_access')" v-if="props.item.status !== 'access_granted'">Grant access</v-btn>
+							<tr v-bind:class="[ authorizations_sent_new.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
+								<td class="text-xs-left">{{ props.item.user.firstname }}</td>
+								<td class="text-xs-left">{{ props.item.user.lastname }}</td>
+								<td class="text-xs-left">{{ props.item.user.email }}</td>
+								<td class="text-xs-left" :class="[ authorizations_sent_new_status.includes(props.item.id) ? 'fadeOut' : '']">{{ props.item.status }}</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" color="secondary" v-model="props.item.authorizations['picture']"></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']"></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']"></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']"></v-checkbox>
+								</td>
+								<td>{{ parseInt(props.item._created_at) | moment('from') }}</td>					      
+								<td>{{ props.item._updated_at }}</td>
+								<td class="">
+									<v-layout class="justify-center">
+										<v-btn color="success" small @click="updateAuthorization(props.item, 'grant_access')" v-if="props.item.status !== 'access_granted'">Grant access</v-btn>
 
-									<v-btn color="primary" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'update_authorizations')">Update authorization</v-btn>
-									<v-btn color="warning" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'revoke_access')">Revoke access</v-btn>
-									<v-btn color="error" small v-if="props.item.status === 'access_revoked'" @click="updateAuthorization(props.item, 'remove_authorization')">Remove</v-btn>
-								</v-layout>
-							</td>
+										<v-btn color="primary" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'update_authorizations')">Update authorization</v-btn>
+										<v-btn color="warning" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'revoke_access')">Revoke access</v-btn>
+										<v-btn color="error" small v-if="props.item.status === 'access_revoked'" @click="updateAuthorization(props.item, 'remove_authorization')">Remove</v-btn>
+									</v-layout>
+								</td>
+							</tr>
 					    </template>
 					</v-data-table>
 				</v-card-text>
@@ -69,48 +75,50 @@
 					    :expand="true"
 					>
 					    <template v-slot:items="props">
-					     	<td class="text-xs-left">{{ props.item.resume.firstname }}</td>
-					      	<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
-					      	<td class="text-xs-left">{{ props.item.resume.email }}</td>
-					      	<td class="text-xs-left">{{ props.item.status }}</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
-					      	</td>
-					      	<td>
-						      	<v-checkbox class="checkbox-center" v-model="props.item.authorizations['picture']" readonly></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']" readonly></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']" readonly></v-checkbox>
-					      	</td>
-					      	<td>
-					      		<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']" readonly></v-checkbox>
-					      	</td>
-					      	<!-- <td>{{ new Date() | moment('YYYY') }}</td>			       -->
-					      	<td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>				      
-							<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-							<td class="">
-								<v-layout class="justify-center">
-									<v-icon
-										small
-										class="mr-2"
-										@click="editItem(props.item)"
-									>
-										edit
-									</v-icon>
-									<v-icon
-										small
-										@click="deleteItem(props.item)"
-									>
-										delete
-									</v-icon>
-									<v-btn color="success" small :to="`/resume/${props.item.resume.slug}`">
-										See resume
-									</v-btn>
-								</v-layout>
-							</td>
+							<tr v-bind:class="[ authorizations_received_new.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
+								<td class="text-xs-left">{{ props.item.resume.firstname }}</td>
+								<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
+								<td class="text-xs-left">{{ props.item.resume.email }}</td>
+								<td class="text-xs-left">{{ props.item.status }}</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['picture']" readonly></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']" readonly></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']" readonly></v-checkbox>
+								</td>
+								<td>
+									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']" readonly></v-checkbox>
+								</td>
+								<!-- <td>{{ new Date() | moment('YYYY') }}</td>			       -->
+								<td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>				      
+								<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
+								<td class="">
+									<v-layout class="justify-center">
+										<v-icon
+											small
+											class="mr-2"
+											@click="editItem(props.item)"
+										>
+											edit
+										</v-icon>
+										<v-icon
+											small
+											@click="deleteItem(props.item)"
+										>
+											delete
+										</v-icon>
+										<v-btn color="success" small :to="`/resume/${props.item.resume.slug}`">
+											See resume
+										</v-btn>
+									</v-layout>
+								</td>
+							</tr>
 					    </template>
 					</v-data-table>
 				</v-card-text>
@@ -189,17 +197,29 @@
 					timeout: 5000,
 					theme: 'metroui'
 				}).show()
-			}			
+			}
+			this.$store.getters['users/loadedUser'].notifications.forEach(notification => {
+				if (notification.type === 'authorization') {
+					console.log('notification: ', notification)
+					if (notification.value === 'authorization_sent_new') {
+						this.authorizations_sent_new.push(notification.id)
+					}
+					if (notification.value === 'authorization_sent_new_status') {
+						this.authorizations_sent_new_status.push(notification.id)
+					}
+					if (notification.value === 'authorization_received_new') {
+						this.authorizations_received_new.push(notification.id)
+					}
+				}
+			})
 		},
 		data () {
 			return {
 		        headersGivenAuthorizations: [
-		        	{ text: 'ID', value: 'id' },
 		          	{ text: 'Firstname', align: 'left', value: 'firstname' },
 		          	{ text: 'Lastname', value: 'lastname' },
 		          	{ text: 'Email', value: 'email' },
 					{ text: 'Status', align: 'left', value: 'status' },
-		          	// { text: 'Authorizations', value: 'authorizations' },
 		          	{ text: 'View Personal data', value: 'authorizations.personal_data' },
 		          	{ text: 'View Picture', value: 'authorizations.picture' },
 		          	{ text: 'View Education', value: 'authorizations.education' },
@@ -214,7 +234,6 @@
 		          	{ text: 'Lastname', value: 'lastname' },
 		          	{ text: 'Email', value: 'email' },
 					{ text: 'Status', align: 'left', value: 'status' },
-		          	// { text: 'Authorizations', value: 'authorizations' },
 		          	{ text: 'View Personal data', value: 'authorizations.personal_data' },
 		          	{ text: 'View Picture', value: 'authorizations.picture' },
 		          	{ text: 'View Education', value: 'authorizations.education' },
@@ -246,7 +265,10 @@
 		        	}
 		        },
 		        selectAll: true,
-		        isCheckAll: false
+				isCheckAll: false,
+				authorizations_sent_new: [],
+				authorizations_sent_new_status: [],
+				authorizations_received_new: []
 			}
 		},
 		computed: {
@@ -342,5 +364,25 @@
 	.checkbox-center {
 		justify-content: center;
 		padding-top: 20px; 
+	}
+
+	.fade-enter-active {
+  		transition: opacity 4s;
+		background-color: var(--v-secondary-base);
+	}
+	.fade-enter, .fade-leave-to {
+  		opacity: 0;
+	}
+
+	.fadeOut {
+		background-color: var(--v-secondary-base);
+    	animation: fadeout 5s linear forwards;
+    	-webkit-animation: fadeout 5s linear forwards;
+	}
+	@keyframes fadeout {
+  		100% { background-color: transparent; }
+	}
+	@-webkit-keyframes fadenout {
+  		100% { background-color: transparent; }
 	}
 </style>

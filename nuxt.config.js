@@ -73,6 +73,7 @@ module.exports = {
         { src: '~/plugins/vue-scroll-reveal', ssr: false },
         { src: '~/plugins/vue-scrollto', ssr: false },
         { src: '~/plugins/vue2-scrollspy', ssr: false },
+        // { src: '~/plugins/vue-draggable', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',

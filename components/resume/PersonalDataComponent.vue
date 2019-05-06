@@ -13,6 +13,7 @@
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
             userResume: {{ userResume }}<br /><br />
             <!-- errors: {{ errors }}<br /><br /> -->
+            getCurrentPicture: {{ getCurrentPicture }}<br /><br />
             
         </div>
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
@@ -346,10 +347,11 @@
 
                         <v-layout>
                             <v-flex xs12 sm6 class="px-3">
-                                <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center">
+                                <!-- <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center"> -->
+                                <div v-if="resumeSlug && getCurrentPicture" class="text-xs-center">
                                     <span>Current picture: </span><br />
-                                    <!-- <img :src="`/images/resumes/${userResume.personal_data.picture}`" height="150" /> -->
-                                    <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" />
+                                    <!-- <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" /> -->
+                                    <img :src="getCurrentPicture.downloadUrl" height="150" />
                                 </div>                
                                 <v-text-field label="My Picture" @click='pickFile' v-model="imageName" prepend-icon='folder_shared' :error-messages="error ? error.image : null" ></v-text-field>
                                 <!-- <v-text-field label="My Picture" @click='pickFile' v-model="userResume.personal_data.picture" prepend-icon='folder_shared' :error-messages="error ? error.image : null"></v-text-field>-->
@@ -538,6 +540,9 @@
             },
             loadedCompetences () {
                 return this.$store.getters['competences/loadedCompetences']
+            },
+            getCurrentPicture () {
+                return this.userResume.uploads.find(upload => upload.type === 'picture')
             }
         },
         methods: {
@@ -557,10 +562,11 @@
             onFilePicked (e) {
                 this.uploadingNewImage = true
                 const files = e.target.files
+                files[0]['format'] = 'Picture'
                 console.log('files: ', files)
 
-                // this.userResume.uploads.push(files[0])
-                this.userResume.personal_data.picture = files[0]
+                // this.userResume.personal_data.picture = files[0]
+                this.userResume.uploads.push(files[0])
                 this.imageName = files[0].name
                 const fileReader = new FileReader ()
                 fileReader.readAsDataURL(files[0])

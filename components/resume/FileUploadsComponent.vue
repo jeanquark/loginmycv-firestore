@@ -19,6 +19,7 @@
 			this.picture.size: {{ this.picture ? this.picture.size : null }}<br /><br />
 			this.totalUploadSize: {{ this.totalUploadSize }}<br /><br />
 			this.totalSize: {{ this.totalSize }}<br /><br />
+			getCurrentFiles: {{ getCurrentFiles }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -36,7 +37,8 @@
 		<v-btn color="secondary">Get more space</v-btn>
 
 		<v-layout row wrap>
-			<v-flex xs12 sm6 v-for="(file, index) of this.userResume.uploads" :key="index">
+			<v-flex xs12 sm6 v-for="(file, index) of getCurrentFiles" :key="index">
+			<!-- <v-flex xs12 sm6 v-for="(file, index) of this.userResume.uploads" :key="index"> -->
 				<v-card class="ma-2">
 					<v-card-title primary-title class="justify-center">
 						<h3 class="headline mb-0">File #{{ index + 1 }}</h3>
@@ -48,12 +50,13 @@
 							label="File Title"
 							placeholder="eg. My CV, Company X recommandation letter, etc."
 							prepend-icon="title"
-							v-model="userResume.uploads[index].title"
+							v-model="getCurrentFiles[index].title"
 						></v-text-field>
 
 						<br />
 
-						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true"></v-text-field>
+						<!-- <v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true"></v-text-field> -->
+						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="getCurrentFiles[index].name" prepend-icon='attach_file' :disabled="getCurrentFiles[index].new ? false : true"></v-text-field>
 						<input
 							type="file"
 							style="display: none"
@@ -130,7 +133,10 @@
 			},
 			loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
-            },
+			},
+			getCurrentFiles () {
+				return this.userResume.uploads.filter(upload => upload.format !== 'picture')
+			},
 			totalSize () {
 				if (this.userResume.uploads) {
 					if (this.picture && this.picture.size) {
@@ -164,16 +170,19 @@
 			addUpload () {
 				console.log('addUpload')
 				this.userResume.uploads.push({
+				// this.getCurrentFiles.push({
 					file: '',
-					title: '',
+					title: 'DEF',
 					name: '',
 					size_in_bytes: 0,
 					new: true,
+					format: 'file',
 					_updated_at: moment().unix()
 				})
 			},
 			async removeUpload (index) {
-				this.userResume.uploads.splice(index, 1)
+				// this.userResume.uploads.splice(index, 1)
+				this.getCurrentFiles.splice(index, 1)
 			},
 			async userTotalUsedSpace () {
 				let sum = 0
@@ -197,9 +206,12 @@
 				console.log('files: ', files)
 				console.log('index: ', index)
 				if (files[0]) {
-					this.userResume.uploads[index].file = files[0]
-					this.userResume.uploads[index].name = files[0].name
-					this.userResume.uploads[index].size_in_bytes = parseInt(files[0].size)
+					this.userResume.uploads[index + 1].file = files[0]
+					this.userResume.uploads[index + 1].name = files[0].name
+					this.userResume.uploads[index + 1].size_in_bytes = parseInt(files[0].size)
+					// this.userResume.uploads[index] = files[0]
+					// this.userResume.uploads.push(files[0])
+					// this.getCurrentFiles[3] = files[0]
 				}
 			}
         }

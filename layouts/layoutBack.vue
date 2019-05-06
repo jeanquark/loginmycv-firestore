@@ -21,7 +21,7 @@
                             <v-icon v-if="getUserAuthorizationsNotifications < 1">pan_tool</v-icon>
                             <v-badge color="primary" v-else>
                                 <template v-slot:badge>
-                                    <span>2</span>
+                                    <span>{{ getUserAuthorizationsNotifications }}</span>
                                 </template>
                                 <v-icon>pan_tool</v-icon>
                             </v-badge>
@@ -124,7 +124,7 @@
             <v-content>
                 <!-- <v-container fluid fill-height> -->
                 <v-container>
-                    <!-- loadedUser.notifications: {{ loadedUser.notifications }} -->
+                    <!-- loadedUser.notifications: {{ loadedUser.notifications.filter(notification => notification.type === 'authorization').length }} -->
             		<nuxt />
                 </v-container>
             </v-content>
@@ -168,7 +168,7 @@
                 return this.$store.getters['users/loadedUser']
             },
             getUserAuthorizationsNotifications () {
-                return 2
+                return this.$store.getters['users/loadedUser'].notifications.filter(notification => notification.type === 'authorization').length
             }
 		},
 		methods: {

@@ -243,7 +243,11 @@ export const actions = {
 					filesToAdd.push(upload)
 				}
 			})
+			// if (!oldResume.data().uploads.find(file => file.type === 'picture' && file.name === upload.name && file._updated_at === upload._updated_at)) {
+				filesToAdd.push(payload.personal_data.picture)
+			// }
 			console.log('filesToAdd: ', filesToAdd)
+			return 
 			for (let file of filesToAdd) {
 				const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
 				const downloadUrl = await uploadedFile.ref.getDownloadURL()
@@ -262,11 +266,11 @@ export const actions = {
 			console.log('payload2: ', payload)
 
 			// 3) Update resume on the server
-			const updatedResume = await axios.post('/update-resume', payload, {
-				headers: {
-					'app-key': process.env.APP_KEY
-				}
-			})
+			// const updatedResume = await axios.post('/update-resume', payload, {
+			// 	headers: {
+			// 		'app-key': process.env.APP_KEY
+			// 	}
+			// })
 		} catch (error) {
 			throw error
 		}	
