@@ -11,13 +11,13 @@
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br />
+            errors: {{ errors }}<br /><br />
         </v-layout>
         <v-layout row>
             <v-flex xs12>
 
             <!-- <v-btn color="primary" @click="validate">Validate</v-btn> -->
             <!-- <v-btn color="primary" @click="$validator.validateAll()">Validate</v-btn> -->
-            <!-- {{ errors.items.map(e => e.msg) }} -->
 
                 <v-stepper v-model="step">
                     <v-stepper-header>

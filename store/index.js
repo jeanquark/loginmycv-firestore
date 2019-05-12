@@ -3,6 +3,8 @@ export const strict = false
 
 export const state = () => ({
     loading: false,
+    loadingResume: false,
+    loadingFiles: false,
     error: {},
     errors: [],
     notification: {} 
@@ -11,6 +13,12 @@ export const state = () => ({
 export const mutations = {
     setLoading (state, payload) {
         state.loading = payload
+    },
+    setLoadingResume (state, payload) {
+        state.loadingResume = payload
+    },
+    setLoadingFiles (state, payload) {
+        state.loadingFiles = payload
     },
     setError (state, payload) {
         console.log('setError mutation called')
@@ -66,6 +74,12 @@ export const actions = {
 export const getters = {
     loading (state) {
         return state.loading
+    },
+    loadingResume (state) {
+        return state.loadingResume
+    },
+    loadingFiles (state) {
+        return state.loadingFiles
     },
     error (state) {
         return state.error

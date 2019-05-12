@@ -168,7 +168,7 @@
                 return this.$store.getters['users/loadedUser']
             },
             getUserAuthorizationsNotifications () {
-                return this.$store.getters['users/loadedUser'].notifications.filter(notification => notification.type === 'authorization').length
+                return this.loadedUser.notifications.filter(notification => notification.type === 'authorization').length
             }
 		},
 		methods: {

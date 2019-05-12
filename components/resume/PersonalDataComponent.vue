@@ -11,9 +11,11 @@
             <!-- error: {{ error }}<br /><br /> -->
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
             getCurrentPicture: {{ getCurrentPicture }}<br /><br />
+            userResume.uploads: {{ this.userResume.uploads }}<br /><br />
+            <v-btn color="primary" @click="addUpload">Add upload</v-btn>
             
         </div>
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
@@ -21,104 +23,24 @@
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">General Info</h2>
+                        <h2 class="headline mb-0">General Info</h2><br />
+                        <!-- <h4>(entries with an asterisk (*) are public)</h4> -->
                     </v-card-title>
+                    <div class="text-xs-center"><small>(entries with an asterisk (*) are public)</small></div>
 
                     <v-card-text>
-                        <v-layout v-if="!resumeSlug">
-                            <!-- <v-btn color="primary" @click="validate">Validate</v-btn> -->
-                            <!-- {{ errors.items.map(e => e.msg) }} -->
-
-                            <v-flex xs10 offset-xs1 class="border">
-                                <v-layout justify-center>
-                                    <div>
-                                        <v-checkbox v-model="userResume.allow_visitor_access" label="Allow direct access for visitors" color="secondary"></v-checkbox>
-                                    </div>
-                                </v-layout>
-                                <!-- <v-layout v-if="userResume.allow_visitor_access">
-                                    <v-flex xs12 sm6 mx-3>
-                                        <v-text-field
-                                            :type="showPassword ? 'text' : 'password'"
-                                            name="password"
-                                            label="Password"
-                                            prepend-icon="lock"
-                                            hint="At least 8 characters"
-                                            :counter="30"
-                                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-                                            @click:append="showPassword = !showPassword"
-                                            v-validate="'required|max:30'"
-                                            ref="password"
-                                            v-model="userResume.password"
-                                        ></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 mx-3>
-                                        <v-text-field
-                                            type="password"
-                                            name="password_confirmation"
-                                            label="Password confirmation"
-                                            prepend-icon="lock"
-                                            v-validate="'required|confirmed:password'"
-                                            data-vv-as="Password"
-                                            :error-messages="errors ? errors.collect('password_confirmation') : null"
-                                            v-model="userResume.password_confirmation"
-                                        ></v-text-field>
-                                    </v-flex>
-                                </v-layout> -->
-                            </v-flex>
-                        </v-layout>
-
-                        <v-layout v-else>
-                            <v-flex xs10 offset-xs1 class="border">
-                                <v-layout justify-center>
-                                    <div>
-                                        <v-switch v-model="userResume.allow_visitor_access" label="Allow visitor Access" color="secondary"></v-switch>
-                                    </div>
-                                </v-layout>
-                                <!-- <v-layout v-if="userResume.allow_visitor_access">
-                                    <v-flex xs12 sm6 mx-3>
-                                        <v-text-field
-                                            :type="showPassword ? 'text' : 'password'"
-                                            name="password"
-                                            label="Password"
-                                            prepend-icon="lock"
-                                            hint="At least 8 characters"
-                                            :counter="30"
-                                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-                                            @click:append="showPassword = !showPassword"
-                                            v-validate="'required|max:30'"
-                                            ref="password"
-                                            v-model="userResume.new_password"
-                                        ></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 mx-3>
-                                        <v-text-field
-                                            type="password"
-                                            name="password_confirmation"
-                                            label="Password confirmation"
-                                            prepend-icon="lock"
-                                            v-validate="'required|confirmed:password'"
-                                            data-vv-as="Password"
-                                            :error-messages="errors ? errors.collect('password_confirmation') : null"
-                                            v-model="userResume.new_password_confirmation"
-                                        ></v-text-field>
-                                    </v-flex>
-                                </v-layout> -->
-                            </v-flex>
-                        </v-layout>
-
                         <v-layout v-if="resumeSlug === undefined">
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Resume identifier*"
                                     name="slug"
-                                    prepend-icon="perm_identity"
                                     hint="Must be unique."
                                     :persistent-hint="true"
                                     v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
                                     :error-messages="errors ? errors.collect('slug') : null"
                                     data--vv-as="Resume identifier"
                                     v-model="userResume.slug"
-                                ></v-text-field>
+                                ><font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm8 class="px-3">
@@ -126,73 +48,36 @@
                                     label="Path to your resume"
                                     :value="userResume.slug ? `https://www.loginmycv.com/resume/${userResume.slug}` : ''"
                                     readonly
-                                    prepend-icon="web"
-                                ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-
-                        <v-layout v-else>
-                            <v-flex xs10 offset-xs1 class="border">
-                                <v-layout justify-center>
-                                    <div>
-                                        <v-switch v-model="userResume.updateResumeSlug" label="Modify resume slug" color="secondary"></v-switch>
-                                    </div>
-                                </v-layout>
-                                
-                                <v-layout v-if="userResume.updateResumeSlug">
-                                    <v-flex xs12 sm6 mx-3>
-                                        <v-text-field
-                                            label="New resume identifier*"
-                                            name="new_slug"
-                                            prepend-icon="perm_identity"
-                                            hint="Must be unique."
-                                            :persistent-hint="true"
-                                            v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
-                                            :error-messages="errors ? errors.collect('new_slug') : null"
-                                            data--vv-as="Resume identifier"
-                                            v-model="userResume.new_slug"
-                                        ></v-text-field>
-                                    </v-flex>
-
-                                    <v-flex xs12 sm8 class="px-3">
-                                        <v-text-field
-                                            label="New path to your resume"
-                                            :value="userResume.new_slug ? `https://www.loginmycv.com/resume/${userResume.new_slug}` : ''"
-                                            readonly
-                                            prepend-icon="web"
-                                        ></v-text-field>
-                                    </v-flex>
-                                </v-layout>
+                                ><font-awesome-icon :icon="['fas', 'link']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
                         </v-layout>
 
                         <v-layout row wrap>
                             <v-flex xs12 sm4 class="px-3">
+                                
                                 <v-text-field
-                                    label="Job title"
+                                    label="Job title*"
                                     id="job_title"
                                     name="job_title"
-                                    prepend-icon="business_center"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('job_title') : null"
                                     data-vv-as="Job title"
                                     :counter="50"
                                     v-model="userResume.job_title"
-                                ></v-text-field>
+                                ><font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm8 class="px-3">
                                 <v-text-field
-                                    label="Job description"
+                                    label="Job description*"
                                     id="job_description"
                                     name="job_description"
-                                    prepend-icon="business_center"
-                                    v-validate="'required|max:100'"
+                                    v-validate="'required|max:250'"
                                     :error-messages="errors ? errors.collect('job_description') : null"
                                     data-vv-as="Job description"
-                                    :counter="100"
+                                    :counter="250"
                                     v-model="userResume.job_description"
-                                ></v-text-field>
+                                ><font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
                         </v-layout>
 
@@ -201,56 +86,117 @@
                                 <v-text-field
                                     label="Firstname"
                                     name="firstname"
-                                    prepend-icon="person"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('firstname') : null"
                                     data-vv-as="Firstname"
                                     v-model="userResume.personal_data.firstname"
-                                ></v-text-field>
+                                ><font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Lastname"
                                     name="lastname"
-                                    prepend-icon="person"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('lastname') : null"
                                     data-vv-as="Lastname"
                                     v-model="userResume.personal_data.lastname"
-                                ></v-text-field>
+                                ><font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
-
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-text-field
-                                    label="Email"
-                                    name="email"
-                                    type="email"
-                                    prepend-icon="email"
-                                    v-validate="'required|email|max:50'"
-                                    :error-messages="errors ? errors.collect('email') : null"
-                                    data-vv-as="Email"
-                                    v-model="userResume.personal_data.email"
-                                ></v-text-field>
-                            </v-flex>
+                            
                         </v-layout>
                     </v-card-text>
                 </v-card>
             </v-flex>              
         </v-layout>
         <br />
+
+        <v-layout row wrap class="pa-2">
+            <v-flex xs12>
+                <v-card :elevation="12">
+                    <v-card-title class="justify-center">
+                        <h2 class="headline mb-0">Contact & Social</h2>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    label="Email"
+                                    name="email"
+                                    type="email"
+                                    v-validate="'required|email|max:50'"
+                                    :error-messages="errors ? errors.collect('email') : null"
+                                    data-vv-as="Email"
+                                    v-model="userResume.personal_data.email"
+                                ><font-awesome-icon :icon="['fas', 'envelope']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    label="Personal Website"
+                                    name="website"
+                                    v-validate="{url: {require_protocol: true }}"
+                                    :error-messages="errors ? errors.collect('website') : null"
+                                    v-model="userResume.personal_data.website"
+                                ><font-awesome-icon :icon="['fab', 'chrome']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
+
+                            <!-- :mask="'(+####)-###-###-####'" -->
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    label="Phone number"
+                                    name="phone"
+                                    v-validate="{ regex: /^([0-9+()-]+)$/ }"
+                                    :error-messages="errors ? errors.collect('phone') : null"
+                                    v-model="userResume.personal_data.phone"
+                                ><font-awesome-icon :icon="['fas', 'phone']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
+
+                            <!-- userResume.social_links: {{ userResume.social_links }} -->
+                            <v-flex xs12 sm8 class="px-3">
+                                <v-select
+                                    label="Social links"
+                                    :items="social_links"
+                                    attach
+                                    chips
+                                    multiple
+                                    dense
+                                    small-chips
+                                    deletable-chips
+                                    item-text="name"
+                                    return-object
+                                    v-model="userResume.social_links"
+                                ></v-select>
+                            </v-flex>
+
+                            <!-- errors: {{ errors }}<br /> -->
+                            <v-flex xs12 sm4 class="px-3" v-for="(social_link, index) of userResume.social_links" :key="index">
+                                <v-text-field
+                                    :label="social_link.name"
+                                    :name="social_link.slug"
+                                    v-validate="{ required: true, url: { require_protocol: true }}"
+                                    :error-messages="errors ? errors.collect(`${social_link.slug}`) : null"
+                                    v-model="userResume.social_links[index]['link']"
+                                ><font-awesome-icon :icon="['fab', `${social_link.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+        </v-layout>
+        <br />
+
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">More about you </h2>
+                        <h2 class="headline mb-0">More about you</h2>
                     </v-card-title>
                     <!-- <p class="text-xs-center">(can be public or private, you choose)</p> -->
 
                     <v-card-text>
                         <v-layout row wrap>
-                            <v-flex xs12 sm4 class="px-3">
+                            <!-- <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.personal_data.gender"
                                     :items="['female', 'male']"
@@ -260,38 +206,48 @@
                                     label="Gender"
                                     :deletable-chips="true"
                                 ></v-select>
-                            </v-flex>
+                            </v-flex> -->
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
-                                    v-model="userResume.personal_data.country_of_residence"
+                                    label="Country of residence*"
                                     :items="loadedCountries"
                                     item-text="name"
-                                    prepend-icon="person"
                                     chips
+                                    small-chips
                                     :deletable-chips="true"
-                                    label="Country of residence"
-                                ></v-select>
+                                    v-model="userResume.personal_data.country"
+                                ><font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" /></v-select>
+                            </v-flex>
+
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    label="City (State, region)*"
+                                    :counter="50"
+                                    v-validate="'max:50'"
+                                    :error-messages="errors ? errors.collect('City') : null"
+                                    data-vv-name="City"
+                                    v-model="userResume.personal_data.city"
+                                ><font-awesome-icon :icon="['fas', 'city']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-dialog
                                     ref="dialog"
-                                    v-model="modalDate"
                                     :return-value.sync="personal_data.birthday"
                                     persistent
                                     lazy
                                     full-width
                                     width="300px"
+                                    v-model="modalDate"
                                 >
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
-                                            v-model="personal_data.birthday"
                                             label="Birth date"
-                                            prepend-icon="event"
                                             readonly
                                             v-on="on"
-                                        ></v-text-field>
+                                            v-model="personal_data.birthday"
+                                        ><font-awesome-icon :icon="['fas', 'birthday-cake']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                                     </template>
                                     <v-date-picker v-model="personal_data.birthday">
                                         <v-spacer></v-spacer>
@@ -305,70 +261,80 @@
                         <v-layout>
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
-                                    v-model="userResume.personal_data.nationalities"
+                                    label="Nationality-ies*"
                                     :items="loadedCountries"
                                     item-text="name"
-                                    prepend-icon="person"
-                                    label="Nationality-ies"
                                     multiple
                                     chips
+                                    small-chips
                                     :deletable-chips="true"
-                                    class="abc"
-                                ></v-select>
+                                    v-model="userResume.personal_data.nationalities"
+                                ><font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" /></v-select>
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
-                                    v-model="userResume.languages"
+                                    label="Language(s)*"
                                     :items="loadedLanguages"
                                     item-text="name"
-                                    prepend-icon="person"
-                                    label="Language(s)"
                                     multiple
                                     chips
+                                    small-chips
                                     :deletable-chips="true"
-                                ></v-select>
+                                    v-model="userResume.languages"
+                                ><font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" /></v-select>
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-select
-                                    v-model="userResume.key_competences"
+                                    label="Key competences"
                                     :items="loadedCompetences"
                                     item-text="name"
                                     :return-object="true"
-                                    prepend-icon="person"
-                                    label="Key competences"
                                     multiple
                                     chips
+                                    small-chips
                                     :deletable-chips="true"
-                                ></v-select>
+                                    v-model="userResume.key_competences"
+                                ><font-awesome-icon :icon="['fas', 'list-ul']" slot="prepend" style="margin-top: 4px;" /></v-select>
                             </v-flex>
                         </v-layout>
 
                         <v-layout>
                             <v-flex xs12 sm6 class="px-3">
+                                   
+
                                 <!-- <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center"> -->
-                                <div v-if="resumeSlug && getCurrentPicture" class="text-xs-center">
+                                <div v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl" class="text-xs-center">
                                     <span>Current picture: </span><br />
                                     <!-- <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" /> -->
-                                    <img :src="getCurrentPicture.downloadUrl" height="150" />
+                                    <img :src="getCurrentPicture.downloadUrl" height="150" /><br />
+                                    
                                 </div>                
-                                <v-text-field label="My Picture" @click='pickFile' v-model="imageName" prepend-icon='folder_shared' :error-messages="error ? error.image : null" ></v-text-field>
-                                <!-- <v-text-field label="My Picture" @click='pickFile' v-model="userResume.personal_data.picture" prepend-icon='folder_shared' :error-messages="error ? error.image : null"></v-text-field>-->
-                                <input
-                                    type="file"
-                                    style="display: none"
-                                    ref="image"
-                                    accept="image/jpeg"
-                                    @change="onFilePicked"
-                                >
+                                <v-layout row wrap align-center>
+                                    <v-flex xs10>
+                                        <v-text-field label="My Picture" @click='pickFile' v-model="imageName" :error-messages="error ? error.image : null" ><font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                        <input
+                                            type="file"
+                                            style="display: none"
+                                            ref="image"
+                                            accept="image/jpeg"
+                                            data-vv-name="Picture"
+                                            v-validate="'image'"
+                                            @change="onFilePicked"
+                                        >
+                                    </v-flex>
+                                    <v-flex xs2 class="text-xs-center">
+                                        <v-icon @click="removeCurrentPicture" v-if="imageName">delete</v-icon>
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
 
                             <v-flex xs12 sm6>
                                 <div class="text-xs-center">
                                     <img src="/images/loader.gif" width="100" v-if="uploadingNewImage" />
                                 </div>
-                                <div v-if="imageUrl">
+                                <div v-if="imageUrl" class="text-xs-center">
                                     <span>New picture: </span><br />
                                     <img :src="imageUrl" height="150" />
                                 </div>
@@ -378,6 +344,7 @@
                 </v-card>
             </v-flex>            
         </v-layout>
+        <br />
 
         <v-layout row wrap pa-2 class="">
             <v-flex xs12 class="">
@@ -437,25 +404,62 @@
                                     :counter="30"
                                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                     @click:append="showPassword = !showPassword"
-                                    v-validate="'required|min:4|max:30'"
+                                    v-validate="'min:4|max:30'"
                                     ref="password"
                                     v-model="userResume.password"
                                     :error-messages="errors ? errors.collect('password') : null"
                                 ></v-text-field>
                             </v-flex>
+                            <!-- confirmed:password -->
                             <v-flex xs12 sm6 mx-5>
                                 <v-text-field
                                     type="password"
                                     name="password_confirmation"
                                     :label="resumeSlug ? 'New Password confirmation' : 'Password confirmation'"
                                     prepend-icon="lock"
-                                    v-validate="'required|confirmed:password'"
+                                    v-validate="{ required: this.userResume.password ? true : false, confirmed: this.userResume.password }"
                                     data-vv-as="Password"
                                     :error-messages="errors ? errors.collect('password_confirmation') : null"
                                     v-model="userResume.password_confirmation"
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
+
+                        <v-layout v-if="resumeSlug">
+                            <v-flex xs10 offset-xs1>
+                                <v-layout justify-center>
+                                    <div>
+                                        <v-switch v-model="userResume.updateResumeSlug" label="Modify resume slug" color="secondary"></v-switch>
+                                    </div>
+                                </v-layout>
+                                
+                                <v-layout v-if="userResume.updateResumeSlug">
+                                    <v-flex xs12 sm6 mx-3>
+                                        <v-text-field
+                                            label="New resume identifier*"
+                                            name="new_slug"
+                                            prepend-icon="perm_identity"
+                                            hint="Must be unique."
+                                            :persistent-hint="true"
+                                            v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
+                                            :error-messages="errors ? errors.collect('new_slug') : null"
+                                            data--vv-as="Resume identifier"
+                                            v-model="userResume.new_slug"
+                                        ></v-text-field>
+                                    </v-flex>
+
+                                    <v-flex xs12 sm8 class="px-3">
+                                        <v-text-field
+                                            label="New path to your resume"
+                                            :value="userResume.new_slug ? `https://www.loginmycv.com/resume/${userResume.new_slug}` : ''"
+                                            readonly
+                                            prepend-icon="web"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+
                     </v-card-text>
                 </v-card>
             </v-flex>
@@ -476,6 +480,9 @@
             console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
             // this.loadedUserResume = await this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
+            // if (!this.userResume.uploads) {
+            //     this.userResume.uploads = []
+            // }
         },
         async mounted () {
             await this.$store.dispatch('countries/fetchCountries')
@@ -490,6 +497,20 @@
                 // this.loadedNewResume.personal_data.firstname = 'Jean-Marc'
                 // this.loadedNewResume.personal_data.lastname = 'Kleger'
                 // this.loadedNewResume.personal_data.email = 'jm.kleger@gmail.com'
+            }
+            // if (!this.userResume.uploads) {
+            //     this.userResume.uploads = []
+            // }
+            if (this.userResume.uploads) {
+                const picture = this.userResume.uploads.find(upload => upload.type === 'profile_picture' && upload.new)
+                if (picture) {
+                    this.imageName = picture.name
+                    const fileReader = new FileReader ()
+                    fileReader.readAsDataURL(picture.file)
+                    fileReader.addEventListener('load', () => {
+                        this.imageUrl = fileReader.result
+                    })
+                } 
             }
         },
         data () {
@@ -515,7 +536,39 @@
                 showPassword: false,
                 // updateResumeSlug: false
                 color: '#fff',
-                row: ''
+                row: '',
+                social_links: [
+                    {
+                        name: 'Facebook',
+                        slug: 'facebook',
+                        link: '',
+                        fontawesome: 'facebook-f'
+                    },
+                    {
+                        name: 'LinkedIn',
+                        slug: 'linkedin',
+                        link: '',
+                        fontawesome: 'linkedin-in'
+                    },
+                    {
+                        name: 'Github',
+                        slug: 'github',
+                        link: '',
+                        fontawesome: 'github'
+                    },
+                    {
+                        name: 'Pinterest',
+                        slug: 'pinterest',
+                        link: '',
+                        fontawesome: 'pinterest'
+                    },
+                    {
+                        name: 'Quora',
+                        slug: 'quora',
+                        link: '',
+                        fontawesome: 'quora'
+                    }
+                ]
             }
         },
         computed: {
@@ -542,7 +595,10 @@
                 return this.$store.getters['competences/loadedCompetences']
             },
             getCurrentPicture () {
-                return this.userResume.uploads.find(upload => upload.type === 'picture')
+                if (this.userResume.uploads) {
+                    return this.userResume.uploads.find(upload => upload.type === 'profile_picture')
+                }
+                return null
             }
         },
         methods: {
@@ -560,48 +616,37 @@
                 this.$refs.image.click()
             },
             onFilePicked (e) {
-                this.uploadingNewImage = true
                 const files = e.target.files
-                files[0]['format'] = 'Picture'
                 console.log('files: ', files)
-
-                // this.userResume.personal_data.picture = files[0]
-                this.userResume.uploads.push(files[0])
-                this.imageName = files[0].name
-                const fileReader = new FileReader ()
-                fileReader.readAsDataURL(files[0])
-                fileReader.addEventListener('load', () => {
-                    this.imageUrl = fileReader.result
-                    this.uploadingNewImage = false
-                })
-
-
-
-                // if(files[0] !== undefined) {
-                //     this.imageName = files[0].name
-                //     if(this.imageName.lastIndexOf('.') <= 0) {
-                //         return
-                //     }
-                //     const fileReader = new FileReader ()
-                //     fileReader.readAsDataURL(files[0])
-                //     console.log('fileReader: ', fileReader)
-                //     fileReader.addEventListener('load', () => {
-                //         this.imageUrl = fileReader.result
-                //         // this.imageFile = files[0] // this is an image file that can be sent to server...
-                //         // this.loadedUserResume.image_new = fr.result
-                //         this.userResume.image_new = fileReader.result
-                //         this.userResume.uploads.push(fileReader.result)
-                //         // this.candidateLongResume.image_new = 'abc'
-                //         this.uploadingNewImage = false
-                //     })   
-                // } else {
-                //     this.imageName = ''
-                //     this.imageFile = ''
-                //     this.imageUrl = ''
-                // }
+                if (files[0]) {
+                    this.uploadingNewImage = true
+                    this.userResume.uploads.push({
+                        file: files[0],
+                        name: files[0].name,
+                        type: 'profile_picture',
+                        size_in_bytes: parseInt(files[0].size),
+                        new: true
+                    })
+    
+                    this.imageName = files[0].name
+                    const fileReader = new FileReader ()
+                    fileReader.readAsDataURL(files[0])
+                    fileReader.addEventListener('load', () => {
+                        this.imageUrl = fileReader.result
+                        this.uploadingNewImage = false
+                    })
+                }
             },
             onChange (color) {
                 console.log(color)
+            },
+            addUpload () {
+                this.userResume.uploads = [{ name: 'abc'}]
+            },
+            removeCurrentPicture () {
+                this.userResume.uploads = this.userResume.uploads.filter(upload => upload.type !== 'profile_picture')
+                this.imageUrl = ''
+                this.imageName = ''
             }
         }
     }
@@ -614,10 +659,10 @@
     .abc .v-input__control .v-input__slot {
         padding-top: 12px;
     }
-    .border {
+    /* .border {
         margin-bottom: 30px;
         padding: 10px;
         border: 1px solid var(--v-secondary-base);
         border-radius: 10px;
-    }
+    } */
 </style>

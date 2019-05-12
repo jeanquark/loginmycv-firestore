@@ -83,7 +83,7 @@ module.exports = app.use(async function (req, res, next) {
                 }
             },
             'job_title': { presence: true, length: { maximum: 50 }},
-            'job_description': { presence: true, length: { maximum: 150 }},
+            'job_description': { presence: true, length: { maximum: 250 }},
             'personal_data.email': { presence: true, email: true },
             'personal_data.firstname': { presence: true, length: { maximum: 50 }},
             'personal_data.lastname': { presence: true, length: { maximum: 50 }},

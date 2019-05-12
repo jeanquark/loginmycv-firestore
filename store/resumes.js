@@ -216,9 +216,10 @@ export const actions = {
 			throw error
 		}
 	},
-	async updateResume ({ commit }, payload) {
+	async updateResume ({ commit, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
+			commit('setLoadingFiles', true, { root: true })
 			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
 
 			// 1) Get all files to delete
@@ -238,40 +239,59 @@ export const actions = {
 
 			// 2) Get all files to upload
 			const filesToAdd = []
+			let totalUploadSize = 0
 			payload.uploads.forEach(upload => {
+				totalUploadSize += parseInt(upload.size_in_bytes)
 				if (!oldResume.data().uploads.find(file => file.name === upload.name && file._updated_at === upload._updated_at)) {
 					filesToAdd.push(upload)
 				}
 			})
 			// if (!oldResume.data().uploads.find(file => file.type === 'picture' && file.name === upload.name && file._updated_at === upload._updated_at)) {
-				filesToAdd.push(payload.personal_data.picture)
+				// filesToAdd.push(payload.personal_data.picture)
 			// }
+			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+			if (totalUploadSize > userTotalSpace) {
+				throw 'Files could not be uploaded because your do not have enough space.'
+			}
 			console.log('filesToAdd: ', filesToAdd)
-			return 
+			console.log('totalUploadSize: ', totalUploadSize)
+			console.log('userTotalSpace: ', userTotalSpace)
+
+			// return 
 			for (let file of filesToAdd) {
-				const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
-				const downloadUrl = await uploadedFile.ref.getDownloadURL()
-				const newUpload = {
-					name: uploadedFile.metadata.name,
-					size_in_bytes: uploadedFile.metadata.size,
-					downloadUrl: downloadUrl,
-					title: file.title,
-					_created_at: moment().unix(),
-					_updated_at: moment().unix()
+				console.log('file: ', file)
+				if (file.file) {
+					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+					const downloadUrl = await uploadedFile.ref.getDownloadURL()
+					const newUpload = {
+						name: uploadedFile.metadata.name,
+						size_in_bytes: uploadedFile.metadata.size,
+						downloadUrl: downloadUrl,
+						title: file.title,
+						type: file.type,
+						_created_at: moment().unix(),
+						_updated_at: moment().unix()
+					}
+					console.log('newUpload: ', newUpload)
+					const index = payload.uploads.findIndex(upload => upload.name === file.name)
+					payload.uploads[index] = newUpload
 				}
-				console.log('newUpload: ', newUpload)
-				const index = payload.uploads.findIndex(upload => upload.name === file.name)
-				payload.uploads[index] = newUpload
 			}
 			console.log('payload2: ', payload)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', true, { root: true })
 
 			// 3) Update resume on the server
-			// const updatedResume = await axios.post('/update-resume', payload, {
-			// 	headers: {
-			// 		'app-key': process.env.APP_KEY
-			// 	}
-			// })
+			const updatedResume = await axios.post('/update-resume', payload, {
+				headers: {
+					'app-key': process.env.APP_KEY
+				}
+			})
+			commit('setLoadingResume', false, { root: true })
 		} catch (error) {
+			console.log('error2: ', error)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', false, { root: true })
 			throw error
 		}	
 	}

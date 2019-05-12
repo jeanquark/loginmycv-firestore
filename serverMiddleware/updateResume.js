@@ -22,6 +22,48 @@ module.exports = app.use(async function (req, res, next) {
 			}
 		}
 
+
+		// 1) Perform validation
+		const constraints = {
+            'job_title': { presence: true, length: { maximum: 50 }},
+            'job_description': { presence: true, length: { maximum: 250 }},
+            'personal_data.email': { presence: true, email: true },
+            'personal_data.firstname': { presence: true, length: { maximum: 50 }},
+			'personal_data.lastname': { presence: true, length: { maximum: 50 }},
+			'personal_data.city': { length: { maximum: 50 }},
+			'personal_data.website': { url: true },
+			'personal_data.phone': { format: '[0-9+()-]+'},
+		};
+		for (let social_link of updatedResume.social_links) {
+			const validation = validate(social_link, {'link': { url: true }})
+			if (validation != undefined) {
+				throw { [`${social_link.slug}`] : [`${social_link.name} is not a valid url`] };
+			}
+		}
+		if (updatedResume.updateResumeSlug) {
+			constraints['new_slug'] = {
+				presence: true, 
+				format: {
+					pattern: "[a-z0-9-]+", 
+					flags: "i", 
+					message: "Slug can only contain a-z, 0-9 and -"
+				}
+			}
+		}
+		if (updatedResume.password) {
+			constraints['password'] = { presence: true, length: { maximum: 30 }};
+			constraints['password_confirmation'] = { presence: true, equality: 'password'};
+		}
+
+		const validation = validate(updatedResume, constraints);
+        console.log('validation: ', validation);
+        if (validation != undefined) {
+            throw validation;
+        }
+		console.log('Form is valid, continue saving in DB');
+		
+
+
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug
 
 			// Do not forget to update authorizations collection
@@ -124,7 +166,6 @@ module.exports = app.use(async function (req, res, next) {
 				}
 			}
 
-
 		} else { // Not updating the resume slug
 			console.log('Not updating the resume slug');
 			const password = updatedResume.password;
@@ -144,10 +185,10 @@ module.exports = app.use(async function (req, res, next) {
 					console.log('user does not exist');
 				}
 				const newUser = await admin.auth().createUser({
-					email: `${newSlug}@visitor.loginmycv.com`,
+					email: `${updatedResume.slug}@visitor.loginmycv.com`,
 					emailVerified: false,
 					password: password,
-					displayName: `${newSlug}@visitor`,
+					displayName: `${updatedResume.slug}@visitor`,
 					disabled: false
 				});
 				const visitor_id = newUser.uid;

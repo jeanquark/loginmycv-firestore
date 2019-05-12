@@ -5,6 +5,7 @@
                 <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
             </v-flex>
             loadedUserResume: {{ loadedUserResume }}<br /><br />
+            errors: {{ errors }}<br /><br />
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -99,6 +100,7 @@
                     </v-card-actions>
                     <v-layout justify-center>
                         <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn>
+                        <v-btn class="warning" @click="validateResume">Validate resume</v-btn>
                     </v-layout>          
                 </v-stepper>
             </v-flex>
@@ -108,6 +110,7 @@
         <v-dialog
             v-model="updatingResumeDialog"
             width="500"
+            :persistent="true"
         >
             <v-layout>
                 <v-flex xs12> 
@@ -127,7 +130,9 @@
                                 outline
                             >
                                 <div class="text-xs-center">
-                                    <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume
+                                    <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume. -->
+                                    <v-progress-circular indeterminate color="primary" v-if="loadingFiles"></v-progress-circular> Uploading files...
+                                    <v-progress-circular indeterminate color="secondary" v-if="loadingResume"></v-progress-circular> Updating resume...
                                 </div>
                             </v-alert>
                             <br /><br /><br />
@@ -163,6 +168,9 @@
             const resume = this.$route.params.slug
             console.log('resume: ', resume)
             this.resumeSlug = resume
+            this.$store.commit('clearError')
+            this.$store.commit('setLoadingFiles', false)
+            this.$store.commit('setLoadingResume', false)
         },
         async mounted () {
             await this.$store.dispatch('competences/fetchCompetences')
@@ -214,6 +222,12 @@
             },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
+            },
+            loadingFiles () {
+                return this.$store.getters['loadingFiles']
+            },
+            loadingResume () {
+                return this.$store.getters['loadingResume']
             }
 		},
         methods: {
@@ -250,47 +264,70 @@
                 try {
                     this.updatingResumeDialog = true
                     this.loadingUpdateResume = true
-                    await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
-                    this.updatingResumeDialog = false
-                    this.loadingUpdateResume = false
-                    new Noty({
-                        type: 'success',
-                        text: 'Your resume was successfully updated.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
-                    this.$router.push('/candidate/resumes')
+                    await this.$validator.validateAll()
+                    if (this.errors && this.errors.items && this.errors.items.length > 0) {
+                        this.updatingResumeDialog = false
+                        this.loadingUpdateResume = false
+                        new Noty({
+                            type: 'error',
+                            text: 'Please check validation errors.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                    } else {
+                        await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
+                        this.updatingResumeDialog = false
+                        this.loadingUpdateResume = false
+                        new Noty({
+                            type: 'success',
+                            text: 'Your resume was successfully updated.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                        // this.$router.push('/candidate/resumes')
+                    }
                 } catch (error) {
                     this.updatingResumeDialog = false
                     this.loadingUpdateResume = false
-                    console.log('error from client: ', error)
-                    console.log('error.response: ', error.response)
-                    console.log('error.response.data: ', error.response.data)
-                    console.log('error.response.data.error: ', error.response.data.error)
-                    new Noty({
-                        type: 'error',
-                        text: 'Your resume could not be updated.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
+                    // console.log('error from client: ', error)
+                    // console.log('error.response: ', error.response)
+                    // console.log('error.response.data: ', error.response.data)
+                    // console.log('error.response.data.error: ', error.response.data.error)
 
-                    Object.entries(error.response.data.error).forEach(([key, value]) => {
-                        console.log('key: ', key)
-                        console.log('value: ', value)
-                        const field = key.substr(key.indexOf('.') + 1)
+                    if (error.response && error.response.data && error.response.data.error) {
+                        new Noty({
+                            type: 'error',
+                            text: 'Your resume could not be updated.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
 
-                        this.$validator.errors.add({
-                            field: field,
-                            msg: value,
+                        Object.entries(error.response.data.error).forEach(([key, value]) => {
+                            console.log('key: ', key)
+                            console.log('value: ', value)
+                            const field = key.substr(key.indexOf('.') + 1)
+
+                            this.$validator.errors.add({
+                                field: field,
+                                msg: value,
+                            })
+
+                            new Noty({
+                                type: 'warning',
+                                text: value,
+                                timeout: 8000,
+                                theme: 'metroui'
+                            }).show()
                         })
-
+                    } else {
                         new Noty({
                             type: 'warning',
-                            text: value,
+                            text: error,
                             timeout: 8000,
                             theme: 'metroui'
                         }).show()
-                    })
+                    }
+                    
                 }
             },
             async updateResume2 () {
@@ -321,6 +358,9 @@
                         theme: 'metroui'
                     }).show()
                 }
+            },
+            validateResume () {
+                 this.$validator.validateAll()
             }
         },
         watch: {
