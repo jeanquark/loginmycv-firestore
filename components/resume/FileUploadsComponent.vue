@@ -20,6 +20,9 @@
 			<!-- this.totalUploadSize: {{ this.totalUploadSize }}<br /><br /> -->
 			<!-- this.totalSize: {{ this.totalSize }}<br /><br /> -->
 			geUserFiles: {{ getUserFiles }}<br /><br />
+			userAllocatedSpace: {{ userAllocatedSpace }}<br /><br />
+			totalUsedSpace: {{ totalUsedSpace }}<br /><br />
+			totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -27,12 +30,12 @@
 			:rotate="-90"
 			:size="100"
 			:width="15"
-			:value="totalSizePercent"
-			:color="totalSizePercent > 100 ? 'error' : 'secondary'"
+			:value="totalUsedSpacePercent"
+			:color="totalUsedSpacePercent > 100 ? 'error' : 'secondary'"
 			>
-			{{ totalSizePercent }}%
+			{{ totalUsedSpacePercent }}%
 		</v-progress-circular>
-		of your total space ({{ userFreeSpace }} MiB)
+		of your total space ({{ userAllocatedSpace / (1024 * 1024) }} MiB)
 		<br /><br />
 		<v-btn color="secondary">Get more space</v-btn>
 
@@ -115,7 +118,7 @@
 				await this.$store.dispatch('app-parameters/fetchAppParameters')
 
 			// }
-			this.userTotalUsedSpace()
+			// this.userTotalUsedSpace()
 			// this.$store.commit('setLoading', false)
 			// if (!this.userResume.uploads) {
 				// this.userResume.uploads = new Array(1)
@@ -151,36 +154,60 @@
 			},
 			getUserFiles () {
 				return this.userResume.uploads.filter(upload => upload.type === 'downloadable_file')
-			},
-			
-			totalSize () {
-				if (this.userResume.uploads) {
-					if (this.picture && this.picture.size) {
-						return this.userResume.uploads.reduces((accumulator, file) => {
-							return accumulator + parseInt(file.size)
-						}, (parseInt(this.picture.size) + parseInt(this.totalUploadSize)))
-					} else {
-						return this.userResume.uploads.reduce((accumulator, file) => {
-							return accumulator + parseInt(file.size_in_bytes)
-						}, parseInt(this.totalUploadSize))
+			},		
+			// totalSize () {
+			// 	if (this.userResume.uploads) {
+			// 		return this.userResume.uploads.reduce((accumulator, file) => {
+			// 			return accumulator + parseInt(file.size_in_bytes)
+			// 		}, parseInt(this.totalUploadSize))
+			// 		// if (this.picture && this.picture.size) {
+			// 		// 	return this.userResume.uploads.reduces((accumulator, file) => {
+			// 		// 		return accumulator + parseInt(file.size)
+			// 		// 	}, (parseInt(this.picture.size) + parseInt(this.totalUploadSize)))
+			// 		// } else {
+			// 		// 	return this.userResume.uploads.reduce((accumulator, file) => {
+			// 		// 		return accumulator + parseInt(file.size_in_bytes)
+			// 		// 	}, parseInt(this.totalUploadSize))
+			// 		// }
+			// 	} else {
+			// 		return parseInt(this.totalUploadSize)
+			// 	}
+			// },
+			// totalSizePercent () {
+			// 	const limit = 10 * 1024 * 1024
+			// 	// const limit = this.$store.getters['app_parameters/users']['initial_space_in_bytes']
+			// 	// if (this.totalSize) {
+			// 		return Number((this.totalSize/limit) * 100).toFixed(1)
+			// 	// }
+			// },
+			// userFreeSpace () {
+			// 	if (this.loadedUser.private) {
+			// 		return ((this.loadedUser.private.total_space_in_bytes - this.loadedUser.private.used_space_in_bytes) / (1024 * 1024)).toFixed(2)
+			// 	}
+			// 	return 0
+			// },
+			totalUsedSpace () {
+				let sum = 0
+				const userResumes = this.$store.getters['resumes/loadedUserResumes']
+				userResumes.forEach(resume => {
+					const uploadsArray = resume.uploads
+					if (uploadsArray) {
+						uploadsArray.forEach(upload => {
+							sum += upload.size_in_bytes
+						})
 					}
-				} else {
-					return parseInt(this.totalUploadSize)
-				}
+				})
+				return sum
 			},
-			totalSizePercent () {
-				const limit = 10 * 1024 * 1024
-				// const limit = this.$store.getters['app_parameters/users']['initial_space_in_bytes']
-				// if (this.totalSize) {
-					return Number((this.totalSize/limit) * 100).toFixed(1)
-				// }
+			totalUsedSpacePercent () {
+				// return this.totalUsedSpace / 100
+				return (this.totalUsedSpace * 100 / this.userAllocatedSpace).toFixed(1)
 			},
-			userFreeSpace () {
+			userAllocatedSpace () {
 				if (this.loadedUser.private) {
-					return ((this.loadedUser.private.total_space_in_bytes - this.loadedUser.private.used_space_in_bytes) / (1024 * 1024)).toFixed(2)
+					return this.loadedUser.private.allocated_space_in_bytes
 				}
-				return 0
-			},
+			}
         },
         methods: {
 			addUpload () {
@@ -216,20 +243,20 @@
 				// const abc = this.userResume.uploads.splice(0, 1)
 
 			},
-			async userTotalUsedSpace () {
-				let sum = 0
-				const userResumes = this.$store.getters['resumes/loadedUserResumes']
-				userResumes.forEach(resume => {
-					const uploadsArray = resume.uploads
-					if (uploadsArray) {
-						uploadsArray.forEach(upload => {
-							sum += upload.size_in_bytes
-						})
-					}
-				})
-				// console.log('sum: ', sum)
-				this.totalUploadSize = sum
-			},
+			// async totalUsedSpace2 () {
+			// 	let sum = 0
+			// 	const userResumes = this.$store.getters['resumes/loadedUserResumes']
+			// 	userResumes.forEach(resume => {
+			// 		const uploadsArray = resume.uploads
+			// 		if (uploadsArray) {
+			// 			uploadsArray.forEach(upload => {
+			// 				sum += upload.size_in_bytes
+			// 			})
+			// 		}
+			// 	})
+			// 	// console.log('sum: ', sum)
+			// 	this.totalUploadSize = sum
+			// },
 			getFileIndex (index) {
 				// return 1
 				if (index === 0) {

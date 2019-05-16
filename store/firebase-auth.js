@@ -8,7 +8,35 @@ export const state = () => ({})
 export const mutations = {}
 
 export const actions = {
-    async signUserIn({ commit }, payload) {
+    async signUserIn ({ commit }, payload) {
+        try {
+            commit('setLoading', true, { root: true })
+            let authData = await auth.signInWithEmailAndPassword(payload.email, payload.password)
+            console.log('authData: ', authData)
+            console.log('authData.user.uid: ', authData.user.uid)
+            let userId = authData.user.uid
+            
+            let that = this
+            firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+                console.log('doc.data(): ', doc.data())
+                const user = {
+                    ...doc.data(),
+                    id: doc.id
+                }
+                console.log('user: ', user)
+                commit('users/setLoadedUser', user, { root: true })
+                console.log('Redirect now!')
+                commit('setLoading', false, { root: true })
+                // that.$router.push('/gamemode_jm')
+            })
+        } catch(error) {
+            console.log('error: ', error)
+            commit('setLoading', false, { root: true })
+            commit('setError', error, { root: true })
+            throw new Error(error)
+        }
+    },
+    async signUserIn2 ({ commit }, payload) {
         console.log(payload)
         try {
             commit('setLoading', true, { root: true })

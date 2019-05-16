@@ -51,6 +51,7 @@ module.exports = {
                 ]
             }
         ],
+        'nuxt-client-init-module'
     ],
     axios: {
         proxyHeaders: false
@@ -97,14 +98,6 @@ module.exports = {
             path: '/fetch-short-resumes',
             handler: '~/serverMiddleware/fetchShortResumes'
         },
-        {
-            path: '/create-resume-authorization',
-            handler: '~/serverMiddleware/createResumeAuthorization'
-        },
-        {
-            path: '/update-resume-authorization',
-            handler: '~/serverMiddleware/updateResumeAuthorization'
-        },
         // {
         //     path: '/create-resume-authorization', // POST request
         //     handler: '/serverMiddleware/createResumeAuthorization'
@@ -129,6 +122,18 @@ module.exports = {
             path: '/send-contact-form-message', // POST request
             handler: '~/serverMiddleware/sendContactFormMessage'
         },
+        {
+            path: '/create-resume-authorization',
+            handler: '~/serverMiddleware/authorizations/createResumeAuthorization'
+        },
+        {
+            path: '/update-resume-authorization',
+            handler: '~/serverMiddleware/authorizations/updateResumeAuthorization'
+        },
+        {
+            path: '/delete-resume-authorization', // POST request
+            handler: '~/serverMiddleware/authorizations/deleteResumeAuthorization'
+        }
     ],
     css: ["~/assets/style/app.styl"],
     /*

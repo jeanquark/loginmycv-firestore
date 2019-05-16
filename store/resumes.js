@@ -108,25 +108,38 @@ export const actions = {
 			commit('setShortResumes', shortResumesArray)
 		})
 	},
-	fetchUserResumes ({ commit, rootState }) {
-		console.log('Call to fetchUserResumes action')
-		const authUserId = rootState.users && rootState.users.user ? rootState.users.user.id : null
-		// const authUserId = auth.currentUser.uid
-		console.log('authUserId: ', authUserId)
+	async fetchUserResumes ({ commit, rootGetters }) {
+		try {
+			console.log('Call to fetchUserResumes action')
+			// const authUserId = auth.currentUser.uid
+			const userId = rootGetters['users/loadedUser'].id
+			// const userId = 'OlxfESwPtlgzz4vcjiL4YKsIDZI2'
+			console.log('authUserId: ', userId)
 
-		firestore.collection('resumes_long').where('user_id', '==', authUserId).onSnapshot(snapshot => {
-        	const userResumes = []
-			snapshot.forEach(doc => { // Also include uploaded files
-				// doc.ref.collection('uploads').doc(doc.id).get().then(childSnapshot => {
-					userResumes.push({
-						id: doc.id,
-						// uploads: childSnapshot.data().uploads,
-						...doc.data(),
-					})
-				// })
+			const snapshot = await firestore.collection('resumes_long').where('user_id', '==', userId).get()
+			snapshot.forEach(doc => {
+				console.log('doc.data(): ', doc.data())
 			})
-			commit('setUserResumes', userResumes)
-		})
+
+			if (userId) {
+				firestore.collection('resumes_long').where('user_id', '==', userId).onSnapshot(snapshot => {
+					const userResumes = []
+					console.log('snapshot: ', snapshot)
+					snapshot.forEach(doc => { // Also include uploaded files
+						// doc.ref.collection('uploads').doc(doc.id).get().then(childSnapshot => {
+							userResumes.push({
+								id: doc.id,
+								// uploads: childSnapshot.data().uploads,
+								...doc.data(),
+							})
+						// })
+					})
+					commit('setUserResumes', userResumes)
+				})
+			}
+		} catch (error) {
+			console.log('error from fetchUserResumes: ', error)
+		}
 	},
 	// fetchResumeUploads ({ commit }, payload) {
 	// 	const authUserId = auth.currentUser.uid

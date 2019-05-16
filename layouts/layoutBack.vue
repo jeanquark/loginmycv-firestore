@@ -121,7 +121,7 @@
 
 
             </v-toolbar>
-            <v-content>
+            <v-content v-if="loadedUser && loadedUser.id">
                 <!-- <v-container fluid fill-height> -->
                 <v-container>
                     <!-- loadedUser.notifications: {{ loadedUser.notifications.filter(notification => notification.type === 'authorization').length }} -->
@@ -168,7 +168,11 @@
                 return this.$store.getters['users/loadedUser']
             },
             getUserAuthorizationsNotifications () {
-                return this.loadedUser.notifications.filter(notification => notification.type === 'authorization').length
+                try {
+                    return this.loadedUser.notifications.filter(notification => notification.type === 'authorization').length
+                } catch (error) {
+                    return null
+                }
             }
 		},
 		methods: {

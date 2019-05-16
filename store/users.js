@@ -1,8 +1,9 @@
 export const strict = false
-import { firestore } from "~/plugins/firebase-client-init.js"
+import { firestore } from '~/plugins/firebase-client-init.js'
+import firebase from 'firebase/app'
 
 export const state = () => ({
-	user: null
+	loadedUser: null
 })
 
 export const mutations = {
@@ -11,7 +12,7 @@ export const mutations = {
 		// if (!payload.id) {
 			// payload['id'] = payload.uid
 		// }
-		state.user = payload
+		state.loadedUser = payload
 	}
 }
 
@@ -23,7 +24,7 @@ export const actions = {
 	// 	// commit('setLoadedUser', snapshot.data())
 	// 	// commit('setLoadedUser', { id: snapshot.id, ...snapshot.data() })
 	// },
-	async fetchAuthenticatedUser ({ state, commit }, payload) {
+	async fetchAuthenticatedUser2 ({ state, commit }, payload) {
 		console.log('Call to fetchAuthenticatedUser action: ', payload)
 		const snapshot = await firestore.collection('users').doc(payload.uid).get()
 		// console.log('snapshot.data(): ', snapshot.data())
@@ -33,11 +34,19 @@ export const actions = {
 		const childSnapshot = await firestore.collection('users').doc(payload.uid).collection('private').doc(payload.uid).get()
 
 		commit('setLoadedUser', { ...snapshot.data(), private: childSnapshot.data(), id: snapshot.id })
+	},
+	async deleteUserNotifications ({ rootGetters }) {
+		const userId = rootGetters['users/loadedUser'].id
+		const notifications = rootGetters['users/loadedUser'].notifications
+		// console.log('notifications: ', notifications)
+		await firestore.collection('users').doc(userId).update({
+			notifications: notifications.filter(notification => notification.type !== 'authorization')
+		})
 	}
 }
 
 export const getters = {
 	loadedUser (state) {
-		return state.user
+		return state.loadedUser
 	}
 }

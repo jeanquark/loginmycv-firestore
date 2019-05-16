@@ -1,22 +1,23 @@
 <template>
     <v-app id="app" v-cloak>
     	<v-toolbar dark color="primary">
-		    <v-toolbar-side-icon></v-toolbar-side-icon>
+		    <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+			<v-img src="/images/logo3.png" max-width="40" />
 
 		    <v-toolbar-title class="white--text">LoginMyCV</v-toolbar-title>
 			
 			<v-spacer></v-spacer>
 
-			<v-text-field
+			<!-- <v-text-field
         		flat
         		solo-inverted
         		hide-details
         		prepend-inner-icon="search"
         		label="Search"
         		class="hidden-sm-and-down"
-      		></v-text-field>
+      		></v-text-field> -->
 
-		    <v-spacer></v-spacer>
+		    <!-- <v-spacer></v-spacer> -->
 			
 			<!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
 			<!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
@@ -29,9 +30,9 @@
 				<v-btn color="success" @click="openLoginModal">Login</v-btn>
 				<v-btn color="success" @click="registerModal = true">Register</v-btn>
 			</div>
-		    <v-btn icon>
+		    <!-- <v-btn icon>
 		      	<v-icon>apps</v-icon>
-		    </v-btn>
+		    </v-btn> -->
 		</v-toolbar>
 
         <v-content>
@@ -111,8 +112,84 @@
           					</v-card-text>
         				</v-card>
         			</v-flex>
+    			</v-layout>
 
-        			<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
+				<v-layout row wrap justify-center class="mb-5">
+					<v-flex xs12>
+						<h1>Welcome to LoginMyCV</h1>
+						<h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
+						<v-layout justify-center>
+							<v-img src="/images/logo3.png" max-width="220" />
+						</v-layout>
+					</v-flex>
+				</v-layout>
+
+				<v-layout row wrap justify-center class="">
+					<v-flex xs12>
+						<h2 class="subtitle display-1">What we offer</h2>
+					</v-flex>
+				</v-layout>
+
+				
+				<v-layout row wrap class="mb-5">
+					<v-flex xs12 sm4>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-xs-center">
+								<font-awesome-icon :icon="['fas', 'file-alt']" size="2x" class="primaryColor" />
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-xs-center">Your online CV for free</div>
+							</v-card-title>
+							<v-card-text>
+								Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and in not time your resume will be accessible online at the address of your choice.
+							</v-card-text>
+						</v-card>
+					</v-flex>
+					<v-flex xs12 sm4>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-xs-center">
+								<font-awesome-icon :icon="['fas', 'lock']" size="2x" class="primaryColor" />
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-xs-center">Private & Secured data</div>
+							</v-card-title>
+							<v-card-text>
+								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if your decide to quit, your information will be completely wiped out from our database.
+							</v-card-text>
+						</v-card>
+					</v-flex>
+					<v-flex xs12 sm4>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-xs-center">
+								<font-awesome-icon :icon="['fas', 'search']" size="2x" class="primaryColor" />
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-xs-center">Let recruiters find you</div>
+							</v-card-title>
+							<v-card-text>
+								An excerpt of your resume can be made visible on the frontpage for potential rescruiters to reach out to you or request a full access to your resume. You are informed of the number of people who clicked on your resume.
+							</v-card-text>
+						</v-card>
+					</v-flex>
+				</v-layout>
+
+
+
+
+				<v-layout row wrap justify-center class="mb-5">
+					<v-flex xs12>
+						<h2 class="subtitle display-1">How it works</h2>
+						<v-img src="/images/how_it_works.svg" />
+					</v-flex>
+				</v-layout>
+
+
+				<v-layout row wrap justify-center>
+					<v-flex xs12>
+						<h2 class="subtitle display-1">Browse candidates</h2>
+						<br />
+					</v-flex>
+					<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
 						<!-- resume: {{ resume }}<br /> -->
         				<v-card flat hover class="card ma-2">
         					<!-- resume.resume_long_id: {{ resume.resume_long_id }}<br /> -->
@@ -150,12 +227,18 @@
         					</v-card-actions>
         				</v-card>
         			</v-flex>
+				</v-layout>
+
+
+				<v-layout row wrap>
+        			
 
         			<!-- Login Candidate Modal -->
                     <v-dialog
                         v-model="loginModal"
                         width="500"
                     	lazy
+						persistent
                     >
                         <Login v-on:loginChildToParent="switchToRegister" :message="message" />
                     </v-dialog>
@@ -165,6 +248,7 @@
                         v-model="registerModal"
                         width="750"
                         lazy
+						persistent
                     >
                         <Register v-on:registerChildToParent="switchToLogin" />
                     </v-dialog>
@@ -173,6 +257,7 @@
         				v-model="requestAuthorizationModal"
         				width="500"
         				lazy
+						persistent
     				>
     					<RequestAuthorization v-on:closeModal="requestAuthorizationModal = false" :resume="candidateResume" />
     				</v-dialog>
@@ -494,5 +579,13 @@
 <style scoped>
 	[v-cloak] {
 		display: none;
+	}
+	.primaryColor {
+		color: var(--v-primary-base);
+	}
+	.subtitle {
+		color: var(--v-secondary-base);
+		font-weight: normal;
+		/* text-transform: uppercase; */
 	}
 </style>

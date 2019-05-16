@@ -1,6 +1,7 @@
 export const strict = false
 import { firestore } from '~/plugins/firebase-client-init.js'
 import Noty from 'noty'
+import axios from 'axios'
 
 export const state = () => ({
 	user_received_authorizations_array: [],
@@ -28,10 +29,10 @@ export const mutations = {
 }
 
 export const actions = {
-	async fetchUserReceivedAuthorizations ({ commit, rootState }) {
-		console.log('Call to fetchUserReceivedAuthorizations actions')
+	async fetchUserReceivedAuthorizations ({ commit, rootGetters }) {
 		try {
-			const userId = rootState['users']['user']['id']
+			console.log('Call to fetchUserReceivedAuthorizations actions')
+			const userId = rootGetters['users/loadedUser'].id
 			// console.log('userId: ', userId)
 			firestore.collection('authorizations').where('user.id', '==', userId).onSnapshot(snapshot => {
 				let authorizationsObject = {}
@@ -44,13 +45,14 @@ export const actions = {
 				commit('setUserReceivedAuthorizationsArray', authorizationsArray)
 			})
 		} catch (error) {
+			console.log('error from fetchUserReceivedAuthorizations: ', error)
 			throw error
 		}
 	},
-	async fetchUserGivenAuthorizations ({ commit, rootState }) {
+	async fetchUserGivenAuthorizations ({ commit, rootGetters }) {
 		try {
 			console.log('Call to fetchUserGivenAuthorizations actions')
-			const userId = rootState['users']['user']['id']
+			const userId = rootGetters['users/loadedUser'].id
 			firestore.collection('authorizations').where('resume.user_id', '==', userId).onSnapshot(snapshot => {
 				// let userAuthorizationObject = {}
 				const authorizationsArray = []
@@ -64,6 +66,7 @@ export const actions = {
 				commit('setUserGivenAuthorizationsArray', authorizationsArray)
 			})
 		} catch (error) {
+			console.log('error from fetchUserGivenAuthorizations: ', error)
 			throw error
 		}
 	},
@@ -72,6 +75,23 @@ export const actions = {
 		// await firestore.collection('authorizations').add({
 			
 		// })
+	},
+	async updateAuthorization ({ }, payload) {
+		try {
+			console.log('payload: ', payload)			
+			await axios.post('/update-resume-authorization', payload)
+		} catch (error) {
+			console.log('error from updateAuthorization action')
+			throw error
+		}
+	},
+	async deleteAuthorization (payload) {
+		try {
+			console.log('payload: ', payload)
+			await axios.post('/delete-resume-authorization', payload)
+		} catch (error) {
+			throw error
+		}
 	}
 }
 

@@ -66,8 +66,11 @@
                 :disabled="errors && errors.items.length > 0"
             >
                 Send request
-            </v-btn>
-        </v-card-actions><br />
+            </v-btn><br /><br />
+        </v-card-actions>
+        <v-card-actions class="justify-center">
+            <small v-if="loading && waiting" class="primaryColor">Almost there...</small>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -90,7 +93,8 @@
                     lastname: '',
                     email: '',
                     message: ''
-                }
+                },
+                waiting: false
             }
         },
         computed: {
@@ -99,9 +103,15 @@
             },
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
-            }
+            },
+            
         },
         methods: {
+            wait () {
+                setTimeout(() => {
+                    this.waiting = true
+                }, 2000)
+            },
             async sendRequest () {
                 this.$store.commit('setLoading', true)
                 await this.$validator.validateAll()
@@ -113,7 +123,7 @@
                             user_id: this.resume.user_id,
                             firstname: this.resume.personal_data ? this.resume.personal_data.firstname : '',
                             lastname: this.resume.personal_data ? this.resume.personal_data.lastname : '',
-                            email: this.resume.personal_data ? this.resume.personal_data.email : '',
+                            email: this.resume.personal_data ? this.resume.personal_data.email : ''
                         },
                         user: {
                             id: this.loadedUser.id,
@@ -124,6 +134,7 @@
                         }
                     }
                     try {
+                        this.wait()
                         await axios.post('/create-resume-authorization', { authorization })
                         this.$store.commit('setLoading', false)
                         this.$emit('closeModal')
@@ -149,5 +160,7 @@
 </script>
 
 <style scoped>
-
+    .primaryColor {
+        color: var(--v-primary-base);
+    }
 </style>

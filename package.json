@@ -31,6 +31,7 @@
     "multer": "^1.4.1",
     "noty": "^3.2.0-beta",
     "nuxt": "^2.0.0",
+    "nuxt-client-init-module": "^0.1.4",
     "nuxt-fontawesome": "^0.4.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
