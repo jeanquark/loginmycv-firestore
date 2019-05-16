@@ -8,7 +8,7 @@ module.exports = admin.initializeApp({
 });
 
 
-// UPDATED CODE FOR SEEDS:
+// // UPDATED CODE FOR SEEDS:
 // const admin = require("firebase-admin");
 // const firestoreService = require('firestore-export-import');
 // const serviceAccount = require("../serviceAccountKey.js");
@@ -21,10 +21,10 @@ module.exports = admin.initializeApp({
 
 // // Start exporting your data
 // firestoreService
-//  	.backups(['resumes_long', 'resumes_short', 'authorizations', 'users', 'templates', 'key_competences', 'countries', 'languages'])
+//  	.backups(['app_parameters', 'authorizations', 'countries', 'key_competences', 'languages', 'resumes_long', 'resumes_short', 'templates', 'users'])
 //   	.then(data => {
 //   		let jsonData = JSON.stringify(data);
-//   		fs.writeFileSync('database/seeds.json', jsonData);  
+//   		fs.writeFileSync('database/seeds2.json', jsonData);  
 //   	})
 
 // // Seed database

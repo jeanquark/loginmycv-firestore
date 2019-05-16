@@ -1,5 +1,6 @@
 require('dotenv').config()
 // const webpack = require('webpack')
+// For database seeds, see services/firebase-admin-init.js file
 
 module.exports = {
     /*
