@@ -13,6 +13,7 @@ module.exports = app.use(async function (req, res, next) {
         let newResume = JSON.parse(req.body.data);
         newResume._created_at = moment().unix();
         newResume._updated_at = moment().unix();
+        newResume.parameters = {};
         console.log('newResume: ', newResume);
         console.log('app-key: ', req.get('app-key'))
 
