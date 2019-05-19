@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 30px;" v-if="userResume">
+    <div class="pa-4" v-if="userResume">
         <div>
             resumeSlug: {{ this.resumeSlug }}<br /><br />
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
@@ -209,7 +209,7 @@
                             </v-flex> -->
 
                             <v-flex xs12 sm4 class="px-3">
-                                <v-select
+                                <v-autocomplete
                                     label="Country of residence*"
                                     :items="loadedCountries"
                                     item-text="name"
@@ -217,7 +217,9 @@
                                     small-chips
                                     :deletable-chips="true"
                                     v-model="userResume.personal_data.country"
-                                ><font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" /></v-select>
+                                >
+                                    <font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
@@ -256,36 +258,29 @@
                                     </v-date-picker>
                                 </v-dialog>
                             </v-flex>
+                            <!-- userResume.languages: {{ userResume.languages }}<br /> -->
+
                         </v-layout>
 
                         <v-layout>
                             <v-flex xs12 sm4 class="px-3">
-                                <v-select
+                                <v-autocomplete
                                     label="Nationality-ies*"
                                     :items="loadedCountries"
                                     item-text="name"
                                     multiple
                                     chips
                                     small-chips
+                                    hint="Order matters"
+                                    persistent-hint
                                     :deletable-chips="true"
                                     v-model="userResume.personal_data.nationalities"
-                                ><font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" /></v-select>
+                                >
+                                    <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
                             </v-flex>
 
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-select
-                                    label="Language(s)*"
-                                    :items="loadedLanguages"
-                                    item-text="name"
-                                    multiple
-                                    chips
-                                    small-chips
-                                    :deletable-chips="true"
-                                    v-model="userResume.languages"
-                                ><font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" /></v-select>
-                            </v-flex>
-
-                            <v-flex xs12 sm4 class="px-3">
+                            <!-- <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     label="Key competences"
                                     :items="loadedCompetences"
@@ -296,7 +291,60 @@
                                     small-chips
                                     :deletable-chips="true"
                                     v-model="userResume.key_competences"
-                                ><font-awesome-icon :icon="['fas', 'list-ul']" slot="prepend" style="margin-top: 4px;" /></v-select>
+                                ><font-awesome-icon :icon="['fas', 'star']" slot="prepend" style="margin-top: 4px;" /></v-select>
+                            </v-flex> -->
+
+                            <v-flex xs8 sm5 class="px-3">
+                                <!-- item-value="name" -->
+                                <v-autocomplete
+                                    label="Language(s)*"
+                                    :items="loadedLanguages"
+                                    item-text="name"
+                                    item-value="name"
+                                    :return-object="true"
+                                    multiple
+                                    chips
+                                    small-chips
+                                    hint="Click checkbox to display levels"
+                                    persistent-hint
+                                    :deletable-chips="true"
+                                    color="secondary"
+                                    v-model="userResume.languages"
+                                >
+                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
+                            </v-flex>
+
+                            <v-flex xs4 sm3 class="px-3">
+                                <v-checkbox label="Display language level" color="secondary" v-model="userResume.parameters.show_language_level"></v-checkbox>
+                                <!-- <v-checkbox label="Display info" color="secondary" v-model="userResume.parameters.show_language_level"></v-checkbox> -->
+                            </v-flex>
+                        </v-layout>
+
+                        <v-layout row wrap v-if="userResume.parameters.show_language_level">
+                            <v-flex xs4 v-for="(language, index) in userResume.languages" :key="index" class="px-3">
+                                <!-- language: {{ language }}<br /> -->
+                                <v-layout class="my-0 pl-3">
+                                    <v-flex class="text-xs-left">
+                                        <span>{{ language.name }}</span>
+                                    </v-flex>
+                                    <v-flex class="text-xs-right">
+                                        <span>{{ language.value }}%</span>
+                                    </v-flex>
+                                </v-layout>
+                                <v-slider
+                                    v-model="language.value"
+                                    label=""
+                                    min="0"
+                                    max="100"
+                                    step="10"
+                                    color="secondary"
+                                    class="mt-0 pl-3"
+                                ></v-slider>
+                                <v-text-field
+                                    :label="`Info ${language.name}`"
+                                    v-model="language.info"
+                                ><font-awesome-icon :icon="['fas', 'info']" slot="prepend" class="mt-1" /></v-text-field>
                             </v-flex>
                         </v-layout>
 
@@ -348,8 +396,8 @@
 
         <v-layout row wrap pa-2 class="">
             <v-flex xs12 class="">
-                <v-card :elevation="12" color="red lighten-2" class="white--text" style="border: 1px solid red;">
-                    <v-card-title class="justify-center" style="">
+                <v-card :elevation="12" class="white--text def" style="">
+                    <v-card-title class="error lighten-1 justify-center">
                         <h2 class="headline mb-0">Privacy & Security</h2>
                     </v-card-title>
 
@@ -665,4 +713,7 @@
         border: 1px solid var(--v-secondary-base);
         border-radius: 10px;
     } */
+    .def {
+        border: 3px solid var(--v-error-lighten1)
+    }
 </style>

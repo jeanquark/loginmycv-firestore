@@ -141,7 +141,7 @@
 								<div class="headline text-xs-center">Your online CV for free</div>
 							</v-card-title>
 							<v-card-text>
-								Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and in not time your resume will be accessible online at the address of your choice.
+								Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in not time your resume will be accessible online at the endpoint of your choice.
 							</v-card-text>
 						</v-card>
 					</v-flex>
@@ -154,7 +154,7 @@
 								<div class="headline text-xs-center">Private & Secured data</div>
 							</v-card-title>
 							<v-card-text>
-								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if your decide to quit, your information will be completely wiped out from our database.
+								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you were to decide to quit, your information will be completely wiped out from our database.
 							</v-card-text>
 						</v-card>
 					</v-flex>
@@ -167,7 +167,7 @@
 								<div class="headline text-xs-center">Let recruiters find you</div>
 							</v-card-title>
 							<v-card-text>
-								An excerpt of your resume can be made visible on the frontpage for potential rescruiters to reach out to you or request a full access to your resume. You are informed of the number of people who clicked on your resume.
+								An excerpt of your resume can be made visible on the frontpage for potential rescruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
 							</v-card-text>
 						</v-card>
 					</v-flex>
@@ -398,25 +398,25 @@
 		data () {
 			return {
 				loading: false,
-				resume: {
-					firstname: 'Jean-Marc',
-					lastname: 'Kleger',
-					email: 'jm.kleger@gmail.com',
-					job_title: 'Web developer',
-					job_description: 'Develops and deploy websites & web apps',
-					education: [
-						{
-							title: 'Master of Science in Economics',
-							school: 'University of Bern',
-							location: 'Bern'
-						},
-						{
-							title: 'Bachelor of Science in Economics',
-							school: 'University of Genev',
-							location: 'Geneva'
-						}
-					]
-				},
+				// resume: {
+				// 	firstname: 'Jean-Marc',
+				// 	lastname: 'Kleger',
+				// 	email: 'jm.kleger@gmail.com',
+				// 	job_title: 'Web developer',
+				// 	job_description: 'Develops and deploy websites & web apps',
+				// 	education: [
+				// 		{
+				// 			title: 'Master of Science in Economics',
+				// 			school: 'University of Bern',
+				// 			location: 'Bern'
+				// 		},
+				// 		{
+				// 			title: 'Bachelor of Science in Economics',
+				// 			school: 'University of Genev',
+				// 			location: 'Geneva'
+				// 		}
+				// 	]
+				// },
 				links: [
 			        'Home',
 			        'About Us',
@@ -429,25 +429,25 @@
 			    loginModal: false,
     			registerModal: false,
 				requestAuthorizationModal: false,
-				items: ['foo', 'bar', 'fizz', 'buzz'],
+				// items: ['foo', 'bar', 'fizz', 'buzz'],
 				password: '',
-				myArray2: [
-					{
-						id: 1,
-						title: 'ABC',
-						text: 'Some random text'
-					},
-					{
-						id: 2,
-						title: 'DEF',
-						text: 'Some random text'
-					},
-					{
-						id: 3,
-						title: 'GHI',
-						text: 'Some random text'
-					}
-				],
+				// myArray2: [
+				// 	{
+				// 		id: 1,
+				// 		title: 'ABC',
+				// 		text: 'Some random text'
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		title: 'DEF',
+				// 		text: 'Some random text'
+				// 	},
+				// 	{
+				// 		id: 3,
+				// 		title: 'GHI',
+				// 		text: 'Some random text'
+				// 	}
+				// ],
 				myArray3: this.myArray
 			}
 		},

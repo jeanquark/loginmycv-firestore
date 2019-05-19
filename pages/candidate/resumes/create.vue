@@ -6,13 +6,34 @@
             </v-flex>
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
-            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-            loadedNewResume: {{ loadedNewResume }}<br /><br />
+            loadedUserResumes: {{ loadedUserResumes }}<br /><br />
+            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
-            loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br />
+            <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
             errors: {{ errors }}<br /><br />
         </v-layout>
+
+        <v-layout row wrap align-center>
+            <v-flex xs6 sm3>
+                Import data from resume:
+            </v-flex>
+            <v-flex xs6 sm4>
+                <!-- importResume: {{ importResume }}<br /> -->
+                <v-select
+                    label="Select resume"
+                    :items="loadedUserResumes"
+                    item-text="id"
+                    :return-object="true"
+                    color="secondary"
+                    v-model="importResume"
+                ></v-select>
+            </v-flex>
+            <v-flex xs6 sm2>
+                <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
+            </v-flex>
+        </v-layout>
+
         <v-layout row>
             <v-flex xs12>
 
@@ -33,7 +54,7 @@
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step :rules="[stepWorkExperienceValidate]" step="4" editable>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
@@ -51,43 +72,43 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <v-card style="margin-bottom: 30px;">
-                                <template-component :edit="true" />
+                            <v-card class="mb-5">
+                                <template-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <personal-data-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <education-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="4">
-                            <v-card style="margin-bottom: 30px;">
-                                Work experience
+                            <v-card class="mb-5">
+                                <work-experience-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="5">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <skills-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="6">
-                            <v-card style="margin-bottom: 30px;">
-                                <file-uploads-component :picture="this.loadedNewResume.personal_data.picture" />
+                            <v-card class="mb-5">
+                                <file-uploads-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="7">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 Other
                             </v-card>
                         </v-stepper-content>
@@ -190,6 +211,7 @@
 	import templateComponent from '~/components/resume/TemplateComponent'
     import personalDataComponent from '~/components/resume/PersonalDataComponent'
     import educationComponent from '~/components/resume/EducationComponent'
+    import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
     import skillsComponent from '~/components/resume/SkillsComponent'
     import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import axios from 'axios'
@@ -198,7 +220,7 @@
     import moment from 'moment'
 	export default {
         inject: ['$validator'], // inject parent validator
-        components: { templateComponent, personalDataComponent, educationComponent, skillsComponent, fileUploadsComponent },
+        components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         async created () {
             // console.log('System: ', Navigator.appversion)
@@ -223,24 +245,28 @@
                 loadingCreateResume: false,
                 loadingUploadFiles: false,
                 uploadedFiles: [],
-                creatingResumeDialog: false
+                creatingResumeDialog: false,
+                importResume: {}
 			}
 		},
 		computed: {
             loading () {
                 return this.$store.getters['loading']
             },
-            error () {
-                return this.$store.getters['error']
-            },
+            // error () {
+            //     return this.$store.getters['error']
+            // },
             errors () {
                 return this.$store.getters['errors']
             },
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
             },
-            loadedUserResume () {
-                return this.$store.getters['resumes/loadedUserResume']
+            // loadedUserResume () {
+            //     return this.$store.getters['resumes/loadedUserResume']
+            // },
+            loadedUserResumes () {
+                return this.$store.getters['resumes/loadedUserResumes'] 
             },
             loadedNewResume () {
             	return this.$store.getters['resumes/loadedNewResume']
@@ -262,29 +288,17 @@
                 return true
             },
             stepEducationValidate () {
-                // if (this.error && (
-                //     this.error.education_1_name || 
-                //     this.error.education_1_description || 
-                //     this.error.education_1_location ||
-                //     this.error.education_2_name || 
-                //     this.error.education_2_description || 
-                //     this.error.education_2_location ||
-                //     this.error.education_3_name || 
-                //     this.error.education_3_description || 
-                //     this.error.education_3_location ||
-                //     this.error.education_4_name || 
-                //     this.error.education_4_description || 
-                //     this.error.education_4_location ||
-                //     this.error.education_5_name || 
-                //     this.error.education_5_description || 
-                //     this.error.education_5_location)
-                // ){
-                //     return false
-                // }
+                return true
+            },
+            stepWorkExperienceValidate () {
                 return true
             },
             stepSkillsValidate () {
                 return true
+            },
+            importDataFromResume () {
+                console.log('importDataFromResume')
+                this.$store.commit('resumes/setNewResume', this.importResume)
             },
 			onInput (val) {
                 this.steps = parseInt(val)
@@ -294,17 +308,7 @@
                 console.log('this.loadedNewResume: ', this.loadedNewResume)
                 this.creatingResumeDialog = true
                 this.loadingCreateResume = true
-                // const that = this
-                // setTimeout(() => {
-                //     that.loadingCreateResume = false
-                //     that.loadingUploadFiles = true
-                // }, 3000)
-                // setTimeout(() => {
-                //     that.loadingUploadFiles = false
-                //     that.$router.push('/candidate/resumes')
-                // }, 5000)
-                // return
-                // Perform vee-validate check
+
                 await this.$validator.validateAll()
                 if (this.errors && this.errors.items && this.errors.items.length > 0) {
                     new Noty({
@@ -502,6 +506,6 @@
 
 <style scoped>
 	.active {
-        border: 2px solid #FFC107;
+        border: 2px solid var(--v-secondary-base);
     }
 </style>

@@ -1,5 +1,5 @@
 export const strict = false
-import { firestore, auth } from "~/plugins/firebase-client-init.js"
+import { firestore } from "~/plugins/firebase-client-init.js"
 
 export const state = () => ({
 	templates: [],

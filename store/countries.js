@@ -13,7 +13,7 @@ export const mutations = {
 
 export const actions = {
 	async fetchCountries ({ commit }, payload) {
-		const snapshot = await firestore.collection('countries').get();
+		const snapshot = await firestore.collection('countries').orderBy('name').get();
 
 		const countriesArray = []
 		snapshot.forEach(country => {

@@ -1,5 +1,6 @@
 <template>
-    <div style="padding: 30px;" v-if="userResume">
+    <!-- <div style="padding: 30px;"> -->
+    <div class="pa-4">
         <p>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
@@ -29,7 +30,7 @@
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">Choose your template</h2>
+                        <h2 class="headline mb-0">Choose a template</h2>
                     </v-card-title>
 
                     <v-card-text>
@@ -47,40 +48,49 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-
         </v-layout>
 
-        <v-layout row wrap pa-2 class="">
-            <v-flex xs12 class="">
+        <v-layout row wrap pa-2>
+            <v-flex xs12>
+                <v-card :elevation="12" v-if="loadedTemplate">
+                    {{ userResume.template_id }}<br />
+                    loadedTemplates: {{ loadedTemplates }}<br />
+                    loadedTemplate: {{ loadedTemplate }}<br />
+                    userResume: {{ userResume }}<br />
+                    <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
+                    <p class="text-xs-center">{{ loadedTemplate.description }}</p><br />
+                    <v-img :src="`/images/templates/${loadedTemplate.image}`" width="100%" />
+                </v-card>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row wrap pa-2>
+            <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
                         <h2 class="headline mb-0">Pick up your colors</h2>
                     </v-card-title>
 
                     <v-card-text>
-                        <v-layout align-center>
-                            <v-flex xs6 sm3 md2>
-                                Primary color:
+                        <v-layout row align-center>
+                            <v-flex xs6 sm4 class="text-xs-center">
+                                Primary color<br />
+                                <vue-colorpicker v-model="userResume.colors.primaryColor" v-if="userResume"></vue-colorpicker>
                             </v-flex>
-                            <v-flex xs6 sm3 md2>
-                                <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
-                            </v-flex>
-                            <v-flex xs6 sm3 md2>
-                                Secondary color:
-                            </v-flex>
-                            <v-flex xs6 sm3 md2>
+                            <v-flex xs6 sm4 class="text-xs-center">
+                                Secondary color<br />
                                 <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                             </v-flex>
-                            <v-flex xs6 sm3 md2>
-                                Background color:
+                            <v-flex xs6 sm4 class="text-xs-center">
+                                Tertiary color<br />
+                                <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                             </v-flex>
-                            <v-flex xs6 sm3 md2>
+                            <v-flex xs6 sm4 class="text-xs-center">
+                                Background color<br />
                                 <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                             </v-flex>
-                            <v-flex xs6 sm3 md2>
-                                Text color:
-                            </v-flex>
-                            <v-flex xs6 sm3 md2>
+                            <v-flex xs6 sm4 class="text-xs-center">
+                                Text color<br />
                                 <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                             </v-flex>
                         </v-layout>
@@ -95,54 +105,45 @@
     import axios from 'axios'
     import { VueColorpicker } from 'vue-pop-colorpicker'
     export default {
-        props: ['edit'],
+        // props: ['edit'],
         components: { VueColorpicker },
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
             await this.$store.dispatch('templates/fetchTemplates')
-            // const userResume = await this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
 
         },
         data () {
             return {
                 resumeSlug: '',
                 model: '',
-                template: '',
-                // errors: [],
-                // activeTemplate: this.loadedUserResume ? this.loadedUserResume.template_id : null
-                // activeTemplate: this.userResume ? this.userResume.template_id : null
-                // activeTemplate: 'ZjzvgkAlZq9CPcXToqDK'
+                template: ''
             }
         },
         computed: {
             loadedTemplates () {
                 return this.$store.getters['templates/loadedTemplates']
             },
+            loadedTemplate () {
+                return this.loadedTemplates.find(template => template.id === this.userResume.template_id)
+            },
             userResume () {
-                if (this.edit) {
+                if (this.resumeSlug) {
                     return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
                 } else {
                     // return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
                     return this.$store.getters['resumes/loadedNewResume']
                 }
-            },
-            // loadedNewResume () {
-            //     return this.$store.getters['resumes/loadedNewResume']
-            // }
+            }
         },
         methods: {
             selectTemplate (template) {
-                console.log('template.id', template.id)
-
-                // this.activeTemplate = template.id
-                // this.$store.commit('resumes/setNewResume', { template_id: template.id })
-                // this.loadedNewResume['template_id'] = template.id
-                // this.loadedNewResume.template_id = template.id
+                console.log('template', template)
+                if (!this.resumeSlug) {
+                    this.userResume.colors = template.colors
+                }
                 this.userResume.template_id = template.id
-
-                // this.$store.commit('resumes/setEmptyResume')
             }
         }
     }
@@ -150,6 +151,6 @@
 
 <style scoped>
     .active {
-        border: 4px solid #FFC107;
+        border: 4px solid var(--v-secondary-base);
     }
 </style>

@@ -107,7 +107,6 @@
 	import moment from 'moment'
 	import Noty from 'noty'
     export default {
-		props: ['picture'],
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)

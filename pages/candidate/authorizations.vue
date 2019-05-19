@@ -50,7 +50,7 @@
 								</td>
 								<!-- <td>{{ parseInt(props.item._created_at) | moment('from') }}</td>-->
 								<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-								<td>
+								<!-- <td>
 									<v-layout class="justify-center">
 										<v-avatar size="34" class="mr-2 avatar-edit">
 											<v-icon
@@ -69,15 +69,21 @@
 											</v-icon>
 										</v-avatar>
 									</v-layout>
-								</td>
-								<!-- <td class="">
-									<v-layout class="justify-center">
-										<v-btn color="success" small @click="updateAuthorization(props.item, 'accorded')" v-if="props.item.status !== 'accorded'">Grant access</v-btn>
-										<v-btn color="primary" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'update_authorizations')">Update authorization</v-btn>
-										<v-btn color="warning" small v-if="props.item.status === 'access_granted'" @click="updateAuthorization(props.item, 'revoke_access')">Revoke access</v-btn>
-										<v-btn color="error" small v-if="props.item.status === 'access_revoked'" @click="updateAuthorization(props.item, 'remove_authorization')">Remove</v-btn>
-									</v-layout>
 								</td> -->
+								<td class="fill-height layout px-0">
+									<v-layout class="justify-center">
+										<v-btn flat icon nuxt :to="`/candidate/resumes/${props.item.slug}`">
+											<v-icon small color="success" @click="openModal('edit', 'userGivenAuthorizations', props.index)">
+												edit
+											</v-icon>
+										</v-btn>
+										<v-btn flat icon>
+											<v-icon small color="error" @click="openModal('delete', 'userGivenAuthorizations', props.index)">
+												delete
+											</v-icon>
+										</v-btn>
+									</v-layout>
+								</td>
 							</tr>
 					    </template>
 					</v-data-table>

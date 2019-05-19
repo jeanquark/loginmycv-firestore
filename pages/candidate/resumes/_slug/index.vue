@@ -42,43 +42,43 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <template-component :edit="true" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <personal-data-component v-if="step == 2" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <education-component v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="4">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <work-experience-component v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="5">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <skills-component v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="6">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <file-uploads-component v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content step="7">
-                            <v-card style="margin-bottom: 30px;">
+                            <v-card class="mb-5">
                                 <h2>Other</h2>
                             </v-card>
                         </v-stepper-content>

@@ -94,7 +94,7 @@
 
 								</v-flex>
 								<v-flex xs12 sm4 v-if="profilePicture">
-									<v-img :src="profilePicture.downloadUrl" lazy-src="/images/loader.gif" />
+									<v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" />
 								</v-flex>
 							</v-layout>
 			    		</v-card-text>
@@ -240,9 +240,9 @@
 		props: ['resume'],
 		mounted () {
 			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : '#7A528F'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : '#fff'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : '#FFF'
 			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : '#EFEFEF'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : '#fff'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : '#FFF'
 			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : '#000'
 
 			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')

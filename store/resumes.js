@@ -36,10 +36,13 @@ export const mutations = {
 			work_experience: [],
 			skills: [],
 			uploads: [],
+			colors: {},
+			parameters: {},
 			others: []
 		}
 	},
 	setNewResume (state, payload) {
+		// console.log('setNewResume: ', payload)
 		state.newResume = payload
 	},
 	// setResumeUploads (state, payload) {

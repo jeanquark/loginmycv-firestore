@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
+    <div class="text-xs-center pa-4" style="margin-top: 0px;" v-if="userResume">
         <p>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
