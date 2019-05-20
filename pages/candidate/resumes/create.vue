@@ -12,11 +12,14 @@
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
             errors: {{ errors }}<br /><br />
+            loadedUser: {{ loadedUser }}<br /><br />
         </v-layout>
 
-        <v-layout row wrap align-center>
-            <v-flex xs6 sm3>
-                Import data from resume:
+        <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
+            <v-flex xs12 sm4>
+                <div class="text-xs-left">
+                    Import data from existing resume:
+                </div>
             </v-flex>
             <v-flex xs6 sm4>
                 <!-- importResume: {{ importResume }}<br /> -->
@@ -25,12 +28,14 @@
                     :items="loadedUserResumes"
                     item-text="id"
                     :return-object="true"
+                    :single-line="false"
                     color="secondary"
                     v-model="importResume"
                 ></v-select>
             </v-flex>
-            <v-flex xs6 sm2>
+            <v-flex xs6 sm4>
                 <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
+            <!-- </div> -->
             </v-flex>
         </v-layout>
 
@@ -131,7 +136,7 @@
                     <v-layout justify-center>
                         <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="saveResume">Save</v-btn>
                     </v-layout>
-                    <v-layout justify-center>
+                    <!--<v-layout justify-center>
                         <v-alert
                             :value="loadingCreateResume"
                             color="info"
@@ -164,7 +169,7 @@
                                 <a :href="uploadedFile.downloadUrl" target="_blank">{{ uploadedFile.name }}</a><br /><br />
                             </div>
                         </v-alert>
-                    </v-layout>
+                    </v-layout>-->
                 </v-stepper>
             </v-flex>
         </v-layout>
@@ -176,7 +181,7 @@
         >
             <v-card light>
                 <v-card-title
-                    class="headline grey lighten-2 justify-center"
+                    class="headline primary red--text justify-center"
                     primary-title
                 >
                     Creating resume...
@@ -304,39 +309,61 @@
                 this.steps = parseInt(val)
             },
             async saveResume () {
-                console.log('saveResume')
-                console.log('this.loadedNewResume: ', this.loadedNewResume)
-                this.creatingResumeDialog = true
-                this.loadingCreateResume = true
+                try {
+                    console.log('saveResume')
+                    console.log('this.loadedNewResume: ', this.loadedNewResume)
 
-                await this.$validator.validateAll()
-                if (this.errors && this.errors.items && this.errors.items.length > 0) {
-                    new Noty({
-                        type: 'error',
-                        text: 'Please check validation errors.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
-                } else {
-                    console.log('OK proceed to saveResume')
-                    this.loadedNewResume.user_id = this.loadedUser.id
+                    // const userExistingUploads = this.$store.getters['resumes/loadedUserResumes']
+                    // const userExistingUploads = [{ slug: 'jeanquark', uploads: [{ name: 'abc', size_in_bytes: 100}, {name: 'def', size_in_bytes: 200}]}, { slug: 'jeanquark2', uploads: [{ name: 'ghi', size_in_bytes: 300}, { name: 'jkl', size_in_bytes: 400}]}]
+                    // console.log('userExistingUploads: ', userExistingUploads)
+                    // let sum = 0
+                    // userExistingUploads.forEach(resume => {
+                    //     resume.uploads.forEach(upload => {
+                    //         sum += upload.size_in_bytes
+                    //     })
+                    // })
+                    // console.log('sum: ', sum)
+                    // return
 
-                    try {
-                        await this.$store.dispatch('resumes/storeNewResume', this.loadedNewResume)
-                        this.loadingCreateResume = false
-                        this.$router.push('/candidate/resumes')
-                    } catch (error) {
-                        this.loadingCreateResume = false
+                    this.creatingResumeDialog = true
+                    this.loadingCreateResume = true
+                    await this.$validator.validateAll()
+                    if (this.errors && this.errors.items && this.errors.items.length > 0) {
                         this.creatingResumeDialog = false
-                        console.log('error2: ', error)
+                        this.loadingCreateResume = false
                         new Noty({
                             type: 'error',
-                            text: 'Your resume could not be saved',
+                            text: 'Please check validation errors.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                    } else {
+                        // console.log('OK proceed to saveResume')
+                        // this.loadedNewResume.user_id = this.loadedUser.id
+                        await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
+                        this.loadingCreateResume = false
+                        this.$router.push('/candidate/resumes')
+                        new Noty({
+                            type: 'success',
+                            text: 'Your resume was created successfully.',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                    }
+                } catch (error) {
+                    this.loadingCreateResume = false
+                    this.creatingResumeDialog = false
+                    if (error.response && error.response.data && error.response.data.error) {
+                        new Noty({
+                            type: 'error',
+                            text: 'Your resume could not be updated.',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
 
-                        Object.entries(error).forEach(([key, value]) => {
+                        Object.entries(error.response.data.error).forEach(([key, value]) => {
+                            console.log('key: ', key)
+                            console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
 
                             this.$validator.errors.add({
@@ -351,8 +378,15 @@
                                 theme: 'metroui'
                             }).show()
                         })
+                    } else {
+                        new Noty({
+                            type: 'warning',
+                            text: error,
+                            timeout: 8000,
+                            theme: 'metroui'
+                        }).show()
                     }
-                    return
+                }
 
 
 
@@ -498,7 +532,6 @@
                     //         }).show()
                     //     })
                     // }
-                }
             }
 		}
 	}

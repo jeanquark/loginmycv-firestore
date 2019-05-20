@@ -54,8 +54,8 @@
             <v-flex xs12>
                 <v-card :elevation="12" v-if="loadedTemplate">
                     {{ userResume.template_id }}<br />
-                    loadedTemplates: {{ loadedTemplates }}<br />
-                    loadedTemplate: {{ loadedTemplate }}<br />
+                    <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
+                    <!-- loadedTemplate: {{ loadedTemplate }}<br /> -->
                     userResume: {{ userResume }}<br />
                     <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
                     <p class="text-xs-center">{{ loadedTemplate.description }}</p><br />
@@ -68,29 +68,29 @@
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">Pick up your colors</h2>
+                        <h2 class="headline mb-0">Pick up colors</h2>
                     </v-card-title>
 
                     <v-card-text>
                         <v-layout row align-center>
                             <v-flex xs6 sm4 class="text-xs-center">
-                                Primary color<br />
+                                Primary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.primaryColor" v-if="userResume"></vue-colorpicker>
                             </v-flex>
                             <v-flex xs6 sm4 class="text-xs-center">
-                                Secondary color<br />
+                                Secondary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                             </v-flex>
                             <v-flex xs6 sm4 class="text-xs-center">
-                                Tertiary color<br />
+                                Tertiary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                             </v-flex>
                             <v-flex xs6 sm4 class="text-xs-center">
-                                Background color<br />
+                                Background color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                             </v-flex>
                             <v-flex xs6 sm4 class="text-xs-center">
-                                Text color<br />
+                                Text color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                             </v-flex>
                         </v-layout>

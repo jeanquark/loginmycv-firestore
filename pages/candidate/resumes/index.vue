@@ -28,8 +28,8 @@
 											edit
 										</v-icon>
 									</v-btn>
-									<v-btn flat icon>
-										<v-icon small color="error" @click="deleteItem(props.item)">
+									<v-btn flat icon @click="requestConfirmation(props.item.id)">
+										<v-icon small color="error">
 											delete
 										</v-icon>
 									</v-btn>
@@ -56,6 +56,29 @@
         <v-flex xs10 offset-xs1 class="text-xs-center">
             <!-- <create-resume-component></create-resume-component> -->
         </v-flex>
+
+        <v-snackbar
+	      	v-model="snackbar"
+			:timeout="0"
+	      	:bottom="true"
+	      	:auto-height="true"
+	    >
+	      	<span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete this resume?</span>
+	      	<v-btn
+	        	color="pink"
+	        	flat
+	        	@click="deleteResume"
+	      	>
+	        	<span style="font-size: 1.3em;">Yes</span>
+	      	</v-btn>
+	      	<v-btn
+	        	color="secondary"
+	        	flat
+	        	@click="snackbar = false"
+	      	>
+	        	<span style="font-size: 1.3em;">No</span>
+	      	</v-btn>
+	    </v-snackbar>
     </v-layout>
 </template>
 
@@ -63,6 +86,7 @@
 	// import CreateResumeComponent from '~/components/resume/CreateResumeComponent'
 	// import EditResumeComponent from '~/components/resume/EditResumeComponent'
 	import { auth } from '~/plugins/firebase-client-init'
+	import Noty from 'noty'
 	export default {
 		layout: 'layoutBack',
 		middleware: [],
@@ -83,7 +107,10 @@
 		          	{ text: 'Created at', value: 'created_at' },
 		          	{ text: 'Last update', value: 'updated_at' },
 		          	{ text: 'Actions', align: 'center', sortable: false }
-		        ]
+		        ],
+		        snackbar: false,
+		        confirm: false,
+		        resumeId: ''
 			}
 		},
 		computed: {
@@ -97,6 +124,34 @@
 		methods: {
 			editResume () {
 				this.$router.replace('/candidate/resumes/edit')
+			},
+			requestConfirmation (resumeId) {
+				this.resumeId = resumeId
+				this.snackbar = true
+			},
+			async deleteResume () {
+				try {
+					const resumeId = this.resumeId
+					this.snackbar = false
+
+					console.log('deleteResume: ', resumeId)
+					await this.$store.dispatch('resumes/deleteResume', resumeId)
+					this.resumeId = ''
+					new Noty({
+						type: 'success',
+						text: 'Successfully deleted resume',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				} catch (error) {
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error occured and your resume could not be deleted.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
+
 			}
 		}
 	}

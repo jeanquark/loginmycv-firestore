@@ -326,8 +326,7 @@
                             timeout: 8000,
                             theme: 'metroui'
                         }).show()
-                    }
-                    
+                    }    
                 }
             },
             async updateResume2 () {

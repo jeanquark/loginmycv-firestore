@@ -11,7 +11,7 @@ module.exports = {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+            { hid: 'description', name: 'description', content: 'Your online CV provider' }
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -93,11 +93,11 @@ module.exports = {
         // },
         {
             path: '/check-user-authorization', // POST request with auth user id & candidate username as body
-            handler: '~/serverMiddleware/checkUserAuthorization'
+            handler: '~/serverMiddleware/authorizations/checkUserAuthorization'
         },
         {
             path: '/fetch-short-resumes',
-            handler: '~/serverMiddleware/fetchShortResumes'
+            handler: '~/serverMiddleware/resumes/fetchShortResumes'
         },
         // {
         //     path: '/create-resume-authorization', // POST request
@@ -109,11 +109,11 @@ module.exports = {
         // }
         {
             path: '/create-new-resume', // POST request
-            handler: '~/serverMiddleware/createNewResume'
+            handler: '~/serverMiddleware/resumes/createNewResume'
         },
         {
             path: '/update-resume', // POST request
-            handler: '~/serverMiddleware/updateResume'
+            handler: '~/serverMiddleware/resumes/updateResume'
         },
         // {
         //     path: '/delete-resume-upload', // POST request

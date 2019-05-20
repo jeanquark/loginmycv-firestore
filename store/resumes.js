@@ -158,9 +158,80 @@ export const actions = {
 	// 	})
 	// 	commit('setResumeUploads', resumeUploads)
 	// },
-	async storeNewResume ({ commit, rootState }, payload) {
+	async storeResume ({ commit, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
+			commit('setLoadingFiles', true, { root: true })
+
+			// 1) Get all user existing uploads
+			const userExistingUploads = rootGetters['resumes/loadedUserResumes']
+            console.log('userExistingUploads: ', userExistingUploads)
+            let totalUploadSize = 0
+            userExistingUploads.forEach(resume => {
+                resume.uploads.forEach(upload => {
+                    totalUploadSize += parseInt(upload.size_in_bytes)
+                })
+            })
+
+			// 2) Get all new uploads file size
+			const filesToAdd = []
+			payload.uploads.forEach(upload => {
+				totalUploadSize += parseInt(upload.size_in_bytes)				
+				filesToAdd.push(upload)
+			})
+			console.log('totalUploadSize: ', totalUploadSize)
+
+			// 3) Check total uploads size is not greater than available space
+			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+			if (totalUploadSize > userTotalSpace) {
+				throw 'Files could not be uploaded because your do not have enough space.'
+			}
+			console.log('filesToAdd: ', filesToAdd)
+			console.log('totalUploadSize: ', totalUploadSize)
+			console.log('userTotalSpace: ', userTotalSpace)
+
+			// 4) Effectively upload files to storage
+			for (let file of filesToAdd) {
+				console.log('file: ', file)
+				if (file.file) {
+					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+					const downloadUrl = await uploadedFile.ref.getDownloadURL()
+					const newUpload = {
+						name: uploadedFile.metadata.name,
+						size_in_bytes: uploadedFile.metadata.size,
+						downloadUrl: downloadUrl,
+						title: file.title,
+						type: file.type,
+						_created_at: moment().unix(),
+						_updated_at: moment().unix()
+					}
+					console.log('newUpload: ', newUpload)
+					const index = payload.uploads.findIndex(upload => upload.name === file.name)
+					payload.uploads[index] = newUpload
+				}
+			}
+			console.log('payload2: ', payload)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', true, { root: true })
+
+			// 5) Store resume on the server
+			const updatedResume = await axios.post('/create-new-resume', payload, {
+				headers: {
+					'app-key': process.env.APP_KEY
+				}
+			})
+			commit('setLoadingResume', false, { root: true })
+		} catch (error) {
+			console.log('error2: ', error)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', false, { root: true })
+			throw error
+		}
+	},
+	async storeResume2 ({ commit, rootState }, payload) {
+		try {
+			console.log('payload: ', payload)
+			return
 
 			// 1) Send resume to server to save
 			// const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -309,7 +380,27 @@ export const actions = {
 			commit('setLoadingFiles', false, { root: true })
 			commit('setLoadingResume', false, { root: true })
 			throw error
-		}	
+		}
+	},
+	async deleteResume ({ commit }, payload) {
+		try {
+			console.log('payload: ', payload)
+
+			throw new Error()
+
+			// const batch = firestore.batch()
+
+			// const resume_long = db.collection('resumes_long').doc(payload)
+			// batch.delete(resume_long)
+
+			// const resume_short = db.collection('resumes_short').where('slug', '==', payload)
+			// batch.delete(resume_short)
+
+			// await batch.commit()
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
 	}
 }
 

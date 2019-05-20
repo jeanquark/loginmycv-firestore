@@ -84,7 +84,7 @@
                         <v-layout row wrap>
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
-                                    label="Firstname"
+                                    label="Firstname*"
                                     name="firstname"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('firstname') : null"
@@ -95,7 +95,7 @@
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
-                                    label="Lastname"
+                                    label="Lastname*"
                                     name="lastname"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('lastname') : null"
