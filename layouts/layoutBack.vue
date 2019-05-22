@@ -55,62 +55,52 @@
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                 <v-toolbar-title to="/">LoginMyCV</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <!-- <v-btn flat class="no-hover"> -->
-                    <!-- <v-switch v-model="dark" :label="dark ? 'Dark' : 'Light'" hide-details></v-switch> -->
-                <!-- </v-btn> -->
 
 
-            <v-menu
-                v-model="menu"
-                :close-on-content-click="false"
-                :nudge-width="200"
-                offset-x
-            >
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                        icon
-                        v-on="on"
-                    >
-                        <v-icon>more_vert</v-icon>
-                    </v-btn>
-                </template>
+                <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-width="200"
+                    offset-x
+                >
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            icon
+                            v-on="on"
+                        >
+                            <v-icon>more_vert</v-icon>
+                        </v-btn>
+                    </template>
 
-                <v-card>
-                    <v-list>
-                        <v-list-tile avatar>
-                            <v-list-tile-avatar>
-                                <!-- <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John"> -->
-                                <img src="/images/resumes/jeanmarc.jpg" />
-                            </v-list-tile-avatar>
+                    <v-card>
+                        <v-list>
+                            <v-list-tile avatar>
+                                <v-list-tile-avatar>
+                                    <img src="/images/resumes/jeanmarc.jpg" />
+                                </v-list-tile-avatar>
 
-                            <v-list-tile-content v-if="loadedUser">
-                                <v-list-tile-title>{{ loadedUser.firstname }} {{ loadedUser.lastname }}</v-list-tile-title>
-                                <v-list-tile-sub-title>{{ loadedUser.city }}, {{ loadedUser.country }}</v-list-tile-sub-title>
-                            </v-list-tile-content>
+                                <v-list-tile-content v-if="loadedUser">
+                                    <v-list-tile-title>{{ loadedUser.firstname }} {{ loadedUser.lastname }}</v-list-tile-title>
+                                    <v-list-tile-sub-title>{{ loadedUser.city }}, {{ loadedUser.country }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
 
-                            <v-list-tile-action>
-                                <v-btn
-                                    :class="fav ? 'red--text' : ''"
-                                    icon
-                                    @click="fav = !fav"
-                                >
-                                    <v-icon>favorite</v-icon>
-                                </v-btn>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                    </v-list>
+                                <v-list-tile-action>
+                                    <v-icon color="red">favorite</v-icon>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                        </v-list>
 
-                    <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                    <v-list>
-                        <v-list-tile>
-                            <v-list-tile-action>
-                                <v-switch v-model="dark" :label="dark ? 'Dark' : 'Light'" hide-details></v-switch>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                    </v-list>
-                </v-card>
-            </v-menu>
+                        <v-list>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-switch v-model="dark" :label="dark ? 'Dark' : 'Light'" hide-details></v-switch>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+                </v-menu>
 
 
             </v-toolbar>

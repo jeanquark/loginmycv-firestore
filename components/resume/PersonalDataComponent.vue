@@ -405,23 +405,24 @@
                         <v-layout justify-center class="black--text">
                             <div class="justify-center">
                                 <v-radio-group v-model="userResume.visibility" row style="color: black;">
-                                    <v-radio label="Public resume" value="public" color="success"></v-radio>
-                                    <v-radio label="Semi-private resume" value="semi-private" color="primary"></v-radio>
-                                    <v-radio label="Private resume" value="private" color="warning"></v-radio>
+                                    <v-radio label="Public resume" value="public" color="secondary"></v-radio>
+                                    <v-radio label="Semi-private resume" value="semi-private" color="secondary"></v-radio>
+                                    <v-radio label="Private resume" value="private" color="secondary"></v-radio>
                                 </v-radio-group>
                             </div>
                         </v-layout>
                         <v-layout row wrap>
                             <v-alert
                                 value="public"
-                                type="success"
+                                color="secondary"
+                                icon="info"
                                 v-if="userResume.visibility === 'public'"
                                 >
                                 <span>An excerpt of your resume with full access to your public data appears on the frontpage (recommanded option).</span>
                             </v-alert>
                             <v-alert
                                 value="semi-private"
-                                color="primary"
+                                color="secondary"
                                 icon="info"
                                 v-if="userResume.visibility === 'semi-private'"
                                 >
@@ -429,7 +430,8 @@
                             </v-alert>
                             <v-alert
                                 value="private"
-                                type="warning"
+                                color="secondary"
+                                icon="info"
                                 v-if="userResume.visibility === 'private'"
                                 >
                                 <span>Your resume is hidden (visitors are not able to find you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>

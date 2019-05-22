@@ -130,7 +130,6 @@
                                 outline
                             >
                                 <div class="text-xs-center">
-                                    <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume. -->
                                     <v-progress-circular indeterminate color="primary" v-if="loadingFiles"></v-progress-circular> Uploading files...
                                     <v-progress-circular indeterminate color="secondary" v-if="loadingResume"></v-progress-circular> Updating resume...
                                 </div>

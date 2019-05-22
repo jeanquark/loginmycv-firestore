@@ -19,7 +19,7 @@
 			<!-- this.picture.size: {{ this.picture ? this.picture.size : null }}<br /><br /> -->
 			<!-- this.totalUploadSize: {{ this.totalUploadSize }}<br /><br /> -->
 			<!-- this.totalSize: {{ this.totalSize }}<br /><br /> -->
-			geUserFiles: {{ getUserFiles }}<br /><br />
+			geUserFiles.length: {{ getUserFiles.length }}<br /><br />
 			userAllocatedSpace: {{ userAllocatedSpace }}<br /><br />
 			totalUsedSpace: {{ totalUsedSpace }}<br /><br />
 			totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br />
@@ -42,10 +42,13 @@
 		<v-layout row wrap>
 			<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
+			<!-- <div > -->
 			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index" v-if="file.type === 'downloadable_file'">
+				<!-- <v-layout > -->
+				<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-if="file.type === 'downloadable_file'" > -->
 				<!-- <v-card class="ma-2" v-if="file.type === 'downloadable_file'"> -->
-				<v-card class="ma-2">
+				<v-card class="ma-2" >
 					<v-card-title primary-title class="justify-center">
 						<h3 class="headline mb-0">File #{{ getFileIndex(index) }}</h3>
 					</v-card-title>
@@ -82,6 +85,8 @@
 						<v-btn flat color="error" @click="removeUpload(index, file)">Remove</v-btn>
 					</v-card-actions>
 				</v-card>
+			<!-- </v-flex> -->
+		<!-- </v-layout> -->
 			</v-flex>
 			<!-- </div> -->
 				<!-- </v-layout> -->
@@ -151,9 +156,6 @@
 			loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
 			},
-			getUserFiles () {
-				return this.userResume.uploads.filter(upload => upload.type === 'downloadable_file')
-			},		
 			// totalSize () {
 			// 	if (this.userResume.uploads) {
 			// 		return this.userResume.uploads.reduce((accumulator, file) => {
@@ -256,14 +258,17 @@
 			// 	// console.log('sum: ', sum)
 			// 	this.totalUploadSize = sum
 			// },
+			getUserFiles () {
+				if (this.userResume.uploads) {
+					return this.userResume.uploads.filter(upload => upload.type === 'downloadable_file')
+				}
+				return []
+			},		
 			getFileIndex (index) {
-				// return 1
-				if (index === 0) {
-					return index + 1
-				} else if (index === 1) {
-					return index + 1
+				if (index < this.userResume.uploads.length - this.getUserFiles.length) {
+					return index
 				} else {
-					return index + 1 - this.userResume.uploads.filter(upload => upload.type !== 'downloadable_file').length
+					return index - (this.userResume.uploads.length - this.getUserFiles.length) + 1
 				}
 			},
 			pickFile (index) {

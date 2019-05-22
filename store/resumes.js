@@ -158,7 +158,188 @@ export const actions = {
 	// 	})
 	// 	commit('setResumeUploads', resumeUploads)
 	// },
-	async storeResume ({ commit, rootGetters }, payload) {
+	async storeResume ({ commit, dispatch, getters, rootGetters }, payload) {
+		try {
+			const newResume = payload
+			console.log('newResume: ', newResume)
+			console.log('newResume.slug: ', newResume.slug)
+
+			// 1) Check slug existence
+			// NEED TO PROCESS SERVERSIDE DUE TO FIRESTORE RULES!
+			try {
+				await axios.post('/check-resume-slug', { slug: newResume.slug }, {
+					headers: {
+						'app-key': process.env.APP_KEY
+					}
+				})
+			} catch (error) {
+				console.log('error from axios post: ', error)
+				throw {
+	                'slug': 'Slug already exists. Please provide another identifier for the resume.'
+	            }
+			}
+
+			// try {
+	        	// const snapshot = await firestore.collection('resumes_long').doc(newResume.slug).get();
+	        	// // const snapshot = await firestore.collection('resumes_long').where('slug', '==', newResume.slug).get()
+	        	// const existingSlug = snapshot.data()
+	        	// console.log('existingSlug: ', existingSlug)
+		        // if (existingSlug) {
+		        // 	throw {
+		        //         'slug': 'Slug already exists. Please provide another identifier for the resume.'
+		        //     }
+		        // }
+				
+			// } catch (error) {
+	  //           throw {
+	  //               'slug': 'Slug already exists. Please provide another identifier for the resume.',
+	  //           }		
+			// }
+
+			delete newResume['id']
+			const password = newResume['password']
+			delete newResume['password']
+        	delete newResume['password_confirmation']
+        	const uploads = newResume['uploads']
+        	console.log('uploads: ', uploads)
+        	newResume['uploads'] = []
+        	newResume['_created_at'] = moment().unix()
+        	newResume['_updated_at'] = moment().unix()
+
+	        // 2) Create visitor profile if password
+	        if (password) {
+                console.log('Update visitor\'s password: ', password)
+                try {
+                	const user = await auth.getUserByEmail(`${newResume.slug}@visitor.loginmycv.com`)
+	                console.log('user.uid: ', user.uid)
+	                await auth.deleteUser(user.uid)
+	            } catch (error) { // User does not exist
+	                console.log('user does not exist')
+	            }
+	            const newUser = await auth.createUser({
+	                email: `${newResume.slug}@visitor.loginmycv.com`,
+	                emailVerified: false,
+	                password: password,
+	                displayName: `${newResume.slug}@visitor`,
+	                disabled: false
+	            })
+	            const visitor_id = newUser.uid
+	            newResume['visitor_id'] = visitor_id
+	        }
+
+        	// 3) Save both resumes (long & short)
+			let batch = firestore.batch()
+	        
+	        const newLongResume = firestore.collection('resumes_long').doc(newResume.slug)
+	        batch.set(newLongResume, newResume)
+
+	        const newShortResume = firestore.collection('resumes_short').doc()
+	        batch.set(newShortResume, {
+	            user_id: newResume.user_id, 
+	            slug: newResume.slug,
+	            visibility: newResume.visibility,
+	            job_title: newResume.job_title,
+	            job_description: newResume.job_description,
+	            personal_data: {
+	                firstname: newResume['personal_data']['firstname'],
+	                lastname: newResume['personal_data']['lastname'],
+	                email: newResume['personal_data']['email'],
+	                country: newResume['personal_data']['country'],
+	                city: newResume['personal_data']['city']
+	            },
+	            key_competences: newResume.key_competences ? newResume.key_competences : null,
+	            languages: newResume.languages,
+	        	_created_at: newResume._created_at,
+	        	_updated_at: newResume._updated_at
+	        })
+
+	        await batch.commit()
+
+
+	        // 4) Get all user existing uploads
+			await dispatch('fetchUserResumes')
+			// const userExistingUploads = rootGetters['resumes/loadedUserResumes']
+			const userExistingResumes = getters['loadedUserResumes']
+            console.log('userExistingResumes: ', userExistingResumes)
+            let totalUploadSize = 0
+            if (userExistingResumes) {
+	            userExistingResumes.forEach(resume => {
+	            	if (resume && resume.uploads) {
+		                resume.uploads.forEach(upload => {
+		                    totalUploadSize += parseInt(upload.size_in_bytes)
+		                })
+	            	}
+	            })
+            }
+
+			// 5) Get all new uploads file size
+			const filesToAdd = []
+			if (uploads) {
+				uploads.forEach(upload => {
+					totalUploadSize += parseInt(upload.size_in_bytes)				
+					filesToAdd.push(upload)
+				})
+			}
+			console.log('totalUploadSize: ', totalUploadSize)
+
+			// 6) Check that total upload size does not exceed available space
+			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+			if (totalUploadSize > userTotalSpace) {
+				throw 'Files could not be uploaded because your do not have enough space.'
+			}
+			console.log('filesToAdd: ', filesToAdd)
+			console.log('totalUploadSize: ', totalUploadSize)
+			console.log('userTotalSpace: ', userTotalSpace)
+
+			// 7) Effectively upload files to storage
+			for (let file of filesToAdd) {
+				console.log('file: ', file)
+				if (file.name && file.file) { // File is not already existent
+					const uploadedFile = await storage.ref('resumes').child(`${newResume.user_id}/${file.name}`).put(file.file)
+					const downloadUrl = await uploadedFile.ref.getDownloadURL()
+					const newUpload = {
+						name: uploadedFile.metadata.name,
+						size_in_bytes: uploadedFile.metadata.size,
+						downloadUrl: downloadUrl,
+						title: file.title ? file.title : '',
+						type: file.type,
+						_created_at: moment().unix(),
+						_updated_at: moment().unix()
+					}
+					console.log('newUpload: ', newUpload)
+					const index = uploads.findIndex(upload => upload.name === file.name)
+					uploads[index] = newUpload
+				}
+			}
+			console.log('uploads2: ', uploads)
+			// console.log('payload2: ', payload)
+			// commit('setLoadingFiles', false, { root: true })
+			// commit('setLoadingResume', true, { root: true })
+
+			// 8) Update long & short resumes with uploads
+			if (uploads && uploads.length > 0) {
+				console.log('update resumes_long')
+				await firestore.collection('resumes_long').doc(newResume.slug).update({
+					uploads
+				})
+				console.log('newShortResume.id: ', newShortResume.id)
+				const picture = uploads.find(upload => upload.type === 'profile_picture')
+				console.log('picture: ', picture)
+				if (picture) {
+					console.log('update resumes_short')
+					console.log('newResume.user_id: ', newResume.user_id)
+					await firestore.collection('resumes_short').doc(newShortResume.id).update({
+						picture: picture.downloadUrl
+					})
+				}
+			}
+
+		} catch (error) {
+			console.log('error from storeResume action: ', error)
+			throw error
+		}
+	},
+	async storeResume2 ({ commit, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
 			commit('setLoadingFiles', true, { root: true })
@@ -181,7 +362,7 @@ export const actions = {
 			})
 			console.log('totalUploadSize: ', totalUploadSize)
 
-			// 3) Check total uploads size is not greater than available space
+			// 3) Check that total uploads size is not greater than available space
 			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
 			if (totalUploadSize > userTotalSpace) {
 				throw 'Files could not be uploaded because your do not have enough space.'
@@ -191,9 +372,10 @@ export const actions = {
 			console.log('userTotalSpace: ', userTotalSpace)
 
 			// 4) Effectively upload files to storage
+			payload.newUploads = [];
 			for (let file of filesToAdd) {
 				console.log('file: ', file)
-				if (file.file) {
+				if (file.name && file.file) {
 					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
 					const downloadUrl = await uploadedFile.ref.getDownloadURL()
 					const newUpload = {
@@ -208,6 +390,7 @@ export const actions = {
 					console.log('newUpload: ', newUpload)
 					const index = payload.uploads.findIndex(upload => upload.name === file.name)
 					payload.uploads[index] = newUpload
+					payload.newUploads.push(newUpload)
 				}
 			}
 			console.log('payload2: ', payload)
@@ -222,13 +405,26 @@ export const actions = {
 			})
 			commit('setLoadingResume', false, { root: true })
 		} catch (error) {
-			console.log('error2: ', error)
-			commit('setLoadingFiles', false, { root: true })
-			commit('setLoadingResume', false, { root: true })
-			throw error
+			console.log('error from storeResume: ', error)
+			// console.log('error: ', error.response.data.error)
+			if (error.response && error.response.data && error.response.data.error) {
+				if (error.response.data.error.filesToDelete) {
+					const filesToDelete = error.response.data.error.filesToDelete
+					console.log('Delete these files: ', filesToDelete)
+					const userId = rootGetters['users/loadedUser'].id
+					// console.log('userId: ', userId)
+
+					for (let file of filesToDelete) {
+						console.log('file: ', file)
+						await storage.ref('resumes').child(`${userId}/${file.name}`).delete()
+					}
+				}
+				throw error
+			}
+			throw new error()
 		}
 	},
-	async storeResume2 ({ commit, rootState }, payload) {
+	async storeResume3 ({ commit, rootState }, payload) {
 		try {
 			console.log('payload: ', payload)
 			return
@@ -364,7 +560,7 @@ export const actions = {
 					payload.uploads[index] = newUpload
 				}
 			}
-			console.log('payload2: ', payload)
+			console.log('payload: ', payload)
 			commit('setLoadingFiles', false, { root: true })
 			commit('setLoadingResume', true, { root: true })
 
@@ -376,7 +572,7 @@ export const actions = {
 			})
 			commit('setLoadingResume', false, { root: true })
 		} catch (error) {
-			console.log('error2: ', error)
+			// console.log('error2: ', error)
 			commit('setLoadingFiles', false, { root: true })
 			commit('setLoadingResume', false, { root: true })
 			throw error
@@ -387,6 +583,8 @@ export const actions = {
 			console.log('payload: ', payload)
 
 			throw new Error()
+
+			// Delete files in storage
 
 			// const batch = firestore.batch()
 

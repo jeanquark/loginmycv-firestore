@@ -117,7 +117,7 @@ module.exports = app.use(async function (req, res, next) {
 				}
 				updatedResume['visitor_id'] = visitor_id;
 
-				const batch = admin.firestore().batch();
+				let batch = admin.firestore().batch();
 			
 				const newLongResume = admin.firestore().collection('resumes_long').doc(newSlug);
 				batch.set(newLongResume, updatedResume);
@@ -213,8 +213,9 @@ module.exports = app.use(async function (req, res, next) {
 				},
 				// gender: updatedResume.gender,
 				// picture: updatedResume.personal_data.picture,
+				keys: upadatedResume.keys,
 				keys: updatedResume.skills,
-				// languages: updatedResume.languages,
+				languages: updatedResume.languages,
 			});
 			await batch.commit();
 

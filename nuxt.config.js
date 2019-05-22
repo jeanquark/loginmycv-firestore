@@ -134,6 +134,10 @@ module.exports = {
         {
             path: '/delete-resume-authorization', // POST request
             handler: '~/serverMiddleware/authorizations/deleteResumeAuthorization'
+        },
+        {
+            path: '/check-resume-slug', // POST request
+            handler: '~/serverMiddleware/resumes/checkResumeSlug'
         }
     ],
     css: ["~/assets/style/app.styl"],

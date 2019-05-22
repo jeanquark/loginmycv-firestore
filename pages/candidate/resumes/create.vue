@@ -12,7 +12,9 @@
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
             errors: {{ errors }}<br /><br />
-            loadedUser: {{ loadedUser }}<br /><br />
+            <!-- loadedUser: {{ loadedUser }}<br /><br /> -->
+            loadingCreateResume: {{ loadingCreateResume }}<br /><br />
+            loadingUploadFiles: {{ loadingUploadFiles }}<br /><br />
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
@@ -181,29 +183,29 @@
         >
             <v-card light>
                 <v-card-title
-                    class="headline primary red--text justify-center"
+                    class="headline primary white--text justify-center"
                     primary-title
                 >
-                    Creating resume...
+                    Create resume
                 </v-card-title>
 
                 <v-card-text>
-                    <v-alert
-                        :value="loadingCreateResume"
-                        color="primary"
-                        outline
-                    >
-                        <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Creating resume
-                        </div>
-                    </v-alert>
                     <v-alert
                         :value="loadingUploadFiles"
                         color="secondary"
                         outline
                     >
                         <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files
+                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
+                        </div>
+                    </v-alert>
+                    <v-alert
+                        :value="loadingCreateResume"
+                        color="primary"
+                        outline
+                    >
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Saving resume in database...
                         </div>
                     </v-alert>
                 </v-card-text>
@@ -243,12 +245,12 @@
         mounted () {
             // this.$validator.reset()
             this.errors.clear();
+            this.$store.commit('setLoadingFiles', false, { root: true })
+            this.$store.commit('setLoadingResume', false, { root: true })
         },
 		data () {
 			return {
                 step: 1,
-                loadingCreateResume: false,
-                loadingUploadFiles: false,
                 uploadedFiles: [],
                 creatingResumeDialog: false,
                 importResume: {}
@@ -275,6 +277,12 @@
             },
             loadedNewResume () {
             	return this.$store.getters['resumes/loadedNewResume']
+            },
+            loadingCreateResume () {
+                return this.$store.getters['loadingResume']
+            },
+            loadingUploadFiles () {
+                return this.$store.getters['loadingFiles']
             }
 		},
 		methods: {
@@ -311,7 +319,7 @@
             async saveResume () {
                 try {
                     console.log('saveResume')
-                    console.log('this.loadedNewResume: ', this.loadedNewResume)
+                    // console.log('this.loadedNewResume: ', this.loadedNewResume)
 
                     // const userExistingUploads = this.$store.getters['resumes/loadedUserResumes']
                     // const userExistingUploads = [{ slug: 'jeanquark', uploads: [{ name: 'abc', size_in_bytes: 100}, {name: 'def', size_in_bytes: 200}]}, { slug: 'jeanquark2', uploads: [{ name: 'ghi', size_in_bytes: 300}, { name: 'jkl', size_in_bytes: 400}]}]
@@ -326,11 +334,12 @@
                     // return
 
                     this.creatingResumeDialog = true
-                    this.loadingCreateResume = true
+                    // this.loadingCreateResume = true
+                    // this.$store.commit('setLoadingFiles', true, { root: true })
                     await this.$validator.validateAll()
                     if (this.errors && this.errors.items && this.errors.items.length > 0) {
                         this.creatingResumeDialog = false
-                        this.loadingCreateResume = false
+                        // this.loadingCreateResume = false
                         new Noty({
                             type: 'error',
                             text: 'Please check validation errors.',
@@ -340,8 +349,10 @@
                     } else {
                         // console.log('OK proceed to saveResume')
                         // this.loadedNewResume.user_id = this.loadedUser.id
+                        this.$store.commit('setLoadingResume', true, { root: true })
                         await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
-                        this.loadingCreateResume = false
+                        // this.loadingCreateResume = false
+                        // this.$store.commit('setLoadingFiles', false, { root: true })
                         this.$router.push('/candidate/resumes')
                         new Noty({
                             type: 'success',
@@ -351,17 +362,21 @@
                         }).show()
                     }
                 } catch (error) {
-                    this.loadingCreateResume = false
+                    // Delete newly uploaded files
+                    
                     this.creatingResumeDialog = false
-                    if (error.response && error.response.data && error.response.data.error) {
-                        new Noty({
-                            type: 'error',
-                            text: 'Your resume could not be updated.',
-                            timeout: 5000,
-                            theme: 'metroui'
-                        }).show()
+                    this.$store.commit('setLoadingFiles', false, { root: true })
+                    this.$store.commit('setLoadingResume', false, { root: true })
 
-                        Object.entries(error.response.data.error).forEach(([key, value]) => {
+                    console.log('error from catch block: ', error)
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and your resume could not be created.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    Object.entries(error).forEach(([key, value]) => {
+                        if (key === 'slug' || key === 'wrong_api_key') {
                             console.log('key: ', key)
                             console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
@@ -377,161 +392,46 @@
                                 timeout: 8000,
                                 theme: 'metroui'
                             }).show()
-                        })
-                    } else {
-                        new Noty({
-                            type: 'warning',
-                            text: error,
-                            timeout: 8000,
-                            theme: 'metroui'
-                        }).show()
-                    }
-                }
+                        } else {
 
-
-
-
-
-                    // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-                    // let formData = new FormData();
-                    // formData.append('data', JSON.stringify(this.loadedNewResume))
-                    // for (let fileUpload of this.loadedNewResume.uploads) {
-                    //     // console.log('upload: ', upload)
-                    //     formData.append('file', fileUpload)
-                    // }
-
-                    // this.loadingCreateResume = true
-                    // const createNewResume = await axios.post('/create-new-resume', formData, {
-                    //     headers: {
-                    //         'Content-Type': 'multipart/form-data',
-                    //         'app-key': process.env.APP_KEY
-                    //     }
-                    // })
-                    // console.log('createNewResume: ', createNewResume)
-                    // const newResumeId = createNewResume.data.resume_long_id
-                    // if (newResumeId) {
-                    //     this.$store.dispatch('resumes/storeNewResume', createNewResume)
-                    //     return
-
-                    //     // If return is valid, resume was saved to DB, there remains to save files in firebase storage
-                    //     if (this.loadedNewResume.personal_data.picture) {
-                    //         console.log('Save picture')
-                    //         const picture = this.loadedNewResume.personal_data.picture
-                    //         const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${picture.name}`)
-                    //         const uploadedPicture = await storageFileRef.put(picture)
-                    //         console.log('uploadedPicture: ', uploadedPicture.metadata)
-                    //         const downloadUrl = await uploadedPicture.ref.getDownloadURL()
-                    //         const newPicture = {
-                    //             name: uploadedPicture.metadata.name,
-                    //             size_in_bytes: uploadedPicture.metadata.size,
-                    //             downloadUrl: downloadUrl,
-                    //             _created_at: moment().unix(),
-                    //             _updated_at: moment().unix()
-                    //         }
-                    //         console.log('newPicture', newPicture)
-                    //         firestore.collection('resumes_long').doc(newResumeId).update({
-                    //             'personal_data.picture': newPicture
-                    //         })
-                    //     }
-                    //     if (this.loadedNewResume.uploads.length > 0) {
-                    //         // If files are to be uploaded
-                    //         try {
-                    //             // const newResumeId = 'kJqSRstu8QyjKwEU77i5'
-                    //             this.loadingCreateResume = false
-                    //             // 1) Save files in storage
-                    //             const newPromise = new Promise((resolve, reject) => {
-                    //                 this.loadingUploadFiles = true
-                    //                 for (const [index, fileUpload] of this.loadedNewResume.uploads.entries()) {
-                    //                     console.log('fileUpload: ', fileUpload)
-                    //                     this.uploadedFiles.push({ name: fileUpload.name, progress: 0 })
-                    //                     const storageFileRef = storage.ref('resumes').child(`${this.loadedUser.id}/${fileUpload.name}`)
-                    //                     const uploadTask = storageFileRef.put(fileUpload)
-                    //                     // Track down upload progress. Careful: callback function...
-                    //                     const that = this
-                    //                     uploadTask.on('state_changed', function (snapshot) {
-                    //                         that.uploadedFiles[index]['progress'] = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    //                         console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-                    //                         that.uploadedFiles[index]['size_in_bytes'] = snapshot.totalBytes
-                    //                     }, function (error) {
-                    //                         console.log('upload error: ', error)
-                    //                         reject()
-                    //                     }, function () {
-                    //                         console.log('success')
-                    //                         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                    //                             // console.log('File available at', downloadURL)
-                    //                             that.uploadedFiles[index]['downloadUrl'] = downloadURL
-                    //                         })
-                    //                         resolve()
-                    //                     })
-                    //                 }
-                    //             }).then(() => {
-                    //                 // 2) Save reference in firestore
-                    //                 firestore.collection('resumes_long').doc(newResumeId).update({
-                    //                     uploads: this.uploadedFiles
-                    //                 })
-                    //             }).then(() => {
-                    //                 // 3) Stop loader
-                    //                 console.log('Done!')
-                    //                 this.loadingUploadFiles = false
-                    //                 new Noty({
-                    //                     type: 'success',
-                    //                     text: 'Your resume was successfully created.',
-                    //                     timeout: 8000,
-                    //                     theme: 'metroui'
-                    //                 }).show()
-                    //             }).catch((error) => {
-                    //                 console.log('error: ', error)
-                    //                 this.loadingUploadFiles = false
-                    //                 throw 'error'
-                    //             })
-
-                    //         } catch (error) {
-                    //             console.log('error2: ', error)
-                    //             this.loadingUploadFiles = false
-                    //         }
-                    //     } else {
-                    //         this.loadingCreateResume = false
-                    //         new Noty({
-                    //             type: 'success',
-                    //             text: 'Your resume was successfully created.',
-                    //             timeout: 5000,
-                    //             theme: 'metroui'
-                    //         }).show()
-                    //     }
-                    // } else {
-                    //     // An error occured on the server
-                    //     this.loadingCreateResume = false
-                    //     console.log('An error occured on the server: ')
+                        }
+                    })
+                    // if (error.response && error.response.data && error.response.data.error) {
                     //     new Noty({
                     //         type: 'error',
-                    //         text: `${createNewResume.data.message}`,
+                    //         text: 'Your resume could not be updated.',
+                    //         timeout: 5000,
+                    //         theme: 'metroui'
+                    //     }).show()
+
+                    //     Object.entries(error.response.data.error).forEach(([key, value]) => {
+                    //         if (key !== 'filesToDelete') {
+                    //             console.log('key: ', key)
+                    //             console.log('value: ', value)
+                    //             const field = key.substr(key.indexOf('.') + 1)
+
+                    //             this.$validator.errors.add({
+                    //                 field: field,
+                    //                 msg: value,
+                    //             })
+
+                    //             new Noty({
+                    //                 type: 'warning',
+                    //                 text: value,
+                    //                 timeout: 8000,
+                    //                 theme: 'metroui'
+                    //             }).show()
+                    //         }
+                    //     })
+                    // } else {
+                    //     new Noty({
+                    //         type: 'error',
+                    //         text: 'Sorry, an error occured and your resume could not be updated.',
                     //         timeout: 8000,
                     //         theme: 'metroui'
                     //     }).show()
-                    //     console.log('createNewResume.data.error: ', createNewResume.data.error)
-                    //     // if (createNewResume.data.error.some(e => e.field === 'slug')) {
-                    //     //     console.log('slug error')
-                    //     // }
-                    //     Object.entries(createNewResume.data.error).forEach(([key, value]) => {
-                    //     // createNewResume.data.error.forEach(error => {
-                    //         // console.log('key: ', key.substr(key.indexOf('.') + 1))
-                    //         const field = key.substr(key.indexOf('.') + 1)
-
-                    //         this.$validator.errors.add({
-                    //             // id: 1,
-                    //             // vmld: 4,
-                    //             field: field,
-                    //             msg: value,
-                    //         })
-
-                    //         new Noty({
-                    //             type: 'warning',
-                    //             text: value,
-                    //             timeout: 8000,
-                    //             theme: 'metroui'
-                    //         }).show()
-                    //     })
                     // }
+                }
             }
 		}
 	}

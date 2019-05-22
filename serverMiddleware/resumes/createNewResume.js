@@ -12,10 +12,7 @@ const app_key = process.env.APP_KEY;
 module.exports = app.use(async function (req, res, next) {
     try {
         let newResume = req.body;
-        // console.log('newResume.uploads: ', newResume.uploads);
-        
-        // console.log('picture: ', picture);
-        // throw new Error();
+        console.log('newResume: ', newResume);
 
         newResume._created_at = moment().unix();
         newResume._updated_at = moment().unix();
@@ -29,7 +26,19 @@ module.exports = app.use(async function (req, res, next) {
         }
 
 
-        // 1) Perform validation
+        // 1) Check slug existence
+        const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
+        const existingSlug = snapshot.data();
+        console.log('existingSlug: ', existingSlug);
+        if (existingSlug) {
+            throw {
+                'slug': 'Slug already exists. Please provide another identifier for the resume.',
+                'filesToDelete': newResume.newUploads
+            }
+        }
+
+
+        // 2) Perform validation
         const constraints = {
             'job_title': { presence: true, length: { maximum: 50 }},
             'job_description': { presence: true, length: { maximum: 250 }},
@@ -43,7 +52,9 @@ module.exports = app.use(async function (req, res, next) {
         for (let social_link of newResume.social_links) {
             const validation = validate(social_link, {'link': { url: true }})
             if (validation != undefined) {
-                throw { [`${social_link.slug}`] : [`${social_link.name} is not a valid url`] };
+                throw { 
+                    [`${social_link.slug}`] : [`${social_link.name} is not a valid url`]
+                };
             }
         }
         if (newResume.password) {
@@ -63,7 +74,10 @@ module.exports = app.use(async function (req, res, next) {
         delete newResume['password'];
         delete newResume['password_confirmation'];
 
-        if (password) { // Creating resume's password
+        console.log('password: ', password);
+
+        // 3) Create visitor password 
+        if (password) {
             try {
                 console.log('Update visitor\'s password: ', password);
                 const user = await admin.auth().getUserByEmail(`${newResume.slug}@visitor.loginmycv.com`);
@@ -86,14 +100,21 @@ module.exports = app.use(async function (req, res, next) {
         const picture = newResume.uploads.find(upload => {
             return upload.type === 'profile_picture'
         });
+        console.log('picture: ', picture);
+        console.log('picture.downloadUrl: ', picture.downloadUrl);
 
-        const batch = admin.firestore().batch();
+        // 4) Create both short and long resume
+        let batch = admin.firestore().batch();
+        console.log('batch: ', batch);
         
         const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug);
         batch.set(newLongResume, newResume);
 
-        const newShortResume = admin.firestore().collection('resumes_short').doc(newResume.resume_short_id);
+        const newShortResume = admin.firestore().collection('resumes_short').doc();
         batch.set(newShortResume, {
+            user_id: newResume.user_id, 
+            slug: newResume.slug,
+            visibility: newResume.visibility,
             job_title: newResume.job_title,
             job_description: newResume.job_description,
             personal_data: {
@@ -103,9 +124,9 @@ module.exports = app.use(async function (req, res, next) {
                 country: newResume['personal_data']['country'],
                 city: newResume['personal_data']['city']
             },
-            picture: picture ? picture.dowloadUrl : '',
+            picture: picture ? picture.downloadUrl : '',
             keys: newResume.skills,
-            languages: newResume.languages,
+            languages: newResume.languages
         });
         await batch.commit();
 
@@ -119,6 +140,10 @@ module.exports = app.use(async function (req, res, next) {
         //     message: 'Update resume failed.',
         //     error: error
         // });
+
+        // Remove uploaded files
+        // console.log('newResume: ', newResume)
+
         res.status(500).send({ message: 'Create resume failed.', error });      
     }
 
