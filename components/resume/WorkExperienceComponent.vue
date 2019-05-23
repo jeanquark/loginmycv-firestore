@@ -39,39 +39,59 @@
 
                         <v-card-text>
                             <v-text-field
-                                v-model="newWorkExperience.company"
                                 label="Company"
+                                name="company_dialog"
                                 placeholder="Google Inc."
+                                v-model="newWorkExperience.company"
+                                v-validate="{ max: 50 }"
+                                :error-messages="errors ? errors.collect('company_dialog') : null"
+                                data-vv-as="Company"
                                 :counter="50"
                             ></v-text-field>
                             <v-text-field
-                                v-model="newWorkExperience.job_title"
                                 label="Job title"
+                                name="job_title_dialog"
                                 placeholder="Sofware engineer"
+                                v-model="newWorkExperience.job_title"
+                                v-validate="{ max: 50 }"
+                                :error-messages="errors ? errors.collect('job_title_dialog') : null"
+                                data-vv-as="Job title"
                                 :counter="50"
                             ></v-text-field>
-							<v-flex xs12>
-								<v-textarea
-									v-model="newWorkExperience.job_description"
-									label="Job description/responsibility"
-									:counter="200"
+                            <v-flex xs12>
+                                <v-textarea
+                                    label="Job description/responsibility"
+                                    name="description_dialog"
+                                    v-model="newWorkExperience.job_description"
+                                    v-validate="{ max: 500 }"
+                                    :error-messages="errors ? errors.collect('description_dialog') : null"
+                                    data-vv-as="Description"
+									:counter="500"
 								></v-textarea>
 							</v-flex>
                             <v-layout row>
                                 <v-flex xs6 class="pr-2">
                                     <v-text-field
-                                        v-model="newWorkExperience.city"
                                         label="City"
+                                        name="city_dialog"
                                         placeholder="San Francisco CA"
-                                        :counter="30"
+                                        v-model="newWorkExperience.city"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('city_dialog') : null"
+                                        data-vv-as="City"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field
-                                        v-model="newWorkExperience.country"
                                         label="Country"
+                                        name="country_dialog"
                                         placeholder="USA"
-                                        :counter="30"
+                                        v-model="newWorkExperience.country"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('country_dialog') : null"
+                                        data-vv-as="Country"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
@@ -176,37 +196,57 @@
                             <v-card-text style="">
                                 <v-layout row wrap>
                                     <v-flex xs12 sm6 class="pa-3">
+                                            <!-- v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect('company') : null"
+                                            data-vv-as="Company" -->
                                         <v-text-field
-                                            v-model="candidateWorkExperience[index].company"
                                             label="Company"
+                                            name="company"
+                                            v-model="candidateWorkExperience[index].company"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
+                                            <!-- v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect('job_title') : null"
+                                            data-vv-as="Job title" -->
                                         <v-text-field
-                                            v-model="candidateWorkExperience[index].job_title"
                                             label="Job title"
+                                            name="job_title"
+                                            v-model="candidateWorkExperience[index].job_title"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 class="pa-3">
+                                            <!-- v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect('description') : null"
+                                            data-vv-as="Description" -->
                                         <v-textarea
-                                            v-model="candidateWorkExperience[index].job_description"
                                             label="Job description/responsibility"
+                                            name="description"
+                                            v-model="candidateWorkExperience[index].job_description"
                                             :counter="200"
                                         ></v-textarea>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
+                                            <!-- v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect('city') : null"
+                                            data-vv-as="City" -->
                                         <v-text-field
-                                            v-model="candidateWorkExperience[index].city"
                                             label="City"
+                                            name="city"
+                                            v-model="candidateWorkExperience[index].city"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
+                                            <!-- v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect('country') : null"
+                                            data-vv-as="Country" -->
                                         <v-text-field
-                                            v-model="candidateWorkExperience[index].country"
                                             label="Country"
+                                            name="country"
+                                            v-model="candidateWorkExperience[index].country"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
@@ -303,6 +343,7 @@
     import Noty from 'noty'
 	import Draggable from 'vuedraggable'
     export default {
+        inject: ['$validator'],
         components: { Draggable },
         created () {
             const resumeSlug = this.$route.params.slug

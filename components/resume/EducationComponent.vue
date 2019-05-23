@@ -47,7 +47,7 @@
                                 label="Title"
                                 name="title"
                                 placeholder="Bachelor in Geography"
-                                v-validate="{ required: true, max: 50 }"
+                                v-validate="{ max: 50 }"
                                 :error-messages="errors ? errors.collect('title') : null"
                                 data-vv-as="Title"
                                 v-model="newEducation.title"
@@ -57,7 +57,7 @@
                                 label="University/School name"
                                 name="school"
                                 placeholder="University of Geneva"
-                                v-validate="{ required: true, max: 50 }"
+                                v-validate="{ max: 50 }"
                                 :error-messages="errors ? errors.collect('school') : null"
                                 data-vv-as="School"
                                 v-model="newEducation.school"
@@ -69,7 +69,7 @@
                                         label="City"
                                         name="city"
                                         placeholder="Geneva"
-                                        v-validate="{ required: true, max: 50 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('city') : null"
                                         data-vv-as="City"
                                         v-model="newEducation.city"
@@ -81,7 +81,7 @@
                                         label="Country"
                                         name="country"
                                         placeholder="Switzerland"
-                                        v-validate="{ required: true, max: 50 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('country') : null"
                                         data-vv-as="Country"
                                         v-model="newEducation.country"
@@ -93,7 +93,7 @@
                                 <v-textarea
                                     label="Education description"
                                     name="description"
-                                    v-validate="{ required: true, max: 200 }"
+                                    v-validate="{ max: 200 }"
                                     :error-messages="errors ? errors.collect('description') : null"
                                     data-vv-as="Description"
                                     v-model="newEducation.description"
@@ -116,7 +116,7 @@
                                         label="Start date"
                                         name="start_date"
                                         prepend-icon="event"
-                                        v-validate="{ required: true, max: 50 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('start_date') : null"
                                         data-vv-as="Start date"
                                         v-model="newEducation.start_date"
@@ -128,7 +128,7 @@
                                         label="Graduation date"
                                         name="graduation_date"
                                         prepend-icon="event"
-                                        v-validate="{ required: true, max: 50 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('graduation_date') : null"
                                         data-vv-as="Graduation date"
                                         v-model="newEducation.end_date"
@@ -213,77 +213,78 @@
                                 <!-- abc: {{ new Date().toISOString().substr(0, 7) }} -->
                                 <!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /> -->
                                 <v-flex xs12 sm6 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('title') : null"
+                                        data-vv-as="Title" -->
                                     <v-text-field
                                         label="Title"
                                         name="title"
-                                        v-validate="{ required: true, max: 50 }"
-                                        :error-messages="errors ? errors.collect('title') : null"
-                                        data-vv-as="Title"
                                         v-model="candidateEducation[index].title"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
-                                    <v-text-field
-                                        v-model="candidateEducation[index].school"
-                                        label="University/School name"
-                                        v-validate="{ required: true, max: 50 }"
+                                        <!-- v-validate="{ required: true, max: 50 }"
                                         :error-messages="errors ? errors.collect('start_date') : null"
-                                        data-vv-as="Start date"
+                                        data-vv-as="Start date" -->
+                                    <v-text-field
+                                        label="University/School name"
+                                        name="start_date"
+                                        v-model="candidateEducation[index].school"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('city') : null"
+                                        data-vv-as="City" -->
                                     <v-text-field
                                         label="City"
                                         name="city"
-                                        v-validate="{ required: true, max: 50 }"
-                                        :error-messages="errors ? errors.collect('city') : null"
-                                        data-vv-as="City"
                                         v-model="candidateEducation[index].city"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('country') : null"
+                                        data-vv-as="Country" -->
                                     <v-text-field
                                         label="Country"
                                         name="country"
-                                        v-validate="{ required: true, max: 50 }"
-                                        :error-messages="errors ? errors.collect('country') : null"
-                                        data-vv-as="Country"
                                         v-model="candidateEducation[index].country"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 200 }"
+                                        :error-messages="errors ? errors.collect('description') : null"
+                                        data-vv-as="Description" -->
                                     <v-textarea
                                         label="Education description"
                                         name="description"
-                                        v-validate="{ required: true, max: 200 }"
-                                        :error-messages="errors ? errors.collect('description') : null"
-                                        data-vv-as="Description"
                                         v-model="candidateEducation[index].description"
                                         :counter="200"
                                     ></v-textarea>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('start_date') : null"
+                                        data-vv-as="Start date" -->
                                     <v-text-field
                                         label="Start date"
                                         name="start_date"
-                                        v-validate="{ required: true, max: 50 }"
-                                        :error-messages="errors ? errors.collect('start_date') : null"
-                                        data-vv-as="Start date"
                                         v-model="candidateEducation[index].start_date"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
+                                        <!-- v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('graduation_date') : null"
+                                        data-vv-as="Start date" -->
                                     <v-text-field
                                         label="Graduation date"
                                         name="graduation_date"
-                                        v-validate="{ required: true, max: 50 }"
-                                        :error-messages="errors ? errors.collect('graduation_date') : null"
-                                        data-vv-as="Start date"
                                         v-model="candidateEducation[index].end_date"
                                         :counter="50"
                                     ></v-text-field>

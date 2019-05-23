@@ -268,16 +268,16 @@ export const actions = {
 				await firestore.collection('resumes_long').doc(newResume.slug).update({
 					uploads
 				})
-				console.log('newShortResume.id: ', newShortResume.id)
+				// console.log('newShortResume.id: ', newShortResume.id)
 				const picture = uploads.find(upload => upload.type === 'profile_picture')
 				console.log('picture: ', picture)
 				if (picture) {
 					console.log('update resumes_short')
 					// console.log('newResume.user_id: ', newResume.user_id)
 					// await firestore.collection('resumes_short').doc(newShortResume.id).update({
-					// await firestore.collection('resumes_short').(newShortResume.id).update({
-					// 	picture: picture.downloadUrl
-					// })
+					await firestore.collection('resumes_short').where('user_id', '==', newResume.user_id).update({
+						picture: picture.downloadUrl
+					})
 				}
 			}
 		} catch (error) {
@@ -527,23 +527,68 @@ export const actions = {
 			throw error
 		}
 	},
-	async deleteResume ({ commit }, payload) {
+	async deleteResume ({ commit, getters }, payload) {
 		try {
 			console.log('payload: ', payload)
+			const resumeToDelete = payload
 
-			throw new Error()
+			// throw new Error()
 
-			// Delete files in storage
+			// Delete files in storage if they are not present in another resume
 
-			// const batch = firestore.batch()
+			// 1) Retrieve all files to delete
 
-			// const resume_long = db.collection('resumes_long').doc(payload)
-			// batch.delete(resume_long)
+			// 2) Retrieve all candidate files
+			// const userResumes = getters['loadedUserResumes'].map(resume => resume.uploads)
+			const userFiles = []
 
-			// const resume_short = db.collection('resumes_short').where('slug', '==', payload)
-			// batch.delete(resume_short)
+			getters['loadedUserResumes'].forEach(resume => {
+				if (resume.uploads) {
+					resume.uploads.forEach(upload => {
+						if (userFiles.filter(file => file.name === upload.name)) {
 
-			// await batch.commit()
+						}
+						userFiles.push(upload)
+					})
+				}
+			})
+			console.log('userFiles: ', userFiles)
+
+			const filesToDelete = []
+			// 3) Count object occurences
+			if (payload.uploads.length > 0) {
+				payload.uploads.forEach(file => {
+					if (userFiles.filter(a => a.name === file.name).length < 2) {
+						console.log('Removing: ', file.name)
+						filesToDelete.push(file)
+					}
+				})
+			}
+			console.log('filesToDelete: ', filesToDelete)
+
+
+
+			const batch = firestore.batch()
+
+			console.log('resumeToDelete.slug: ', resumeToDelete.slug)
+			const resume_long = firestore.collection('resumes_long').doc(resumeToDelete.slug)
+			console.log('resume_long: ', resume_long)
+			batch.delete(resume_long)
+
+
+			// const shortResumesArray = []
+			const snapshot = await firestore.collection('resumes_short').where('slug', '==', resumeToDelete.slug).get()
+			snapshot.forEach(shortResume => {
+				// shortResume.ref.delete()
+				batch.delete(shortResume.ref)
+			})
+
+			await batch.commit()
+
+			// for (let file of filesToDelete) {
+			// 	await storage.ref(`/resumes/${resumeToDelete.user_id}/${file.name}`).delete()
+			// }
+
 		} catch (error) {
 			console.log('error: ', error)
 			throw error

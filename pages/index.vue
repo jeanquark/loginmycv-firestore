@@ -154,7 +154,7 @@
 								<div class="headline text-xs-center">Private & Secured data</div>
 							</v-card-title>
 							<v-card-text>
-								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you were to decide to quit, your information will be completely wiped out from our database.
+								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you were to decide to remove some information, it will be completely wiped out from our database.
 							</v-card-text>
 						</v-card>
 					</v-flex>
@@ -167,7 +167,7 @@
 								<div class="headline text-xs-center">Let recruiters find you</div>
 							</v-card-title>
 							<v-card-text>
-								An excerpt of your resume can be made visible on the frontpage for potential rescruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
+								An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
 							</v-card-text>
 						</v-card>
 					</v-flex>

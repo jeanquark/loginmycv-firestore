@@ -28,7 +28,7 @@
 											edit
 										</v-icon>
 									</v-btn>
-									<v-btn flat icon @click="requestConfirmation(props.item.id)">
+									<v-btn flat icon @click="requestConfirmation(props.item)">
 										<v-icon small color="error">
 											delete
 										</v-icon>
@@ -110,7 +110,7 @@
 		        ],
 		        snackbar: false,
 		        confirm: false,
-		        resumeId: ''
+		        resume: {}
 			}
 		},
 		computed: {
@@ -125,17 +125,17 @@
 			editResume () {
 				this.$router.replace('/candidate/resumes/edit')
 			},
-			requestConfirmation (resumeId) {
-				this.resumeId = resumeId
+			requestConfirmation (resume) {
+				this.resume = resume
 				this.snackbar = true
 			},
 			async deleteResume () {
 				try {
-					const resumeId = this.resumeId
+					// const resume = this.resume
 					this.snackbar = false
 
-					console.log('deleteResume: ', resumeId)
-					await this.$store.dispatch('resumes/deleteResume', resumeId)
+					console.log('deleteResume: ', this.resume)
+					await this.$store.dispatch('resumes/deleteResume', this.resume)
 					this.resumeId = ''
 					new Noty({
 						type: 'success',
