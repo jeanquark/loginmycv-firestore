@@ -11,70 +11,46 @@ const app_key = process.env.APP_KEY;
 
 module.exports = app.use(async function (req, res, next) {
     try {
+
+        // throw {
+        //         'server_error': 'You are not sending this request from an authorized server.',
+        //     }
+
         let newResume = req.body;
         console.log('newResume: ', newResume);
 
-        newResume._created_at = moment().unix();
-        newResume._updated_at = moment().unix();
-        // console.log('updatedResume: ', updatedResume);
         console.log('app-key: ', req.get('app-key'));
         console.log('app_key: ', app_key);
+        // 1) Check API KEY (request is sent from server)
         if (req.get('app-key') !== app_key) {
             throw {
-                'wrong-app-key': 'You are not sending this request from an authorized server.'
+                'server_error': 'You are not sending this request from an authorized server.'
             }
         }
 
 
-        // 1) Check slug existence
+
+        // 2) Check slug existence
         const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
         const existingSlug = snapshot.data();
         console.log('existingSlug: ', existingSlug);
         if (existingSlug) {
             throw {
                 'slug': 'Slug already exists. Please provide another identifier for the resume.',
-                'filesToDelete': newResume.newUploads
             }
         }
 
-
-        // 2) Perform validation
-        const constraints = {
-            'job_title': { presence: true, length: { maximum: 50 }},
-            'job_description': { presence: true, length: { maximum: 250 }},
-            'personal_data.email': { presence: true, email: true },
-            'personal_data.firstname': { presence: true, length: { maximum: 50 }},
-            'personal_data.lastname': { presence: true, length: { maximum: 50 }},
-            'personal_data.city': { length: { maximum: 50 }},
-            'personal_data.website': { url: true },
-            'personal_data.phone': { format: '[0-9+()-]+'},
-        };
-        for (let social_link of newResume.social_links) {
-            const validation = validate(social_link, {'link': { url: true }})
-            if (validation != undefined) {
-                throw { 
-                    [`${social_link.slug}`] : [`${social_link.name} is not a valid url`]
-                };
-            }
-        }
-        if (newResume.password) {
-            constraints['password'] = { presence: true, length: { maximum: 30 }};
-            constraints['password_confirmation'] = { presence: true, equality: 'password'};
-        }
-
-        const validation = validate(newResume, constraints);
-        console.log('validation: ', validation);
-        if (validation != undefined) {
-            throw validation;
-        }
-        console.log('Form is valid, continue saving in DB');
         
+        newResume._created_at = moment().unix();
+        newResume._updated_at = moment().unix();
+        newResume['uploads'] = []
         const password = newResume.password;
         delete newResume['id'];
         delete newResume['password'];
         delete newResume['password_confirmation'];
-
         console.log('password: ', password);
+
+
 
         // 3) Create visitor password 
         if (password) {
@@ -86,31 +62,32 @@ module.exports = app.use(async function (req, res, next) {
             } catch (error) { // User does not exist
                 console.log('user does not exist');
             }
-            const newUser = await admin.auth().createUser({
-                email: `${newResume.slug}@visitor.loginmycv.com`,
-                emailVerified: false,
-                password: password,
-                displayName: `${newResume.slug}@visitor`,
-                disabled: false
-            });
-            const visitor_id = newUser.uid;
-            newResume['visitor_id'] = visitor_id;
+            try {
+                const newUser = await admin.auth().createUser({
+                    email: `${newResume.slug}@visitor.loginmycv.com`,
+                    emailVerified: false,
+                    password: password,
+                    displayName: `${newResume.slug}@visitor`,
+                    disabled: false
+                });
+                const visitor_id = newUser.uid;
+                newResume['visitor_id'] = visitor_id;
+            } catch (error) {
+                throw {
+                    'server_error': 'Visitor with password access could not be created.'
+                }
+            }
         }
 
-        const picture = newResume.uploads.find(upload => {
-            return upload.type === 'profile_picture'
-        });
-        console.log('picture: ', picture);
-        console.log('picture.downloadUrl: ', picture.downloadUrl);
 
-        // 4) Create both short and long resume
-        let batch = admin.firestore().batch();
-        console.log('batch: ', batch);
-        
-        const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug);
-        batch.set(newLongResume, newResume);
 
-        const newShortResume = admin.firestore().collection('resumes_short').doc();
+        // 4) Save long & short resumes in DB
+        let batch = admin.firestore().batch()
+            
+        const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug)
+        batch.set(newLongResume, newResume)
+
+        const newShortResume = admin.firestore().collection('resumes_short').doc()
         batch.set(newShortResume, {
             user_id: newResume.user_id, 
             slug: newResume.slug,
@@ -124,14 +101,17 @@ module.exports = app.use(async function (req, res, next) {
                 country: newResume['personal_data']['country'],
                 city: newResume['personal_data']['city']
             },
-            picture: picture ? picture.downloadUrl : '',
-            keys: newResume.skills,
-            languages: newResume.languages
-        });
-        await batch.commit();
+            key_competences: newResume.key_competences ? newResume.key_competences : null,
+            languages: newResume.languages,
+            _created_at: newResume._created_at,
+            _updated_at: newResume._updated_at
+        })
+
+        await batch.commit()
 
         res.send({
             message: 'POST request to create resume went successfully.',
+            data: newShortResume.id
         });
     } catch (error) {
         console.log('error from server: ', error)
@@ -140,11 +120,12 @@ module.exports = app.use(async function (req, res, next) {
         //     message: 'Update resume failed.',
         //     error: error
         // });
-
+        
         // Remove uploaded files
         // console.log('newResume: ', newResume)
+        res.status(500).send({ error });
 
-        res.status(500).send({ message: 'Create resume failed.', error });      
+        // res.status(500).send({ message: 'Create resume failed.', error });      
     }
 
 });

@@ -160,101 +160,44 @@ export const actions = {
 	// },
 	async storeResume ({ commit, dispatch, getters, rootGetters }, payload) {
 		try {
+
+			// throw {
+			// 		'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+			// 	}
+
+			// const resumeCreation = await axios.post('/create-new-resume', newResume, {
+			// 	headers: {
+			// 		'app-key': process.env.APP_KEY
+			// 	}
+			// })
+			// console.log('resumeCreation: ', resumeCreation)
+
+
+
 			const newResume = payload
 			console.log('newResume: ', newResume)
 			console.log('newResume.slug: ', newResume.slug)
 
-			// 1) Check slug existence
-			// NEED TO PROCESS SERVERSIDE DUE TO FIRESTORE RULES!
-			try {
-				await axios.post('/check-resume-slug', { slug: newResume.slug }, {
+			// 1) Create resume server-side
+			// try {
+				const resumeCreation = await axios.post('/create-new-resume', newResume, {
 					headers: {
 						'app-key': process.env.APP_KEY
 					}
 				})
-			} catch (error) {
-				console.log('error from axios post: ', error)
-				throw {
-	                'slug': 'Slug already exists. Please provide another identifier for the resume.'
-	            }
-			}
-
-			// try {
-	        	// const snapshot = await firestore.collection('resumes_long').doc(newResume.slug).get();
-	        	// // const snapshot = await firestore.collection('resumes_long').where('slug', '==', newResume.slug).get()
-	        	// const existingSlug = snapshot.data()
-	        	// console.log('existingSlug: ', existingSlug)
-		        // if (existingSlug) {
-		        // 	throw {
-		        //         'slug': 'Slug already exists. Please provide another identifier for the resume.'
-		        //     }
-		        // }
-				
+				console.log('resumeCreation: ', resumeCreation)
 			// } catch (error) {
-	  //           throw {
-	  //               'slug': 'Slug already exists. Please provide another identifier for the resume.',
-	  //           }		
+			// 	console.log('error from axios: ', error)
+			// 	throw {
+			// 		'slug': 'Slug already exists. Please provide another identifier for the resume.'
+			// 	}
 			// }
 
-			delete newResume['id']
-			const password = newResume['password']
-			delete newResume['password']
-        	delete newResume['password_confirmation']
-        	const uploads = newResume['uploads']
-        	console.log('uploads: ', uploads)
-        	newResume['uploads'] = []
-        	newResume['_created_at'] = moment().unix()
-        	newResume['_updated_at'] = moment().unix()
 
-	        // 2) Create visitor profile if password
-	        if (password) {
-                console.log('Update visitor\'s password: ', password)
-                try {
-                	const user = await auth.getUserByEmail(`${newResume.slug}@visitor.loginmycv.com`)
-	                console.log('user.uid: ', user.uid)
-	                await auth.deleteUser(user.uid)
-	            } catch (error) { // User does not exist
-	                console.log('user does not exist')
-	            }
-	            const newUser = await auth.createUser({
-	                email: `${newResume.slug}@visitor.loginmycv.com`,
-	                emailVerified: false,
-	                password: password,
-	                displayName: `${newResume.slug}@visitor`,
-	                disabled: false
-	            })
-	            const visitor_id = newUser.uid
-	            newResume['visitor_id'] = visitor_id
-	        }
+			
 
-        	// 3) Save both resumes (long & short)
-			let batch = firestore.batch()
-	        
-	        const newLongResume = firestore.collection('resumes_long').doc(newResume.slug)
-	        batch.set(newLongResume, newResume)
-
-	        const newShortResume = firestore.collection('resumes_short').doc()
-	        batch.set(newShortResume, {
-	            user_id: newResume.user_id, 
-	            slug: newResume.slug,
-	            visibility: newResume.visibility,
-	            job_title: newResume.job_title,
-	            job_description: newResume.job_description,
-	            personal_data: {
-	                firstname: newResume['personal_data']['firstname'],
-	                lastname: newResume['personal_data']['lastname'],
-	                email: newResume['personal_data']['email'],
-	                country: newResume['personal_data']['country'],
-	                city: newResume['personal_data']['city']
-	            },
-	            key_competences: newResume.key_competences ? newResume.key_competences : null,
-	            languages: newResume.languages,
-	        	_created_at: newResume._created_at,
-	        	_updated_at: newResume._updated_at
-	        })
-
-	        await batch.commit()
-
+	        commit('setLoadingResume', false, { root: true })
+	        commit('setLoadingFiles', true, { root: true })
 
 	        // 4) Get all user existing uploads
 			await dispatch('fetchUserResumes')
@@ -273,6 +216,7 @@ export const actions = {
             }
 
 			// 5) Get all new uploads file size
+			const uploads = newResume.uploads
 			const filesToAdd = []
 			if (uploads) {
 				uploads.forEach(upload => {
@@ -285,7 +229,9 @@ export const actions = {
 			// 6) Check that total upload size does not exceed available space
 			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
 			if (totalUploadSize > userTotalSpace) {
-				throw 'Files could not be uploaded because your do not have enough space.'
+				throw {
+					'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+				}
 			}
 			console.log('filesToAdd: ', filesToAdd)
 			console.log('totalUploadSize: ', totalUploadSize)
@@ -327,15 +273,18 @@ export const actions = {
 				console.log('picture: ', picture)
 				if (picture) {
 					console.log('update resumes_short')
-					console.log('newResume.user_id: ', newResume.user_id)
-					await firestore.collection('resumes_short').doc(newShortResume.id).update({
-						picture: picture.downloadUrl
-					})
+					// console.log('newResume.user_id: ', newResume.user_id)
+					// await firestore.collection('resumes_short').doc(newShortResume.id).update({
+					// await firestore.collection('resumes_short').(newShortResume.id).update({
+					// 	picture: picture.downloadUrl
+					// })
 				}
 			}
-
 		} catch (error) {
 			console.log('error from storeResume action: ', error)
+			if (error.response && error.response.data && error.response.data.error) {
+				throw error.response.data.error
+			}
 			throw error
 		}
 	},

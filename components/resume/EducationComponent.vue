@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center pa-4" style="margin-top: 0px;" v-if="userResume">
+    <div class="text-xs-center mt-0 pa-4" style="" v-if="userResume">
         <div>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
@@ -14,7 +14,7 @@
                 outline
                 v-if="!userResume.education.length > 0"
             >
-                You have no item here, please click on the rounded pink button to add one
+                There is no item here, please click on the rounded pink button to add one
             </v-alert>
             <v-expansion-panel style="">
                 <v-dialog
@@ -44,39 +44,59 @@
 
                         <v-card-text>
                             <v-text-field
-                                v-model="newEducation.title"
                                 label="Title"
+                                name="title"
                                 placeholder="Bachelor in Geography"
+                                v-validate="{ required: true, max: 50 }"
+                                :error-messages="errors ? errors.collect('title') : null"
+                                data-vv-as="Title"
+                                v-model="newEducation.title"
                                 :counter="50"
                             ></v-text-field>
                             <v-text-field
-                                v-model="newEducation.school"
                                 label="University/School name"
+                                name="school"
                                 placeholder="University of Geneva"
+                                v-validate="{ required: true, max: 50 }"
+                                :error-messages="errors ? errors.collect('school') : null"
+                                data-vv-as="School"
+                                v-model="newEducation.school"
                                 :counter="50"
                             ></v-text-field>
                             <v-layout row>
                                 <v-flex xs6 class="pr-2">
                                     <v-text-field
-                                        v-model="newEducation.city"
                                         label="City"
+                                        name="city"
                                         placeholder="Geneva"
-                                        :counter="30"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('city') : null"
+                                        data-vv-as="City"
+                                        v-model="newEducation.city"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field
-                                        v-model="newEducation.country"
                                         label="Country"
+                                        name="country"
                                         placeholder="Switzerland"
-                                        :counter="30"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('country') : null"
+                                        data-vv-as="Country"
+                                        v-model="newEducation.country"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
                             <v-flex xs12>
                                 <v-textarea
-                                    v-model="newEducation.description"
                                     label="Education description"
+                                    name="description"
+                                    v-validate="{ required: true, max: 200 }"
+                                    :error-messages="errors ? errors.collect('description') : null"
+                                    data-vv-as="Description"
+                                    v-model="newEducation.description"
                                     :counter="200"
                                 ></v-textarea>
                             </v-flex>
@@ -92,42 +112,31 @@
                             </div> -->
                             <v-layout row>
                                 <v-flex xs6>
-                                    <v-dialog
-                                        v-model="form.modalStartDate"
-                                        persistent
-                                        lazy
-                                        full-width
-                                        width="300px"
-                                    >
-                                        <v-text-field
-                                            slot="activator"
-                                            v-model="newEducation.start_date"
-                                            label="Start date"
-                                            prepend-icon="event"
-                                            readonly
-                                        ></v-text-field>
-                                        <v-date-picker v-model="form.startDate" :type="form.startDateType" color="primary" :scrollable="false">
-                                            <!-- <v-spacer></v-spacer> -->
-                                            <v-layout justify-center>
-                                                <v-btn flat color="error" @click="deleteNewStartDate">Remove</v-btn>
-                                                <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
-                                                <v-btn flat color="success" @click="saveNewStartDate">OK</v-btn>
-                                            </v-layout>
-                                        </v-date-picker>
-                                    </v-dialog>
+                                    <v-text-field
+                                        label="Start date"
+                                        name="start_date"
+                                        prepend-icon="event"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('start_date') : null"
+                                        data-vv-as="Start date"
+                                        v-model="newEducation.start_date"
+                                        :counter="50"
+                                    ></v-text-field>
                                 </v-flex>
                                 <v-flex xs6>
-                                    <v-layout justify-center>
-                                        <div>
-                                            <v-radio-group v-model="form.startDateType" row>
-                                                <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                            </v-radio-group>
-                                        </div>
-                                    </v-layout>
+                                    <v-text-field
+                                        label="Graduation date"
+                                        name="graduation_date"
+                                        prepend-icon="event"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('graduation_date') : null"
+                                        data-vv-as="Graduation date"
+                                        v-model="newEducation.end_date"
+                                        :counter="50"
+                                    ></v-text-field>
                                 </v-flex>
                             </v-layout>
-                            <v-layout row>
+                            <!--<v-layout row>
                                 <v-flex xs6>
                                     <v-dialog
                                         v-model="form.modalEndDate"
@@ -144,7 +153,6 @@
                                             readonly
                                         ></v-text-field>
                                         <v-date-picker v-model="form.endDate" :type="form.endDateType" color="primary" :scrollable="false">
-                                            <!-- <v-spacer></v-spacer> -->
                                             <v-layout justify-center>
                                                 <v-btn flat color="error" @click="deleteNewEndDate">Remove</v-btn>
                                                 <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
@@ -163,7 +171,7 @@
                                         </div>
                                     </v-layout>
                                 </v-flex>
-                            </v-layout>
+                            </v-layout>-->
                         
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
@@ -173,8 +181,9 @@
                 </v-dialog>
                 <!-- candidateLongResume: {{ candidateLongResume }}<br /><br /> -->
                 <!-- candidateEducation: {{ candidateEducation }}<br /><br /> -->
+                <draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
                 <v-expansion-panel-content
-                    v-for="(edu, index) in candidateEducation"
+                    v-for="(education, index) in candidateEducation"
                     :key="index"
                 >
                     <!-- <v-icon slot="actions" color="primary"><v-icon>cross</v-icon></v-icon> -->
@@ -182,16 +191,18 @@
                     <!-- <v-icon color="teal">cross</v-icon> -->
                     <!-- @click.native.stop="delete(index)" -->
                     <div slot="header">
-                        <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>
-                        <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon>
-                        <span style="font-size: 1.5em;">{{ edu.title }}</span>                
+                        <v-layout align-center>
+                            <v-btn style="cursor: move;" icon class="handle ml-0"><v-icon>drag_indicator</v-icon></v-btn>
+                            <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
+                            <span style="font-size: 1.5em;">{{ education.title }}</span>
+                        </v-layout>
                     </div>
 
                     <!-- form.title: {{ form.title }}<br /><br /> -->
                     <!-- form.graduationDate: {{ form.graduationDate }}<br /><br /> -->
                     <!-- index: {{ index }}<br /><br /> -->
                     <!-- reference: {{ reference }}<br /><br /> -->
-                    <v-card style="margin-bottom: 30px; background: black;">
+                    <v-card class="mb-5" style="background: black;">
                         <v-card-text style="">
                             <v-layout row wrap>
                                 <!-- Name: {{ edu.name }}<br />
@@ -203,8 +214,12 @@
                                 <!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /> -->
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].title"
                                         label="Title"
+                                        name="title"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('title') : null"
+                                        data-vv-as="Title"
+                                        v-model="candidateEducation[index].title"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
@@ -212,69 +227,68 @@
                                     <v-text-field
                                         v-model="candidateEducation[index].school"
                                         label="University/School name"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('start_date') : null"
+                                        data-vv-as="Start date"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].city"
                                         label="City"
-                                        :counter="30"
+                                        name="city"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('city') : null"
+                                        data-vv-as="City"
+                                        v-model="candidateEducation[index].city"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
                                     <v-text-field
-                                        v-model="candidateEducation[index].country"
                                         label="Country"
-                                        :counter="30"
+                                        name="country"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('country') : null"
+                                        data-vv-as="Country"
+                                        v-model="candidateEducation[index].country"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 class="pa-3">
                                     <v-textarea
-                                        v-model="candidateEducation[index].description"
                                         label="Education description"
+                                        name="description"
+                                        v-validate="{ required: true, max: 200 }"
+                                        :error-messages="errors ? errors.collect('description') : null"
+                                        data-vv-as="Description"
+                                        v-model="candidateEducation[index].description"
                                         :counter="200"
                                     ></v-textarea>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
-                                    <v-layout row>
-                                        <v-flex xs6>
-                                            <v-dialog
-                                                v-model="form.modalStartDate"
-                                                persistent
-                                                lazy
-                                                full-width
-                                                width="300px"
-                                            >
-                                                <v-text-field
-                                                    slot="activator"
-                                                    v-model="candidateEducation[index].start_date"
-                                                    label="Start date"
-                                                    prepend-icon="event"
-                                                    readonly
-                                                ></v-text-field>
-                                                <v-date-picker v-model="candidateEducation[index].start_date" :type="form.editStartDateType" :scrollable="false">
-                                                    <v-layout justify-center>
-                                                        <v-btn flat color="error" @click="deleteStartDate(index)">Remove</v-btn>
-                                                        <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
-                                                        <v-btn flat color="success" @click="form.modalStartDate = false">OK</v-btn>
-                                                    </v-layout>
-                                                </v-date-picker>
-                                            </v-dialog>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout justify-center>
-                                                <div>
-                                                    <v-radio-group v-model="form.editStartDateType" row>
-                                                        <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                        <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                    </v-radio-group>
-                                                </div>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
+                                    <v-text-field
+                                        label="Start date"
+                                        name="start_date"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('start_date') : null"
+                                        data-vv-as="Start date"
+                                        v-model="candidateEducation[index].start_date"
+                                        :counter="50"
+                                    ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 class="pa-3">
+                                    <v-text-field
+                                        label="Graduation date"
+                                        name="graduation_date"
+                                        v-validate="{ required: true, max: 50 }"
+                                        :error-messages="errors ? errors.collect('graduation_date') : null"
+                                        data-vv-as="Start date"
+                                        v-model="candidateEducation[index].end_date"
+                                        :counter="50"
+                                    ></v-text-field>
+                                </v-flex>
+                                <!--<v-flex xs12 sm6 class="pa-3">
                                     <v-layout row>
                                         <v-flex xs6>
                                             <v-dialog
@@ -311,11 +325,12 @@
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>
-                                </v-flex>
+                                </v-flex>-->
                             </v-layout>
                         </v-card-text>
                     </v-card>
                 </v-expansion-panel-content>
+                </draggable>
                 <!-- <v-card-actions class="justify-center">
                     <v-btn color="orange" @click="saveEducation">Save</v-btn>
                 </v-card-actions> -->
@@ -326,7 +341,11 @@
 
 <script>
     import Noty from 'noty'
+    import Draggable from 'vuedraggable'
+
     export default {
+        inject: ['$validator'], // Inject parent validator
+        components: { Draggable },
         created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -337,10 +356,10 @@
                 resumeSlug: '',
                 modalNewEducation: false,
                 modalEditEducation: false,
-                modalDate: false,
-                reference: 0,
+                // modalDate: false,
+                // reference: 0,
                 // picker: new Date().toISOString().substr(0, 7),
-                picker: '2019-01',
+                // picker: '2019-01',
                 newEducation: {
                     name: '',
                     title: '',
@@ -374,14 +393,14 @@
                     graduationDate: [],
                     // date: [new Date().toISOString().substr(0, 7)],
                     // dateMenu: [false],
-                    modalStartDate: false,
+                    // modalStartDate: false,
                     startDate: '',
-                    startDateType: 'month',
-                    modalEndDate: false,
+                    // startDateType: 'month',
+                    // modalEndDate: false,
                     endDate: '',
-                    endDateType: 'month',
-                    editStartDateType: 'month',
-                    editEndDateType: 'month'
+                    // endDateType: 'month',
+                    // editStartDateType: 'month',
+                    // editEndDateType: 'month'
                 }
             }
         },
@@ -405,35 +424,18 @@
             loadedNewResume () {
                 return this.$store.getters['resumes/loadedNewResume']
             },
-            candidateEducation () {
-                return this.userResume.education
-                const educationEmptyArray = []
-                // const education = this.$store.getters['index/candidateLongResume'].education
-                // const education = this.loadedUserResume.education
-                // return education ? education : educationEmptyArray
-                // return education
-                // return this.$store.getters['index/candidateLongResume'].education
-
-
-                // const candidateLongResume = this.$store.getters['index/candidateLongResume']
-                // console.log('candidateLongResume: ', candidateLongResume)
-                // const abc = []
-                // for (let i = 1; i <= 5; i++) {
-                //     const a = `education_${i}_name`
-                //     // console.log('a: ', a)
-                //     if (candidateLongResume[`education_${i}_name`]) {
-                //         abc.push({
-                //             'name': candidateLongResume[`education_${i}_name`],
-                //             'slug': candidateLongResume[`education_${i}_slug`],
-                //             'description': candidateLongResume[`education_${i}description`],
-                //             'location': candidateLongResume[`education_${i}_location`],
-                //             'duration': candidateLongResume[`education_${i}_duration`],
-                //             'graduation_date': candidateLongResume[`education_${i}_graduation_date`]
-                //         })
-                //     }
-                // }
-                // return abc
-            }
+            candidateEducation : {
+                get () {
+                    return this.userResume.education
+                },
+                set (value) {
+                    this.userResume.education = value
+                }
+            },
+            // candidateEducation2 () {
+            //     return this.userResume.education
+            //     const educationEmptyArray = []
+            // }
         },
         methods: {
             saveEducation () {
@@ -459,46 +461,46 @@
                     theme: 'metroui'
                 }).show()
             },
-            editEducation (education, reference) {
+            editEducation (education) {
                 console.log('editEducation')
-                console.log('reference: ', reference)
+                // console.log('reference: ', reference)
                 this.modalEditEducation = false
             },
-            saveNewStartDate () {
-                this.newEducation.start_date = this.form.startDate
-                this.form.modalStartDate = false
-            },
-            deleteStartDate (index) {
-                this.candidateEducation[index].start_date = ''
-                this.form.modalStartDate = false
-            },
-            deleteNewStartDate () {
-                this.newEducation.start_date = ''
-                this.form.modalStartDate = false
-            },
-            saveNewEndDate () {
-                this.newEducation.end_date = this.form.endDate
-                this.form.modalEndDate = false
-            },
-            deleteEndDate (index) {
-                this.candidateEducation[index].end_date = ''
-                this.form.modalEndDate = false
-            },
-            deleteNewEndDate () {
-                this.newEducation.end_date = ''
-                this.form.modalEndDate = false
-            },
-            saveDate2 (date, index) {
-                console.log('saveDate')
-                console.log('date: ', date)
-                console.log('index: ', index)
-                if (!index) {
-                    this.newEducation.graduation_date = date
-                } else {
-                    this.education[index].graduation_date = date                    
-                }
-                this.modalDate = false
-            },
+            // saveNewStartDate () {
+            //     this.newEducation.start_date = this.form.startDate
+            //     this.form.modalStartDate = false
+            // },
+            // deleteStartDate (index) {
+            //     this.candidateEducation[index].start_date = ''
+            //     this.form.modalStartDate = false
+            // },
+            // deleteNewStartDate () {
+            //     this.newEducation.start_date = ''
+            //     this.form.modalStartDate = false
+            // },
+            // saveNewEndDate () {
+            //     this.newEducation.end_date = this.form.endDate
+            //     this.form.modalEndDate = false
+            // },
+            // deleteEndDate (index) {
+            //     this.candidateEducation[index].end_date = ''
+            //     this.form.modalEndDate = false
+            // },
+            // deleteNewEndDate () {
+            //     this.newEducation.end_date = ''
+            //     this.form.modalEndDate = false
+            // },
+            // saveDate2 (date, index) {
+            //     console.log('saveDate')
+            //     console.log('date: ', date)
+            //     console.log('index: ', index)
+            //     if (!index) {
+            //         this.newEducation.graduation_date = date
+            //     } else {
+            //         this.education[index].graduation_date = date                    
+            //     }
+            //     this.modalDate = false
+            // },
             deleteItem (index) {
                 console.log('delete: ', index)
                 this.candidateEducation.splice(index, 1)

@@ -15,6 +15,7 @@
             <!-- loadedUser: {{ loadedUser }}<br /><br /> -->
             loadingCreateResume: {{ loadingCreateResume }}<br /><br />
             loadingUploadFiles: {{ loadingUploadFiles }}<br /><br />
+            step: {{ step }}<br /><br />
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
@@ -49,72 +50,72 @@
 
                 <v-stepper v-model="step">
                     <v-stepper-header>
-                        <v-stepper-step step="1" editable>Choose Template</v-stepper-step>
+                        <v-stepper-step :step="1" editable>Choose Template</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepPersonalDataValidate]" step="2" editable>General & Personal Data</v-stepper-step>
+                        <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepEducationValidate]" step="3" editable>Education</v-stepper-step>
+                        <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepWorkExperienceValidate]" step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
+                        <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="6" editable>Files upload</v-stepper-step>
+                        <v-stepper-step :step="6" editable>Files upload</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="7" editable>Other</v-stepper-step>
+                        <v-stepper-step :step="7" editable>Other</v-stepper-step>
 
                     </v-stepper-header>
 
                     <v-stepper-items>
-                        <v-stepper-content step="1">
+                        <v-stepper-content :step="1">
                             <v-card class="mb-5">
                                 <template-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="2">
+                        <v-stepper-content :step="2">
                             <v-card class="mb-5">
                                 <personal-data-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="3">
+                        <v-stepper-content :step="3">
                             <v-card class="mb-5">
                                 <education-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="4">
+                        <v-stepper-content :step="4">
                             <v-card class="mb-5">
                                 <work-experience-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="5">
+                        <v-stepper-content :step="5">
                             <v-card class="mb-5">
                                 <skills-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="6">
+                        <v-stepper-content :step="6">
                             <v-card class="mb-5">
                                 <file-uploads-component />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="7">
+                        <v-stepper-content :step="7">
                             <v-card class="mb-5">
                                 Other
                             </v-card>
@@ -124,13 +125,13 @@
                     <v-card-actions class="justify-center">
                         <v-btn
                             color="primary"
-                            @click.stop="step -= 1"
+                            @click.stop="moveOneStepBackward"
                         >
                             <v-icon>keyboard_arrow_left</v-icon> Previous
                         </v-btn>
                         <v-btn
                             color="primary"
-                            @click.stop="step += 1"
+                            @click.stop="moveOneStepForward"
                         >
                             Next <v-icon>keyboard_arrow_right</v-icon>
                         </v-btn>
@@ -191,21 +192,21 @@
 
                 <v-card-text>
                     <v-alert
-                        :value="loadingUploadFiles"
-                        color="secondary"
-                        outline
-                    >
-                        <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
-                        </div>
-                    </v-alert>
-                    <v-alert
                         :value="loadingCreateResume"
                         color="primary"
                         outline
                     >
                         <div class="text-xs-center">
                             <v-progress-circular indeterminate color="primary"></v-progress-circular> Saving resume in database...
+                        </div>
+                    </v-alert>
+                    <v-alert
+                        :value="loadingUploadFiles"
+                        color="secondary"
+                        outline
+                    >
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                         </div>
                     </v-alert>
                 </v-card-text>
@@ -309,6 +310,20 @@
             stepSkillsValidate () {
                 return true
             },
+            moveOneStepForward () {
+                if (this.step < 7) {
+                    this.step += 1
+                } else {
+                    this.step = 1
+                }
+            },
+            moveOneStepBackward () {
+                if (this.step != 1) {
+                    this.step -= 1
+                } else {
+                    this.step = 7
+                }
+            },
             importDataFromResume () {
                 console.log('importDataFromResume')
                 this.$store.commit('resumes/setNewResume', this.importResume)
@@ -352,7 +367,7 @@
                         this.$store.commit('setLoadingResume', true, { root: true })
                         await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
                         // this.loadingCreateResume = false
-                        // this.$store.commit('setLoadingFiles', false, { root: true })
+                        this.$store.commit('setLoadingFiles', false, { root: true })
                         this.$router.push('/candidate/resumes')
                         new Noty({
                             type: 'success',
@@ -376,7 +391,7 @@
                         theme: 'metroui'
                     }).show()
                     Object.entries(error).forEach(([key, value]) => {
-                        if (key === 'slug' || key === 'wrong_api_key') {
+                        if (key === 'server_error' || key === 'slug' || key === 'not_enough_space') {
                             console.log('key: ', key)
                             console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
@@ -392,9 +407,10 @@
                                 timeout: 8000,
                                 theme: 'metroui'
                             }).show()
-                        } else {
-
                         }
+                        // } else {
+
+                        // }
                     })
                     // if (error.response && error.response.data && error.response.data.error) {
                     //     new Noty({

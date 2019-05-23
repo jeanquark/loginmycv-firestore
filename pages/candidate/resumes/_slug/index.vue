@@ -12,72 +12,72 @@
                 <v-stepper v-model="step">
  
                     <v-stepper-header>
-                        <v-stepper-step step="1" editable>Choose Template</v-stepper-step>
+                        <v-stepper-step :step="1" editable>Choose Template</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepPersonalDataValidate]" step="2" editable>General & Personal Data</v-stepper-step>
+                        <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepEducationValidate]" step="3" editable>Education</v-stepper-step>
+                        <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepWorkExperienceValidate]" step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepSkillsValidate]" step="5" editable>Skills</v-stepper-step>
+                        <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="6" editable>Files upload</v-stepper-step>
+                        <v-stepper-step :step="6" editable>Files upload</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step step="7" editable>Other</v-stepper-step>
+                        <v-stepper-step :step="7" editable>Other</v-stepper-step>
 
                     </v-stepper-header>
 
                     <v-stepper-items>
-                        <v-stepper-content step="1">
+                        <v-stepper-content :step="1">
                             <v-card class="mb-5">
                                 <template-component :edit="true" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="2">
+                        <v-stepper-content :step="2">
                             <v-card class="mb-5">
                                 <personal-data-component v-if="step == 2" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="3">
+                        <v-stepper-content :step="3">
                             <v-card class="mb-5">
                                 <education-component v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="4">
+                        <v-stepper-content :step="4">
                             <v-card class="mb-5">
                                 <work-experience-component v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="5">
+                        <v-stepper-content :step="5">
                             <v-card class="mb-5">
                                 <skills-component v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="6">
+                        <v-stepper-content :step="6">
                             <v-card class="mb-5">
                                 <file-uploads-component v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content step="7">
+                        <v-stepper-content :step="7">
                             <v-card class="mb-5">
                                 <h2>Other</h2>
                             </v-card>
@@ -87,13 +87,13 @@
                     <v-card-actions class="justify-center">
                         <v-btn
                             color="primary"
-                            @click.stop="step -= 1"
+                            @click.stop="moveOneStepBackward"
                         >
                             <v-icon>keyboard_arrow_left</v-icon> Previous
                         </v-btn>
                         <v-btn
                             color="primary"
-                            @click.stop="step += 1"
+                            @click.stop="moveOneStepForward"
                         >
                             Next <v-icon>keyboard_arrow_right</v-icon>
                         </v-btn>
@@ -245,18 +245,18 @@
             onInput (val) {
                 this.steps = parseInt(val)
             },
-            previousStep (n) {
-                if (n === 1) {
-                    this.step = this.steps.length
+            moveOneStepForward () {
+                if (this.step < 7) {
+                    this.step += 1
                 } else {
-                    this.step = n - 1
+                    this.step = 1
                 }
             },
-            nextStep (n) {
-                if (n === this.steps.length) {
-                    this.step = 1
+            moveOneStepBackward () {
+                if (this.step != 1) {
+                    this.step -= 1
                 } else {
-                    this.step = n + 1
+                    this.step = 7
                 }
             },
             async updateResume () {

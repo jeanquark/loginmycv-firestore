@@ -38,7 +38,7 @@
                                     :persistent-hint="true"
                                     v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
                                     :error-messages="errors ? errors.collect('slug') : null"
-                                    data--vv-as="Resume identifier"
+                                    data-vv-as="Resume identifier"
                                     v-model="userResume.slug"
                                 ><font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -493,7 +493,7 @@
                                             :persistent-hint="true"
                                             v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
                                             :error-messages="errors ? errors.collect('new_slug') : null"
-                                            data--vv-as="Resume identifier"
+                                            data-vv-as="Resume identifier"
                                             v-model="userResume.new_slug"
                                         ></v-text-field>
                                     </v-flex>

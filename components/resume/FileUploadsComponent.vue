@@ -266,7 +266,7 @@
 			},		
 			getFileIndex (index) {
 				if (index < this.userResume.uploads.length - this.getUserFiles.length) {
-					return index
+					return index + 1
 				} else {
 					return index - (this.userResume.uploads.length - this.getUserFiles.length) + 1
 				}

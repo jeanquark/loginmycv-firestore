@@ -9,7 +9,7 @@
                 outline
                 v-if="!userResume.work_experience.length > 0"
             >
-                You have no item here, please click on the rounded pink button to add one
+                There is no item here, please click on the rounded pink button to add one
             </v-alert>
             <v-expansion-panel style="">
                 <v-dialog
@@ -164,8 +164,8 @@
                         <div slot="header">
                             <v-layout align-center>
                                 <!-- <v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp; -->
-                                <v-btn style="cursor: move; margin-left: 0px;" icon class="handle"><v-icon>drag_indicator</v-icon></v-btn>
-                                <v-icon @click.native.stop="deleteItem(index)">cancel</v-icon>&nbsp;&nbsp;
+                                <v-btn style="cursor: move;" icon class="handle ml-0"><v-icon>drag_indicator</v-icon></v-btn>
+                                <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
                                 <!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
                                 <span style="font-size: 1.5em;">{{ workExperience.company }}</span>
                                 <!-- <v-btn small color="secondary">Order</v-btn> -->
@@ -200,14 +200,14 @@
                                         <v-text-field
                                             v-model="candidateWorkExperience[index].city"
                                             label="City"
-                                            :counter="30"
+                                            :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
                                         <v-text-field
                                             v-model="candidateWorkExperience[index].country"
                                             label="Country"
-                                            :counter="30"
+                                            :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
