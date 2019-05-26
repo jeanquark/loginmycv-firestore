@@ -54,6 +54,8 @@
 					</v-card-title>
 
 					<v-card-text>
+						<!-- <input type="hidden" v-validate:length="'min_value:5'" name="file_title" data-vv-as="Files uploads"> -->
+						<!-- length: {{ length }}<br /> -->
 						<v-text-field
 							label="File Title"
 							:name="`file_title_${index}`"
@@ -148,7 +150,14 @@
         computed: {
 			errors () {
                 return this.$store.getters['errors']
-            },
+			},
+			// length () {
+			// 	if (this.userResume.uploads) {
+			// 		return this.userResume.uploads.length
+
+			// 	}
+			// 	return 0
+      		// },
             userResume () {
                 if (this.resumeSlug) {
                     return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
@@ -221,6 +230,15 @@
         },
         methods: {
 			addUpload () {
+				if (this.userResume.uploads.length < 10) {
+					new Noty({
+						type: 'warning',
+						text: 'No more than 10 items allowed!',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					return
+				}
 				console.log('addUpload')
 				// this.getCurrentFiles.push({})
 				// if (!this.userResume.uploads) {

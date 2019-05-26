@@ -411,7 +411,7 @@
                     // this.loadingCreateResume = true
                     // this.$store.commit('setLoadingFiles', true, { root: true })
                     await this.$validator.validateAll()
-                    if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red
+                    if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
                         const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
                         if (this.errors.items.some(e => inputs.includes(e.field))) {
                             console.log('Personal data errors')

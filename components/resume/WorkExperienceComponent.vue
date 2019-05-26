@@ -124,7 +124,7 @@
                             </v-layout>
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
-                            <v-btn class="success" @click="addNewWorkExperience(newWorkExperience)">Add</v-btn>&nbsp;
+                            <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('work_experience')).length > 0" @click="addNewWorkExperience()">Add</v-btn>&nbsp;
                             <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -364,7 +364,16 @@
                 this.modalNewWorkExperience = false
                 this.newWorkExperience = {}
             },
-            addNewWorkExperience (newWorkExperience) {
+            addNewWorkExperience () {
+                if (this.userResume.work_experience.length < 10) {
+					new Noty({
+						type: 'warning',
+						text: 'No more than 10 items allowed!',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					return
+				}
                 this.modalNewWorkExperience = false
                 this.userResume.work_experience.push({
                     company: newWorkExperience.company,

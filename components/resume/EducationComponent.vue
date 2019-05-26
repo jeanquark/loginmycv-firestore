@@ -168,7 +168,7 @@
                         
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
-                            <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('education')).length > 0" @click="addNewEducation(newEducation)">Add</v-btn>&nbsp;
+                            <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('education')).length > 0" @click="addNewEducation()">Add</v-btn>&nbsp;
                             <!-- <v-btn class="success" @click="addNewEducation(newEducation)">Add</v-btn> -->
                             <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
                         </v-card-actions>
@@ -186,7 +186,7 @@
                         <!-- <v-icon slot="actions" color="teal">done</v-icon> -->
                         <!-- <v-icon color="teal">cross</v-icon> -->
                         <!-- @click.native.stop="delete(index)" -->
-                        <div slot="header" @click="open">
+                        <div slot="header">
                             <v-layout align-center>
                                 <v-btn style="cursor: move;" icon class="handle ml-0"><v-icon>drag_indicator</v-icon></v-btn>
                                 <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
@@ -468,7 +468,16 @@
                 console.log('saveEducation')
                 console.log(this.form)
             },
-            addNewEducation (newEducation) {
+            addNewEducation () {
+                if (this.userResume.newEducation.length < 10) {
+					new Noty({
+						type: 'warning',
+						text: 'No more than 10 items allowed!',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					return
+				}
                 this.modalNewEducation = false
                 console.log('addNewEducation: ', newEducation)
                 console.log('this.userResume.education: ', this.userResume.education)
