@@ -9,13 +9,14 @@
                 outline
                 v-if="!userResume.work_experience.length > 0"
             >
-                There is no item here, please click on the rounded pink button to add one
+                There is no item in here, please click on the rounded pink button to add one
             </v-alert>
             <v-expansion-panel style="">
                 <v-dialog
                     v-model="modalNewWorkExperience"
                     width="500"
                     activator
+                    persistent
                 >
                     <v-btn
                         fab
@@ -33,51 +34,55 @@
                             primary-title
                         >
                             <v-layout class="justify-center">
-                                Add a new work experience entry
+                               Add a new entry
                             </v-layout>
                         </v-card-title>
 
                         <v-card-text>
-                            <v-text-field
-                                label="Company"
-                                name="company_dialog"
-                                placeholder="Google Inc."
-                                v-model="newWorkExperience.company"
-                                v-validate="{ max: 50 }"
-                                :error-messages="errors ? errors.collect('company_dialog') : null"
-                                data-vv-as="Company"
-                                :counter="50"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Job title"
-                                name="job_title_dialog"
-                                placeholder="Sofware engineer"
-                                v-model="newWorkExperience.job_title"
-                                v-validate="{ max: 50 }"
-                                :error-messages="errors ? errors.collect('job_title_dialog') : null"
-                                data-vv-as="Job title"
-                                :counter="50"
-                            ></v-text-field>
-                            <v-flex xs12>
-                                <v-textarea
-                                    label="Job description/responsibility"
-                                    name="description_dialog"
-                                    v-model="newWorkExperience.job_description"
-                                    v-validate="{ max: 500 }"
-                                    :error-messages="errors ? errors.collect('description_dialog') : null"
-                                    data-vv-as="Description"
-									:counter="500"
-								></v-textarea>
-							</v-flex>
-                            <v-layout row>
+                            <v-layout row wrap>
+                                <v-flex xs12>
+                                    <v-text-field
+                                        label="Company"
+                                        name="work_experience_company_name"
+                                        placeholder="Google Inc."
+                                        v-model="newWorkExperience.company"
+                                        v-validate="{ max: 2 }"
+                                        :error-messages="errors ? errors.collect('work_experience_company_name') : null"
+                                        data-vv-as="Company"
+                                        :counter="2"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-text-field
+                                        label="Job title"
+                                        name="work_experience_job_title"
+                                        placeholder="Sofware engineer"
+                                        v-model="newWorkExperience.job_title"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('work_experience_job_title') : null"
+                                        data-vv-as="Job title"
+                                        :counter="50"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-textarea
+                                        label="Job description/responsibility"
+                                        name="work_experience_job_description"
+                                        v-model="newWorkExperience.job_description"
+                                        v-validate="{ max: 500 }"
+                                        :error-messages="errors ? errors.collect('work_experience_job_description') : null"
+                                        data-vv-as="Description"
+                                        :counter="500"
+                                    ></v-textarea>
+                                </v-flex>
                                 <v-flex xs6 class="pr-2">
                                     <v-text-field
                                         label="City"
-                                        name="city_dialog"
-                                        placeholder="San Francisco CA"
+                                        name="work_experience_city"
+                                        placeholder="San Francisco, CA"
                                         v-model="newWorkExperience.city"
                                         v-validate="{ max: 50 }"
-                                        :error-messages="errors ? errors.collect('city_dialog') : null"
+                                        :error-messages="errors ? errors.collect('work_experience_city') : null"
                                         data-vv-as="City"
                                         :counter="50"
                                     ></v-text-field>
@@ -85,91 +90,42 @@
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field
                                         label="Country"
-                                        name="country_dialog"
+                                        name="work_experience_country"
                                         placeholder="USA"
                                         v-model="newWorkExperience.country"
                                         v-validate="{ max: 50 }"
-                                        :error-messages="errors ? errors.collect('country_dialog') : null"
+                                        :error-messages="errors ? errors.collect('work_experience_country') : null"
                                         data-vv-as="Country"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
-                            </v-layout>
-                            <v-layout row>
-                                <v-flex xs6>
-                                    <v-dialog
-                                        v-model="form.modalStartDate"
-                                        persistent
-                                        lazy
-                                        full-width
-                                        width="300px"
-                                    >
-                                        <v-text-field
-                                            slot="activator"
-                                            v-model="newWorkExperience.start_date"
-                                            label="Start date"
-                                            prepend-icon="event"
-                                            readonly
-                                        ></v-text-field>
-                                        <v-date-picker v-model="form.startDate" :type="form.startDateType" color="primary" :scrollable="false">
-                                            <v-layout justify-center>
-                                                <v-btn flat color="error" @click="deleteNewStartDate">Remove</v-btn>
-                                                <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
-                                                <v-btn flat color="success" @click="saveNewStartDate">OK</v-btn>
-                                            </v-layout>
-                                        </v-date-picker>
-                                    </v-dialog>
+                                <v-flex xs6 class="pr-2">
+                                    <v-text-field
+                                        label="Start date"
+                                        name="work_experience_start_date"
+                                        v-model="newWorkExperience.start_date"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('work_experience_start_date') : null"
+                                        data-vv-as="Start date"
+                                        :counter="50"
+                                    ></v-text-field>
                                 </v-flex>
-                                <v-flex xs6>
-                                    <v-layout justify-center>
-                                        <div>
-                                            <v-radio-group v-model="form.startDateType" row>
-                                                <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                            </v-radio-group>
-                                        </div>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row>
-                                <v-flex xs6>
-                                    <v-dialog
-                                        v-model="form.modalEndDate"
-                                        persistent
-                                        lazy
-                                        full-width
-                                        width="300px"
-                                    >
-                                        <v-text-field
-                                            slot="activator"
-                                            v-model="newWorkExperience.end_date"
-                                            label="End date"
-                                            prepend-icon="event"
-                                            readonly
-                                        ></v-text-field>
-                                        <v-date-picker v-model="form.endDate" :type="form.endDateType" color="primary" :scrollable="false">
-                                            <v-layout justify-center>
-                                                <v-btn flat color="error" @click="deleteNewEndDate">Remove</v-btn>
-                                                <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
-                                                <v-btn flat color="success" @click="saveNewEndDate">OK</v-btn>
-                                            </v-layout>
-                                        </v-date-picker>
-                                    </v-dialog>
-                                </v-flex>
-                                <v-flex xs6>
-                                    <v-layout justify-center>
-                                        <div>
-                                            <v-radio-group v-model="form.endDateType" row>
-                                                <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                            </v-radio-group>
-                                        </div>
-                                    </v-layout>
+                                <v-flex xs6 class="pl-2">
+                                    <v-text-field
+                                        label="End date"
+                                        name="work_experience_end_date"
+                                        v-model="newWorkExperience.end_date"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('work_experience_end_date') : null"
+                                        data-vv-as="End date"
+                                        :counter="50"
+                                    ></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
-                            <v-btn class="success" @click="addNewWorkExperience(newWorkExperience)">Add</v-btn>
+                            <v-btn class="success" @click="addNewWorkExperience(newWorkExperience)">Add</v-btn>&nbsp;
+                            <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -187,7 +143,8 @@
                                 <v-btn style="cursor: move;" icon class="handle ml-0"><v-icon>drag_indicator</v-icon></v-btn>
                                 <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
                                 <!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
-                                <span style="font-size: 1.5em;">{{ workExperience.company }}</span>
+                                <span style="font-size: 1.5em;" :class="{ 'errorTitle': workExperienceErrors[index] }">{{ workExperience.company }}</span>
+
                                 <!-- <v-btn small color="secondary">Order</v-btn> -->
                             </v-layout>         
                         </div>
@@ -196,144 +153,92 @@
                             <v-card-text style="">
                                 <v-layout row wrap>
                                     <v-flex xs12 sm6 class="pa-3">
-                                            <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('company') : null"
-                                            data-vv-as="Company" -->
+                                            <!--  -->
                                         <v-text-field
                                             label="Company"
-                                            name="company"
+                                            :name="`work_experience_company_${index}`"
                                             v-model="candidateWorkExperience[index].company"
-                                            :counter="50"
+                                            v-validate="{ max: 2 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_company_${index}`) : null"
+                                            data-vv-as="Company"
+                                            :counter="2"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                            <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('job_title') : null"
-                                            data-vv-as="Job title" -->
+                                            <!-- -->
                                         <v-text-field
                                             label="Job title"
-                                            name="job_title"
+                                            :name="`work_experience_job_title_${index}`"
                                             v-model="candidateWorkExperience[index].job_title"
+                                            v-validate="{ required: true, max: 50 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_job_title_${index}`) : null"
+                                            data-vv-as="Job title"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 class="pa-3">
-                                            <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('description') : null"
-                                            data-vv-as="Description" -->
+                                            <!--  -->
                                         <v-textarea
                                             label="Job description/responsibility"
-                                            name="description"
+                                            :name="`work_experience_job_decription_${index}`"
                                             v-model="candidateWorkExperience[index].job_description"
-                                            :counter="200"
+                                            v-validate="{ max: 500 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_job_decription_${index}`) : null"
+                                            data-vv-as="Description"
+                                            :counter="500"
                                         ></v-textarea>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                            <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('city') : null"
-                                            data-vv-as="City" -->
+                                            <!--  -->
                                         <v-text-field
                                             label="City"
-                                            name="city"
+                                            :name="`work_experience_city_${index}`"
                                             v-model="candidateWorkExperience[index].city"
+                                            v-validate="{ max: 50 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_city_${index}`) : null"
+                                            data-vv-as="City"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                            <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('country') : null"
-                                            data-vv-as="Country" -->
+                                            <!--  -->
                                         <v-text-field
                                             label="Country"
-                                            name="country"
+                                            :name="`work_experience_country_${index}`"
                                             v-model="candidateWorkExperience[index].country"
+                                            v-validate="{ max: 50 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_country_${index}`) : null"
+                                            data-vv-as="Country"
                                             :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <v-layout row>
-                                            <v-flex xs6>
-                                                <v-dialog
-                                                    v-model="form.modalStartDate"
-                                                    persistent
-                                                    lazy
-                                                    full-width
-                                                    width="300px"
-                                                >
-                                                    <v-text-field
-                                                        slot="activator"
-                                                        v-model="candidateWorkExperience[index].start_date"
-                                                        label="Start date"
-                                                        prepend-icon="event"
-                                                        readonly
-                                                    ></v-text-field>
-                                                    <v-date-picker v-model="candidateWorkExperience[index].start_date" :type="form.editStartDateType" :scrollable="false">
-                                                        <v-layout justify-center>
-                                                            <v-btn flat color="error" @click="deleteStartDate(index)">Remove</v-btn>
-                                                            <v-btn flat color="secondary" @click="form.modalStartDate = false">Cancel</v-btn>
-                                                            <v-btn flat color="success" @click="form.modalStartDate = false">OK</v-btn>
-                                                        </v-layout>
-                                                    </v-date-picker>
-                                                </v-dialog>
-                                            </v-flex>
-                                            <v-flex xs6>
-                                                <v-layout justify-center>
-                                                    <div>
-                                                        <v-radio-group v-model="form.editStartDateType" row>
-                                                            <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                            <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                        </v-radio-group>
-                                                    </div>
-                                                </v-layout>
-                                            </v-flex>
-                                        </v-layout>
+                                        <v-text-field
+                                            label="Start date"
+                                            :name="`work_experience_start_date_${index}`"
+                                            v-validate="{ max: 50 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_start_date_${index}`) : null"
+                                            data-vv-as="Start date"
+                                            v-model="candidateWorkExperience[index].start_date"
+                                            :counter="50"
+                                        ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <v-layout row>
-                                            <v-flex xs6>
-                                                <v-dialog
-                                                    v-model="form.modalEndDate"
-                                                    persistent
-                                                    lazy
-                                                    full-width
-                                                    width="300px"
-                                                >
-                                                    <v-text-field
-                                                        slot="activator"
-                                                        v-model="candidateWorkExperience[index].end_date"
-                                                        label="End date"
-                                                        prepend-icon="event"
-                                                        readonly
-                                                    ></v-text-field>
-                                                    <v-date-picker v-model="candidateWorkExperience[index].end_date" :type="form.editEndDateType" :scrollable="false">
-                                                        <v-layout justify-center>
-                                                            <v-btn flat color="error" @click="deleteEndDate(index)">Remove</v-btn>
-                                                            <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
-                                                            <v-btn flat color="success" @click="form.modalEndDate = false">OK</v-btn>
-                                                        </v-layout>
-                                                    </v-date-picker>
-                                                </v-dialog>
-                                            </v-flex>
-                                            <v-flex xs6>
-                                                <v-layout justify-center>
-                                                    <div>
-                                                        <v-radio-group v-model="form.editEndDateType" row>
-                                                            <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                            <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                        </v-radio-group>
-                                                    </div>
-                                                </v-layout>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-flex>
+                                        <v-text-field
+                                            label="End date"
+                                            :name="`work_experience_end_date_${index}`"
+                                            v-validate="{ max: 50 }"
+                                            :error-messages="errors ? errors.collect(`work_experience_end_date_${index}`) : null"
+                                            data-vv-as="End date"
+                                            v-model="candidateWorkExperience[index].end_date"
+                                            :counter="50"
+                                        ></v-text-field>
+                                    </v-flex>                      
                                 </v-layout>
                             </v-card-text>
                         </v-card>
                     </v-expansion-panel-content>
                 </draggable>
-
-
-
             </v-expansion-panel>
         </v-layout>
     </div>
@@ -345,6 +250,7 @@
     export default {
         inject: ['$validator'],
         components: { Draggable },
+        props: ['workExperienceErrors'],
         created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -356,7 +262,13 @@
                 modalNewWorkExperience: false,
 				modalEditWorkExperience: false,
 				newWorkExperience: {
-					// company: ''
+                    company: '',
+                    job_title: '',
+                    job_description: '',
+                    city: '',
+                    country: '',
+                    start_date: '',
+                    end_date: ''
 				},
 
 
@@ -415,9 +327,9 @@
             }
         },
         computed: {
-            error () {
-                return this.$store.getters['index/error']
-            },
+            // error () {
+            //     return this.$store.getters['index/error']
+            // },
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
             },
@@ -448,12 +360,25 @@
             //     console.log('saveEducation')
             //     console.log(this.form)
             // },
-            addNewWorkExperience (newWorkExperience) {
-                this.userResume.work_experience.push(newWorkExperience)
+            closeModal () {
                 this.modalNewWorkExperience = false
+                this.newWorkExperience = {}
+            },
+            addNewWorkExperience (newWorkExperience) {
+                this.modalNewWorkExperience = false
+                this.userResume.work_experience.push({
+                    company: newWorkExperience.company,
+                    job_title: newWorkExperience.job_title,
+                    job_description: newWorkExperience.job_description,
+                    city: newWorkExperience.city,
+                    country: newWorkExperience.country,
+                    start_date: newWorkExperience.start_date,
+                    end_date: newWorkExperience.end_date
+                })
+                this.newWorkExperience = {}
                 new Noty({
                     type: 'success',
-                    text: 'New work experience field added!',
+                    text: 'New work experience added!',
                     timeout: 5000,
                     theme: 'metroui'
                 }).show()
@@ -463,30 +388,6 @@
             //     console.log('reference: ', reference)
             //     this.modalEditWorkExperience = false
             // },
-            saveNewStartDate () {
-                this.newWorkExperience.start_date = this.form.startDate
-                this.form.modalStartDate = false
-            },
-            deleteStartDate (index) {
-                this.candidateWorkExperience[index].start_date = ''
-                this.form.modalStartDate = false
-            },
-            deleteNewStartDate () {
-                this.newWorkExperience.start_date = ''
-                this.form.modalStartDate = false
-            },
-            saveNewEndDate () {
-                this.newWorkExperience.end_date = this.form.endDate
-                this.form.modalEndDate = false
-            },
-            deleteEndDate (index) {
-                this.candidateWorkExperience[index].end_date = ''
-                this.form.modalEndDate = false
-            },
-            deleteNewEndDate () {
-                this.newWorkExperience.end_date = ''
-                this.form.modalEndDate = false
-            },
             // saveDate2 (date, index) {
             //     console.log('saveDate')
             //     console.log('date: ', date)
@@ -507,5 +408,7 @@
 </script>
 
 <style scoped>
-
+    .errorTitle {
+        color: var(--v-error-base);
+    }
 </style>

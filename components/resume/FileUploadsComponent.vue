@@ -43,23 +43,27 @@
 			<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
 			<!-- <div > -->
-			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index" v-if="file.type === 'downloadable_file'">
+			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index" >
 				<!-- <v-layout > -->
 				<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-if="file.type === 'downloadable_file'" > -->
 				<!-- <v-card class="ma-2" v-if="file.type === 'downloadable_file'"> -->
-				<v-card class="ma-2" >
+				<v-card class="ma-2" v-if="file.type === 'downloadable_file'">
 					<v-card-title primary-title class="justify-center">
-						<h3 class="headline mb-0">File #{{ getFileIndex(index) }}</h3>
+						<h3 class="headline mb-0" :class="{ 'errorTitle': fileUploadErrors[index] }">File #{{ getFileIndex(index) }}</h3>
 					</v-card-title>
 
 					<v-card-text>
 						<v-text-field
-							:counter="50"
 							label="File Title"
+							:name="`file_title_${index}`"
 							placeholder="eg. My CV, Company X recommandation letter, etc."
 							prepend-icon="title"
+							v-validate="{ max: 2 }"
+                            :error-messages="errors ? errors.collect(`file_title_${index}`) : null"
+                            data-vv-as="File title"
 							v-model="userResume.uploads[index].title"
+							:counter="2"
 						></v-text-field>
 						<!-- v-model="getCurrentFiles[index].title" -->
 						<!-- v-model="userResume.uploads[index].title" -->
@@ -112,6 +116,8 @@
 	import moment from 'moment'
 	import Noty from 'noty'
     export default {
+		inject: ['$validator'], // Inject parent validator
+		props: ['fileUploadErrors'],
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -140,6 +146,9 @@
             }
         },
         computed: {
+			errors () {
+                return this.$store.getters['errors']
+            },
             userResume () {
                 if (this.resumeSlug) {
                     return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
@@ -221,7 +230,7 @@
 				this.userResume.uploads.push({
 				// this.getCurrentFiles.push({
 					file: '',
-					title: 'DEF',
+					title: '',
 					name: '',
 					size_in_bytes: 0,
 					new: true,
@@ -309,5 +318,7 @@
 </script>
 
 <style scoped>
-
+	.errorTitle {
+        color: var(--v-error-base);
+    }
 </style>

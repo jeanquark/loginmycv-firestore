@@ -15,7 +15,8 @@
             <!-- loadedUser: {{ loadedUser }}<br /><br /> -->
             loadingCreateResume: {{ loadingCreateResume }}<br /><br />
             loadingUploadFiles: {{ loadingUploadFiles }}<br /><br />
-            step: {{ step }}<br /><br />
+            stepEducationErrorsArray: {{ stepEducationErrorsArray }}<br /><br />
+            stepPersonalDataErrors: {{ stepPersonalDataErrors }}<br /><br />
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
@@ -54,27 +55,34 @@
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step>
+                        <v-stepper-step :step="2" editable v-if="stepPersonalDataErrors === false">General & Personal Data</v-stepper-step>
+                        <v-stepper-step :step="2" editable :rules="[() => false]" v-else>General & Personal Data</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step>
+                        <!-- <v-stepper-step :rules="[stepEducationValidate2]" :step="3" editable>Education</v-stepper-step> -->
+                        <!-- <v-stepper-step :step="3"><span :class="{ 'error2': hasError('education') }">Education</span></v-stepper-step> -->
+                        <v-stepper-step :step="3" editable v-if="stepEducationErrorsArray.length < 1">Education</v-stepper-step>
+                        <v-stepper-step :step="3" editable :rules="[() => false]" v-else>Education</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step>
+                        <v-stepper-step :step="4" editable v-if="stepWorkExperienceErrorsArray.length < 1">Work experience</v-stepper-step>
+                        <v-stepper-step :step="4" editable :rules="[() => false]" v-else>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step>
+                        <v-stepper-step :step="5" editable v-if="stepSkillErrorsArray.length < 1">Skills</v-stepper-step>
+                        <v-stepper-step :step="5" editable :rules="[() => false]" v-else>Skills</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :step="6" editable>Files upload</v-stepper-step>
+                        <v-stepper-step :step="6" editable v-if="stepFileUploadErrorsArray.length < 1">Files upload</v-stepper-step>
+                        <v-stepper-step :step="6" editable :rules="[() => false]" v-else>Files upload</v-stepper-step>
 
-                        <v-divider></v-divider>
+                        <!-- <v-divider></v-divider> -->
 
-                        <v-stepper-step :step="7" editable>Other</v-stepper-step>
+                        <!-- <v-stepper-step :step="7" editable>Other</v-stepper-step> -->
 
                     </v-stepper-header>
 
@@ -93,25 +101,27 @@
 
                         <v-stepper-content :step="3">
                             <v-card class="mb-5">
-                                <education-component />
+                                <!-- <education-component :educationErrors="[ true, false ]" /> -->
+                                <!-- <education-component :educationErrors="stepError2.educationArray" /> -->
+                                <education-component :educationErrors="stepEducationErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
                             <v-card class="mb-5">
-                                <work-experience-component />
+                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
                             <v-card class="mb-5">
-                                <skills-component />
+                                <skills-component :skillErrors="stepSkillErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
                             <v-card class="mb-5">
-                                <file-uploads-component />
+                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
@@ -137,7 +147,8 @@
                         </v-btn>
                     </v-card-actions>
                     <v-layout justify-center>
-                        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="saveResume">Save</v-btn>
+                        <!-- <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="saveResume">Save</v-btn> -->
+                        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click="saveResume">Save</v-btn>
                     </v-layout>
                     <!--<v-layout justify-center>
                         <v-alert
@@ -254,7 +265,17 @@
                 step: 1,
                 uploadedFiles: [],
                 creatingResumeDialog: false,
-                importResume: {}
+                importResume: {},
+                stepError2: {
+                    educationArray: [true, false]
+                },
+                // hasError: true
+                // stepEducationErrors: false,
+                stepPersonalDataErrors: false,
+                stepEducationErrorsArray: [],
+                stepWorkExperienceErrorsArray: [],
+                stepSkillErrorsArray: [],
+                stepFileUploadErrorsArray: []
 			}
 		},
 		computed: {
@@ -284,10 +305,26 @@
             },
             loadingUploadFiles () {
                 return this.$store.getters['loadingFiles']
-            }
+            },
+            // hasError () {
+            //     return true
+            // },
 		},
 		methods: {
+            hasError (step) {
+                console.log('Call to hasError: ', step)
+                // if (this.errors.items && this.errors.items.length > 0) {
+                //     console.log('There are some errors!')
+                //     if (this.errors.items.filter(item => item.field.includes(step))) {
+                //         console.log('There is an error in education step!')
+                //         return true
+                //     }
+                //     return false
+                // }
+                // return false
+            },
             stepPersonalDataValidate () {
+                console.log('call to stepPersonalDataValidate')
                 // if (this.errors.items.some(e => e.field === ('job_title')) ||
                 //     this.errors.items.some(e => e.field === 'slug')
                 // ) {
@@ -302,6 +339,28 @@
                 return true
             },
             stepEducationValidate () {
+                // console.log('stepEducationValidate: ', this.errors)
+                // this.stepError2.educationArray.length = 0
+                // if (this.errors && this.errors.items && this.errors.items.length > 0) {
+                //     const abc = this.errors.items.filter(item => item.field.includes('education'))
+                //     if (abc.length > 0) {
+                //         console.log('stepEducation error!')
+                //         console.log('abc: ', abc)
+                //         // console.log(abc.map(a => a.field.match(/\d+/g)))
+                //         abc.forEach(a => {
+                //             this.stepError.educationArray[a.field.match(/\d+/g)] = true
+                            
+                //         })
+                //         return false
+                //     }
+                // }
+                // return true
+            },
+            stepEducationValidate2 (value) {
+                console.log('Call to stepEducationValidate2')
+                if (value) {
+                    return false
+                }
                 return true
             },
             stepWorkExperienceValidate () {
@@ -352,7 +411,61 @@
                     // this.loadingCreateResume = true
                     // this.$store.commit('setLoadingFiles', true, { root: true })
                     await this.$validator.validateAll()
-                    if (this.errors && this.errors.items && this.errors.items.length > 0) {
+                    if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red
+                        const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
+                        if (this.errors.items.some(e => inputs.includes(e.field))) {
+                            console.log('Personal data errors')
+                            this.stepPersonalDataErrors = true
+                        }
+
+                        const educationErrors = this.errors.items.filter(item => item.field.includes('education'))
+                        if (educationErrors.length > 0) {
+                            this.stepEducationErrorsArray = new Array(this.loadedNewResume.education.length)
+                            educationErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepEducationErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const workExperienceErrors = this.errors.items.filter(item => item.field.includes('work_experience'))
+                        if (workExperienceErrors.length > 0) {
+                            this.stepWorkExperienceErrorsArray = new Array(this.loadedNewResume.work_experience.length)
+                            workExperienceErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepWorkExperienceErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const skillErrors = this.errors.items.filter(item => item.field.includes('skill'))
+                        if (skillErrors.length > 0) {
+                            this.stepSkillErrorsArray = new Array(this.loadedNewResume.skills.length)
+                            skillErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepSkillErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const fileUploadErrors = this.errors.items.filter(item => item.field.includes('file_title'))
+                        if (fileUploadErrors.length > 0) {
+                            this.stepFileUploadErrorsArray = new Array(this.loadedNewResume.uploads.length)
+                            fileUploadErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepFileUploadErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
                         this.creatingResumeDialog = false
                         // this.loadingCreateResume = false
                         new Noty({
@@ -362,13 +475,10 @@
                             theme: 'metroui'
                         }).show()
                     } else {
-                        // console.log('OK proceed to saveResume')
-                        // this.loadedNewResume.user_id = this.loadedUser.id
-                        this.$store.commit('setLoadingResume', true, { root: true })
-                        await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
-                        // this.loadingCreateResume = false
-                        this.$store.commit('setLoadingFiles', false, { root: true })
-                        this.$router.push('/candidate/resumes')
+                        // this.$store.commit('setLoadingResume', true, { root: true })
+                        // await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
+                        // this.$store.commit('setLoadingFiles', false, { root: true })
+                        // this.$router.push('/candidate/resumes')
                         new Noty({
                             type: 'success',
                             text: 'Your resume was created successfully.',
@@ -456,5 +566,20 @@
 <style scoped>
 	.active {
         border: 2px solid var(--v-secondary-base);
+    }
+    .theme--dark.v-stepper .v-stepper__step--active .v-stepper__label {
+        text-shadow: none;
+        /* color: green; */
+    }
+    /* .theme--dark.v-stepper .v-stepper__step__step {
+        color: green !important;
+    } */
+
+    /* .abc > .v-stepper__label {
+        color: red;
+    } */
+    .error2 {
+        color: var(--v-error-base);
+        text-shadow: none;
     }
 </style>

@@ -14,13 +14,14 @@
             outline
             v-if="!userResume.skills || userResume.skills.length < 1"
         >
-            You have no item here, please click on the rounded pink button to add one
+            You have no item in here, please click on the rounded pink button to add one
         </v-alert>
         <v-expansion-panel>
             <v-dialog
-                v-model="modalCategory"
+                v-model="modalNewSkill"
                 width="500"
                 activator
+                persistent
             >
                 <v-btn
                     fab
@@ -44,6 +45,48 @@
                     <v-card-text>
                         userSkillsCategories: {{ userSkillsCategories }}<br />
                         userSkillsSubCategories: {{ userSkillsSubCategories }}<br />
+                        <v-layout row wrap>
+                            <v-flex xs12>
+                                <v-text-field
+                                    v-model="newSkill.name"
+                                    label="Skill name"
+                                    :counter="30"
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs12>
+                                <v-slider
+                                    v-model="newSkill.value"
+                                    label="Skill Value"
+                                    :max="newSkill.maxValue ? newSkill.maxValue : 100"
+                                    :min="0"
+                                    :step="newSkill.maxValue ? newSkill.maxValue/10 : 10"
+                                    color="secondary"
+                                ></v-slider>
+                                <div class="text-xs-center">
+                                    {{ newSkill.value }}/{{ newSkill.maxValue ? newSkill.maxValue : 10 }}
+                                </div>
+                            </v-flex>
+
+                            <v-flex xs6 class="pr-2">
+                                <v-select
+                                    :items="userSkillsCategories"
+                                    label="Category"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs6 class="pl-2">
+                                <v-select
+                                    :items="userSkillsSubCategories"
+                                    label="Subcategory"
+                                ></v-select>
+                            </v-flex>
+                        </v-layout>
+
+                        <br />
+                        <hr>
+                        <br />
+
                         <v-layout row wrap align-center>
                             <v-flex xs8>
                                 <v-text-field
@@ -104,42 +147,13 @@
                         </v-layout>
                         <br />
 
-                        <v-layout row wrap>
-                            <v-flex xs6 class="pr-2">
-                                <v-select
-                                    :items="userSkillsCategories"
-                                    label="Category"
-                                ></v-select>
-                            </v-flex>
+                        
 
-                            <v-flex xs6 class="pl-2">
-                                <v-select
-                                    :items="userSkillsSubCategories"
-                                    label="Subcategory"
-                                ></v-select>
-                            </v-flex>
-                        </v-layout>
-
-                        <v-text-field
-                            v-model="newSkill.name"
-                            label="Skill name"
-                            :counter="30"
-                        ></v-text-field>
-
-                        <v-slider
-                            v-model="newSkill.value"
-                            label="Skill Value"
-                            :max="newSkill.maxValue ? newSkill.maxValue : 100"
-                            :min="0"
-                            :step="newSkill.maxValue ? newSkill.maxValue/10 : 10"
-                            color="secondary"
-                        ></v-slider>
-                        <div class="text-xs-center">
-                            {{ newSkill.value }}/{{ newSkill.maxValue ? newSkill.maxValue : 10 }}
-                        </div>
+                        
                     </v-card-text>
                     <v-card-actions class="justify-center">
-                        <v-btn class="success" @click="addSkillCategory(newSkillCategory)">Add Skill</v-btn>
+                        <v-btn class="success" @click="addSkillCategory(newSkillCategory)">Add Skill</v-btn>&nbsp;
+                        <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -295,6 +309,7 @@
 
 <script>
     export default {
+        props: ['skillErrors'],
         async created () {
             const resumeSlug = this.$route.params.slug
             console.log('resumeSlug: ', resumeSlug)
@@ -319,7 +334,7 @@
             return {
                 resumeSlug: '',
                 modalCategory: false,
-                modalSkill: false,
+                modalNewSkill: false,
                 reference: '',
                 newSkillCategory: {
                     name: '',
@@ -420,6 +435,10 @@
             }
         },
         methods: {
+            closeModal () {
+                this.modalNewSkill = false
+                this.newSkill = {}
+            },
             saveSkills () {
                 console.log('saveSkills')
                 console.log(this.skills)

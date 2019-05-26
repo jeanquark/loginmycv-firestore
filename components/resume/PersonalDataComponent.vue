@@ -22,7 +22,7 @@
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
-                    <v-card-title class="justify-center">
+                    <v-card-title class="justify-center pb-0">
                         <h2 class="headline mb-0">General Info</h2><br />
                         <!-- <h4>(entries with an asterisk (*) are public)</h4> -->
                     </v-card-title>
@@ -36,9 +36,10 @@
                                     name="slug"
                                     hint="Must be unique."
                                     :persistent-hint="true"
-                                    v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }"
+                                    v-validate="{ required: true, regex: /^[a-z0-9-]+$/, max: 50 }"
                                     :error-messages="errors ? errors.collect('slug') : null"
                                     data-vv-as="Resume identifier"
+                                    :counter="50"
                                     v-model="userResume.slug"
                                 ><font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -89,6 +90,7 @@
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('firstname') : null"
                                     data-vv-as="Firstname"
+                                    :counter="50"
                                     v-model="userResume.personal_data.firstname"
                                 ><font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -100,6 +102,7 @@
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('lastname') : null"
                                     data-vv-as="Lastname"
+                                    :counter="50"
                                     v-model="userResume.personal_data.lastname"
                                 ><font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -361,7 +364,7 @@
                                 </div>                
                                 <v-layout row wrap align-center>
                                     <v-flex xs10>
-                                        <v-text-field label="My Picture" @click='pickFile' v-model="imageName" :error-messages="error ? error.image : null" ><font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                        <v-text-field label="My Picture" @click='pickFile' v-model="imageName"><font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                                         <input
                                             type="file"
                                             style="display: none"
@@ -622,9 +625,9 @@
             }
         },
         computed: {
-            error () {
-                return this.$store.getters['error']
-            },
+            // error () {
+            //     return this.$store.getters['error']
+            // },
             userResume () {
                 if (!this.resumeSlug) {
                     return this.$store.getters['resumes/loadedNewResume']
