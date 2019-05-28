@@ -1,5 +1,5 @@
 <template>
-	<v-app v-cloak :style="cssProps" id="app">
+	<v-app v-cloak :style="cssProps" id="app" v-if="this.resume">
 		<v-content class="background-color">
 			<!-- <b>this.resume:</b> {{ this.resume }}<br /><br /><br /> -->
 			<!-- <p class="primary-color">
@@ -49,7 +49,7 @@
 									</v-layout>
 									<v-layout row wrap class="my-3 px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
 										<v-flex xs12 sm6 v-if="resume.personal_data.nationalities">
-											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-center">
+											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
 												<span>Nationalities:</span>
 												<ul class="list-horizontal">
 													<li v-for="(nationality, index) in nationalities" :key="index"><b>{{ nationality.name }}</b></li>
@@ -59,8 +59,8 @@
 												<span>Nationality: <b>{{ resume.personal_data.nationalities[0].name }}</b></span>
 											</div>
 										</v-flex>
-										<v-flex xs12 sm6 class="text-xs-center" v-if="resume.languages">
-											<div v-if="resume.languages.length > 1" class="text-xs-center">
+										<v-flex xs12 sm6 class="text-xs-center pa-2" v-if="resume.languages">
+											<div v-if="resume.languages.length > 1" class="text-xs-left">
 												<span>Languages:</span>
 												<ul class="list-horizontal">
 													<li v-for="(language, index) in languages" :key="index">
@@ -118,7 +118,7 @@
 							        <v-card-text class="tertiary-color-background">
 							        	<p>
 							        		{{ education.city }} - {{ education.country }},
-							        		<i>{{ education.start_date }}</i> <span v-if="education.end_date">to</span> <i>{{ education.end_date }}</i>
+							        		<i>From {{ education.start_date }}</i> <span v-if="education.end_date"></span> <i>to {{ education.end_date }}</i>
 							        	</p>
 							        	<p>{{ education.description }}</p>
 							        </v-card-text>
@@ -145,7 +145,7 @@
 							        <v-card-text class="tertiary-color-background">
 							        	<p>
 							        		{{ work_experience.city }} - {{ work_experience.country }},
-							        		<i>{{ work_experience.start_date }}</i> <span v-if="work_experience.end_data">to</span> <i>{{ work_experience.end_date }}</i>
+							        		<i>From {{ work_experience.start_date }}</i> <span v-if="work_experience.end_data">to</span> <i>to {{ work_experience.end_date }}</i>
 							        	</p>
 							        	<p>{{ work_experience.job_description }}</p>
 							        </v-card-text>
@@ -166,7 +166,7 @@
 						<v-layout row wrap justify-center>
 							<v-flex xs12 v-for="(skill, index) in skills" :key="index" class="pa-3 text-xs-center">
 								<!-- skill: {{ skill }}<br /> -->
-								<h3 class="text-xs-center">{{ skill[0].category }}</h3>
+								<h3 class="text-xs-center mb-2">{{ skill[0].category }}</h3>
 								<v-layout align-center justify-center>
 									<v-flex xs12 sm6 md4 lg3 class="mx-0" v-for="s in skill" :key="s.name">
 										<div v-if="s.type === 'pie'">
@@ -237,13 +237,24 @@
 <script>
 	import moment from 'moment'
 	export default {
+		head () {
+		    return {
+		  //     	title: `${this.resume.personal_data.firstname}'s resume`,
+		  //     	meta: [
+			 //        { hid: 'description', name: 'description', content: `Resume of ${this.resume.personal_data.firstname} ${this.resume.personal_data.lastname}` }
+				// ],
+				// link: [
+				// 	// { type: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.8.1/css/all.css' }
+				// ]
+		    }
+		},
 		props: ['resume'],
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : '#7A528F'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : '#FFF'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : '#EFEFEF'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : '#FFF'
-			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : '#000'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
 
 			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
 			if (!this.profilePicture) {
@@ -294,7 +305,7 @@
 			},
 			files () {
 				if (this.resume.uploads) {
-					return this.resume.uploads.filter(file => file.type === 'file')
+					return this.resume.uploads.filter(file => file.type === 'downloadable_file')
 				}
 			}
 		},
@@ -342,6 +353,7 @@
 	}
 	.list-horizontal li {
 		display:inline-block;
+		margin-right: 10px;
 	}
 	.list-horizontal li:before {
 		content: "\2022";

@@ -11,23 +11,22 @@
             >
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
+            <v-btn
+                fab
+                absolute
+                bottom
+                right
+                color="pink"
+                @click.stop="openNewWorkExperienceModal"
+            >
+                <v-icon>add</v-icon>
+            </v-btn>
             <v-expansion-panel style="">
                 <v-dialog
                     v-model="modalNewWorkExperience"
                     width="500"
-                    activator
                     persistent
                 >
-                    <v-btn
-                        fab
-                        absolute
-                        bottom
-                        right
-                        color="pink"
-                        slot="activator"
-                    >
-                        <v-icon>add</v-icon>
-                    </v-btn>
                     <v-card>
                         <v-card-title
                             class="headline"
@@ -356,6 +355,18 @@
             }
         },
         methods: {
+            openNewWorkExperienceModal () {
+                if (this.userResume.work_experience && this.userResume.work_experience.length < 30) {
+                    this.modalNewWorkExperience = true
+                } else {
+                    new Noty({
+                        type: 'warning',
+                        text: 'No more than 30 items allowed!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            },
             // saveEducation () {
             //     console.log('saveEducation')
             //     console.log(this.form)
@@ -365,15 +376,6 @@
                 this.newWorkExperience = {}
             },
             addNewWorkExperience () {
-                if (this.userResume.work_experience.length < 10) {
-					new Noty({
-						type: 'warning',
-						text: 'No more than 10 items allowed!',
-						timeout: 5000,
-						theme: 'metroui'
-					}).show()
-					return
-				}
                 this.modalNewWorkExperience = false
                 this.userResume.work_experience.push({
                     company: newWorkExperience.company,

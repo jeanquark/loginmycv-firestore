@@ -32,7 +32,7 @@ export const actions = {
 	async fetchUserReceivedAuthorizations ({ commit, rootGetters }) {
 		try {
 			console.log('Call to fetchUserReceivedAuthorizations actions')
-			const userId = rootGetters['users/loadedUser'].id
+			const userId = rootGetters['users/loadedUser'].id ? rootGetters['users/loadedUser'].id : rootGetters['users/loadedUser'].uid
 			// console.log('userId: ', userId)
 			firestore.collection('authorizations').where('user.id', '==', userId).onSnapshot(snapshot => {
 				let authorizationsObject = {}

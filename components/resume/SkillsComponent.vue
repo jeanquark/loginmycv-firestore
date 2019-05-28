@@ -16,23 +16,22 @@
         >
             You have no item in here, please click on the rounded pink button to add one
         </v-alert>
+        <v-btn
+            fab
+            absolute
+            bottom
+            right
+            color="pink"
+            @click.stop="openNewSkillModal"
+        >
+            <v-icon>add</v-icon>
+        </v-btn>
         <v-expansion-panel>
             <v-dialog
                 v-model="modalNewSkill"
                 width="500"
-                activator
                 persistent
             >
-                <v-btn
-                    fab
-                    absolute
-                    bottom
-                    right
-                    color="pink"
-                    slot="activator"
-                >
-                    <v-icon>add</v-icon>
-                </v-btn>
                 <v-card>
                     <v-card-title
                         class="headline justify-center"
@@ -376,7 +375,7 @@
                 },
                 newSkillCategory: '',
                 newSkill: {
-                    name: 'ab',
+                    name: '',
                     category: '',
                     value: 0,
                     type: 'bar',
@@ -475,6 +474,19 @@
             },
         },
         methods: {
+            openNewSkillModal () {
+                console.log('createNewEducation')
+                if (this.userResume.skills && this.userResume.skills.length < 30) {
+                    this.modalNewSkill = true
+                } else {
+                    new Noty({
+                        type: 'warning',
+                        text: 'No more than 30 items allowed!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            },
             closeModal () {
                 this.modalNewSkill = false
                 this.newSkill = {}

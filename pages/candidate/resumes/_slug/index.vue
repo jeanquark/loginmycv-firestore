@@ -99,7 +99,8 @@
                         </v-btn>
                     </v-card-actions>
                     <v-layout justify-center>
-                        <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn>
+                        <!-- <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn> -->
+                        <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" @click="updateResume">Update</v-btn>
                         <v-btn class="warning" @click="validateResume">Validate resume</v-btn>
                     </v-layout>          
                 </v-stepper>
@@ -129,9 +130,11 @@
                                 color="primary"
                                 outline
                             >
-                                <div class="text-xs-center">
-                                    <v-progress-circular indeterminate color="primary" v-if="loadingFiles"></v-progress-circular> Uploading files...
-                                    <v-progress-circular indeterminate color="secondary" v-if="loadingResume"></v-progress-circular> Updating resume...
+                                <div class="text-xs-center" v-if="loadingFiles">
+                                    <v-progress-circular indeterminate color="primary"></v-progress-circular> Uploading files...
+                                </div>
+                                <div class="text-xs-center" v-if="loadingResume">
+                                    <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume...
                                 </div>
                             </v-alert>
                             <br /><br /><br />

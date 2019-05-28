@@ -106,7 +106,7 @@
 			right
 			color="pink"
 			slot="activator"
-			@click="addUpload"
+			@click.stop="newUpload"
 		>
 			<v-icon>add</v-icon>
 		</v-btn>
@@ -229,33 +229,26 @@
 			}
         },
         methods: {
-			addUpload () {
-				if (this.userResume.uploads.length < 10) {
+			newUpload () {
+				if (this.userResume.uploads && this.userResume.uploads.length < 30) {
+					this.userResume.uploads.push({
+						file: '',
+						title: '',
+						name: '',
+						size_in_bytes: 0,
+						new: true,
+						format: 'file',
+						type: 'downloadable_file',
+						_updated_at: moment().unix()
+					})
+				} else {
 					new Noty({
 						type: 'warning',
-						text: 'No more than 10 items allowed!',
+						text: 'No more than 30 items allowed!',
 						timeout: 5000,
 						theme: 'metroui'
 					}).show()
-					return
 				}
-				console.log('addUpload')
-				// this.getCurrentFiles.push({})
-				// if (!this.userResume.uploads) {
-				// 	this.userResume.uploads = []
-				// }
-
-				this.userResume.uploads.push({
-				// this.getCurrentFiles.push({
-					file: '',
-					title: '',
-					name: '',
-					size_in_bytes: 0,
-					new: true,
-					format: 'file',
-					type: 'downloadable_file',
-					_updated_at: moment().unix()
-				})
 			},
 			async removeUpload (index, file) {
 				console.log('index: ', index)

@@ -530,7 +530,7 @@
 	import Noty from 'noty'
 	import moment from 'moment'
 	export default {
-		inject: ['$validator'], // inject vee-validate validator
+		// inject: ['$validator'], // inject vee-validate validator
 		head () {
 		    return {
 		      	title: this.title,

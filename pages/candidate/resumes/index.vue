@@ -37,6 +37,7 @@
 							</td>
 					    </template>
 					</v-data-table>
+	                <!-- to="/candidate/resumes/create" -->
 					<v-btn
 	                    fab
 	                    absolute
@@ -45,7 +46,7 @@
 	                    right
 	                    color="pink"
 	                    slot="activator"
-	                    to="/candidate/resumes/create"
+	                    @click="addResume"
 	                >
 	                    <v-icon>add</v-icon>
 	                </v-btn>
@@ -122,6 +123,24 @@
 			}
 		},
 		methods: {
+			addResume () {
+				console.log('addResume')
+				const currentNumberResumes = this.loadedUserResumes.length
+				const maxNumberResumes = this.loadedUser.private ? this.loadedUser.private.maximum_number_of_resumes : 1
+				console.log('currentNumberResumes: ', currentNumberResumes)
+				console.log('maxNumberResumes: ', maxNumberResumes)
+				if (currentNumberResumes < maxNumberResumes) {
+	            	this.$router.replace('/candidate/resumes/create')
+				} else {
+					new Noty({
+						type: 'warning',
+						text: `Sorry, but you are currently limited to ${maxNumberResumes} ${maxNumberResumes > 1 ? 'resumes' : 'resume'}.`,
+						timeout: 5000,
+						theme: 'metroui',
+						closeWith: ['button'],
+					}).show()
+				}
+			},
 			editResume () {
 				this.$router.replace('/candidate/resumes/edit')
 			},
@@ -158,5 +177,5 @@
 </script>
 
 <style scoped>
-
+	
 </style>

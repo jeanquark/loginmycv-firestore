@@ -27,76 +27,85 @@ module.exports = app.use(async function (req, res, next) {
 		let status = ''
 
 		switch (authorization.status) {
+			case 'allowed': {
+				status = 'accorded';
+				break;
+			}
 			case 'accorded': {
 				status = 'accorded';
-				console.log('Accorded');
+				// console.log('Accorded');
 				break;
 			}
 			case 'in_process': {
 				status = 'in_process';
-				console.log('In process');
+				// console.log('In process');
 				break;
 			}
 			case 'refused': {
 				status = 'refused';
-				console.log('Refused');
+				// console.log('Refused');
 				break;
 			}
 			case 'revoked': {
 				status = 'revoked';
-				console.log('Revoked');
+				// console.log('Revoked');
 				break;
 			}
 			default: {
 				status = 'not_found';
-				console.log('Default case');
+				// console.log('Default case');
 			}
-		}
-
-		// Allow authenticated user to access her own resumes
-		// const userResumes = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
-		// let userResume = {};
-		// userResumes.forEach(doc => {
-		// 	console.log('doc3.data(): ', doc.data());
-		// 	userResume = doc.data();
-		// });
-		// if (userResume.user_id === authUserId) {
-		// 	res.send(userResume);
-		// }
-		const userResume = await admin.firestore().collection('resumes_long').doc(slug).get();
-		console.log('userResume.data(): ', userResume.data());
-		if (userResume.data() && userResume.data().user_id === authUserId) {
-			res.send(userResume.data());
 		}
 
 		if (status === 'accorded') {
-			// 2) If authorized, fetch resume
-			// const snapshot2 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
-			// let resumeData = {};
-			// snapshot2.forEach(doc => {
-			// 	console.log('doc2.data(): ', doc.data());
-			// 	resumeData = doc.data();
-			// });
-			// res.send(resumeData);
-
-			if (userResume.data()) {
-				res.send(userResume.data())
-			}
-		} else if (status === 'in_process' || status === 'refused' || status === 'revoked') {
-			// res.send(`You can not access resume data. Your authorization status is ${status}`);
-			// res.redirect('/');
-			// res.send(`${status}`);
+			const userResumes = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
+			let userResume = {};
+			userResumes.forEach(doc => {
+				console.log('doc3.data(): ', doc.data());
+				userResume = doc.data();
+			});
 			res.send({
-				slug,
-				status
+				status: 'allowed',
+				resume: userResume
 			});
 		} else {
-			// res.send(`Not allowed`);
-			res.send({
-				slug,
-				status: 'not_allowed'
-			});
+			res.send({ status });
 		}
+		console.log('next...');
+
+		// if (status === 'accorded') {
+		// 	// 2) If authorized, fetch resume
+		// 	// const snapshot2 = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
+		// 	// let resumeData = {};
+		// 	// snapshot2.forEach(doc => {
+		// 	// 	console.log('doc2.data(): ', doc.data());
+		// 	// 	resumeData = doc.data();
+		// 	// });
+		// 	// res.send(resumeData);
+
+		// 	const userResume = await admin.firestore().collection('resumes_long').doc(slug).get();
+		// 	console.log('userResume.data(): ', userResume.data());
+		// 	if (userResume.data() && userResume.data().user_id === authUserId) {
+		// 		res.send(userResume.data());
+		// 	}
+		// 	// if (userResume.data()) {
+		// 	// 	res.send(userResume.data())
+		// 	// }
+		// } else if (status === 'in_process' || status === 'refused' || status === 'revoked') {
+		// 	// res.send(`You can not access resume data. Your authorization status is ${status}`);
+		// 	// res.redirect('/');
+		// 	// res.send(`${status}`);
+		// 	res.send({
+		// 		slug,
+		// 		status
+		// 	});
+		// } else {
+		// 	// res.send(`Not allowed`);
+		// 	res.send({
+		// 		slug,
+		// 		status: 'not_allowed'
+		// 	});
+		// }
 
 		// const resumeData = await admin.firestore().collection('resumes_long').where('slug', '==', slug).limit(1);
 		// console.log('resumeData.exists: ', resumeData.exists);

@@ -18,23 +18,22 @@
             >
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
+            <v-btn
+                fab
+                absolute
+                bottom
+                right
+                color="pink"
+                @click.stop="openNewEducationModal"
+            >
+                <v-icon>add</v-icon>
+            </v-btn>
             <v-expansion-panel style="">
                 <v-dialog
                     v-model="modalNewEducation"
                     width="500"
-                    activator
                     persistent
                 >
-                    <v-btn
-                        fab
-                        absolute
-                        bottom
-                        right
-                        color="pink"
-                        slot="activator"
-                    >
-                        <v-icon>add</v-icon>
-                    </v-btn>
                     <v-card>
                         <v-card-title
                             class="headline"
@@ -441,24 +440,37 @@
             }
         },
         methods: {
-            open () {
-                console.log('open')
-                // this.$validator.validateAll()
-                return 'open'
-            },
-            hasError (item) {
-                console.log('Call to hasError: ', item)
-                // return true
-                // return 'error1'
-                // if (this.errors && this.errors.items && this.errors.items.some(e => e.includes(item))) {
-                //     return 'error'
-                // }
-                if (this.errors && this.errors.items && this.errors.items.filter(item => item.field.includes('education_title_0')).length > 0) {
-                    console.log('hasError!')
-                    return true
+            openNewEducationModal () {
+                console.log('createNewEducation')
+                if (this.userResume.education && this.userResume.education.length < 30) {
+                    this.modalNewEducation = true
+                } else {
+                    new Noty({
+                        type: 'warning',
+                        text: 'No more than 30 items allowed!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
                 }
-                return false
             },
+            // open () {
+            //     console.log('open')
+            //     // this.$validator.validateAll()
+            //     return 'open'
+            // },
+            // hasError (item) {
+            //     console.log('Call to hasError: ', item)
+            //     // return true
+            //     // return 'error1'
+            //     // if (this.errors && this.errors.items && this.errors.items.some(e => e.includes(item))) {
+            //     //     return 'error'
+            //     // }
+            //     if (this.errors && this.errors.items && this.errors.items.filter(item => item.field.includes('education_title_0')).length > 0) {
+            //         console.log('hasError!')
+            //         return true
+            //     }
+            //     return false
+            // },
             closeModal () {
                 this.modalNewEducation = false
                 this.newEducation = {}
@@ -469,37 +481,17 @@
                 console.log(this.form)
             },
             addNewEducation () {
-                if (this.userResume.newEducation.length < 10) {
-					new Noty({
-						type: 'warning',
-						text: 'No more than 10 items allowed!',
-						timeout: 5000,
-						theme: 'metroui'
-					}).show()
-					return
-				}
                 this.modalNewEducation = false
-                console.log('addNewEducation: ', newEducation)
-                console.log('this.userResume.education: ', this.userResume.education)
-                // this.candidateEducation.push(
-                //     newEducation
-                // )
-                // if (!this.loadedNewResume.education) {
-                    //     this.loadedNewResume.education = []
-                // }
-                // this.loadedNewResume.education.push(newEducation)
-                // this.newEducation = {}
                 this.userResume.education.push({ 
-                    title: newEducation.title,
-                    school: newEducation.school,
-                    country: newEducation.country,
-                    city: newEducation.city,
-                    description: newEducation.description,
-                    start_date: newEducation.start_date,
-                    end_date: newEducation.end_date
+                    title: this.newEducation.title,
+                    school: this.newEducation.school,
+                    country: this.newEducation.country,
+                    city: this.newEducation.city,
+                    description: this.newEducation.description,
+                    start_date: this.newEducation.start_date,
+                    end_date: this.newEducation.end_date
                 })
                 this.newEducation = {}
-                // this.userResume.education.push(newEducation)
                 new Noty({
                     type: 'success',
                     text: 'New Education added!',

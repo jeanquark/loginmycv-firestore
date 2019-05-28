@@ -271,6 +271,7 @@
                                     label="Nationality-ies*"
                                     :items="loadedCountries"
                                     item-text="name"
+                                    :return-object="true"
                                     multiple
                                     chips
                                     small-chips
@@ -405,39 +406,46 @@
                     </v-card-title>
 
                     <v-card-text class="">
-                        <v-layout justify-center class="black--text">
+                        <v-layout justify-center>
                             <div class="justify-center">
-                                <v-radio-group v-model="userResume.visibility" row style="color: black;">
-                                    <v-radio label="Public resume" value="public" color="secondary"></v-radio>
-                                    <v-radio label="Semi-private resume" value="semi-private" color="secondary"></v-radio>
-                                    <v-radio label="Private resume" value="private" color="secondary"></v-radio>
+                                <v-radio-group 
+                                    row 
+                                    name="visibility" 
+                                    v-validate="{ required: true }"
+                                    :error-messages="errors ? errors.collect('visibility') : null"
+                                    data-vv-as="Privacy"
+                                    v-model="userResume.visibility"
+                                >
+                                    <v-radio label="Public resume" value="public" color="success"></v-radio>
+                                    <v-radio label="Semi-private resume" value="semi-private" color="info"></v-radio>
+                                    <v-radio label="Private resume" value="private" color="warning"></v-radio>
                                 </v-radio-group>
                             </div>
                         </v-layout>
                         <v-layout row wrap>
                             <v-alert
                                 value="public"
-                                color="secondary"
-                                icon="info"
+                                color="success"
+                                icon="done"
                                 v-if="userResume.visibility === 'public'"
                                 >
-                                <span>An excerpt of your resume with full access to your public data appears on the frontpage (recommanded option).</span>
+                                <span class="subheading font-weight-medium">An excerpt of your resume with full access to your public data appears on the frontpage (recommanded option).</span>
                             </v-alert>
                             <v-alert
                                 value="semi-private"
-                                color="secondary"
+                                color="info"
                                 icon="info"
                                 v-if="userResume.visibility === 'semi-private'"
                                 >
-                                <span>An excerpt of your resume appears on the frontpage. But to gain full access, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
+                                <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. But to gain full access, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
                             </v-alert>
                             <v-alert
                                 value="private"
-                                color="secondary"
-                                icon="info"
+                                color="warning"
+                                icon="warning"
                                 v-if="userResume.visibility === 'private'"
                                 >
-                                <span>Your resume is hidden (visitors are not able to find you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
+                                <span class="subheading font-weight-medium">Your resume is hidden (visitors are not able to find you without prior knowledge of your resume slug). To gain access to your resume, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
                             </v-alert>
                         </v-layout>
 
@@ -457,13 +465,12 @@
                                     :counter="30"
                                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                     @click:append="showPassword = !showPassword"
-                                    v-validate="'min:4|max:30'"
+                                    v-validate="{ required: this.userResume.updateResumeSlug && this.userResume.visibility !== 'public' ? true : false, min:4, max:30}"
                                     ref="password"
                                     v-model="userResume.password"
                                     :error-messages="errors ? errors.collect('password') : null"
                                 ></v-text-field>
                             </v-flex>
-                            <!-- confirmed:password -->
                             <v-flex xs12 sm6 mx-5>
                                 <v-text-field
                                     type="password"

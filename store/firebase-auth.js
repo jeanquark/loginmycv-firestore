@@ -69,13 +69,12 @@ export const actions = {
     },
 
     async signVisitorIn ({ commit }, payload) {
-        console.log('payload: ', payload)
-        const slug = payload.slug
-        console.log('slug: ', slug)
-
         try {
+            console.log('payload: ', payload)
+            const username = `${payload.form.username}@visitor.loginmycv.com`
+            console.log('username: ', username)
             let authData = await auth.signInWithEmailAndPassword (
-                payload.form.username,
+                username,
                 payload.form.password
             )
             console.log('authData: ', authData)

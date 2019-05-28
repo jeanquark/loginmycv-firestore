@@ -15,14 +15,14 @@
 									<p class="text-xs-center">Have a password? Gain direct access <span v-if="candidate.personal_data && candidate.personal_data.firstname">to {{ candidate.personal_data.firstname }}'s resume now!</span></p>
 									<!-- error: {{ error }}<br /> -->
 									<!-- errors: {{ errors }}<br /> -->
-                                    <!-- <v-text-field 
+                                    <v-text-field 
                                         prepend-icon="person" 
                                         name="username" 
                                         label="Username" 
                                         type="text"
                                         v-model="form.username"
                                         style="display: none"
-                                    ></v-text-field> -->
+                                    ></v-text-field>
                                     <v-text-field
                                         prepend-icon="lock" 
                                         name="password" 
@@ -53,16 +53,15 @@
 			// const slug = params.slug
 			// console.log('slug: ', slug)
 			this.$store.commit('clearError', { root: true })
-            const slug = this.$route.params.slug
-			console.log('slug: ', slug)
-            this.form.username = slug
+			console.log('slug: ', this.$route.params.slug)
+			const slug = this.$route.params.slug
+			this.slug = slug
 
-            // Check that resume exists
-            let candidate = {}
-            const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
-            snapshot.forEach(doc => {
-                candidate = doc.data()
-            })
+			let candidate = {}
+			const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
+			snapshot.forEach(doc => {
+				candidate = doc.data()
+			})
             console.log('candidate: ', candidate)
             if (!candidate.resume_long_id) {
                 console.log('No resume with this slug')
@@ -76,32 +75,9 @@
             } else {
                 console.log('candidate exists.')
                 this.candidate = candidate
+                // this.firstname = candidate.firstname
+                // this.form.username = `${candidate.slug}@visitor.loginmycv.com`
             }
-
-			// const slug = this.$route.params.slug
-			// this.slug = slug
-
-			// let candidate = {}
-			// const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
-			// snapshot.forEach(doc => {
-			// 	candidate = doc.data()
-			// })
-   //          console.log('candidate: ', candidate)
-   //          if (!candidate.resume_long_id) {
-   //              console.log('No resume with this slug')
-   //              new Noty({
-   //                  type: 'error',
-   //                  text: 'Resume not found.',
-   //                  timeout: 5000,
-   //                  theme: 'metroui'
-   //              }).show()
-   //              this.$router.push('/')
-   //          } else {
-   //              console.log('candidate exists.')
-   //              this.candidate = candidate
-   //              // this.firstname = candidate.firstname
-   //              // this.form.username = `${candidate.slug}@visitor.loginmycv.com`
-   //          }
 		},
         data () {
             return {
@@ -128,7 +104,7 @@
 				console.log('signVisitorIn')
 				this.$store.commit('clearError', { root: true })				
                 try {
-                    await this.$store.dispatch('firebase-auth/signVisitorIn', { form: this.form})
+                    await this.$store.dispatch('firebase-auth/signVisitorIn', { slug: this.slug, form: this.form})
                     // console.log('Success!')
                     // new Noty({
                     //     type: 'success',
@@ -136,7 +112,9 @@
                     //     timeout: 5000,
                     //     theme: 'metroui'
 					// }).show()
-					this.$router.push(`/resume/${this.form.username}`)
+					this.$router.push(`/resume/${this.slug}`)
+					// this.$router.push(`/`)
+					// redirect(`/resume/${this.slug}`)
                 } catch (error) {
                     console.log('error login: ', error)
                     // new Noty({

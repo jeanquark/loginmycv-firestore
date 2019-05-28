@@ -67,12 +67,14 @@ export const actions = {
 	//         console.log('Error getting documents', error);
 	//     }
 	// },
-	async fetchLongResume ({ commit }, payload) {
+	async fetchLongResume ({ commit, rootGetters }, payload) {
+		// 1) Fetch resume if its visibility is set to public
 		try {
 			console.log('Call to fetchLongResume action: ', payload)
 			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
 			const resume = snapshot.data()
-			console.log('resume: ', resume)
+			console.log('resume from store: ', resume)
+
 			return resume
 
 		} catch (error) {
@@ -83,9 +85,45 @@ export const actions = {
 			// 	timeout: 5000,
 			// 	theme: 'metroui'
 			// }).show()
-			throw error
+			// throw error
 		}
+		console.log('next...')
 
+		// 2) Fetch resume if user has authorization
+		const slug = payload
+		const authUser = rootGetters['users/loadedUser']
+		console.log('authUser: ', authUser)
+    	if (authUser) { // User is connected
+  			const authUserId = authUser.id ? authUser.id : authUser.uid
+  			console.log('authUserId: ', authUserId)
+			try {
+				console.log('Check user authorization')
+				const resume = await axios.post('/check-user-authorization', { authUserId, slug })
+				console.log('resume received from check user authorization: ', resume)
+				console.log('resume.data: ', resume.data)
+				console.log('resume.data.status: ', resume.data.status)
+				const status = resume.data ? resume.data.status : ''
+				if (status === 'allowed') {
+					return resume.data.resume
+				}
+				// this.resume = resume.data
+				// await this.$store.dispatch('templates/fetchTemplates')
+	   //          const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
+	   //          console.log('template: ', template)
+	   //          return this.component = () => import(`~/components/templates/${template.file}`)  
+				// return { resume }
+			} catch (error) {
+				console.log('error check-user-authorization: ', error)
+				// new Noty({
+				// 	type: 'error',
+				// 	text: 'Sorry, an error occured during the authorization checking process.',
+				// 	timeout: 5000,
+				// 	theme: 'metroui'
+				// }).show()
+			}
+    	}
+
+    	console.log('redirect to visitor login if resume exists')
 		// const snapshot = await firestore.collection('resumes_long').where('visibility', '==', 'public').get()
 		// const resumesArray = []
 		// snapshot.forEach(doc => {
@@ -531,6 +569,9 @@ export const actions = {
 		try {
 			console.log('payload: ', payload)
 			const resumeToDelete = payload
+
+			// Don't forget to delete all relevant authorizations
+			
 
 			// throw new Error()
 

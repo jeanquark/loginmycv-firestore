@@ -13,158 +13,158 @@ module.exports = app.use(async function (req, res, next) {
 	try {
 		let updatedResume = req.body;
 		updatedResume._updated_at = moment().unix();
-		// console.log('updatedResume: ', updatedResume);
-		console.log('app-key: ', req.get('app-key'));
-		console.log('app_key: ', app_key);
+
+        // 1) Check API KEY (so that we know request is sent from server)
 		if (req.get('app-key') !== app_key) {
 			throw {
-				'wrong-app-key': 'You are not sending this request from an authorized server.'
+				'server_error': 'You are not sending this request from an authorized server.'
 			}
 		}
 
 
-		// 1) Perform validation
-		const constraints = {
-            'job_title': { presence: true, length: { maximum: 50 }},
-            'job_description': { presence: true, length: { maximum: 250 }},
-            'personal_data.email': { presence: true, email: true },
-            'personal_data.firstname': { presence: true, length: { maximum: 50 }},
-			'personal_data.lastname': { presence: true, length: { maximum: 50 }},
-			'personal_data.city': { length: { maximum: 50 }},
-			'personal_data.website': { url: true },
-			'personal_data.phone': { format: '[0-9+()-]+'},
-		};
-		for (let social_link of updatedResume.social_links) {
-			const validation = validate(social_link, {'link': { url: true }})
-			if (validation != undefined) {
-				throw { [`${social_link.slug}`] : [`${social_link.name} is not a valid url`] };
-			}
-		}
-		if (updatedResume.updateResumeSlug) {
-			constraints['new_slug'] = {
-				presence: true, 
-				format: {
-					pattern: "[a-z0-9-]+", 
-					flags: "i", 
-					message: "Slug can only contain a-z, 0-9 and -"
-				}
-			}
-		}
-		if (updatedResume.password) {
-			constraints['password'] = { presence: true, length: { maximum: 30 }};
-			constraints['password_confirmation'] = { presence: true, equality: 'password'};
-		}
 
-		const validation = validate(updatedResume, constraints);
-        console.log('validation: ', validation);
-        if (validation != undefined) {
-            throw validation;
-        }
-		console.log('Form is valid, continue saving in DB');
+		// 4) Retrieve all relevant authorizations
+		const authorizations = [];
+		const authorizationsSnapshot = await admin.firestore().collection('authorizations').where('resume.id', '==', updatedResume.slug).get();
+		authorizationsSnapshot.forEach(doc => {
+			authorizations.push({ ...doc.data(), id: doc.id })
+		});
+		console.log('authorizations: ', authorizations);
+
+		// 5) Update both resumes (short & long), as well as all concerned authorizations
+		let batch = admin.firestore().batch();
+
+		authorizations.forEach(authorization => {
+			console.log('authorization: ', authorization)
+			const authorizationRef = admin.firestore().collection('authorizations').doc(authorization.id)
+			batch.update(authorizationRef, {
+				['resume.id']: updatedResume.new_slug
+			});
+		});
+
+		await batch.commit();
 		
+
+		throw {
+			'server_error': 'Error from authorizations.',
+		}
+
 
 
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug
-
 			// Do not forget to update authorizations collection
 			console.log('You changed the resume slug!');
-			// const snapshot = await admin.firestore().collection('resumes_long').where('slug', '==', updatedResume.new_slug).get();
-			// const resumesArray = [];
-			// snapshot.forEach(doc => {
-			// 	resumesArray.push(doc.data());
-			// })
-			// console.log('resumesArray: ', resumesArray);
-			// console.log('resumesArray.length: ', resumesArray.length);
-			// if (resumesArray.length > 0) {
-			// 	throw {
-			// 		'slug': 'Slug already exists. Please provide another identifier for the resume.'
-			// 	}
-			// }
-			const snapshot = await admin.firestore().collection('resumes_long').doc(updatedResume.new_slug).get();
-			console.log('snapshot.data(): ', snapshot.data());
-			if (!snapshot.data()) { // If a resume with the new slug does not already exists
-				const oldSlug = updatedResume.slug;
-				const newSlug = updatedResume.new_slug;
-				const password = updatedResume.password;
-				updatedResume['slug'] = newSlug;
-				delete updatedResume['updateResumeSlug'];
-				delete updatedResume['new_slug'];
-				delete updatedResume['id'];
-				delete updatedResume['password'];
-				delete updatedResume['password_confirmation'];
 
-				if (password) { // Updating resume's password
-					try {
-						console.log('Update visitor\'s password: ', password);
-						const user = await admin.auth().getUserByEmail(`${oldSlug}@visitor.loginmycv.com`);
-						console.log('user.uid: ', user.uid);
-						await admin.auth().deleteUser(user.uid);
-					} catch (error) { // User does not exist
-						console.log('user does not exist');
-					}
-					const newUser = await admin.auth().createUser({
-						email: `${newSlug}@visitor.loginmycv.com`,
-						emailVerified: false,
-						password: password,
-						// password: 'secret',
-						displayName: `${newSlug}@visitor`,
-						disabled: false
-					});
-					console.log('password: ', password);
-					console.log('newUser: ', newUser);
-					const visitor_id = newUser.uid;
-					console.log('visitor_id: ', visitor_id);
-				}
-				updatedResume['visitor_id'] = visitor_id;
-
-				let batch = admin.firestore().batch();
-			
-				const newLongResume = admin.firestore().collection('resumes_long').doc(newSlug);
-				batch.set(newLongResume, updatedResume);
-	
-				const updatedShortResume = admin.firestore().collection('resumes_short').doc(updatedResume.resume_short_id);
-				batch.update(updatedShortResume, {
-					resume_long_id: newSlug,
-					job_title: updatedResume.job_title,
-					job_description: updatedResume.job_description,
-					personal_data: {
-						firstname: updatedResume['personal_data']['firstname'],
-						lastname: updatedResume['personal_data']['lastname'],
-						email: updatedResume['personal_data']['email'],
-						country: updatedResume['personal_data']['country'],
-						city: updatedResume['personal_data']['city']
-					},
-					// gender: updatedResume.gender,
-					// picture: updatedResume.personal_data.picture,
-					keys: updatedResume.skills,
-					// languages: updatedResume.languages,
-					visibility: updatedResume.visibility,
-				});
-				await batch.commit();
-	
-				await admin.firestore().collection('resumes_long').doc(oldSlug).delete();
-				
-				if (updatedResume.visibility === 'public') {
-					try {
-						console.log('Update visibility to public');
-						const user = await admin.auth().getUserByEmail(`${oldSlug}@visitor.loginmycv.com`);
-						console.log('user.uid: ', user.uid);
-						await admin.auth().deleteUser(user.uid);
-					} catch (error) { // No existing user
-						// console.log('error from server: ', error);
-						console.log('No existing user');
-					}
-				}
-				
-				// Update visitor profile data
-				res.send({
-					message: 'POST request to update resume went successfully.',
-				});
-			} else {
+			// 2) Check slug existence
+			const slugSnapshot = await admin.firestore().collection('resumes_long').doc(updatedResume.new_slug).get();
+			const existingSlug = slugSnapshot.data();
+			console.log('existingSlug: ', existingSlug);
+			if (existingSlug) {
 				throw {
-					'new_slug': 'Slug already exists. Please provide another identifier for the resume.'
+					'slug': 'Slug already exists. Please provide another identifier for the resume.',
 				}
 			}
+
+
+			// 3) Update visitor account
+			const oldSlug = updatedResume.slug;
+			const newSlug = updatedResume.new_slug;
+			console.log('newSlug: ', newSlug);
+			const password = updatedResume.password;
+			updatedResume['slug'] = newSlug;
+			delete updatedResume['updateResumeSlug'];
+			delete updatedResume['new_slug'];
+			delete updatedResume['id'];
+			delete updatedResume['password'];
+			delete updatedResume['password_confirmation'];
+
+			if (!password) {
+				throw {
+					'server_error': 'When modifying the resume slug, you need to provide a password.',
+				}
+			}
+
+			try {
+				console.log('Update visitor\'s password: ', password);
+				const user = await admin.auth().getUserByEmail(`${newSlug}@visitor.loginmycv.com`);
+				console.log('user.uid: ', user.uid);
+				await admin.auth().deleteUser(user.uid);
+			} catch (error) { // User does not exist
+				console.log('user does not exist');
+			}
+			const newUser = await admin.auth().createUser({
+				email: `${newSlug}@visitor.loginmycv.com`,
+				emailVerified: false,
+				password: password,
+				displayName: `${newSlug}@visitor`,
+				disabled: false
+			});
+			console.log('password: ', password);
+			console.log('newUser: ', newUser);
+			const visitor_id = newUser.uid;
+			console.log('visitor_id: ', visitor_id);
+			updatedResume['visitor_id'] = visitor_id;
+
+
+
+			// 4) Retrieve all relevant authorizations
+			const authorizations = [];
+			const snapshot3 = await admin.firestore().collection('authorizations').where('resume.id', '==', updatedResume.slug).get();
+			snapshot3.forEach(doc => {
+				authorizations.push({ ...doc.data(), id: doc.id })
+			});
+			console.log('authorizations: ', authorizations);
+
+
+
+			// 5) Update both resumes (short & long), as well as all concerned authorizations
+			let batch = admin.firestore().batch();
+
+			authorizations.forEach(authorization => {
+				batch.update(authorization, {
+					resume: {
+						id: newSlug
+					}
+				});
+			});
+		
+			const newLongResume = admin.firestore().collection('resumes_long').doc(newSlug);
+			batch.set(newLongResume, updatedResume);
+
+			const updatedShortResume = admin.firestore().collection('resumes_short').doc(updatedResume.resume_short_id);
+			batch.update(updatedShortResume, {
+				resume_long_id: newSlug,
+				job_title: updatedResume.job_title,
+				job_description: updatedResume.job_description,
+				personal_data: {
+					firstname: updatedResume['personal_data']['firstname'],
+					lastname: updatedResume['personal_data']['lastname'],
+					email: updatedResume['personal_data']['email'],
+					country: updatedResume['personal_data']['country'],
+					city: updatedResume['personal_data']['city']
+				},
+				// gender: updatedResume.gender,
+				// picture: updatedResume.personal_data.picture,
+				keys: updatedResume.skills,
+				// languages: updatedResume.languages,
+				visibility: updatedResume.visibility,
+			});
+
+			await batch.commit();
+	
+
+			// 6) 
+			
+				
+			res.send({
+				message: 'POST request to update resume went successfully.',
+			});
+
+
+
+
+
+
 
 		} else { // Not updating the resume slug
 			console.log('Not updating the resume slug');
@@ -213,7 +213,7 @@ module.exports = app.use(async function (req, res, next) {
 				},
 				// gender: updatedResume.gender,
 				// picture: updatedResume.personal_data.picture,
-				keys: upadatedResume.keys,
+				keys: updatedResume.keys,
 				keys: updatedResume.skills,
 				languages: updatedResume.languages,
 			});

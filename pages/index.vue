@@ -48,7 +48,7 @@
 								<!-- process.env.PROJECT_ID: {{ process.env.PROJECT_ID }}<br /> -->
           						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
           						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
-          						<nuxt-link to="/resume/jeanquark2">Go to jeanquark's second resume (client)</nuxt-link><br />
+          						<nuxt-link to="/resume/jeanquark3">Go to jeanquark's resume (client)</nuxt-link><br />
           						<a href="/resume/jeanquark3">Go to jeanquark's resume (server)</a><br />
           						<a href="/resume/ivan">Go to ivan's resume (server)</a><br />
 								<!-- <a href="/resume/greg">Go to greg's resume (server)</a><br /> -->
@@ -154,7 +154,7 @@
 								<div class="headline text-xs-center">Private & Secured data</div>
 							</v-card-title>
 							<v-card-text>
-								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you were to decide to remove some information, it will be completely wiped out from our database.
+								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
 							</v-card-text>
 						</v-card>
 					</v-flex>
@@ -315,7 +315,7 @@
 	import RequestAuthorization from '~/components/RequestAuthorization'
 	import Draggable from 'vuedraggable'
 	export default {
-		inject: ['$validator'], // inject vee-validate validator
+		// inject: ['$validator'], // inject vee-validate validator
 		components: { Login, Register, RequestAuthorization, Draggable },
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
@@ -332,6 +332,8 @@
 				// await this.$store.dispatch('users/fetchAuthenticatedUser', authUser.uid)
 				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations', authUser.id)
 			}
+			// const resume = await this.$store.dispatch('resumes/fetchLongResume', 'jeanquark3')
+			// console.log('resume3: ', resume)
 			// console.log('process.env.PROJECT_ID: ', process.env.PROJECT_ID)
 			// console.log('process.env.PRIVATE_KEY: ', process.env.PRIVATE_KEY)
 			// console.log('abc: ', abc)
