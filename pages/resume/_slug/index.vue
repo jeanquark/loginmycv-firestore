@@ -1,20 +1,21 @@
 <template>
-	<v-container fluid fill-height>
-	<div v-if="resume && resume.template_id">
-		resume: {{ resume }}<br />
-		<!-- <dynamic-resume-template :resume="resume" /> -->
+	<div>
+		<div v-if="resume && resume.template_id">
+			<!-- resume: {{ resume }}<br /> -->
+			<component :is="component" :resume="resume" v-if="component" />
 
-        <component :is="component" :resume="resume" v-if="component" />
+		</div>
+		<v-app v-else>
+			<v-content>
+				<v-container fluid fill-height>
+					<v-layout align-center justify-center>
+						<v-img src="/images/loader.gif" max-width="200px"></v-img>
+					</v-layout>
+				</v-container>
+			</v-content>
+		</v-app>
 
 	</div>
-	<!-- <div v-else> -->
-		<!-- <v-container fluid fill-height v-else> -->
-            <v-layout align-center justify-center v-else>
-            	Loading ...
-          		<!-- <v-img src="/images/loader.gif" max-width="200px"></v-img> -->
-          	</v-layout>
-        </v-container>
-	<!-- </div> -->
 </template>
 
 <script>

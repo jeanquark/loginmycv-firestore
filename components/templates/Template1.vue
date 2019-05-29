@@ -231,6 +231,11 @@
 				</v-flex>
 			</v-layout>
 		</v-content>
+
+		<v-footer :color="backgroundColor" class="white--text justify-center" style="padding: 30px 0px;">
+			<nuxt-link to="/" class="link"><h3>LoginMyCV</h3></nuxt-link>&nbsp;
+			<span>&copy; {{ new Date() | moment('Y') }}</span>
+		</v-footer>
 	</v-app>
 </template>
 

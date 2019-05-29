@@ -1,195 +1,773 @@
-[
-   {"name": "Afghan", "slug": ""},
-   {"name": "Albanian", "slug": ""},
-   {"name": "Algerian", "slug": ""},
-   {"name": "American", "slug": ""},
-   {"name": "Andorran", "slug": ""},
-   {"name": "Angolan", "slug": ""},
-   {"name": "Antiguans", "slug": ""},
-   {"name": "Argentinean", "slug": ""},
-   {"name": "Armenian", "slug": ""},
-   {"name": "Australian", "slug": ""},
-   {"name": "Austrian", "slug": ""},
-   {"name": "Azerbaijani", "slug": ""},
-   {"name": "Bahamian", "slug": ""},
-   {"name": "Bahraini", "slug": ""},
-   {"name": "Bangladeshi", "slug": ""},
-   {"name": "Barbadian", "slug": ""},
-   {"name": "Barbudans", "slug": ""},
-   {"name": "Batswana", "slug": ""},
-   {"name": "Belarusian", "slug": ""},
-   {"name": "Belgian", "slug": ""},
-   {"name": "Belizean", "slug": ""},
-   {"name": "Beninese", "slug": ""},
-   {"name": "Bhutanese", "slug": ""},
-   {"name": "Bolivian", "slug": ""},
-   {"name": "Bosnian", "slug": ""},
-   {"name": "Brazilian", "slug": ""},
-   {"name": "British", "slug": ""},
-   {"name": "Bruneian", "slug": ""},
-   {"name": "Bulgarian", "slug": ""},
-   {"name": "Burkinabe", "slug": ""},
-   {"name": "Burmese", "slug": ""},
-   {"name": "Burundian", "slug": ""},
-   {"name": "Cambodian", "slug": ""},
-   {"name": "Cameroonian", "slug": ""},
-   {"name": "Canadian", "slug": ""},
-   {"name": "Cape Verdean", "slug": ""},
-   {"name": "Central African", "slug": ""},
-   {"name": "Chadian", "slug": ""},
-   {"name": "Chilean", "slug": ""},
-   {"name": "Chinese", "slug": ""},
-   {"name": "Colombian", "slug": ""},
-   {"name": "Comoran", "slug": ""},
-   {"name": "Congolese", "slug": ""},
-   {"name": "Costa Rican", "slug": ""},
-   {"name": "Croatian", "slug": ""},
-   {"name": "Cuban", "slug": ""},
-   {"name": "Cypriot", "slug": ""},
-   {"name": "Czech", "slug": ""},
-   {"name": "Danish", "slug": ""},
-   {"name": "Djibouti", "slug": ""},
-   {"name": "Dominican", "slug": ""},
-   {"name": "Dutch", "slug": ""},
-   {"name": "East Timorese", "slug": ""},
-   {"name": "Ecuadorean", "slug": ""},
-   {"name": "Egyptian", "slug": ""},
-   {"name": "Emirian", "slug": ""},
-   {"name": "Equatorial Guinean", "slug": ""},
-   {"name": "Eritrean", "slug": ""},
-   {"name": "Estonian", "slug": ""},
-   {"name": "Ethiopian", "slug": ""},
-   {"name": "Fijian", "slug": ""},
-   {"name": "Filipino", "slug": ""},
-   {"name": "Finnish", "slug": ""},
-   {"name": "French", "slug": ""},
-   {"name": "Gabonese", "slug": ""},
-   {"name": "Gambian", "slug": ""},
-   {"name": "Georgian", "slug": ""},
-   {"name": "German", "slug": ""},
-   {"name": "Ghanaian", "slug": ""},
-   {"name": "Greek", "slug": ""},
-   {"name": "Grenadian", "slug": ""},
-   {"name": "Guatemalan", "slug": ""},
-   {"name": "Guinea-Bissauan", "slug": ""},
-   {"name": "Guinean", "slug": ""},
-   {"name": "Guyanese", "slug": ""},
-   {"name": "Haitian", "slug": ""},
-   {"name": "Herzegovinian", "slug": ""},
-   {"name": "Honduran", "slug": ""},
-   {"name": "Hungarian", "slug": ""},
-   {"name": "I-Kiribati", "slug": ""},
-   {"name": "Icelander", "slug": ""},
-   {"name": "Indian", "slug": ""},
-   {"name": "Indonesian", "slug": ""},
-   {"name": "Iranian", "slug": ""},
-   {"name": "Iraqi", "slug": ""},
-   {"name": "Irish", "slug": ""},
-   {"name": "Israeli", "slug": ""},
-   {"name": "Italian", "slug": ""},
-   {"name": "Ivorian", "slug": ""},
-   {"name": "Jamaican", "slug": ""},
-   {"name": "Japanese", "slug": ""},
-   {"name": "Jordanian", "slug": ""},
-   {"name": "Kazakhstani", "slug": ""},
-   {"name": "Kenyan", "slug": ""},
-   {"name": "Kittian and Nevisian" "slug": ""},,
-   {"name": "Kuwaiti", "slug": ""},
-   {"name": "Kyrgyz", "slug": ""},
-   {"name": "Laotian", "slug": ""},
-   {"name": "Latvian", "slug": ""},
-   {"name": "Lebanese", "slug": ""},
-   {"name": "Liberian", "slug": ""},
-   {"name": "Libyan", "slug": ""},
-   {"name": "Liechtensteiner", "slug": ""},
-   {"name": "Lithuanian", "slug": ""},
-   {"name": "Luxembourger", "slug": ""},
-   {"name": "Macedonian", "slug": ""},
-   {"name": "Malagasy", "slug": ""},
-   {"name": "Malawian", "slug": ""},
-   {"name": "Malaysian", "slug": ""},
-   {"name": "Maldivan", "slug": ""},
-   {"name": "Malian", "slug": ""},
-   {"name": "Maltese", "slug": ""},
-   {"name": "Marshallese", "slug": ""},
-   {"name": "Mauritanian", "slug": ""},
-   {"name": "Mauritian", "slug": ""},
-   {"name": "Mexican", "slug": ""},
-   {"name": "Micronesian", "slug": ""},
-   {"name": "Moldovan", "slug": ""},
-   {"name": "Monacan", "slug": ""},
-   {"name": "Mongolian", "slug": ""},
-   {"name": "Moroccan", "slug": ""},
-   {"name": "Mosotho", "slug": ""},
-   {"name": "Motswana", "slug": ""},
-   {"name": "Mozambican", "slug": ""},
-   {"name": "Namibian", "slug": ""},
-   {"name": "Nauruan", "slug": ""},
-   {"name": "Nepalese", "slug": ""},
-   {"name": "New Zealander", "slug": ""},
-   {"name": "Nicaraguan", "slug": ""},
-   {"name": "Nigerian", "slug": ""},
-   {"name": "Nigerien", "slug": ""},
-   {"name": "North Korean", "slug": ""},
-   {"name": "Northern Irish", "slug": ""},
-   {"name": "Norwegian", "slug": ""},
-   {"name": "Omani", "slug": ""},
-   {"name": "Pakistani", "slug": ""},
-   {"name": "Palauan", "slug": ""},
-   {"name": "Panamanian", "slug": ""},
-   {"name": "Papua New Guinean", "slug": ""},
-   {"name": "Paraguayan", "slug": ""},
-   {"name": "Peruvian", "slug": ""},
-   {"name": "Polish", "slug": ""},
-   {"name": "Portuguese", "slug": ""},
-   {"name": "Qatari", "slug": ""},
-   {"name": "Romanian", "slug": ""},
-   {"name": "Russian", "slug": ""},
-   {"name": "Rwandan", "slug": ""},
-   {"name": "Saint Lucian", "slug": ""},
-   {"name": "Salvadoran", "slug": ""},
-   {"name": "Samoan", "slug": ""},
-   {"name": "San Marinese", "slug": ""},
-   {"name": "Sao Tomean", "slug": ""},
-   {"name": "Saudi", "slug": ""},
-   {"name": "Scottish", "slug": ""},
-   {"name": "Senegalese", "slug": ""},
-   {"name": "Serbian", "slug": ""},
-   {"name": "Seychellois", "slug": ""},
-   {"name": "Sierra Leonean", "slug": ""},
-   {"name": "Singaporean", "slug": ""},
-   {"name": "Slovakian", "slug": ""},
-   {"name": "Slovenian", "slug": ""},
-   {"name": "Solomon Islander", "slug": ""},
-   {"name": "Somali", "slug": ""},
-   {"name": "South African", "slug": ""},
-   {"name": "South Korean", "slug": ""},
-   {"name": "Spanish", "slug": ""},
-   {"name": "Sri Lankan", "slug": ""},
-   {"name": "Sudanese", "slug": ""},
-   {"name": "Surinamer", "slug": ""},
-   {"name": "Swazi", "slug": ""},
-   {"name": "Swedish", "slug": ""},
-   {"name": "Swiss", "slug": ""},
-   {"name": "Syrian", "slug": ""},
-   {"name": "Taiwanese", "slug": ""},
-   {"name": "Tajik", "slug": ""},
-   {"name": "Tanzanian", "slug": ""},
-   {"name": "Thai", "slug": ""},
-   {"name": "Togolese", "slug": ""},
-   {"name": "Tongan", "slug": ""},
-   {"name": "Trinidadian or Tobago "slug": ""},nian",
-   {"name": "Tunisian", "slug": ""},
-   {"name": "Turkish", "slug": ""},
-   {"name": "Tuvaluan", "slug": ""},
-   {"name": "Ugandan", "slug": ""},
-   {"name": "Ukrainian", "slug": ""},
-   {"name": "Uruguayan", "slug": ""},
-   {"name": "Uzbekistani", "slug": ""},
-   {"name": "Venezuelan", "slug": ""},
-   {"name": "Vietnamese", "slug": ""},
-   {"name": "Welsh", "slug": ""},
-   {"name": "Yemenite", "slug": ""},
-   {"name": "Zambian", "slug": ""},
-   {"name": "Zimbabwean" "slug": ""}
+[{
+    "name": "Afghan",
+    "slug": ""
+},
+{
+    "name": "Albanian",
+    "slug": ""
+},
+{
+    "name": "Algerian",
+    "slug": ""
+},
+{
+    "name": "American",
+    "slug": ""
+},
+{
+    "name": "Andorran",
+    "slug": ""
+},
+{
+    "name": "Angolan",
+    "slug": ""
+},
+{
+    "name": "Antiguans",
+    "slug": ""
+},
+{
+    "name": "Argentinean",
+    "slug": ""
+},
+{
+    "name": "Armenian",
+    "slug": ""
+},
+{
+    "name": "Australian",
+    "slug": ""
+},
+{
+    "name": "Austrian",
+    "slug": ""
+},
+{
+    "name": "Azerbaijani",
+    "slug": ""
+},
+{
+    "name": "Bahamian",
+    "slug": ""
+},
+{
+    "name": "Bahraini",
+    "slug": ""
+},
+{
+    "name": "Bangladeshi",
+    "slug": ""
+},
+{
+    "name": "Barbadian",
+    "slug": ""
+},
+{
+    "name": "Barbudans",
+    "slug": ""
+},
+{
+    "name": "Batswana",
+    "slug": ""
+},
+{
+    "name": "Belarusian",
+    "slug": ""
+},
+{
+    "name": "Belgian",
+    "slug": ""
+},
+{
+    "name": "Belizean",
+    "slug": ""
+},
+{
+    "name": "Beninese",
+    "slug": ""
+},
+{
+    "name": "Bhutanese",
+    "slug": ""
+},
+{
+    "name": "Bolivian",
+    "slug": ""
+},
+{
+    "name": "Bosnian",
+    "slug": ""
+},
+{
+    "name": "Brazilian",
+    "slug": ""
+},
+{
+    "name": "British",
+    "slug": ""
+},
+{
+    "name": "Bruneian",
+    "slug": ""
+},
+{
+    "name": "Bulgarian",
+    "slug": ""
+},
+{
+    "name": "Burkinabe",
+    "slug": ""
+},
+{
+    "name": "Burmese",
+    "slug": ""
+},
+{
+    "name": "Burundian",
+    "slug": ""
+},
+{
+    "name": "Cambodian",
+    "slug": ""
+},
+{
+    "name": "Cameroonian",
+    "slug": ""
+},
+{
+    "name": "Canadian",
+    "slug": ""
+},
+{
+    "name": "Cape Verdean",
+    "slug": ""
+},
+{
+    "name": "Central African",
+    "slug": ""
+},
+{
+    "name": "Chadian",
+    "slug": ""
+},
+{
+    "name": "Chilean",
+    "slug": ""
+},
+{
+    "name": "Chinese",
+    "slug": ""
+},
+{
+    "name": "Colombian",
+    "slug": ""
+},
+{
+    "name": "Comoran",
+    "slug": ""
+},
+{
+    "name": "Congolese",
+    "slug": ""
+},
+{
+    "name": "Costa Rican",
+    "slug": ""
+},
+{
+    "name": "Croatian",
+    "slug": ""
+},
+{
+    "name": "Cuban",
+    "slug": ""
+},
+{
+    "name": "Cypriot",
+    "slug": ""
+},
+{
+    "name": "Czech",
+    "slug": ""
+},
+{
+    "name": "Danish",
+    "slug": ""
+},
+{
+    "name": "Djibouti",
+    "slug": ""
+},
+{
+    "name": "Dominican",
+    "slug": ""
+},
+{
+    "name": "Dutch",
+    "slug": ""
+},
+{
+    "name": "East Timorese",
+    "slug": ""
+},
+{
+    "name": "Ecuadorean",
+    "slug": ""
+},
+{
+    "name": "Egyptian",
+    "slug": ""
+},
+{
+    "name": "Emirian",
+    "slug": ""
+},
+{
+    "name": "Equatorial Guinean",
+    "slug": ""
+},
+{
+    "name": "Eritrean",
+    "slug": ""
+},
+{
+    "name": "Estonian",
+    "slug": ""
+},
+{
+    "name": "Ethiopian",
+    "slug": ""
+},
+{
+    "name": "Fijian",
+    "slug": ""
+},
+{
+    "name": "Filipino",
+    "slug": ""
+},
+{
+    "name": "Finnish",
+    "slug": ""
+},
+{
+    "name": "French",
+    "slug": ""
+},
+{
+    "name": "Gabonese",
+    "slug": ""
+},
+{
+    "name": "Gambian",
+    "slug": ""
+},
+{
+    "name": "Georgian",
+    "slug": ""
+},
+{
+    "name": "German",
+    "slug": ""
+},
+{
+    "name": "Ghanaian",
+    "slug": ""
+},
+{
+    "name": "Greek",
+    "slug": ""
+},
+{
+    "name": "Grenadian",
+    "slug": ""
+},
+{
+    "name": "Guatemalan",
+    "slug": ""
+},
+{
+    "name": "Guinea-Bissauan",
+    "slug": ""
+},
+{
+    "name": "Guinean",
+    "slug": ""
+},
+{
+    "name": "Guyanese",
+    "slug": ""
+},
+{
+    "name": "Haitian",
+    "slug": ""
+},
+{
+    "name": "Herzegovinian",
+    "slug": ""
+},
+{
+    "name": "Honduran",
+    "slug": ""
+},
+{
+    "name": "Hungarian",
+    "slug": ""
+},
+{
+    "name": "I-Kiribati",
+    "slug": ""
+},
+{
+    "name": "Icelander",
+    "slug": ""
+},
+{
+    "name": "Indian",
+    "slug": ""
+},
+{
+    "name": "Indonesian",
+    "slug": ""
+},
+{
+    "name": "Iranian",
+    "slug": ""
+},
+{
+    "name": "Iraqi",
+    "slug": ""
+},
+{
+    "name": "Irish",
+    "slug": ""
+},
+{
+    "name": "Israeli",
+    "slug": ""
+},
+{
+    "name": "Italian",
+    "slug": ""
+},
+{
+    "name": "Ivorian",
+    "slug": ""
+},
+{
+    "name": "Jamaican",
+    "slug": ""
+},
+{
+    "name": "Japanese",
+    "slug": ""
+},
+{
+    "name": "Jordanian",
+    "slug": ""
+},
+{
+    "name": "Kazakhstani",
+    "slug": ""
+},
+{
+    "name": "Kenyan",
+    "slug": ""
+},
+{
+    "name": "Kittian and Nevisian",
+    "slug": ""
+},
+{
+    "name": "Kuwaiti",
+    "slug": ""
+},
+{
+    "name": "Kyrgyz",
+    "slug": ""
+},
+{
+    "name": "Laotian",
+    "slug": ""
+},
+{
+    "name": "Latvian",
+    "slug": ""
+},
+{
+    "name": "Lebanese",
+    "slug": ""
+},
+{
+    "name": "Liberian",
+    "slug": ""
+},
+{
+    "name": "Libyan",
+    "slug": ""
+},
+{
+    "name": "Liechtensteiner",
+    "slug": ""
+},
+{
+    "name": "Lithuanian",
+    "slug": ""
+},
+{
+    "name": "Luxembourger",
+    "slug": ""
+},
+{
+    "name": "Macedonian",
+    "slug": ""
+},
+{
+    "name": "Malagasy",
+    "slug": ""
+},
+{
+    "name": "Malawian",
+    "slug": ""
+},
+{
+    "name": "Malaysian",
+    "slug": ""
+},
+{
+    "name": "Maldivan",
+    "slug": ""
+},
+{
+    "name": "Malian",
+    "slug": ""
+},
+{
+    "name": "Maltese",
+    "slug": ""
+},
+{
+    "name": "Marshallese",
+    "slug": ""
+},
+{
+    "name": "Mauritanian",
+    "slug": ""
+},
+{
+    "name": "Mauritian",
+    "slug": ""
+},
+{
+    "name": "Mexican",
+    "slug": ""
+},
+{
+    "name": "Micronesian",
+    "slug": ""
+},
+{
+    "name": "Moldovan",
+    "slug": ""
+},
+{
+    "name": "Monacan",
+    "slug": ""
+},
+{
+    "name": "Mongolian",
+    "slug": ""
+},
+{
+    "name": "Moroccan",
+    "slug": ""
+},
+{
+    "name": "Mosotho",
+    "slug": ""
+},
+{
+    "name": "Motswana",
+    "slug": ""
+},
+{
+    "name": "Mozambican",
+    "slug": ""
+},
+{
+    "name": "Namibian",
+    "slug": ""
+},
+{
+    "name": "Nauruan",
+    "slug": ""
+},
+{
+    "name": "Nepalese",
+    "slug": ""
+},
+{
+    "name": "New Zealander",
+    "slug": ""
+},
+{
+    "name": "Nicaraguan",
+    "slug": ""
+},
+{
+    "name": "Nigerian",
+    "slug": ""
+},
+{
+    "name": "Nigerien",
+    "slug": ""
+},
+{
+    "name": "North Korean",
+    "slug": ""
+},
+{
+    "name": "Northern Irish",
+    "slug": ""
+},
+{
+    "name": "Norwegian",
+    "slug": ""
+},
+{
+    "name": "Omani",
+    "slug": ""
+},
+{
+    "name": "Pakistani",
+    "slug": ""
+},
+{
+    "name": "Palauan",
+    "slug": ""
+},
+{
+    "name": "Panamanian",
+    "slug": ""
+},
+{
+    "name": "Papua New Guinean",
+    "slug": ""
+},
+{
+    "name": "Paraguayan",
+    "slug": ""
+},
+{
+    "name": "Peruvian",
+    "slug": ""
+},
+{
+    "name": "Polish",
+    "slug": ""
+},
+{
+    "name": "Portuguese",
+    "slug": ""
+},
+{
+    "name": "Qatari",
+    "slug": ""
+},
+{
+    "name": "Romanian",
+    "slug": ""
+},
+{
+    "name": "Russian",
+    "slug": ""
+},
+{
+    "name": "Rwandan",
+    "slug": ""
+},
+{
+    "name": "Saint Lucian",
+    "slug": ""
+},
+{
+    "name": "Salvadoran",
+    "slug": ""
+},
+{
+    "name": "Samoan",
+    "slug": ""
+},
+{
+    "name": "San Marinese",
+    "slug": ""
+},
+{
+    "name": "Sao Tomean",
+    "slug": ""
+},
+{
+    "name": "Saudi",
+    "slug": ""
+},
+{
+    "name": "Scottish",
+    "slug": ""
+},
+{
+    "name": "Senegalese",
+    "slug": ""
+},
+{
+    "name": "Serbian",
+    "slug": ""
+},
+{
+    "name": "Seychellois",
+    "slug": ""
+},
+{
+    "name": "Sierra Leonean",
+    "slug": ""
+},
+{
+    "name": "Singaporean",
+    "slug": ""
+},
+{
+    "name": "Slovakian",
+    "slug": ""
+},
+{
+    "name": "Slovenian",
+    "slug": ""
+},
+{
+    "name": "Solomon Islander",
+    "slug": ""
+},
+{
+    "name": "Somali",
+    "slug": ""
+},
+{
+    "name": "South African",
+    "slug": ""
+},
+{
+    "name": "South Korean",
+    "slug": ""
+},
+{
+    "name": "Spanish",
+    "slug": ""
+},
+{
+    "name": "Sri Lankan",
+    "slug": ""
+},
+{
+    "name": "Sudanese",
+    "slug": ""
+},
+{
+    "name": "Surinamer",
+    "slug": ""
+},
+{
+    "name": "Swazi",
+    "slug": ""
+},
+{
+    "name": "Swedish",
+    "slug": ""
+},
+{
+    "name": "Swiss",
+    "slug": ""
+},
+{
+    "name": "Syrian",
+    "slug": ""
+},
+{
+    "name": "Taiwanese",
+    "slug": ""
+},
+{
+    "name": "Tajik",
+    "slug": ""
+},
+{
+    "name": "Tanzanian",
+    "slug": ""
+},
+{
+    "name": "Thai",
+    "slug": ""
+},
+{
+    "name": "Togolese",
+    "slug": ""
+},
+{
+    "name": "Tongan",
+    "slug": ""
+},
+{
+    "name": "Trinidadian or Tobago ",
+    "slug": ""
+},
+{
+    "name": "Tunisian",
+    "slug": ""
+},
+{
+    "name": "Turkish",
+    "slug": ""
+},
+{
+    "name": "Tuvaluan",
+    "slug": ""
+},
+{
+    "name": "Ugandan",
+    "slug": ""
+},
+{
+    "name": "Ukrainian",
+    "slug": ""
+},
+{
+    "name": "Uruguayan",
+    "slug": ""
+},
+{
+    "name": "Uzbekistani",
+    "slug": ""
+},
+{
+    "name": "Venezuelan",
+    "slug": ""
+},
+{
+    "name": "Vietnamese",
+    "slug": ""
+},
+{
+    "name": "Welsh",
+    "slug": ""
+},
+{
+    "name": "Yemenite",
+    "slug": ""
+},
+{
+    "name": "Zambian",
+    "slug": ""
+},
+{
+    "name": "Zimbabwean",
+    "slug": ""
+}
 ]

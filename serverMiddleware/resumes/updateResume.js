@@ -22,37 +22,7 @@ module.exports = app.use(async function (req, res, next) {
 		}
 
 
-
-		// 4) Retrieve all relevant authorizations
-		const authorizations = [];
-		const authorizationsSnapshot = await admin.firestore().collection('authorizations').where('resume.id', '==', updatedResume.slug).get();
-		authorizationsSnapshot.forEach(doc => {
-			authorizations.push({ ...doc.data(), id: doc.id })
-		});
-		console.log('authorizations: ', authorizations);
-
-		// 5) Update both resumes (short & long), as well as all concerned authorizations
-		let batch = admin.firestore().batch();
-
-		authorizations.forEach(authorization => {
-			console.log('authorization: ', authorization)
-			const authorizationRef = admin.firestore().collection('authorizations').doc(authorization.id)
-			batch.update(authorizationRef, {
-				['resume.id']: updatedResume.new_slug
-			});
-		});
-
-		await batch.commit();
-		
-
-		throw {
-			'server_error': 'Error from authorizations.',
-		}
-
-
-
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug
-			// Do not forget to update authorizations collection
 			console.log('You changed the resume slug!');
 
 			// 2) Check slug existence
@@ -61,7 +31,7 @@ module.exports = app.use(async function (req, res, next) {
 			console.log('existingSlug: ', existingSlug);
 			if (existingSlug) {
 				throw {
-					'slug': 'Slug already exists. Please provide another identifier for the resume.',
+					'new_slug': 'Slug already exists. Please provide another identifier for the resume.',
 				}
 			}
 
@@ -71,6 +41,7 @@ module.exports = app.use(async function (req, res, next) {
 			const newSlug = updatedResume.new_slug;
 			console.log('newSlug: ', newSlug);
 			const password = updatedResume.password;
+			const picture = updatedResume.uploads ? updatedResume.uploads.find(upload => upload.type === 'profile_picture') : null;
 			updatedResume['slug'] = newSlug;
 			delete updatedResume['updateResumeSlug'];
 			delete updatedResume['new_slug'];
@@ -116,15 +87,14 @@ module.exports = app.use(async function (req, res, next) {
 			console.log('authorizations: ', authorizations);
 
 
-
 			// 5) Update both resumes (short & long), as well as all concerned authorizations
 			let batch = admin.firestore().batch();
 
 			authorizations.forEach(authorization => {
-				batch.update(authorization, {
-					resume: {
-						id: newSlug
-					}
+				console.log('authorization: ', authorization)
+				const authorizationRef = admin.firestore().collection('authorizations').doc(authorization.id)
+				batch.update(authorizationRef, {
+					['resume.id']: updatedResume.new_slug
 				});
 			});
 		
@@ -143,18 +113,13 @@ module.exports = app.use(async function (req, res, next) {
 					country: updatedResume['personal_data']['country'],
 					city: updatedResume['personal_data']['city']
 				},
-				// gender: updatedResume.gender,
-				// picture: updatedResume.personal_data.picture,
-				keys: updatedResume.skills,
-				// languages: updatedResume.languages,
+				picture: picture ? picture.downloadUrl : null,
+				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
+				languages: updatedResume.languages,
 				visibility: updatedResume.visibility,
 			});
 
 			await batch.commit();
-	
-
-			// 6) 
-			
 				
 			res.send({
 				message: 'POST request to update resume went successfully.',
@@ -164,11 +129,10 @@ module.exports = app.use(async function (req, res, next) {
 
 
 
-
-
 		} else { // Not updating the resume slug
 			console.log('Not updating the resume slug');
 			const password = updatedResume.password;
+			// const picture = payload['uploads'] ? payload.uploads.find(upload => upload.type === 'picture') : null
 			delete updatedResume['updateResumeSlug'];
 			delete updatedResume['new_slug'];
 			delete updatedResume['id'];
@@ -195,6 +159,8 @@ module.exports = app.use(async function (req, res, next) {
 				updatedResume['visitor_id'] = visitor_id;
 			}
 
+
+			// 2) Update both resumes (short & long)
 			const batch = admin.firestore().batch();
 			
 			const newLongResume = admin.firestore().collection('resumes_long').doc(updatedResume.slug);
@@ -211,11 +177,10 @@ module.exports = app.use(async function (req, res, next) {
 					country: updatedResume['personal_data']['country'],
 					city: updatedResume['personal_data']['city']
 				},
-				// gender: updatedResume.gender,
-				// picture: updatedResume.personal_data.picture,
-				keys: updatedResume.keys,
-				keys: updatedResume.skills,
+				picture: picture ? picture.downloadUrl : null,
+				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages,
+				visibility: updatedResume.visibility
 			});
 			await batch.commit();
 
@@ -225,11 +190,6 @@ module.exports = app.use(async function (req, res, next) {
 		}
 	} catch (error) {
 		console.log('error from server: ', error)
-		// res.status(500).send(`POST request to update resume failed: ${error}`);
-		// res.send({
-        //     message: 'Update resume failed.',
-        //     error: error
-		// });
 		res.status(500).send({ message: 'Update resume failed.', error });		
 	}
 

@@ -198,46 +198,22 @@ export const actions = {
 	// },
 	async storeResume ({ commit, dispatch, getters, rootGetters }, payload) {
 		try {
-
-			// throw {
-			// 		'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
-			// 	}
-
-			// const resumeCreation = await axios.post('/create-new-resume', newResume, {
-			// 	headers: {
-			// 		'app-key': process.env.APP_KEY
-			// 	}
-			// })
-			// console.log('resumeCreation: ', resumeCreation)
-
-
-
 			const newResume = payload
 			console.log('newResume: ', newResume)
 			console.log('newResume.slug: ', newResume.slug)
 
 			// 1) Create resume server-side
-			// try {
-				const resumeCreation = await axios.post('/create-new-resume', newResume, {
-					headers: {
-						'app-key': process.env.APP_KEY
-					}
-				})
-				console.log('resumeCreation: ', resumeCreation)
-			// } catch (error) {
-			// 	console.log('error from axios: ', error)
-			// 	throw {
-			// 		'slug': 'Slug already exists. Please provide another identifier for the resume.'
-			// 	}
-			// }
-
-
-			
+			const resumeCreation = await axios.post('/create-new-resume', newResume, {
+				headers: {
+					'app-key': process.env.APP_KEY
+				}
+			})
+			console.log('resumeCreation: ', resumeCreation)
 
 	        commit('setLoadingResume', false, { root: true })
 	        commit('setLoadingFiles', true, { root: true })
 
-	        // 4) Get all user existing uploads
+	        // 2) Get all user existing uploads
 			await dispatch('fetchUserResumes')
 			// const userExistingUploads = rootGetters['resumes/loadedUserResumes']
 			const userExistingResumes = getters['loadedUserResumes']
@@ -253,7 +229,7 @@ export const actions = {
 	            })
             }
 
-			// 5) Get all new uploads file size
+			// 3) Get all new uploads file size
 			const uploads = newResume.uploads
 			const filesToAdd = []
 			if (uploads) {
@@ -264,7 +240,7 @@ export const actions = {
 			}
 			console.log('totalUploadSize: ', totalUploadSize)
 
-			// 6) Check that total upload size does not exceed available space
+			// 4) Check that total upload size does not exceed available space
 			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
 			if (totalUploadSize > userTotalSpace) {
 				throw {
@@ -275,7 +251,7 @@ export const actions = {
 			console.log('totalUploadSize: ', totalUploadSize)
 			console.log('userTotalSpace: ', userTotalSpace)
 
-			// 7) Effectively upload files to storage
+			// 5) Effectively upload files to storage
 			for (let file of filesToAdd) {
 				console.log('file: ', file)
 				if (file.name && file.file) { // File is not already existent
@@ -300,7 +276,7 @@ export const actions = {
 			// commit('setLoadingFiles', false, { root: true })
 			// commit('setLoadingResume', true, { root: true })
 
-			// 8) Update long & short resumes with uploads
+			// 6) Update long & short resumes with uploads
 			if (uploads && uploads.length > 0) {
 				console.log('update resumes_long')
 				await firestore.collection('resumes_long').doc(newResume.slug).update({
@@ -492,6 +468,86 @@ export const actions = {
 			commit('setLoadingFiles', true, { root: true })
 			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
 
+			// 1) Retrieve & delete all files to delete
+			const filesToDelete = []
+			oldResume.data().uploads.forEach(file => {
+				if (!payload.uploads.find(upload => upload.name === file.name && upload._updated_at === file._updated_at)) {
+					filesToDelete.push(file)
+				}
+			})
+			console.log('filesToDelete: ', filesToDelete)
+			for (let file of filesToDelete) {
+				const uploadRef = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
+				if (uploadRef) {
+					uploadRef.delete()
+				}
+			}
+
+			// 2) Retrieve & upload all files to upload
+			const filesToAdd = []
+			let totalUploadSize = 0
+			payload.uploads.forEach(upload => {
+				totalUploadSize += parseInt(upload.size_in_bytes)
+				if (!oldResume.data().uploads.find(file => file.name === upload.name && file._updated_at === upload._updated_at)) {
+					filesToAdd.push(upload)
+				}
+			})
+			// if (!oldResume.data().uploads.find(file => file.type === 'picture' && file.name === upload.name && file._updated_at === upload._updated_at)) {
+				// filesToAdd.push(payload.personal_data.picture)
+			// }
+			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+			if (totalUploadSize > userTotalSpace) {
+				throw {
+					'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+				}
+			}
+			console.log('filesToAdd: ', filesToAdd)
+			console.log('totalUploadSize: ', totalUploadSize)
+			console.log('userTotalSpace: ', userTotalSpace)
+
+			for (let file of filesToAdd) {
+				console.log('file: ', file)
+				if (file.name && file.file) {
+					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+					const downloadUrl = await uploadedFile.ref.getDownloadURL()
+					const newUpload = {
+						name: uploadedFile.metadata.name,
+						size_in_bytes: uploadedFile.metadata.size,
+						downloadUrl: downloadUrl,
+						title: file.title,
+						type: file.type,
+						_created_at: moment().unix(),
+						_updated_at: moment().unix()
+					}
+					console.log('newUpload: ', newUpload)
+					const index = payload.uploads.findIndex(upload => upload.name === file.name)
+					payload.uploads[index] = newUpload
+				}
+			}
+			console.log('payload: ', payload)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', true, { root: true })
+
+			// 3) Update resume on the server
+			await axios.post('/update-resume', payload, {
+				headers: {
+					'app-key': process.env.APP_KEY
+				}
+			})
+			commit('setLoadingResume', false, { root: true })
+		} catch (error) {
+			// console.log('error2: ', error)
+			commit('setLoadingFiles', false, { root: true })
+			commit('setLoadingResume', false, { root: true })
+			throw error
+		}
+	},
+	async updateResume2 ({ commit, rootGetters }, payload) {
+		try {
+			console.log('payload: ', payload)
+			commit('setLoadingFiles', true, { root: true })
+			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
+
 			// 1) Get all files to delete
 			const filesToDelete = []
 			oldResume.data().uploads.forEach(file => {
@@ -521,16 +577,17 @@ export const actions = {
 			// }
 			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
 			if (totalUploadSize > userTotalSpace) {
-				throw 'Files could not be uploaded because your do not have enough space.'
+				throw {
+					'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+				}
 			}
 			console.log('filesToAdd: ', filesToAdd)
 			console.log('totalUploadSize: ', totalUploadSize)
 			console.log('userTotalSpace: ', userTotalSpace)
 
-			// return 
 			for (let file of filesToAdd) {
 				console.log('file: ', file)
-				if (file.file) {
+				if (file.name && file.file) {
 					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
 					const downloadUrl = await uploadedFile.ref.getDownloadURL()
 					const newUpload = {

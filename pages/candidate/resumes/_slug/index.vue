@@ -16,23 +16,33 @@
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step>
+                        <!-- <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step> -->
+                        <v-stepper-step :step="2" editable v-if="stepPersonalDataErrors === false">General & Personal Data</v-stepper-step>
+                        <v-stepper-step :step="2" editable :rules="[() => false]" v-else>General & Personal Data</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step>
+                        <!-- <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step> -->
+                        <v-stepper-step :step="3" editable v-if="stepEducationErrorsArray.length < 1">Education</v-stepper-step>
+                        <v-stepper-step :step="3" editable :rules="[() => false]" v-else>Education</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step>
+                        <!-- <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step> -->
+                        <v-stepper-step :step="4" editable v-if="stepWorkExperienceErrorsArray.length < 1">Work experience</v-stepper-step>
+                        <v-stepper-step :step="4" editable :rules="[() => false]" v-else>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step>
+                        <!-- <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step> -->
+                        <v-stepper-step :step="5" editable v-if="stepSkillErrorsArray.length < 1">Skills</v-stepper-step>
+                        <v-stepper-step :step="5" editable :rules="[() => false]" v-else>Skills</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <v-stepper-step :step="6" editable>Files upload</v-stepper-step>
+                        <!-- <v-stepper-step :step="6" editable>Files upload</v-stepper-step> -->
+                        <v-stepper-step :step="6" editable v-if="stepFileUploadErrorsArray.length < 1">Files upload</v-stepper-step>
+                        <v-stepper-step :step="6" editable :rules="[() => false]" v-else>Files upload</v-stepper-step>
 
                         <v-divider></v-divider>
 
@@ -55,25 +65,25 @@
 
                         <v-stepper-content :step="3">
                             <v-card class="mb-5">
-                                <education-component v-if="step == 3" />
+                                <education-component :educationErrors="stepEducationErrorsArray" v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
                             <v-card class="mb-5">
-                                <work-experience-component v-if="step == 4" />
+                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
                             <v-card class="mb-5">
-                                <skills-component v-if="step == 5" />
+                                <skills-component :skillErrors="stepSkillErrorsArray" v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
                             <v-card class="mb-5">
-                                <file-uploads-component v-if="step == 6" />
+                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
 
@@ -100,18 +110,18 @@
                     </v-card-actions>
                     <v-layout justify-center>
                         <!-- <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn> -->
-                        <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" @click="updateResume">Update</v-btn>
-                        <v-btn class="warning" @click="validateResume">Validate resume</v-btn>
+                        <v-btn class="success" :loading="loadingResume || loadingFiles" @click="updateResume">Update</v-btn>
+                        <!-- <v-btn class="warning" @click="validateResume">Validate resume</v-btn> -->
                     </v-layout>          
                 </v-stepper>
             </v-flex>
         </v-layout>
 
-        <!-- Modal to create resume -->
+        <!-- Modal to update resume -->
         <v-dialog
             v-model="updatingResumeDialog"
             width="500"
-            :persistent="true"
+            persistent
         >
             <v-layout>
                 <v-flex xs12> 
@@ -173,11 +183,18 @@
             this.$store.commit('clearError')
             this.$store.commit('setLoadingFiles', false)
             this.$store.commit('setLoadingResume', false)
+
+            if (!this.$store.getters['countries/loadedCountries']) {
+                await this.$store.dispatch('countries/fetchCountries')
+            }
+            if (!this.$store.getters['languages/loadedLanguages']) {
+                await this.$store.dispatch('languages/fetchLanguages')
+            }
+            if (!this.$store.getters['competences/loadedCompetences']) {
+                await this.$store.dispatch('competences/fetchCompetences')
+            }
         },
         async mounted () {
-            await this.$store.dispatch('competences/fetchCompetences')
-            await this.$store.dispatch('languages/fetchLanguages')
-            await this.$store.dispatch('resumes/fetchUserResumes')
         },
 		data () {
 			return {
@@ -210,9 +227,14 @@
                 //     }  
                 // ],
                 resumeSlug: '',
-                loadingUpdateResume: false,
-                loadingUploadFiles: false,
-                updatingResumeDialog: false
+                // loadingUpdateResume: false,
+                // loadingUploadFiles: false,
+                updatingResumeDialog: false,
+                stepPersonalDataErrors: false,
+                stepEducationErrorsArray: [],
+                stepWorkExperienceErrorsArray: [],
+                stepSkillErrorsArray: [],
+                stepFileUploadErrorsArray: []
 			}
 		},
 		computed: {
@@ -225,29 +247,29 @@
             loadedUserResume () {
                 return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
             },
-            loadingFiles () {
-                return this.$store.getters['loadingFiles']
-            },
             loadingResume () {
                 return this.$store.getters['loadingResume']
+            },
+            loadingFiles () {
+                return this.$store.getters['loadingFiles']
             }
 		},
         methods: {
-            stepPersonalDataValidate () {
-                return true
-            },
-            stepEducationValidate () {
-                return true
-            },
-            stepWorkExperienceValidate () {
-                return true
-            },
-            stepSkillsValidate () {
-                return true
-            },
-            onInput (val) {
-                this.steps = parseInt(val)
-            },
+            // stepPersonalDataValidate () {
+            //     return true
+            // },
+            // stepEducationValidate () {
+            //     return true
+            // },
+            // stepWorkExperienceValidate () {
+            //     return true
+            // },
+            // stepSkillsValidate () {
+            //     return true
+            // },
+            // onInput (val) {
+            //     this.steps = parseInt(val)
+            // },
             moveOneStepForward () {
                 if (this.step < 7) {
                     this.step += 1
@@ -265,11 +287,63 @@
             async updateResume () {
                 try {
                     this.updatingResumeDialog = true
-                    this.loadingUpdateResume = true
                     await this.$validator.validateAll()
-                    if (this.errors && this.errors.items && this.errors.items.length > 0) {
+                    if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
+                        const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
+                        if (this.errors.items.some(e => inputs.includes(e.field))) {
+                            console.log('Personal data errors')
+                            this.stepPersonalDataErrors = true
+                        }
+
+                        const educationErrors = this.errors.items.filter(item => item.field.includes('education'))
+                        if (educationErrors.length > 0) {
+                            this.stepEducationErrorsArray = new Array(this.loadedNewResume.education.length)
+                            educationErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepEducationErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const workExperienceErrors = this.errors.items.filter(item => item.field.includes('work_experience'))
+                        if (workExperienceErrors.length > 0) {
+                            this.stepWorkExperienceErrorsArray = new Array(this.loadedNewResume.work_experience.length)
+                            workExperienceErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepWorkExperienceErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const skillErrors = this.errors.items.filter(item => item.field.includes('skill'))
+                        if (skillErrors.length > 0) {
+                            this.stepSkillErrorsArray = new Array(this.loadedNewResume.skills.length)
+                            skillErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepSkillErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
+                        const fileUploadErrors = this.errors.items.filter(item => item.field.includes('file_title'))
+                        if (fileUploadErrors.length > 0) {
+                            this.stepFileUploadErrorsArray = new Array(this.loadedNewResume.uploads.length)
+                            fileUploadErrors.forEach(error => {
+                                const number = error.field.match(/\d+/g)
+                                if (number && number.length > 0) {
+                                    console.log(parseInt(number[0]))
+                                    this.stepFileUploadErrorsArray.splice(parseInt(number[0]), 1, true)
+                                }
+                            })
+                        }
+
                         this.updatingResumeDialog = false
-                        this.loadingUpdateResume = false
                         new Noty({
                             type: 'error',
                             text: 'Please check validation errors.',
@@ -279,32 +353,27 @@
                     } else {
                         await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                         this.updatingResumeDialog = false
-                        this.loadingUpdateResume = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was successfully updated.',
+                            text: 'Your resume was created successfully.',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
-                        // this.$router.push('/candidate/resumes')
                     }
                 } catch (error) {
                     this.updatingResumeDialog = false
-                    this.loadingUpdateResume = false
-                    // console.log('error from client: ', error)
-                    // console.log('error.response: ', error.response)
-                    // console.log('error.response.data: ', error.response.data)
-                    // console.log('error.response.data.error: ', error.response.data.error)
+                    this.$store.commit('setLoadingFiles', false, { root: true })
+                    this.$store.commit('setLoadingResume', false, { root: true })
 
-                    if (error.response && error.response.data && error.response.data.error) {
-                        new Noty({
-                            type: 'error',
-                            text: 'Your resume could not be updated.',
-                            timeout: 5000,
-                            theme: 'metroui'
-                        }).show()
-
-                        Object.entries(error.response.data.error).forEach(([key, value]) => {
+                    console.log('error from catch block: ', error)
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and your resume could not be created.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    Object.entries(error).forEach(([key, value]) => {
+                        if (key === 'server_error' || key === 'new_slug' || key === 'not_enough_space') {
                             console.log('key: ', key)
                             console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
@@ -320,25 +389,18 @@
                                 timeout: 8000,
                                 theme: 'metroui'
                             }).show()
-                        })
-                    } else {
-                        new Noty({
-                            type: 'warning',
-                            text: error,
-                            timeout: 8000,
-                            theme: 'metroui'
-                        }).show()
-                    }    
+                        }
+                    })
                 }
             },
             async updateResume2 () {
                 try {
                     console.log('this.loadedUserResume: ', this.loadedUserResume)
                     this.updatingResumeDialog = true
-                    this.loadingUpdateResume = true
+                    this.loadingResume = true
                     const updateResume = await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                     this.updatingResumeDialog = false
-                    this.loadingUpdateResume = false
+                    this.loadingResume = false
                     console.log('updateResume: ', updateResume)
                     
                     new Noty({
@@ -351,7 +413,7 @@
                 } catch (error) {
                     // console.log('error updateResume: ', error)
                     this.updatingResumeDialog = false
-                    this.loadingUpdateResume = false
+                    this.loadingResume = false
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and your resume could not be updated.',

@@ -171,12 +171,12 @@
                                 ></v-select>
                             </v-flex>
 
-                            <!-- errors: {{ errors }}<br /> -->
+                            <!-- url: { require_protocol: true }} -->
                             <v-flex xs12 sm4 class="px-3" v-for="(social_link, index) of userResume.social_links" :key="index">
                                 <v-text-field
                                     :label="social_link.name"
                                     :name="social_link.slug"
-                                    v-validate="{ required: true, url: { require_protocol: true }}"
+                                    v-validate="{ required: true }"
                                     :error-messages="errors ? errors.collect(`${social_link.slug}`) : null"
                                     v-model="userResume.social_links[index]['link']"
                                 ><font-awesome-icon :icon="['fab', `${social_link.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
@@ -198,7 +198,7 @@
                     <!-- <p class="text-xs-center">(can be public or private, you choose)</p> -->
 
                     <v-card-text>
-                        <v-layout row wrap>
+                        <v-layout row wrap class="mb-4">
                             <!-- <v-flex xs12 sm4 class="px-3">
                                 <v-select
                                     v-model="userResume.personal_data.gender"
@@ -265,7 +265,7 @@
 
                         </v-layout>
 
-                        <v-layout>
+                        <v-layout class="mb-4">
                             <v-flex xs12 sm4 class="px-3">
                                 <v-autocomplete
                                     label="Nationality-ies*"
@@ -278,6 +278,7 @@
                                     hint="Order matters"
                                     persistent-hint
                                     :deletable-chips="true"
+                                    color="secondary"
                                     v-model="userResume.personal_data.nationalities"
                                 >
                                     <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
@@ -325,7 +326,7 @@
                             </v-flex>
                         </v-layout>
 
-                        <v-layout row wrap v-if="userResume.parameters.show_language_level">
+                        <v-layout row wrap v-if="userResume.parameters.show_language_level" class="mb-4">
                             <v-flex xs4 v-for="(language, index) in userResume.languages" :key="index" class="px-3">
                                 <!-- language: {{ language }}<br /> -->
                                 <v-layout class="my-0 pl-3">
@@ -352,10 +353,27 @@
                             </v-flex>
                         </v-layout>
 
-                        <v-layout>
-                            <v-flex xs12 sm6 class="px-3">
-                                   
+                        <v-layout class="mb-4">
+                            <v-flex xs12 class="px-3">
+                                <v-autocomplete
+                                    label="Key competences"
+                                    :items="loadedCompetences"
+                                    item-text="name"
+                                    :return-object="true"
+                                    multiple
+                                    chips
+                                    small-chips
+                                    :deletable-chips="true"
+                                    color="secondary"
+                                    v-model="userResume.key_competences"
+                                >
+                                    <font-awesome-icon :icon="['fas', 'tools']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
+                            </v-flex>
+                        </v-layout>             
 
+                        <v-layout class="mb-4">
+                            <v-flex xs12 sm6 class="px-3">
                                 <!-- <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center"> -->
                                 <div v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl" class="text-xs-center">
                                     <span>Current picture: </span><br />
@@ -489,7 +507,7 @@
                             <v-flex xs10 offset-xs1>
                                 <v-layout justify-center>
                                     <div>
-                                        <v-switch v-model="userResume.updateResumeSlug" label="Modify resume slug" color="secondary"></v-switch>
+                                        <v-switch v-model="userResume.updateResumeSlug" label="Modify resume identifier" color="secondary"></v-switch>
                                     </div>
                                 </v-layout>
                                 
@@ -543,12 +561,9 @@
             // if (!this.userResume.uploads) {
             //     this.userResume.uploads = []
             // }
+            
         },
-        async mounted () {
-            await this.$store.dispatch('countries/fetchCountries')
-            await this.$store.dispatch('languages/fetchLanguages')
-            await this.$store.dispatch('competences/fetchCompetences')
-
+        async mounted () {   
             if (this.resumeSlug == undefined) {
                 // this.userResume.template_id = 'KZn492txu3znyr8Zz4oL'
                 this.loadedNewResume.slug = ''
@@ -627,7 +642,13 @@
                         slug: 'quora',
                         link: '',
                         fontawesome: 'quora'
-                    }
+                    },
+                    {
+                        name: 'Skype',
+                        slug: 'skype',
+                        link: '',
+                        fontawesome: 'skype'
+                    },
                 ]
             }
         },

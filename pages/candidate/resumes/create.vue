@@ -95,7 +95,7 @@
 
                         <v-stepper-content :step="2">
                             <v-card class="mb-5">
-                                <personal-data-component />
+                                <personal-data-component v-if="step == 2" />
                             </v-card>
                         </v-stepper-content>
 
@@ -103,25 +103,25 @@
                             <v-card class="mb-5">
                                 <!-- <education-component :educationErrors="[ true, false ]" /> -->
                                 <!-- <education-component :educationErrors="stepError2.educationArray" /> -->
-                                <education-component :educationErrors="stepEducationErrorsArray" />
+                                <education-component :educationErrors="stepEducationErrorsArray" v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
                             <v-card class="mb-5">
-                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" />
+                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
                             <v-card class="mb-5">
-                                <skills-component :skillErrors="stepSkillErrorsArray" />
+                                <skills-component :skillErrors="stepSkillErrorsArray" v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
                             <v-card class="mb-5">
-                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" />
+                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
 
@@ -192,6 +192,7 @@
         <v-dialog
             v-model="creatingResumeDialog"
             width="500"
+            persistent
         >
             <v-card light>
                 <v-card-title
@@ -217,7 +218,7 @@
                         outline
                     >
                         <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Uploading files...
                         </div>
                     </v-alert>
                 </v-card-text>
@@ -252,7 +253,16 @@
             // console.log('snapshot2: ', snapshot2)
             // console.log('snapshot2.data(): ', snapshot2.data())
             // this.errors.items = []
-
+            if (!this.$store.getters['countries/loadedCountries']) {
+                // console.log('Fetching countries...')
+                await this.$store.dispatch('countries/fetchCountries')
+            }
+            if (!this.$store.getters['languages/loadedLanguages']) {
+                await this.$store.dispatch('languages/fetchLanguages')
+            }
+            if (!this.$store.getters['competences/loadedCompetences']) {
+                await this.$store.dispatch('competences/fetchCompetences')
+            }
         },
         mounted () {
             // this.$validator.reset()
@@ -476,9 +486,10 @@
                         }).show()
                     } else {
                         // this.$store.commit('setLoadingResume', true, { root: true })
-                        // await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
+                        await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
                         // this.$store.commit('setLoadingFiles', false, { root: true })
                         // this.$router.push('/candidate/resumes')
+                        this.creatingResumeDialog = false
                         new Noty({
                             type: 'success',
                             text: 'Your resume was created successfully.',
@@ -487,8 +498,6 @@
                         }).show()
                     }
                 } catch (error) {
-                    // Delete newly uploaded files
-                    
                     this.creatingResumeDialog = false
                     this.$store.commit('setLoadingFiles', false, { root: true })
                     this.$store.commit('setLoadingResume', false, { root: true })
