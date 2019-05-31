@@ -13,9 +13,9 @@
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
-            getCurrentPicture: {{ getCurrentPicture }}<br /><br />
+            <!-- getCurrentPicture: {{ getCurrentPicture }}<br /><br /> -->
             userResume.uploads: {{ this.userResume.uploads }}<br /><br />
-            <v-btn color="primary" @click="addUpload">Add upload</v-btn>
+            <!-- <v-btn color="primary" @click="addUpload">Add upload</v-btn> -->
             
         </div>
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
@@ -701,6 +701,7 @@
                 console.log('files: ', files)
                 if (files[0]) {
                     this.uploadingNewImage = true
+                    this.userResume.uploads = this.userResume.uploads.filter(upload => upload.type !== 'profile_picture')
                     this.userResume.uploads.push({
                         file: files[0],
                         name: files[0].name,

@@ -35,6 +35,7 @@ export const mutations = {
         state.errors.push(payload)
     },
     clearError (state) {
+        console.log('Call to clearError mutation')
         state.error = null
         state.errors = []
     }

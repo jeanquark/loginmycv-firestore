@@ -110,7 +110,7 @@
 								<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
 								<!-- <td class="text-xs-left">{{ props.item.resume.email }}</td> -->
 								<td class="text-xs-left"><v-btn small color="success" nuxt :to="`/resume/${props.item.resume.id}`" target="_blank">View resume</v-btn></td>
-								<td class="text-xs-left">{{ props.item.status }}</td>
+								<td class="text-xs-left">{{ props.item.status ? props.item.status.name : '' }}</td>
 								<td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
 								</td>

@@ -44,9 +44,9 @@
                         <v-stepper-step :step="6" editable v-if="stepFileUploadErrorsArray.length < 1">Files upload</v-stepper-step>
                         <v-stepper-step :step="6" editable :rules="[() => false]" v-else>Files upload</v-stepper-step>
 
-                        <v-divider></v-divider>
+                        <!-- <v-divider></v-divider>
 
-                        <v-stepper-step :step="7" editable>Other</v-stepper-step>
+                        <v-stepper-step :step="7" editable>Other</v-stepper-step> -->
 
                     </v-stepper-header>
 
@@ -87,11 +87,11 @@
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content :step="7">
+                        <!-- <v-stepper-content :step="7">
                             <v-card class="mb-5">
                                 <h2>Other</h2>
                             </v-card>
-                        </v-stepper-content>
+                        </v-stepper-content> -->
                     </v-stepper-items>
 
                     <v-card-actions class="justify-center">
@@ -136,14 +136,20 @@
                         <v-card-text style="min-height: 280px;" class="align-center">
                             <br /><br /><br />
                             <v-alert
-                                value="true"
+                                :value="loadingFiles"
                                 color="primary"
                                 outline
                             >
-                                <div class="text-xs-center" v-if="loadingFiles">
+                                <div class="text-xs-center" >
                                     <v-progress-circular indeterminate color="primary"></v-progress-circular> Uploading files...
                                 </div>
-                                <div class="text-xs-center" v-if="loadingResume">
+                            </v-alert>
+                            <v-alert
+                                :value="loadingResume"
+                                color="primary"
+                                outline
+                            >
+                                <div class="text-xs-center">
                                     <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume...
                                 </div>
                             </v-alert>
@@ -297,7 +303,7 @@
 
                         const educationErrors = this.errors.items.filter(item => item.field.includes('education'))
                         if (educationErrors.length > 0) {
-                            this.stepEducationErrorsArray = new Array(this.loadedNewResume.education.length)
+                            this.stepEducationErrorsArray = new Array(this.loadedUserResume.education.length)
                             educationErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
@@ -309,7 +315,7 @@
 
                         const workExperienceErrors = this.errors.items.filter(item => item.field.includes('work_experience'))
                         if (workExperienceErrors.length > 0) {
-                            this.stepWorkExperienceErrorsArray = new Array(this.loadedNewResume.work_experience.length)
+                            this.stepWorkExperienceErrorsArray = new Array(this.loadedUserResume.work_experience.length)
                             workExperienceErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
@@ -321,7 +327,7 @@
 
                         const skillErrors = this.errors.items.filter(item => item.field.includes('skill'))
                         if (skillErrors.length > 0) {
-                            this.stepSkillErrorsArray = new Array(this.loadedNewResume.skills.length)
+                            this.stepSkillErrorsArray = new Array(this.loadedUserResume.skills.length)
                             skillErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
@@ -333,7 +339,7 @@
 
                         const fileUploadErrors = this.errors.items.filter(item => item.field.includes('file_title'))
                         if (fileUploadErrors.length > 0) {
-                            this.stepFileUploadErrorsArray = new Array(this.loadedNewResume.uploads.length)
+                            this.stepFileUploadErrorsArray = new Array(this.loadedUserResume.uploads.length)
                             fileUploadErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
@@ -355,7 +361,7 @@
                         this.updatingResumeDialog = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was created successfully.',
+                            text: 'Your resume was updated successfully.',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
@@ -368,7 +374,7 @@
                     console.log('error from catch block: ', error)
                     new Noty({
                         type: 'error',
-                        text: 'Sorry, an error occured and your resume could not be created.',
+                        text: 'Sorry, an error occured and your resume could not be updated.',
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()
@@ -378,10 +384,12 @@
                             console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
 
-                            this.$validator.errors.add({
-                                field: field,
-                                msg: value,
-                            })
+                            if (key !== 'server_error' && key !== 'not_enough_space') {
+                                this.$validator.errors.add({
+                                    field: field,
+                                    msg: value,
+                                })
+                            }
 
                             new Noty({
                                 type: 'warning',

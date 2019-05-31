@@ -19,6 +19,6 @@ module.exports = app.use(async function (req, res) {
 		res.send('POST request to delete authorization went successfully.');
   	} catch (error) {
   		console.log('error: ', error);
-		res.status(500).send('Server error, authorization could not be deleted. ' + error);
+		res.status(500).send(`Server error, authorization could not be deleted: ${error}`);
   	}
 });

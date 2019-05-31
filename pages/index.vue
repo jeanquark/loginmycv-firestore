@@ -179,7 +179,14 @@
 				<v-layout row wrap justify-center class="mb-5">
 					<v-flex xs12>
 						<h2 class="subtitle display-1">How it works</h2>
-						<v-img src="/images/how_it_works.svg" />
+						<v-layout>
+							<v-flex xs6>
+								<v-img src="/images/frontpage-text.svg" />
+							</v-flex>
+							<v-flex xs6>
+								<v-img src="/images/frontpage-img.png" />
+							</v-flex>
+						</v-layout>
 					</v-flex>
 				</v-layout>
 

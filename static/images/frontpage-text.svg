@@ -1,0 +1,19 @@
+<svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="802" width="1002" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text stroke="#000" transform="matrix(15.183335298049883,0,0,4.895132497851478,-1127.1761092846568,-118.66150743133409) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_1" y="54" x="81.5" stroke-width="0" fill="#000000"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="36" id="svg_2" y="100" x="199.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#7a528f">Sign up</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="36" id="svg_3" y="201" x="199.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#7a528f">Select template</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="36" id="svg_4" y="300" x="200.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#7a528f">Add content</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="36" id="svg_5" y="399" x="198.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#7a528f">Specify access rights</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="36" id="svg_6" y="499" x="199.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#7a528f">Save</text>
+ </g>
+</svg>

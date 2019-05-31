@@ -42,6 +42,7 @@ module.exports = app.use(async function (req, res, next) {
 			console.log('newSlug: ', newSlug);
 			const password = updatedResume.password;
 			const picture = updatedResume.uploads ? updatedResume.uploads.find(upload => upload.type === 'profile_picture') : null;
+			updatedResume['picture'] = picture ? picture.downloadUrl : null;
 			updatedResume['slug'] = newSlug;
 			delete updatedResume['updateResumeSlug'];
 			delete updatedResume['new_slug'];
@@ -132,7 +133,8 @@ module.exports = app.use(async function (req, res, next) {
 		} else { // Not updating the resume slug
 			console.log('Not updating the resume slug');
 			const password = updatedResume.password;
-			// const picture = payload['uploads'] ? payload.uploads.find(upload => upload.type === 'picture') : null
+			const picture = updatedResume['uploads'] ? updatedResume.uploads.find(upload => upload.type === 'profile_picture') : null
+			updatedResume['picture'] = picture ? picture.downloadUrl : null;
 			delete updatedResume['updateResumeSlug'];
 			delete updatedResume['new_slug'];
 			delete updatedResume['id'];

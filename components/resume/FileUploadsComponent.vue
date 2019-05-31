@@ -39,18 +39,19 @@
 		<br /><br />
 		<v-btn color="secondary">Get more space</v-btn>
 
-		<v-layout row wrap>
+		<v-layout row wrap v-if="userResume.uploads">
 			<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
 			<!-- <div > -->
-			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index" >
+			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index">
 				<!-- <v-layout > -->
 				<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-if="file.type === 'downloadable_file'" > -->
 				<!-- <v-card class="ma-2" v-if="file.type === 'downloadable_file'"> -->
-				<v-card class="ma-2" v-if="file.type === 'downloadable_file'">
+				<v-card class="ma-2">
 					<v-card-title primary-title class="justify-center">
-						<h3 class="headline mb-0" :class="{ 'errorTitle': fileUploadErrors[index] }">File #{{ getFileIndex(index) }}</h3>
+						<!-- <h3 class="headline mb-0" :class="{ 'errorTitle': fileUploadErrors[index] }">File #{{ getFileIndex(index) }}</h3> -->
+						<h3 class="headline mb-0" :class="{ 'errorTitle': fileUploadErrors[index] }">File #{{ index + 1 }}</h3>
 					</v-card-title>
 
 					<v-card-text>
@@ -66,6 +67,14 @@
                             data-vv-as="File title"
 							v-model="userResume.uploads[index].title"
 							:counter="2"
+							v-if="file.type === 'downloadable_file'"
+						></v-text-field>
+
+						<v-text-field
+							label="File Title"
+							v-if="file.type === 'profile_picture'"
+							value="Profile picture"
+							readonly
 						></v-text-field>
 						<!-- v-model="getCurrentFiles[index].title" -->
 						<!-- v-model="userResume.uploads[index].title" -->
@@ -232,8 +241,8 @@
 			newUpload () {
 				if (this.userResume.uploads && this.userResume.uploads.length < 30) {
 					this.userResume.uploads.push({
-						file: '',
-						title: '',
+						file: {},
+						title: 'ABC',
 						name: '',
 						size_in_bytes: 0,
 						new: true,
@@ -301,27 +310,13 @@
 				console.log('index: ', index)
 				if (files[0]) {
 					console.log('files[0]: ', files[0])
-					// this.userResume.uploads[index].file = files[0]
-					// this.userResume.uploads[index].name = files[0].name
-					// this.userResume.uploads[index].size_in_bytes = parseInt(files[0].size)
-					// this.userResume.uploads[index] = files[0]
-					// this.getCurrentFiles[index].file = files[0]
-					// this.getCurrentFiles[index].name = files[0].name
-					// this.getCurrentFiles[index].size_in_bytes = parseInt(files[0].size)
-					// const index2 = this.userResume.uploads.findIndex(upload => upload.type === 'downloadable_file' && upload.new === true)
-					// console.log('index2: ', index2)
-					// this.userResume.uploads[5] = {
-					// this.userResume.uploads = this.userResume.uploads.filter(upload => upload.name != '')
 					this.userResume.uploads.splice(index, 1, {
-					// this.userResume.uploads.push({
 						file: files[0],
 						name: files[0].name,
 						type: 'downloadable_file',
 						size_in_bytes: parseInt(files[0].size),
 						new: true
 					})
-					// this.userResume.uploads.splice(index, 1)
-					// }
 				}
 			}
         }

@@ -138,12 +138,12 @@ export const actions = {
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
 		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
-		firestore.collection('resumes_short').onSnapshot(snapshot => {
+		firestore.collection('resumes_short').where('visibility', '==', 'public').where('visibility', '==', 'semi-private').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
-				if (resume.data().visibility !== 'private') {
+				// if (resume.data().visibility !== 'private') {
 					shortResumesArray.push({ ...resume.data(), id: resume.id })
-				}
+				// }
 			})
 			console.log('shortResumesArray: ', shortResumesArray)
 			commit('setShortResumes', shortResumesArray)
@@ -165,7 +165,7 @@ export const actions = {
 			if (userId) {
 				firestore.collection('resumes_long').where('user_id', '==', userId).onSnapshot(snapshot => {
 					const userResumes = []
-					console.log('snapshot: ', snapshot)
+					// console.log('snapshot: ', snapshot)
 					snapshot.forEach(doc => { // Also include uploaded files
 						// doc.ref.collection('uploads').doc(doc.id).get().then(childSnapshot => {
 							userResumes.push({
@@ -471,10 +471,13 @@ export const actions = {
 			// 1) Retrieve & delete all files to delete
 			const filesToDelete = []
 			oldResume.data().uploads.forEach(file => {
-				if (!payload.uploads.find(upload => upload.name === file.name && upload._updated_at === file._updated_at)) {
+				console.log('old file: ', file)
+				if (!payload.uploads.find(upload => upload.name === file.name)) {
+					console.log('file to delete: ', file)
 					filesToDelete.push(file)
 				}
 			})
+
 			console.log('filesToDelete: ', filesToDelete)
 			for (let file of filesToDelete) {
 				const uploadRef = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
@@ -498,12 +501,17 @@ export const actions = {
 			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
 			if (totalUploadSize > userTotalSpace) {
 				throw {
-					'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+					'not_enough_space': 'Files could not be uploaded because your do not have enough space. Remove some files or buy extra space.'
 				}
 			}
 			console.log('filesToAdd: ', filesToAdd)
 			console.log('totalUploadSize: ', totalUploadSize)
 			console.log('userTotalSpace: ', userTotalSpace)
+
+			// throw {
+			// 	'not_enough_space': 'Files could not be uploaded because your do not have enough space. Remove some files or buy extra space.'
+			// }
+
 
 			for (let file of filesToAdd) {
 				console.log('file: ', file)
