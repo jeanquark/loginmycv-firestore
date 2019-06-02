@@ -137,8 +137,8 @@ export const actions = {
 	},
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
-		// firestore.collection('resumes_short').onSnapshot(function (querySnapshot) {
-		firestore.collection('resumes_short').where('visibility', '==', 'public').where('visibility', '==', 'semi-private').onSnapshot(snapshot => {
+		// firestore.collection('resumes_short').onSnapshot(snapshot => {
+		firestore.collection('resumes_short').where('visibility', '>=', 'public').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
 				// if (resume.data().visibility !== 'private') {

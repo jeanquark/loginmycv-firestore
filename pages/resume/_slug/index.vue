@@ -51,7 +51,7 @@
 
             // 1) Fetch resume if resume is public or it is user's resume or user has registered as a visitor		      
         	const slug = this.$route.params.slug
-			console.log('slug: ', slug)
+			console.log('slug2: ', slug)
 			try {
 				this.resume = await this.$store.dispatch('resumes/fetchLongResume', slug)
 				console.log('resume from index.vue: ', this.resume)
@@ -64,7 +64,7 @@
 		            return this.component = () => import(`~/components/templates/${template.file}`)
 				}
 			} catch (error) {
-				console.log('error: ', error)
+				console.log('error2: ', error)
 				console.log('No firebase authorization')
 			}
 

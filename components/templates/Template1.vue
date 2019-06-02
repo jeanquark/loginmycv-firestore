@@ -180,7 +180,7 @@
 											>
 												{{ s.value }}%
 											</v-progress-circular><br />
-											{{ s.name }}
+											<span color="textColor">{{ s.name }}</span>
 										</div>
 										<div v-else><!-- type === 'bar' -->
 											<v-layout class="my-2">
@@ -232,9 +232,14 @@
 			</v-layout>
 		</v-content>
 
-		<v-footer :color="backgroundColor" class="white--text justify-center" style="padding: 30px 0px;">
-			<nuxt-link to="/" class="link"><h3>LoginMyCV</h3></nuxt-link>&nbsp;
-			<span>&copy; {{ new Date() | moment('Y') }}</span>
+		<v-footer :color="backgroundColor" class="white--text justify-center pa-4">
+			<nuxt-link to="/" class="link">
+				<v-layout align-center justify-center>
+					<img src="/images/logo_small.png" width="30" />&nbsp;
+					<span class="title">LoginMyCV</span>
+				</v-layout>
+			</nuxt-link>
+			<span class="ml-2">{{ new Date() | moment('Y') }}</span>
 		</v-footer>
 	</v-app>
 </template>
@@ -394,8 +399,11 @@
 	.margin-bottom {
 		margin-bottom: 80px;
 	}
+	.link {
+		text-decoration: none;
+	}
 	.social-link {
-		background-color: var(--background-color);
+		background-color: var(--secondary-color);
 		color: var(--primary-color);
 	}
 	.social-link:hover {

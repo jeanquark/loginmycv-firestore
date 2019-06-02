@@ -3,8 +3,8 @@
         <v-content>
             <v-container fluid fill-height>
                 <v-layout align-center justify-center>
-                    <v-img src="/images/loader.gif" max-width="200px" v-if="!candidate.resume_long_id"></v-img>
-                    <v-flex xs12 sm8 md4 v-cloak v-else>
+                    <!-- <v-img src="/images/loader.gif" max-width="200px" v-if="!candidate.resume_long_id"></v-img> -->
+                    <v-flex xs12 sm8 md4 v-cloak>
                         <v-card class="elevation-12">
                             <v-toolbar dark color="primary">
                                 <v-toolbar-title>Login form</v-toolbar-title>
@@ -52,56 +52,31 @@
 		async mounted () {
 			// const slug = params.slug
 			// console.log('slug: ', slug)
-			this.$store.commit('clearError', { root: true })
-            const slug = this.$route.params.slug
-			console.log('slug: ', slug)
-            this.form.username = slug
+			// this.$store.commit('clearError', { root: true })
+            this.slug = this.$route.params.slug
+			// console.log('slug3: ', slug)
+            // this.form.username = slug
 
-            // Check that resume exists
-            let candidate = {}
-            const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
-            snapshot.forEach(doc => {
-                candidate = doc.data()
-            })
-            console.log('candidate: ', candidate)
-            if (!candidate.resume_long_id) {
-                console.log('No resume with this slug')
-                new Noty({
-                    type: 'error',
-                    text: 'Resume not found.',
-                    timeout: 5000,
-                    theme: 'metroui'
-                }).show()
-                this.$router.push('/')
-            } else {
-                console.log('candidate exists.')
-                this.candidate = candidate
-            }
-
-			// const slug = this.$route.params.slug
-			// this.slug = slug
-
-			// let candidate = {}
-			// const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
-			// snapshot.forEach(doc => {
-			// 	candidate = doc.data()
-			// })
-   //          console.log('candidate: ', candidate)
-   //          if (!candidate.resume_long_id) {
-   //              console.log('No resume with this slug')
-   //              new Noty({
-   //                  type: 'error',
-   //                  text: 'Resume not found.',
-   //                  timeout: 5000,
-   //                  theme: 'metroui'
-   //              }).show()
-   //              this.$router.push('/')
-   //          } else {
-   //              console.log('candidate exists.')
-   //              this.candidate = candidate
-   //              // this.firstname = candidate.firstname
-   //              // this.form.username = `${candidate.slug}@visitor.loginmycv.com`
-   //          }
+            // // Check that resume exists
+            // let candidate = {}
+            // const snapshot = await firestore.collection('resumes_short').where('resume_long_id', '==', slug).get()
+            // snapshot.forEach(doc => {
+            //     candidate = doc.data()
+            // })
+            // console.log('candidate: ', candidate)
+            // if (!candidate.resume_long_id) {
+            //     console.log('No resume with this slug')
+            //     new Noty({
+            //         type: 'error',
+            //         text: 'Resume not found.',
+            //         timeout: 5000,
+            //         theme: 'metroui'
+            //     }).show()
+            //     this.$router.push('/')
+            // } else {
+            //     console.log('candidate exists.')
+            //     this.candidate = candidate
+            // }
 		},
         data () {
             return {
@@ -128,7 +103,7 @@
 				console.log('signVisitorIn')
 				this.$store.commit('clearError', { root: true })				
                 try {
-                    await this.$store.dispatch('firebase-auth/signVisitorIn', { form: this.form})
+                    await this.$store.dispatch('firebase-auth/signVisitorIn', { slug: this.slug, password: this.form.password })
                     // console.log('Success!')
                     // new Noty({
                     //     type: 'success',
@@ -136,7 +111,7 @@
                     //     timeout: 5000,
                     //     theme: 'metroui'
 					// }).show()
-					this.$router.push(`/resume/${this.form.username}`)
+					this.$router.push(`/resume/${this.slug}`)
                 } catch (error) {
                     console.log('error login: ', error)
                     // new Noty({

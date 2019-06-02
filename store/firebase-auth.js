@@ -71,11 +71,12 @@ export const actions = {
     async signVisitorIn ({ commit }, payload) {
         try {
             console.log('payload: ', payload)
-            const username = `${payload.form.username}@visitor.loginmycv.com`
+            // const username = `${payload.form.username}@visitor.loginmycv.com`
+            const username = `${payload.slug}@visitor.loginmycv.com`
             console.log('username: ', username)
             let authData = await auth.signInWithEmailAndPassword (
                 username,
-                payload.form.password
+                payload.password
             )
             console.log('authData: ', authData)
             const authUserId = authData.user.uid
@@ -275,6 +276,17 @@ export const actions = {
             commit("setError", error, { root: true })
             commit("setLoading", false, { root: true })
         }
+    },
+    async resetPassword ({ commit }, payload) {
+        console.log('payload: ', payload)
+        // var auth = firebase.auth();
+        // var emailAddress = "user@example.com";
+
+        auth.sendPasswordResetEmail(payload).then(function() {
+            console.log('Email sent')
+        }).catch(function(error) {
+            console.log('error: ', error)
+        })
     },
     async signOut({ commit }) {
         commit('setLoading', true, { root: true })

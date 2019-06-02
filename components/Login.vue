@@ -1,7 +1,7 @@
 <template>
     <v-card class="elevation-12">
         <v-toolbar dark color="primary">
-            <v-toolbar-title>Login Candidate</v-toolbar-title>
+            <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <!-- error: {{ error }}<br /> -->
@@ -36,19 +36,27 @@
                     :error-messages="error ? error.message : ''"
                 ></v-text-field>
 
-                <v-layout justify-center>
+                <v-layout justify-center class="mb-2">
                     <v-btn color="primary" type="submit" :loading="loading">Login</v-btn>
                 </v-layout>
-                <v-layout justify-center> 
-                    <a href="/candidate/password/reset">Forgot Password</a>
+                <v-layout justify-center class="mb-1"> 
+                    <!-- <a href="/candidate/password/reset">Forgot Password</a> -->
+                    <v-btn flat color="secondary" @click="switchToForgotPassword">
+                        I forgot my password
+                    </v-btn>
+                </v-layout>
+                <v-layout justify-center>
+                    <v-btn flat color="primary" @click="switchToRegister">
+                        Switch to register
+                    </v-btn>
                 </v-layout>
             </v-form>
         </v-card-text>
-        <v-card-actions class="justify-center">
+        <!-- <v-card-actions class="justify-center">
             <v-btn flat color="primary" @click="switchToRegister">
                 Switch to register
             </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
     </v-card>
 </template>
 
@@ -80,7 +88,10 @@
 		},
 		methods: {
             switchToRegister () {
-                this.$emit('loginChildToParent')
+                this.$emit('switchToRegisterModal')
+            },
+            switchToForgotPassword () {
+                this.$emit('switchToForgotPasswordModal')
             },
 			async signUserIn () {
                 console.log('signUserIn')
@@ -109,6 +120,6 @@
 
 </script>
 
-<style>
+<style scoped>
 
 </style>

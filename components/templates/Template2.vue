@@ -730,7 +730,8 @@
 	} */
 	.social-link {
 		background-color: var(--background-color);
-		color: var(--primary-color);
+		/* background-color: var(--primary-color); */
+		/* color: var(--primary-color); */
 		cursor: pointer;
 	}
 	.social-link:hover {

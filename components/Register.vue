@@ -1,7 +1,7 @@
 <template>
     <v-card class="elevation-12">
         <v-toolbar dark color="primary">
-            <v-toolbar-title>Register a new candidate</v-toolbar-title>
+            <v-toolbar-title>Register to loginMyCV</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <form @submit.prevent="signUserUp">
@@ -13,7 +13,7 @@
                             id="firstname"
                             name="firstname"
                             prepend-icon="person"
-                            v-validate="'required|max:5'"
+                            v-validate="'required|max:50'"
                             :counter="50"
                             :error-messages="errors ? errors.collect('firstname') : null"
                             v-model="form.firstname"
@@ -79,14 +79,19 @@
 
                 <v-layout justify-center>
                     <v-btn color="primary" type="submit" :loading="loading" :disabled="errors && errors.items.length > 0">Register</v-btn>
-                </v-layout>    
+                </v-layout>
+                <v-layout justify-center>
+                    <v-btn flat color="primary" @click="switchToLogin">
+                        Switch to login
+                    </v-btn>
+                </v-layout>
             </form>
         </v-card-text>
-        <v-card-actions class="justify-center">
+        <!-- <v-card-actions class="justify-center">
             <v-btn flat color="primary" @click="switchToLogin">
                 Switch to login
             </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
     </v-card>
 </template>
 
@@ -148,6 +153,6 @@
 
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -184,7 +184,7 @@
 								<v-img src="/images/frontpage-text.svg" />
 							</v-flex>
 							<v-flex xs6>
-								<v-img src="/images/frontpage-img.png" />
+								<v-img src="/images/frontpage-img6.png" />
 							</v-flex>
 						</v-layout>
 					</v-flex>
@@ -216,19 +216,19 @@
         					</v-card-title>
         					<v-card-actions>
 								<v-layout justify-center v-if="resume.visibility === 'public'">
-									<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
+									<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
 								</v-layout>
 								<v-layout justify-center v-if="resume.visibility === 'semi-private'">
 									<div v-if="loadedUser">
 										<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-											<v-btn nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
+											<v-btn small nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'accorded'">View resume</v-btn>
 											<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status === 'in_process'">Your access request is in process stage</v-chip>
 	        							</div>
-										<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
-										<v-btn color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+										<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
 									</div>
 									<div v-else>
-										<v-btn color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
 									</div>
 								</v-layout>
         					</v-card-actions>
@@ -245,9 +245,8 @@
                         v-model="loginModal"
                         width="500"
                     	lazy
-						persistent
                     >
-                        <Login v-on:loginChildToParent="switchToRegister" :message="message" />
+                        <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" :message="message" />
                     </v-dialog>
 
                     <!-- Register Candidate Modal -->
@@ -255,11 +254,20 @@
                         v-model="registerModal"
                         width="750"
                         lazy
-						persistent
                     >
                         <Register v-on:registerChildToParent="switchToLogin" />
                     </v-dialog>
 
+					<!-- Forgot Password Modal -->
+                    <v-dialog
+                        v-model="forgotPasswordModal"
+                        width="750"
+                        lazy
+                    >
+                        <ForgotPassword />
+                    </v-dialog>
+
+					<!-- Request Authorization Modal -->
                     <v-dialog
         				v-model="requestAuthorizationModal"
         				width="500"
@@ -268,14 +276,8 @@
     				>
     					<RequestAuthorization v-on:closeModal="requestAuthorizationModal = false" :resume="candidateResume" />
     				</v-dialog>
-
-					
-
         		</v-layout>
-
-        		
         	</v-container>
-			
         </v-content>
 
         <v-footer
@@ -288,13 +290,14 @@
 		      	wrap
 		    >
 		      	<v-btn
-			        v-for="link in links"
-		        	:key="link"
+			        v-for="(link, index) in links"
+		        	:key="index"
 		        	color="white"
 		        	flat
 		        	round
 		      	>
-			        {{ link }}
+			        <nuxt-link :to="link.link" class="link">{{ link.name }}</nuxt-link>
+					<!-- {{ link.name }} -->
 		      	</v-btn>
 		      	<v-flex
 			        primary
@@ -319,11 +322,12 @@
 
 	import Login from '~/components/Login'
 	import Register from '~/components/Register'
+	import ForgotPassword from '~/components/ForgotPassword'
 	import RequestAuthorization from '~/components/RequestAuthorization'
 	import Draggable from 'vuedraggable'
 	export default {
 		// inject: ['$validator'], // inject vee-validate validator
-		components: { Login, Register, RequestAuthorization, Draggable },
+		components: { Login, Register, ForgotPassword, RequestAuthorization, Draggable },
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
 			// console.log('shortResumes: ', shortResumes)
@@ -427,16 +431,32 @@
 				// 	]
 				// },
 				links: [
-			        'Home',
-			        'About Us',
-			        'Team',
-			        'Services',
-			        'Contact Us'
+			        {
+						name: 'Home',
+						link: '/'
+					},
+					{
+						name: 'About Us',
+						link: '/about'
+					},
+					{
+						name: 'Team',
+						link: '/team'
+					},
+					// {
+					// 	name: 'Services',
+					// 	link: '/services'
+					// },
+					{
+						name: 'Contact Us',
+						link: '/contact'
+					}
 			    ],
 			    message: '',
 			    candidateResume: {},
 			    loginModal: false,
-    			registerModal: false,
+				registerModal: false,
+				forgotPasswordModal: false,
 				requestAuthorizationModal: false,
 				// items: ['foo', 'bar', 'fizz', 'buzz'],
 				password: '',
@@ -509,6 +529,10 @@
 			switchToRegister () {
 				this.loginModal = false
 				this.registerModal = true
+			},
+			switchToForgotPassword () {
+				this.loginModal = false
+				this.forgotPasswordModal = true
 			},
 			openLoginModal () {
 				this.message = null
@@ -596,5 +620,9 @@
 		color: var(--v-secondary-base);
 		font-weight: normal;
 		/* text-transform: uppercase; */
+	}
+	.link {
+		text-decoration: none;
+		color: #fff;
 	}
 </style>
