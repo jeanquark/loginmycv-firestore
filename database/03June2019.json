@@ -1,0 +1,3821 @@
+{
+  "app_parameters": {
+    "users": { "initial_resumes_number": 1, "initial_space_in_bytes": 10485760 }
+  },
+  "authorizations": {
+    "cOmOzZ6Ukx9c4mZQonbq": {
+      "user": {
+        "email": "ivan.w@example.com",
+        "lastname": "w",
+        "firstname": "Ivan",
+        "id": "eyvoKvkJdKSdc9gjXoiN",
+        "message": "Hello"
+      },
+      "resume": {
+        "firstname": "Jean-Marc",
+        "id": "jeanquark2",
+        "email": "jeanquark84@gmail.com",
+        "user_id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+        "lastname": "Kleger"
+      },
+      "_updated_at": 1557946018,
+      "id": "cOmOzZ6Ukx9c4mZQonbq",
+      "_created_at": "1556889794",
+      "authorizations": {
+        "work_experience": false,
+        "files": false,
+        "education": false,
+        "personal_data": false,
+        "skills": false,
+        "picture": false
+      },
+      "status": { "slug": "in_process", "name": "In process" }
+    },
+    "zsgL8XxnArvEVdncon1X": {
+      "authorizations": {
+        "personal_data": false,
+        "skills": false,
+        "picture": false,
+        "work_experience": false,
+        "education": false,
+        "documents": false
+      },
+      "_created_at": 1557844653,
+      "status": { "slug": "allowed", "name": "Allowed" },
+      "user": {
+        "lastname": "Kleger",
+        "firstname": "Jean-Marc3",
+        "id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+        "message": "Hi man!",
+        "email": "jm.kleger@gmail.com"
+      },
+      "resume": {
+        "email": "ivan.w@example.com",
+        "user_id": "eyvoKvkJdKSdc9gjXoiN",
+        "lastname": "W",
+        "firstname": "Ivan",
+        "id": "ivan"
+      },
+      "_updated_at": 1557844653
+    }
+  },
+  "key_competences": {
+    "A4VjOMqW8RrWjdffQKbZ": {
+      "slug": "coding",
+      "name": "Coding",
+      "color": "amber darken-1"
+    },
+    "AMRiV93ms3pJZdqF3fP4": {
+      "name": "Team management",
+      "color": "light-blue darken-1",
+      "slug": "team_management"
+    },
+    "JpjJnumZWhx6ahSArpqP": {
+      "slug": "father",
+      "name": "Father",
+      "color": "blue"
+    },
+    "NKaP0HVUkyOeTAc5c1PL": {
+      "slug": "office_support",
+      "name": "Office support",
+      "color": "teal darken-1"
+    },
+    "VGmtx250QUHyaXs9Phab": {
+      "slug": "mother",
+      "name": "Mother",
+      "color": "pink"
+    },
+    "WTY1noDbtxaB3DurhuvV": {
+      "slug": "accounting",
+      "name": "Accounting",
+      "color": "deep-orange darken-1"
+    },
+    "cPxx2qWLmI5rIlBG8Nti": {
+      "slug": "finance",
+      "name": "Finance",
+      "color": "red darken-1"
+    },
+    "mJtMAcXIjmuwY9Xn1MqQ": {
+      "name": "IT Support",
+      "color": "green darken-1",
+      "slug": "it_support"
+    }
+  },
+  "resumes_long": {
+    "FnJhOn10BtSdRjVpkDNT": {
+      "slug": "milton",
+      "work_experience": [],
+      "education": [
+        {
+          "name": "University of Bern",
+          "country": "Switzerland",
+          "school": "University of Bern",
+          "graduation_date": "2019-03",
+          "duration": 5.5,
+          "location": "Bern",
+          "title": "PHD Economics",
+          "description": ""
+        }
+      ],
+      "_created_at": 1553448249,
+      "template_id": "ZjzvgkAlZq9CPcXToqDK",
+      "job_title": "Economist",
+      "_updated_at": 1553448249,
+      "id": "FnJhOn10BtSdRjVpkDNT",
+      "user_id": "NySJ0N6HjEfaSYezbGnm",
+      "personal_data": {
+        "lastname": "Ougabo",
+        "firstname": "Milton",
+        "email": "milton@example.com"
+      },
+      "skills": [],
+      "job_description": "Study economy growth in sub saharan Africa"
+    },
+    "ivan": {
+      "job_title": "Data analyst",
+      "languages": [
+        {
+          "slug": "english",
+          "level": 80,
+          "name": "English",
+          "info": "TOEFL 120 points august 2009"
+        },
+        {
+          "slug": "french",
+          "level": 40,
+          "name": "French",
+          "info": "A2 exam passed in June 2018"
+        },
+        {
+          "slug": "german",
+          "level": 60,
+          "name": "German",
+          "info": "B2 certificate obtained in April 2009. Better orally than in writing"
+        },
+        {
+          "name": "Spanish",
+          "info": "Mother tongue. Slutty mexican accent",
+          "slug": "spanish",
+          "level": 100
+        }
+      ],
+      "colors": {
+        "secondaryColor": "#fff",
+        "textColor": "#000",
+        "primaryColor": "#fd8dc1",
+        "backgroundColor": "#fff"
+      },
+      "user_id": "eyvoKvkJdKSdc9gjXoiN",
+      "resume_short_id": "xYEnLw01ANZxnRgds8h1",
+      "personal_data": {
+        "city": "Lausanne",
+        "email": "ivan.w@example.com",
+        "country": "Switzerland",
+        "lastname": "w",
+        "firstname": "Ivan",
+        "birthday": "1984-02-28",
+        "nationalities": [
+          { "slug": "mexico", "priority": 2, "name": "Mexico" },
+          { "slug": "switzerland", "priority": 1, "name": "Switzerland" }
+        ],
+        "short_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+      },
+      "skills": [
+        {
+          "type": "pie",
+          "value": 80,
+          "slug": "communication",
+          "name": "Communication"
+        },
+        {
+          "value": 90,
+          "slug": "online_marketing",
+          "name": "Online marketing",
+          "type": "bar"
+        },
+        {
+          "type": "pie",
+          "value": 50,
+          "category": "Software",
+          "slug": "photoshop",
+          "name": "Photoshop"
+        },
+        {
+          "name": "Illustrator",
+          "type": "pie",
+          "value": 40,
+          "category": "Software",
+          "slug": "illustrator"
+        }
+      ],
+      "job_description": "Convert your data into revenues",
+      "work_experience": [
+        {
+          "job_description": "Making sure import and export operations run smoothly.",
+          "start_date": "may 2018",
+          "city": "Rolle",
+          "company": "Chiquity",
+          "job_title": "Import/export officer",
+          "country": "Switzerland",
+          "end_date": "december 2019"
+        },
+        {
+          "job_description": "Manage company's stocks for long term supply.",
+          "start_date": "january 2019",
+          "city": "Rolle",
+          "company": "Infinity Cars Ltd.",
+          "job_title": "Stock Manager",
+          "country": "Switzerland"
+        }
+      ],
+      "parameters": { "show_languages_levels": false },
+      "education": [
+        {
+          "start_date": "september 2006",
+          "city": "Bern",
+          "country": "Switzerland",
+          "end_date": "september 2019",
+          "school": "University of Bern",
+          "title": "Bachelor in Economics",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        },
+        {
+          "title": "Master in Economics",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "start_date": "sept. 2009",
+          "city": "Bern",
+          "country": "Switzerland",
+          "end_date": "06-2012",
+          "school": "University of Bern"
+        }
+      ],
+      "uploads": [
+        {
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FeyvoKvkJdKSdc9gjXoiN%2Fivan.jpg?alt=media&token=ce5715f3-629d-49df-af56-47e958bcdca7",
+          "name": "ivan.jpg",
+          "type": "profile_picture"
+        },
+        {
+          "title": "My CV",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FeyvoKvkJdKSdc9gjXoiN%2Fadesign.pdf?alt=media&token=00f8e8b8-a335-416e-b486-36892c8a88a0",
+          "name": "adesign.pdf",
+          "type": "file",
+          "size_in_bytes": 10000
+        },
+        {
+          "size_in_bytes": 20000,
+          "title": "Reference Letter",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FeyvoKvkJdKSdc9gjXoiN%2Fflipbook.pdf?alt=media&token=a77ef41b-f84b-4441-8871-fdff54d9f0d0",
+          "name": "flipbook.pdf",
+          "type": "file"
+        }
+      ],
+      "social_links": [
+        {
+          "name": "LinkedIn",
+          "fontawesome": "linkedin-in",
+          "link": "http://linkedin.com",
+          "slug": "linkedin"
+        },
+        {
+          "slug": "facebook",
+          "name": "Facebook",
+          "fontawesome": "facebook-f",
+          "link": "http://facebook.com"
+        }
+      ],
+      "template_id": "KZn492txu3znyr8Zz4oL",
+      "visibility": "public"
+    },
+    "jeanquark3": {
+      "user_id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+      "key_competences": [
+        { "slug": "php", "name": "PHP" },
+        { "slug": "javascript", "name": "JavaScript" },
+        {
+          "slug": "team_management",
+          "name": "Team management",
+          "color": "light-blue darken-1"
+        },
+        {
+          "slug": "office_support",
+          "name": "Office support",
+          "color": "teal darken-1"
+        }
+      ],
+      "personal_data": {
+        "lastname": "Kleger",
+        "firstname": "Jean-Marc3",
+        "nationalities": [
+          { "slug": "switzerland", "name": "Switzerland" },
+          { "slug": "liechtenstein", "name": "Liechtenstein" }
+        ],
+        "short_description": "Hello, I’m a Patrick, web-developer based on Paris. I have rich experience in web site design & building and customization. Also I am good at ",
+        "phone_number": "0123456789",
+        "greeting_phrase": "Hello, I'm",
+        "city": "Lausanne",
+        "email": "jm.kleger@gmail.com",
+        "country": "Switzerland"
+      },
+      "resume_short_id": "tI4GZwPDTOU1wMbCfvih",
+      "skills": [
+        {
+          "name": "Photoshop",
+          "type": "pie",
+          "value": 30,
+          "category": "Technical skills",
+          "subcategory": "Software"
+        },
+        {
+          "maxValue": 10,
+          "type": "pie",
+          "value": 30,
+          "category": "Soft skills",
+          "subcategory": "Social interactions",
+          "name": "Communication"
+        },
+        {
+          "name": "JavaScript",
+          "type": "bar",
+          "value": 50,
+          "category": "Technical skills"
+        },
+        { "type": "pie", "value": 60, "name": "Project management" },
+        { "value": 40, "category": "Hardware skills", "name": "Linux" }
+      ],
+      "job_description": "Develops websites",
+      "slug": "jeanquark3",
+      "others": [],
+      "picture": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FOlxfESwPtlgzz4vcjiL4YKsIDZI2%2Fivan.jpg?alt=media&token=19bf567b-2d18-4763-9bfe-75403a8f0889",
+      "work_experience": [
+        {
+          "end_date": "2019-06-30",
+          "job_description": "Worked on the Chrome browser",
+          "start_date": "2019-05-16",
+          "city": "San Francisco",
+          "company": "Google Inc",
+          "job_title": "Software engineer",
+          "country": "USA"
+        },
+        {
+          "job_description": "Worked on improving media quality",
+          "start_date": "2017",
+          "city": "Los Angeles",
+          "company": "ABC media Group Ltd",
+          "job_title": "Media Analyst",
+          "country": "USA",
+          "end_date": "2018-10-15"
+        }
+      ],
+      "parameters": { "show_language_level": true },
+      "education": [
+        {
+          "school": "University of Geneva",
+          "duration": 2.25,
+          "title": "Bachelor in Geography",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          "start_date": "2002-08-01",
+          "city": "Geneva",
+          "country": "Switzerland",
+          "end_date": "2005-07"
+        },
+        {
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate",
+          "start_date": "2009-10",
+          "city": "Bern",
+          "country": "Switzerland",
+          "end_date": "2012",
+          "school": "University of Bern",
+          "title": "Msc of Science in Economics"
+        }
+      ],
+      "uploads": [
+        {
+          "type": "profile_picture",
+          "_updated_at": 1559322458,
+          "size_in_bytes": 141980,
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FOlxfESwPtlgzz4vcjiL4YKsIDZI2%2Fivan.jpg?alt=media&token=19bf567b-2d18-4763-9bfe-75403a8f0889",
+          "_created_at": 1559322458,
+          "name": "ivan.jpg"
+        },
+        {
+          "title": "We",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FOlxfESwPtlgzz4vcjiL4YKsIDZI2%2FWebstamps.pdf?alt=media&token=26c44f34-4537-42dd-ac18-35c6fe3d6d39",
+          "_created_at": 1559324132,
+          "name": "Webstamps.pdf",
+          "type": "downloadable_file",
+          "_updated_at": 1559324132,
+          "size_in_bytes": 161278
+        }
+      ],
+      "social_links": [
+        {
+          "fontawesome": "facebook-f",
+          "link": "https://facebook.com",
+          "slug": "facebook",
+          "name": "Facebook"
+        },
+        {
+          "slug": "github",
+          "name": "Github",
+          "fontawesome": "github",
+          "link": "https://github.com"
+        },
+        {
+          "fontawesome": "linkedin-in",
+          "link": "https://linkedin.com",
+          "slug": "linkedin",
+          "name": "LinkedIn"
+        }
+      ],
+      "_created_at": 1558557764,
+      "template_id": "KZn492txu3znyr8Zz4oL",
+      "visibility": "semi-private",
+      "visitor_id": "1peHPqZSqlahgwHNgnAfwMq5yBk2",
+      "job_title": "Web developer",
+      "languages": [
+        {
+          "info": "TOEFL August 2009",
+          "value": 60,
+          "slug": "english",
+          "name": "English"
+        },
+        {
+          "name": "German",
+          "info": "B2 Certificate June 2008",
+          "value": 50,
+          "slug": "german"
+        },
+        { "slug": "french", "name": "French", "value": 100 }
+      ],
+      "_updated_at": 1559324132,
+      "colors": {
+        "secondaryColor": "#202026",
+        "textColor": "#FFF",
+        "tertiaryColor": "#202026",
+        "primaryColor": "#a97afd",
+        "backgroundColor": "#000"
+      }
+    },
+    "zEiwrmyTqPVfti9YHnvj": {
+      "_created_at": 1553449065,
+      "template_id": "KZn492txu3znyr8Zz4oL",
+      "job_title": "Economist",
+      "_updated_at": 1553449065,
+      "id": "zEiwrmyTqPVfti9YHnvj",
+      "user_id": "q78erqFtlN1mOb98YTFy",
+      "personal_data": {
+        "email": "grego@example.com",
+        "lastname": "Polska",
+        "firstname": "Gregor",
+        "image": "gregor.jpg"
+      },
+      "skills": [],
+      "job_description": "Makes economic forecasts",
+      "slug": "greg",
+      "work_experience": [],
+      "education": [
+        {
+          "name": "University of Bern",
+          "graduation_date": "2019-03",
+          "duration": 2.5,
+          "location": "Bern",
+          "title": "PHD Economics",
+          "description": ""
+        }
+      ]
+    }
+  },
+  "resumes_short": {
+    "Cvb83Z7AxlCKNSJtcOIT": {
+      "resume_long_id": "zEiwrmyTqPVfti9YHnvj",
+      "job_description": "Makes economic forecasts.",
+      "slug": "greg",
+      "country_of_residence": null,
+      "lastname": "Polska",
+      "firstname": "Gregor",
+      "visibility": "semi-public",
+      "image": "gregor.jpg",
+      "job_title": "Economist",
+      "languages": null,
+      "key_competences": null,
+      "user_id": "q78erqFtlN1mOb98YTFy"
+    },
+    "L34fBWtUoVSHS3R6BtkI": {
+      "key_competences": null,
+      "user_id": "NySJ0N6HjEfaSYezbGnm",
+      "resume_long_id": "FnJhOn10BtSdRjVpkDNT",
+      "job_description": "Study economy growth in sub saharan Africa.",
+      "slug": "milton",
+      "country_of_residence": null,
+      "lastname": "Ougabo",
+      "firstname": "Milton",
+      "visibility": "private",
+      "image": "milton.jpg",
+      "job_title": "Economist",
+      "languages": null
+    },
+    "tI4GZwPDTOU1wMbCfvih": {
+      "key_competences": [
+        { "name": "PHP", "slug": "php" },
+        { "slug": "javascript", "name": "JavaScript" },
+        {
+          "slug": "team_management",
+          "name": "Team management",
+          "color": "light-blue darken-1"
+        },
+        {
+          "slug": "office_support",
+          "name": "Office support",
+          "color": "teal darken-1"
+        }
+      ],
+      "user_id": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+      "personal_data": {
+        "firstname": "Jean-Marc3",
+        "city": "Lausanne",
+        "email": "jm.kleger@gmail.com",
+        "country": "Switzerland",
+        "lastname": "Kleger"
+      },
+      "resume_long_id": "jeanquark3",
+      "job_description": "Develops websites",
+      "slug": "jeanquark3",
+      "picture": "https://firebasestorage.googleapis.com/v0/b/loginmycv.appspot.com/o/resumes%2FOlxfESwPtlgzz4vcjiL4YKsIDZI2%2Fivan.jpg?alt=media&token=19bf567b-2d18-4763-9bfe-75403a8f0889",
+      "_created_at": 1558557764,
+      "keys": [
+        {
+          "name": "Photoshop",
+          "type": "pie",
+          "value": 30,
+          "category": "Technical skills",
+          "subcategory": "Software"
+        },
+        {
+          "name": "Communication",
+          "maxValue": 10,
+          "type": "pie",
+          "value": 30,
+          "category": "Soft skills",
+          "subcategory": "Social interactions"
+        },
+        {
+          "name": "JavaScript",
+          "type": "bar",
+          "value": 50,
+          "category": "Technical skills"
+        },
+        { "name": "Project management", "type": "pie", "value": 60 },
+        { "value": 40, "category": "Hardware skills", "name": "Linux" }
+      ],
+      "visibility": "semi-private",
+      "job_title": "Web developer",
+      "languages": [
+        {
+          "info": "TOEFL August 2009",
+          "value": 60,
+          "slug": "english",
+          "name": "English"
+        },
+        {
+          "slug": "german",
+          "name": "German",
+          "info": "B2 Certificate June 2008",
+          "value": 50
+        },
+        { "value": 100, "slug": "french", "name": "French" }
+      ],
+      "_updated_at": 1558557764
+    },
+    "xYEnLw01ANZxnRgds8h1": {
+      "user_id": "eyvoKvkJdKSdc9gjXoiN",
+      "personal_data": {
+        "firstname": "Ivan",
+        "city": "Lausanne",
+        "email": "ivan.w@example.com",
+        "country": "Switzerland",
+        "lastname": "W"
+      },
+      "resume_long_id": "ivan",
+      "job_description": "Transform your data into revenue.",
+      "keys": ["data", "econometrics", "data analysis", "market research"],
+      "slug": "ivan",
+      "picture": "/resumes/eyvoKvkJdKSdc9gjXoiN/ivan.jpg",
+      "visibility": "private",
+      "job_title": "Data analyst"
+    }
+  },
+  "templates": {
+    "KZn492txu3znyr8Zz4oL": {
+      "author": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+      "slug": "template1",
+      "image": "template1.jpg",
+      "name": "Template 1",
+      "colors": {
+        "secondaryColor": "#FFF",
+        "textColor": "#000",
+        "tertiaryColor": "#FFFF00",
+        "primaryColor": "#7A528F",
+        "backgroundColor": "#FFF"
+      },
+      "file": "Template1",
+      "description": "Clean and minimalistic design"
+    },
+    "ZjzvgkAlZq9CPcXToqDK": {
+      "colors": {
+        "primaryColor": "7A528F",
+        "backgroundColor": "#FFF",
+        "secondaryColor": "#FFF",
+        "textColor": "#000",
+        "tertiaryColor": "#FF0000"
+      },
+      "file": "Template2",
+      "description": "Conventional format with sleek design",
+      "author": "OlxfESwPtlgzz4vcjiL4YKsIDZI2",
+      "slug": "template2",
+      "image": "template2.jpg",
+      "name": "Template 2"
+    }
+  },
+  "users": {
+    "NySJ0N6HjEfaSYezbGnm": {
+      "lastname": "Ougabo",
+      "firstname": "Milton",
+      "city": "Bern",
+      "email": "milton@example.com",
+      "country": "Switzerland"
+    },
+    "OlxfESwPtlgzz4vcjiL4YKsIDZI2": {
+      "city": "Lausanne",
+      "email": "jm.kleger@gmail.com",
+      "notifications": [
+        {
+          "value": "new_authorization_received",
+          "authorization_id": "cOmOzZ6Ukx9c4mZQonbq",
+          "type": "authorization2"
+        },
+        {
+          "authorization_id": "cOmOzZ6Ukx9c4mZQonbq",
+          "type": "authorization2",
+          "value": "new_authorization_status"
+        }
+      ],
+      "country": "Switzerland",
+      "lastname": "Kleger",
+      "_updated_at": 1552401654,
+      "firstname": "Jean-Marc3",
+      "private": {
+        "total_space_in_bytes": 10485760,
+        "allocated_space_in_bytes": 10485760,
+        "maximum_number_of_resumes": 2
+      },
+      "_created_at": 1552401654
+    },
+    "eyvoKvkJdKSdc9gjXoiN": {
+      "city": "Lausanne",
+      "notifications": [
+        {
+          "authorization_id": "zsgL8XxnArvEVdncon1X",
+          "type": "authorization",
+          "value": "new_authorization_received"
+        },
+        {
+          "value": "new_authorization_status",
+          "authorization_id": "cOmOzZ6Ukx9c4mZQonbq",
+          "type": "authorization"
+        },
+        {
+          "type": "authorization",
+          "value": "new_authorization_status2",
+          "authorization_id": "cOmOzZ6Ukx9c4mZQonbq"
+        }
+      ],
+      "country": "Switzerland",
+      "email": "ivan@hotmail.com",
+      "lastname": "w",
+      "firstname": "Ivan"
+    },
+    "q78erqFtlN1mOb98YTFy": {
+      "email": "greg@example.com",
+      "country": "Switzerland",
+      "lastname": "Polska",
+      "firstname": "Gregor",
+      "city": "Bern"
+    }
+  },
+  "countries": {
+    "afghanistan": {
+      "alpha2": "AF",
+      "alpha3": "AFG",
+      "continent": "Asia",
+      "flag": "afghanistan.png",
+      "name": "Afghanistan",
+      "slug": "afghanistan"
+    },
+    "aland_islands": {
+      "alpha2": "AX",
+      "alpha3": "ALA",
+      "continent": "",
+      "flag": "aland_islands.png",
+      "name": "Aland Islands",
+      "slug": "aland_islands"
+    },
+    "albania": {
+      "alpha2": "AL",
+      "alpha3": "ALB",
+      "continent": "Europa",
+      "flag": "albania.png",
+      "name": "Albania",
+      "slug": "albania"
+    },
+    "algeria": {
+      "alpha2": "DZ",
+      "alpha3": "DZA",
+      "continent": "Africa",
+      "flag": "algeria.png",
+      "name": "Algeria",
+      "slug": "algeria"
+    },
+    "american_samoa": {
+      "alpha2": "AS",
+      "alpha3": "ASA",
+      "continent": "Oceania",
+      "flag": "american_samoa.png",
+      "name": "American Samoa",
+      "slug": "american_samoa"
+    },
+    "andorra": {
+      "alpha2": "AD",
+      "alpha3": "AND",
+      "continent": "Europa",
+      "flag": "andorra.png",
+      "name": "Andorra",
+      "slug": "andorra"
+    },
+    "angola": {
+      "alpha2": "AO",
+      "alpha3": "AGO",
+      "continent": "Africa",
+      "flag": "angola.png",
+      "name": "Angola",
+      "slug": "angola"
+    },
+    "anguilla": {
+      "alpha2": "AI",
+      "alpha3": "AIA",
+      "continent": "America",
+      "flag": "anguilla.png",
+      "name": "Anguilla",
+      "slug": "anguilla"
+    },
+    "antarctica": {
+      "alpha2": "AQ",
+      "alpha3": "ATA",
+      "continent": "",
+      "flag": "antartica.png",
+      "name": "Antarctica",
+      "slug": "antarctica"
+    },
+    "antigua_and_barbuda": {
+      "alpha2": "AG",
+      "alpha3": "ATG",
+      "continent": "America",
+      "flag": "antigua_and_barbuda.png",
+      "name": "Antigua and Barbuda",
+      "slug": "antigua_and_barbuda"
+    },
+    "argentina": {
+      "alpha2": "AR",
+      "alpha3": "ARG",
+      "continent": "America",
+      "flag": "argentina.png",
+      "name": "Argentina",
+      "slug": "argentina"
+    },
+    "armenia": {
+      "alpha2": "AM",
+      "alpha3": "ARM",
+      "continent": "Asia",
+      "flag": "armenia.png",
+      "name": "Armenia",
+      "slug": "armenia"
+    },
+    "aruba": {
+      "alpha2": "AW",
+      "alpha3": "ABW",
+      "continent": "America",
+      "flag": "aruba.png",
+      "name": "Aruba",
+      "slug": "aruba"
+    },
+    "australia": {
+      "alpha2": "AU",
+      "alpha3": "AUS",
+      "continent": "Oceania",
+      "flag": "australia.png",
+      "name": "Australia",
+      "slug": "australia"
+    },
+    "austria": {
+      "alpha2": "AT",
+      "alpha3": "AUT",
+      "continent": "Europa",
+      "flag": "austria.png",
+      "name": "Austria",
+      "slug": "austria"
+    },
+    "azerbaijan": {
+      "alpha2": "AZ",
+      "alpha3": "AZE",
+      "continent": "Asia",
+      "flag": "azerbaijan.png",
+      "name": "Azerbaijan",
+      "slug": "azerbaijan"
+    },
+    "bahamas": {
+      "alpha2": "BS",
+      "alpha3": "BHS",
+      "continent": "America",
+      "flag": "bahamas.png",
+      "name": "Bahamas",
+      "slug": "bahamas"
+    },
+    "bahrain": {
+      "alpha2": "BH",
+      "alpha3": "BHR",
+      "continent": "Asia",
+      "flag": "bahrain.png",
+      "name": "Bahrain",
+      "slug": "bahrain"
+    },
+    "bangladesh": {
+      "alpha2": "BD",
+      "alpha3": "BGD",
+      "continent": "Asia",
+      "flag": "bangladesh.png",
+      "name": "Bangladesh",
+      "slug": "bangladesh"
+    },
+    "barbados": {
+      "alpha2": "BB",
+      "alpha3": "BRB",
+      "continent": "America",
+      "continent_fr": "Amérique",
+      "flag": "barbados.png",
+      "name": "Barbados",
+      "slug": "barbados"
+    },
+    "belarus": {
+      "alpha2": "BY",
+      "alpha3": "BLR",
+      "continent": "Europa",
+      "flag": "belarus.png",
+      "name": "Belarus",
+      "slug": "belarus"
+    },
+    "belgium": {
+      "alpha2": "BE",
+      "alpha3": "BEL",
+      "continent": "Europa",
+      "flag": "belgium.png",
+      "name": "Belgium",
+      "slug": "belgium"
+    },
+    "belize": {
+      "alpha2": "BZ",
+      "alpha3": "BLZ",
+      "continent": "America",
+      "flag": "belize.png",
+      "name": "Belize",
+      "slug": "belize"
+    },
+    "benin": {
+      "alpha2": "BJ",
+      "alpha3": "BEN",
+      "continent": "Africa",
+      "flag": "benin.png",
+      "name": "Benin",
+      "slug": "benin"
+    },
+    "bermuda": {
+      "alpha2": "BM",
+      "alpha3": "BER",
+      "continent": "America",
+      "flag": "bermuda.png",
+      "name": "Bermuda",
+      "slug": "bermuda"
+    },
+    "bhutan": {
+      "alpha2": "BT",
+      "alpha3": "BTN",
+      "continent": "Asia",
+      "flag": "bhutan.png",
+      "name": "Bhutan",
+      "slug": "bhutan"
+    },
+    "bolivia": {
+      "alpha2": "BO",
+      "alpha3": "BOL",
+      "continent": "America",
+      "flag": "bolivia.png",
+      "name": "Bolivia",
+      "slug": "bolivia"
+    },
+    "bosnia_and_herzegovina": {
+      "alpha2": "BA",
+      "alpha3": "BIH",
+      "continent": "Europa",
+      "flag": "bosnia_and_herzegovina.png",
+      "name": "Bosnia and Herzegovina",
+      "slug": "bosnia_and_herzegovina"
+    },
+    "botswana": {
+      "alpha2": "BW",
+      "alpha3": "BWA",
+      "continent": "Africa",
+      "flag": "botswana.png",
+      "name": "Botswana",
+      "slug": "botswana"
+    },
+    "bouvet_island": {
+      "alpha2": "BV",
+      "alpha3": "BVT",
+      "continent": "",
+      "flag": "bouvet_island.png",
+      "name": "Bouvet Island",
+      "slug": "bouvet_island"
+    },
+    "brazil": {
+      "alpha2": "BR",
+      "alpha3": "BRA",
+      "continent": "America",
+      "flag": "brazil.png",
+      "name": "Brazil",
+      "slug": "brazil"
+    },
+    "british_indian_ocean_territory": {
+      "alpha2": "IO",
+      "alpha3": "IOT",
+      "continent": "",
+      "flag": "british_indian_ocean_territory.png",
+      "name": "British Indian Ocean Territory",
+      "slug": "british_indian_ocean_territory"
+    },
+    "british_virgin_islands": {
+      "alpha2": "VG",
+      "alpha3": "VGB",
+      "continent": "America",
+      "flag": "british_virgin_islands.png",
+      "name": "British Virgin Islands",
+      "slug": "british_virgin_islands"
+    },
+    "brunei_darussalam": {
+      "alpha2": "BN",
+      "alpha3": "BRN",
+      "continent": "Asia",
+      "flag": "brunei_darussalam.png",
+      "name": "Brunei Darussalam",
+      "slug": "brunei_darussalam"
+    },
+    "bulgaria": {
+      "alpha2": "BG",
+      "alpha3": "BGR",
+      "continent": "Europa",
+      "flag": "bulgaria.png",
+      "name": "Bulgaria",
+      "slug": "bulgaria"
+    },
+    "burkina_faso": {
+      "alpha2": "BF",
+      "alpha3": "BFA",
+      "continent": "Africa",
+      "flag": "burkina_faso.png",
+      "name": "Burkina Faso",
+      "slug": "burkina_faso"
+    },
+    "burundi": {
+      "alpha2": "BI",
+      "alpha3": "BDI",
+      "continent": "Africa",
+      "flag": "burundi.png",
+      "name": "Burundi",
+      "slug": "burundi"
+    },
+    "cambodia": {
+      "alpha2": "KH",
+      "alpha3": "KHM",
+      "continent": "Asia",
+      "flag": "cambodia.png",
+      "name": "Cambodia",
+      "slug": "cambodia"
+    },
+    "cameroon": {
+      "alpha2": "CM",
+      "alpha3": "CMR",
+      "continent": "Africa",
+      "flag": "cameroon.png",
+      "name": "Cameroon",
+      "slug": "cameroon"
+    },
+    "canada": {
+      "alpha2": "CA",
+      "alpha3": "CAN",
+      "continent": "America",
+      "flag": "canada.png",
+      "name": "Canada",
+      "slug": "canada"
+    },
+    "cape_verde": {
+      "alpha2": "CV",
+      "alpha3": "CPV",
+      "continent": "Africa",
+      "flag": "cape_verde.png",
+      "name": "Cape Verde",
+      "slug": "cape_verde"
+    },
+    "cayman_islands": {
+      "alpha2": "KY",
+      "alpha3": "CAY",
+      "continent": "America",
+      "flag": "cayman_islands.png",
+      "name": "Cayman Islands",
+      "slug": "cayman_islands"
+    },
+    "central_african_republic": {
+      "alpha2": "CF",
+      "alpha3": "CAF",
+      "continent": "Africa",
+      "flag": "central_african_republic.png",
+      "name": "Central African Republic",
+      "slug": "central_african_republic"
+    },
+    "chad": {
+      "alpha2": "TD",
+      "alpha3": "TCD",
+      "continent": "Africa",
+      "flag": "chad.png",
+      "name": "Chad",
+      "slug": "chad"
+    },
+    "chile": {
+      "alpha2": "CL",
+      "alpha3": "CHL",
+      "continent": "America",
+      "flag": "chile.png",
+      "name": "Chile",
+      "name_fr": "Chili",
+      "slug": "chile"
+    },
+    "china": {
+      "alpha2": "CN",
+      "alpha3": "CHN",
+      "continent": "Asia",
+      "flag": "china.png",
+      "name": "China",
+      "slug": "china"
+    },
+    "christmas_island": {
+      "alpha2": "CX",
+      "alpha3": "CXR",
+      "continent": "",
+      "flag": "christmas_island.png",
+      "name": "Christmas Island",
+      "slug": "christmas_island"
+    },
+    "cocos_islands": {
+      "alpha2": "CC",
+      "alpha3": "CCK",
+      "continent": "",
+      "flag": "cocos_islands.png",
+      "name": "Cocos Islands",
+      "slug": "cocos_islands"
+    },
+    "colombia": {
+      "alpha2": "CO",
+      "alpha3": "COL",
+      "continent": "America",
+      "flag": "colombia.png",
+      "name": "Colombia",
+      "slug": "colombia"
+    },
+    "comoros": {
+      "alpha2": "KM",
+      "alpha3": "COM",
+      "continent": "Africa",
+      "flag": "comoros.png",
+      "name": "Comoros",
+      "slug": "comoros"
+    },
+    "cook_islands": {
+      "alpha2": "CK",
+      "alpha3": "COK",
+      "continent": "Oceania",
+      "flag": "cook_islands.png",
+      "name": "Cook Islands",
+      "slug": "cook_islands"
+    },
+    "costa_rica": {
+      "alpha2": "CR",
+      "alpha3": "CRI",
+      "continent": "America",
+      "flag": "costa_rica.png",
+      "name": "Costa Rica",
+      "slug": "costa_rica"
+    },
+    "croatia": {
+      "alpha2": "HR",
+      "alpha3": "HRV",
+      "continent": "Europa",
+      "flag": "croatia.png",
+      "name": "Croatia",
+      "slug": "croatia"
+    },
+    "cuba": {
+      "alpha2": "CU",
+      "alpha3": "CUB",
+      "continent": "America",
+      "flag": "cuba.png",
+      "name": "Cuba",
+      "slug": "cuba"
+    },
+    "curacao": {
+      "alpha2": "CW",
+      "alpha3": "CUW",
+      "continent": "America",
+      "flag": "curacao.png",
+      "name": "Curacao",
+      "name_fr": "Curacao",
+      "slug": "curacao"
+    },
+    "cyprus": {
+      "alpha2": "CY",
+      "alpha3": "CYP",
+      "continent": "Europa",
+      "flag": "cyprus.png",
+      "name": "Cyprus",
+      "slug": "cyprus"
+    },
+    "czech_republic": {
+      "alpha2": "CZ",
+      "alpha3": "CZE",
+      "continent": "Europa",
+      "flag": "czech_republic.png",
+      "name": "Czech Republic",
+      "slug": "czech_republic"
+    },
+    "democratic_peoples_republic_of_korea": {
+      "alpha2": "KP",
+      "alpha3": "PRK",
+      "continent": "Asia",
+      "flag": "democratic_peoples_republic_of_korea.png",
+      "name": "Democratic People's Republic of Korea",
+      "slug": "democratic_peoples_republic_of_korea"
+    },
+    "denmark": {
+      "alpha2": "DK",
+      "alpha3": "DNK",
+      "continent": "Europa",
+      "flag": "denmark.png",
+      "name": "Denmark",
+      "slug": "denmark"
+    },
+    "djibouti": {
+      "alpha2": "DJ",
+      "alpha3": "DJI",
+      "continent": "Africa",
+      "flag": "djibouti.png",
+      "name": "Djibouti",
+      "slug": "djibouti"
+    },
+    "dominica": {
+      "alpha2": "DM",
+      "alpha3": "DMA",
+      "continent": "America",
+      "flag": "dominica.png",
+      "name": "Dominica",
+      "slug": "dominica"
+    },
+    "dominican_republic": {
+      "alpha2": "DO",
+      "alpha3": "DOM",
+      "continent": "America",
+      "flag": "dominican_republic.png",
+      "name": "Dominican Republic",
+      "slug": "dominican_republic"
+    },
+    "ecuador": {
+      "alpha2": "EC",
+      "alpha3": "ECU",
+      "continent": "America",
+      "flag": "ecuador.png",
+      "name": "Ecuador",
+      "slug": "ecuador"
+    },
+    "egypt": {
+      "alpha2": "EG",
+      "alpha3": "EGY",
+      "continent": "Africa",
+      "flag": "egypt.png",
+      "name": "Egypt",
+      "slug": "egypt"
+    },
+    "el_salvador": {
+      "alpha2": "SV",
+      "alpha3": "SLV",
+      "continent": "America",
+      "flag": "el_salvador.png",
+      "name": "El Salvador",
+      "slug": "el_salvador"
+    },
+    "equatorial_guinea": {
+      "alpha2": "GQ",
+      "alpha3": "GNQ",
+      "continent": "Africa",
+      "flag": "equatorial_guinea.png",
+      "name": "Equatorial Guinea",
+      "slug": "equatorial_guinea"
+    },
+    "eritrea": {
+      "alpha2": "ER",
+      "alpha3": "ERI",
+      "continent": "Africa",
+      "flag": "eritrea.png",
+      "name": "Eritrea",
+      "slug": "eritrea"
+    },
+    "estonia": {
+      "alpha2": "EE",
+      "alpha3": "EST",
+      "continent": "Europa",
+      "flag": "estonia.png",
+      "name": "Estonia",
+      "slug": "estonia"
+    },
+    "ethiopia": {
+      "alpha2": "ET",
+      "alpha3": "ETH",
+      "continent": "Europa",
+      "flag": "ethiopia.png",
+      "name": "Ethiopia",
+      "slug": "ethiopia"
+    },
+    "falkland_islands": {
+      "alpha2": "FK",
+      "alpha3": "FLK",
+      "continent": "",
+      "flag": "falkland_islands.png",
+      "name": "Falkland Islands",
+      "slug": "falkland_islands"
+    },
+    "faroe_islands": {
+      "alpha2": "FO",
+      "alpha3": "FRO",
+      "continent": "Europa",
+      "flag": "faroe_islands.png",
+      "name": "Faroe Islands",
+      "slug": "faroe_islands"
+    },
+    "federated_states_of_micronesia": {
+      "alpha2": "FM",
+      "alpha3": "FSM",
+      "continent": "Oceania",
+      "flag": "federated_states_of_micronesia.png",
+      "name": "Federated States of Micronesia",
+      "slug": "federated_states_of_micronesia"
+    },
+    "fiji": {
+      "alpha2": "FJ",
+      "alpha3": "FJI",
+      "continent": "Oceania",
+      "flag": "fiji.png",
+      "name": "Fiji",
+      "slug": "fiji"
+    },
+    "finland": {
+      "alpha2": "FI",
+      "alpha3": "FIN",
+      "continent": "Europa",
+      "flag": "finland.png",
+      "name": "Finland",
+      "slug": "finland"
+    },
+    "france": {
+      "alpha2": "FR",
+      "alpha3": "FRA",
+      "competitions": true,
+      "continent": "Europa",
+      "flag": "france.png",
+      "name": "France",
+      "slug": "france"
+    },
+    "french_guiana": {
+      "alpha2": "GF",
+      "alpha3": "GUF",
+      "continent": "",
+      "flag": "french_guiana.png",
+      "name": "French Guiana",
+      "slug": "french_guiana"
+    },
+    "french_polynesia": {
+      "alpha2": "PF",
+      "alpha3": "PYF",
+      "continent": "",
+      "flag": "french_polynesia.png",
+      "name": "French Polynesia",
+      "slug": "french_polynesia"
+    },
+    "french_southern_territories": {
+      "alpha2": "TF",
+      "alpha3": "ATF",
+      "continent": "",
+      "flag": "french_southern_territories.png",
+      "name": "French Southern Territories",
+      "slug": "french_southern_territories"
+    },
+    "gabon": {
+      "alpha2": "GA",
+      "alpha3": "GAB",
+      "continent": "Africa",
+      "flag": "gabon.png",
+      "name": "Gabon",
+      "slug": "gabon"
+    },
+    "gambia": {
+      "alpha2": "GM",
+      "alpha3": "GMB",
+      "continent": "Africa",
+      "flag": "gambia.png",
+      "name": "Gambia",
+      "slug": "gambia"
+    },
+    "georgia": {
+      "alpha2": "GE",
+      "alpha3": "GEO",
+      "continent": "Asia",
+      "flag": "georgia.png",
+      "name": "Georgia",
+      "slug": "georgia"
+    },
+    "germany": {
+      "alpha2": "DE",
+      "alpha3": "DEU",
+      "competitions": true,
+      "continent": "Europa",
+      "flag": "germany.png",
+      "name": "Germany",
+      "slug": "germany"
+    },
+    "ghana": {
+      "alpha2": "GH",
+      "alpha3": "GHA",
+      "continent": "Africa",
+      "flag": "ghana.png",
+      "name": "Ghana",
+      "slug": "ghana"
+    },
+    "gibraltar": {
+      "alpha2": "GI",
+      "alpha3": "GIB",
+      "continent": "",
+      "flag": "gibraltar.png",
+      "name": "Gibraltar",
+      "slug": "gibraltar"
+    },
+    "greece": {
+      "alpha2": "GR",
+      "alpha3": "GRC",
+      "continent": "Europa",
+      "flag": "greece.png",
+      "name": "Greece",
+      "slug": "greece"
+    },
+    "greenland": {
+      "alpha2": "GL",
+      "alpha3": "GRL",
+      "continent": "",
+      "flag": "greenland.png",
+      "name": "Greenland",
+      "slug": "greenland"
+    },
+    "grenada": {
+      "alpha2": "GD",
+      "alpha3": "GRD",
+      "continent": "America",
+      "flag": "grenada.png",
+      "name": "Grenada",
+      "slug": "grenada"
+    },
+    "guadeloupe": {
+      "alpha2": "GP",
+      "alpha3": "GLP",
+      "continent": "",
+      "flag": "guadeloupe.png",
+      "name": "Guadeloupe",
+      "slug": "guadeloupe"
+    },
+    "guam": {
+      "alpha2": "GU",
+      "alpha3": "GUM",
+      "continent": "",
+      "flag": "guam.png",
+      "name": "Guam",
+      "slug": "guam"
+    },
+    "guatemala": {
+      "alpha2": "GT",
+      "alpha3": "GTM",
+      "continent": "America",
+      "flag": "guatemala.png",
+      "name": "Guatemala",
+      "slug": "guatemala"
+    },
+    "guinea": {
+      "alpha2": "GN",
+      "alpha3": "GIN",
+      "continent": "Africa",
+      "flag": "guinea.png",
+      "name": "Guinea",
+      "slug": "guinea"
+    },
+    "guinea_bissau": {
+      "alpha2": "GW",
+      "alpha3": "GNB",
+      "continent": "Africa",
+      "flag": "guinea_bissau.png",
+      "name": "Guinea-Bissau",
+      "slug": "guinea_bissau"
+    },
+    "guyana": {
+      "alpha2": "GY",
+      "alpha3": "GUY",
+      "continent": "America",
+      "flag": "guyana.png",
+      "name": "Guyana",
+      "slug": "guyana"
+    },
+    "haiti": {
+      "alpha2": "HT",
+      "alpha3": "HTI",
+      "continent": "America",
+      "flag": "haiti.png",
+      "name": "Haiti",
+      "slug": "haiti"
+    },
+    "heard_island_and_mcdonald_islands": {
+      "alpha2": "HM",
+      "alpha3": "HMD",
+      "continent": "",
+      "flag": "heard_islands_and_mcdonald_islands.png",
+      "name": "Heard Island and McDonald Islands",
+      "slug": "heard_island_and_mcdonald_islands"
+    },
+    "honduras": {
+      "alpha2": "HN",
+      "alpha3": "HND",
+      "continent": "America",
+      "flag": "honduras.png",
+      "name": "Honduras",
+      "slug": "honduras"
+    },
+    "hong_kong": {
+      "alpha2": "HK",
+      "alpha3": "HKG",
+      "continent": "Asia",
+      "flag": "hong_kong.png",
+      "name": "Hong Kong",
+      "slug": "hong_kong"
+    },
+    "hungary": {
+      "alpha2": "HU",
+      "alpha3": "HUN",
+      "continent": "Europa",
+      "flag": "hungary.png",
+      "name": "Hungary",
+      "slug": "hungary"
+    },
+    "iceland": {
+      "alpha2": "IS",
+      "alpha3": "ISL",
+      "continent": "Europa",
+      "flag": "iceland.png",
+      "name": "Iceland",
+      "slug": "iceland"
+    },
+    "india": {
+      "alpha2": "IN",
+      "alpha3": "IND",
+      "continent": "Asia",
+      "flag": "india.png",
+      "name": "India",
+      "slug": "india"
+    },
+    "indonesia": {
+      "alpha2": "ID",
+      "alpha3": "IDN",
+      "continent": "Asia",
+      "flag": "indonesia.png",
+      "name": "Indonesia",
+      "slug": "indonesia"
+    },
+    "iran": {
+      "alpha2": "IR",
+      "alpha3": "IRN",
+      "continent": "Asia",
+      "flag": "iran.png",
+      "name": "Iran",
+      "slug": "iran"
+    },
+    "iraq": {
+      "alpha2": "IQ",
+      "alpha3": "IRQ",
+      "continent": "Asia",
+      "flag": "iraq.png",
+      "name": "Iraq",
+      "slug": "iraq"
+    },
+    "ireland": {
+      "alpha2": "IE",
+      "alpha3": "IRL",
+      "continent": "Europa",
+      "flag": "ireland.png",
+      "name": "Ireland",
+      "slug": "ireland"
+    },
+    "isle_of_man": {
+      "alpha2": "IM",
+      "alpha3": "IMN",
+      "continent": "",
+      "flag": "isle_of_man.png",
+      "name": "Isle of Man",
+      "slug": "isle_of_man"
+    },
+    "israel": {
+      "alpha2": "IL",
+      "alpha3": "ISR",
+      "continent": "Asia",
+      "flag": "israel.png",
+      "name": "Israel",
+      "slug": "israel"
+    },
+    "italy": {
+      "alpha2": "IT",
+      "alpha3": "ITA",
+      "competitions": true,
+      "continent": "Europa",
+      "flag": "italy.png",
+      "name": "Italy",
+      "slug": "italy"
+    },
+    "ivory_coast": {
+      "alpha2": "CI",
+      "alpha3": "CIV",
+      "continent": "Africa",
+      "flag": "ivory_coast.png",
+      "name": "Ivory Coast",
+      "slug": "ivory_coast"
+    },
+    "jamaica": {
+      "alpha2": "JM",
+      "alpha3": "JAM",
+      "continent": "America",
+      "flag": "jamaica.png",
+      "name": "Jamaica",
+      "slug": "jamaica"
+    },
+    "japan": {
+      "alpha2": "JP",
+      "alpha3": "JPN",
+      "continent": "Asia",
+      "flag": "japan.png",
+      "name": "Japan",
+      "slug": "japan"
+    },
+    "jordan": {
+      "alpha2": "JO",
+      "alpha3": "JOR",
+      "continent": "Asia",
+      "flag": "jordan.png",
+      "name": "Jordan",
+      "slug": "jordan"
+    },
+    "kazakhstan": {
+      "alpha2": "KZ",
+      "alpha3": "KAZ",
+      "continent": "Asia",
+      "flag": "kazakhstan.png",
+      "name": "Kazakhstan",
+      "slug": "kazakhstan"
+    },
+    "kenya": {
+      "alpha2": "KE",
+      "alpha3": "KEN",
+      "continent": "Africa",
+      "flag": "kenya.png",
+      "name": "Kenya",
+      "slug": "kenya"
+    },
+    "kiribati": {
+      "alpha2": "KI",
+      "alpha3": "KIR",
+      "continent": "Oceania",
+      "flag": "kiribati.png",
+      "name": "Kiribati",
+      "slug": "kiribati"
+    },
+    "kosovo": {
+      "alpha2": "KO",
+      "alpha3": "KOS",
+      "continent": "Europa",
+      "flag": "kosovo.png",
+      "name": "Kosovo",
+      "slug": "kosovo"
+    },
+    "kuwait": {
+      "alpha2": "KW",
+      "alpha3": "KWT",
+      "continent": "Asia",
+      "flag": "kuwait.png",
+      "name": "Kuwait",
+      "slug": "kuwait"
+    },
+    "kyrgyzstan": {
+      "alpha2": "KG",
+      "alpha3": "KGZ",
+      "continent": "Asia",
+      "flag": "kyrgyzstan.png",
+      "name": "Kyrgyzstan",
+      "slug": "kyrgyzstan"
+    },
+    "lao_people_democratic_republic": {
+      "alpha2": "LA",
+      "alpha3": "LAO",
+      "continent": "Asia",
+      "flag": "lao_people_democratic_republic.png",
+      "name": "Lao People Democratic Republic",
+      "slug": "lao_people_democratic_republic"
+    },
+    "latvia": {
+      "alpha2": "LV",
+      "alpha3": "LVA",
+      "continent": "Europa",
+      "flag": "latvia.png",
+      "name": "Latvia",
+      "slug": "latvia"
+    },
+    "lebanon": {
+      "alpha2": "LB",
+      "alpha3": "LBN",
+      "continent": "Asia",
+      "flag": "lebanon.png",
+      "name": "Lebanon",
+      "slug": "lebanon"
+    },
+    "lesotho": {
+      "alpha2": "LS",
+      "alpha3": "LSO",
+      "continent": "Africa",
+      "flag": "lesotho.png",
+      "name": "Lesotho",
+      "slug": "lesotho"
+    },
+    "liberia": {
+      "alpha2": "LR",
+      "alpha3": "LBR",
+      "continent": "Africa",
+      "flag": "liberia.png",
+      "name": "Liberia",
+      "slug": "liberia"
+    },
+    "libyan_arab_jamahiriya": {
+      "alpha2": "LY",
+      "alpha3": "LBY",
+      "continent": "Africa",
+      "flag": "libyan_arab_jamahiriya.png",
+      "name": "Libyan Arab Jamahiriya",
+      "slug": "libyan_arab_jamahiriya"
+    },
+    "liechtenstein": {
+      "alpha2": "LI",
+      "alpha3": "LIE",
+      "continent": "Europa",
+      "flag": "liechtenstein.png",
+      "name": "Liechtenstein",
+      "slug": "liechtenstein"
+    },
+    "lithuania": {
+      "alpha2": "LT",
+      "alpha3": "LTU",
+      "continent": "Europa",
+      "flag": "lithuania.png",
+      "name": "Lithuania",
+      "slug": "lithuania"
+    },
+    "luxembourg": {
+      "alpha2": "LU",
+      "alpha3": "LUX",
+      "continent": "Europa",
+      "flag": "luxembourg.png",
+      "name": "Luxembourg",
+      "slug": "luxembourg"
+    },
+    "macao": {
+      "alpha2": "MO",
+      "alpha3": "MCA",
+      "continent": "Asia",
+      "flag": "macao.png",
+      "name": "Macao",
+      "slug": "macao"
+    },
+    "macedonia": {
+      "alpha2": "MK",
+      "alpha3": "FYR",
+      "continent": "Europa",
+      "flag": "macedonia.png",
+      "name": "Macedonia",
+      "slug": "macedonia"
+    },
+    "madagascar": {
+      "alpha2": "MG",
+      "alpha3": "MDG",
+      "continent": "Africa",
+      "flag": "madagascar.png",
+      "name": "Madagascar",
+      "name_fr": "Madagascar",
+      "slug": "madagascar"
+    },
+    "malawi": {
+      "alpha2": "MW",
+      "alpha3": "MWI",
+      "continent": "Africa",
+      "flag": "malawi.png",
+      "name": "Malawi",
+      "slug": "malawi"
+    },
+    "malaysia": {
+      "alpha2": "MY",
+      "alpha3": "MYS",
+      "continent": "Asia",
+      "flag": "malaysia.png",
+      "name": "Malaysia",
+      "slug": "malaysia"
+    },
+    "maldives": {
+      "alpha2": "MV",
+      "alpha3": "MDV",
+      "continent": "Asia",
+      "flag": "maldives.png",
+      "name": "Maldives",
+      "slug": "maldives"
+    },
+    "mali": {
+      "alpha2": "ML",
+      "alpha3": "MLI",
+      "continent": "Africa",
+      "flag": "mali.png",
+      "name": "Mali",
+      "slug": "mali"
+    },
+    "malta": {
+      "alpha2": "MT",
+      "alpha3": "MLT",
+      "continent": "Europa",
+      "flag": "malta.png",
+      "name": "Malta",
+      "slug": "malta"
+    },
+    "marshall_islands": {
+      "alpha2": "MH",
+      "alpha3": "MHL",
+      "continent": "Oceania",
+      "flag": "marshall_islands.png",
+      "name": "Marshall Islands",
+      "slug": "marshall_islands"
+    },
+    "martinique": {
+      "alpha2": "MQ",
+      "alpha3": "MTQ",
+      "continent": "",
+      "flag": "martinique.png",
+      "name": "Martinique",
+      "slug": "martinique"
+    },
+    "mauritania": {
+      "alpha2": "MR",
+      "alpha3": "MRT",
+      "continent": "Africa",
+      "flag": "mauritania.png",
+      "name": "Mauritania",
+      "slug": "mauritania"
+    },
+    "mauritius": {
+      "alpha2": "MU",
+      "alpha3": "MUS",
+      "continent": "Africa",
+      "flag": "mauritius.png",
+      "name": "Mauritius",
+      "slug": "mauritius"
+    },
+    "mayotte": {
+      "alpha2": "YT",
+      "alpha3": "MYT",
+      "continent": "",
+      "flag": "mayotte.png",
+      "name": "Mayotte",
+      "slug": "mayotte"
+    },
+    "mexico": {
+      "alpha2": "MX",
+      "alpha3": "MEX",
+      "continent": "America",
+      "flag": "mexico.png",
+      "name": "Mexico",
+      "slug": "mexico"
+    },
+    "monaco": {
+      "alpha2": "MC",
+      "alpha3": "MCO",
+      "continent": "Europa",
+      "flag": "monaco.png",
+      "name": "Monaco",
+      "slug": "monaco"
+    },
+    "mongolia": {
+      "alpha2": "MN",
+      "alpha3": "MNG",
+      "continent": "Asia",
+      "flag": "mongolia.png",
+      "name": "Mongolia",
+      "slug": "mongolia"
+    },
+    "montenegro": {
+      "alpha2": "ME",
+      "alpha3": "MNE",
+      "continent": "Europa",
+      "flag": "montenegro.png",
+      "name": "Montenegro",
+      "slug": "montenegro"
+    },
+    "montserrat": {
+      "alpha2": "MS",
+      "alpha3": "MSR",
+      "continent": "America",
+      "flag": "montserrat.png",
+      "name": "Montserrat",
+      "slug": "montserrat"
+    },
+    "morocco": {
+      "alpha2": "MA",
+      "alpha3": "MAR",
+      "continent": "Africa",
+      "flag": "morocco.png",
+      "name": "Morocco",
+      "slug": "morocco"
+    },
+    "mozambique": {
+      "alpha2": "MZ",
+      "alpha3": "MOZ",
+      "continent": "Africa",
+      "flag": "mozambique.png",
+      "name": "Mozambique",
+      "slug": "mozambique"
+    },
+    "myanmar": {
+      "alpha2": "MM",
+      "alpha3": "MMR",
+      "continent": "Asia",
+      "flag": "myanmar.png",
+      "name": "Myanmar",
+      "slug": "myanmar"
+    },
+    "namibia": {
+      "alpha2": "NA",
+      "alpha3": "NAM",
+      "continent": "Africa",
+      "flag": "namibia.png",
+      "name": "Namibia",
+      "slug": "namibia"
+    },
+    "nauru": {
+      "alpha2": "NR",
+      "alpha3": "NRU",
+      "continent": "Oceania",
+      "flag": "nauru.png",
+      "name": "Nauru",
+      "slug": "nauru"
+    },
+    "nepal": {
+      "alpha2": "NP",
+      "alpha3": "NPL",
+      "continent": "Asia",
+      "flag": "nepal.png",
+      "name": "Nepal",
+      "slug": "nepal"
+    },
+    "netherlands": {
+      "alpha2": "NL",
+      "alpha3": "NLD",
+      "continent": "Europa",
+      "flag": "netherlands.png",
+      "name": "Netherlands",
+      "slug": "netherlands"
+    },
+    "netherlands_antilles": {
+      "alpha2": "AN",
+      "alpha3": "ANT",
+      "continent": "",
+      "flag": "netherlands_antilles.png",
+      "name": "Netherlands Antilles",
+      "slug": "netherlands_antilles"
+    },
+    "new_caledonia": {
+      "alpha2": "NC",
+      "alpha3": "NCL",
+      "continent": "Oceania",
+      "flag": "new_caledonia.png",
+      "name": "New Caledonia",
+      "slug": "new_caledonia"
+    },
+    "new_zealand": {
+      "alpha2": "NZ",
+      "alpha3": "NZL",
+      "continent": "Oceania",
+      "flag": "new_zealand.png",
+      "name": "New Zealand",
+      "slug": "new_zealand"
+    },
+    "nicaragua": {
+      "alpha2": "NI",
+      "alpha3": "NIC",
+      "continent": "America",
+      "flag": "nicaragua.png",
+      "name": "Nicaragua",
+      "slug": "nicaragua"
+    },
+    "niger": {
+      "alpha2": "NE",
+      "alpha3": "NER",
+      "continent": "Africa",
+      "flag": "niger.png",
+      "name": "Niger",
+      "slug": "niger"
+    },
+    "nigeria": {
+      "alpha2": "NG",
+      "alpha3": "NGA",
+      "continent": "Africa",
+      "flag": "nigeria.png",
+      "name": "Nigeria",
+      "slug": "nigeria"
+    },
+    "niue": {
+      "alpha2": "NU",
+      "alpha3": "NIU",
+      "continent": "",
+      "flag": "niue.png",
+      "name": "Niue",
+      "slug": "niue"
+    },
+    "norfolk_islands": {
+      "alpha2": "NF",
+      "alpha3": "NFK",
+      "continent": "",
+      "flag": "norfolk_island.png",
+      "name": "Norfolk Islands",
+      "slug": "norfolk_islands"
+    },
+    "northern_irland": {
+      "alpha2": "",
+      "alpha3": "NIR",
+      "continent": "Europa",
+      "flag": "northern_irland.png",
+      "name": "Northern Irland",
+      "slug": "northern_irland"
+    },
+    "northern_mariana_islands": {
+      "alpha2": "MP",
+      "alpha3": "MNP",
+      "continent": "America",
+      "flag": "northern_mariana_islands.png",
+      "name": "Northern Mariana Islands",
+      "slug": "northern_mariana_islands"
+    },
+    "norway": {
+      "alpha2": "NO",
+      "alpha3": "NOR",
+      "continent": "Europa",
+      "flag": "norway.png",
+      "name": "Norway",
+      "slug": "norway"
+    },
+    "occupied_palestinian_territory": {
+      "alpha2": "PS",
+      "alpha3": "PLE",
+      "continent": "Asia",
+      "flag": "occupied_palestinian_territory.png",
+      "name": "Occupied Palestinian Territory",
+      "slug": "occupied_palestinian_territory"
+    },
+    "oman": {
+      "alpha2": "OM",
+      "alpha3": "OMN",
+      "continent": "Asia",
+      "flag": "oman.png",
+      "name": "Oman",
+      "slug": "oman"
+    },
+    "pakistan": {
+      "alpha2": "PK",
+      "alpha3": "PAK",
+      "continent": "Asia",
+      "flag": "pakistan.png",
+      "name": "Pakistan",
+      "slug": "pakistan"
+    },
+    "palau": {
+      "alpha2": "PW",
+      "alpha3": "PLW",
+      "continent": "Oceania",
+      "flag": "palau.png",
+      "name": "Palau",
+      "slug": "palau"
+    },
+    "panama": {
+      "alpha2": "PA",
+      "alpha3": "PAN",
+      "continent": "America",
+      "flag": "panama.png",
+      "name": "Panama",
+      "slug": "panama"
+    },
+    "papua_new_guinea": {
+      "alpha2": "PG",
+      "alpha3": "PNG",
+      "continent": "Oceania",
+      "flag": "papua_new_guinea.png",
+      "name": "Papua New Guinea",
+      "slug": "papua_new_guinea"
+    },
+    "paraguay": {
+      "alpha2": "PY",
+      "alpha3": "PRY",
+      "continent": "America",
+      "flag": "paraguay.png",
+      "name": "Paraguay",
+      "slug": "paraguay"
+    },
+    "peru": {
+      "alpha2": "PE",
+      "alpha3": "PER",
+      "continent": "America",
+      "continent_fr": "Amérique",
+      "flag": "peru.png",
+      "name": "Peru",
+      "slug": "peru"
+    },
+    "philippines": {
+      "alpha2": "PH",
+      "alpha3": "PHL",
+      "continent": "Asia",
+      "flag": "philippines.png",
+      "name": "Philippines",
+      "slug": "philippines"
+    },
+    "pitcairn": {
+      "alpha2": "PN",
+      "alpha3": "PCN",
+      "continent": "",
+      "flag": "pitcairn.png",
+      "name": "Pitcairn",
+      "slug": "pitcairn"
+    },
+    "poland": {
+      "alpha2": "PL",
+      "alpha3": "POL",
+      "continent": "Europa",
+      "flag": "poland.png",
+      "name": "Poland",
+      "slug": "poland"
+    },
+    "portugal": {
+      "alpha2": "PT",
+      "alpha3": "PRT",
+      "continent": "Europa",
+      "flag": "portugal.png",
+      "name": "Portugal",
+      "slug": "portugal"
+    },
+    "puerto_rico": {
+      "alpha2": "PR",
+      "alpha3": "PRI",
+      "continent": "America",
+      "flag": "puerto_rico.png",
+      "name": "Puerto Rico",
+      "slug": "puerto_rico"
+    },
+    "qatar": {
+      "alpha2": "QA",
+      "alpha3": "QAT",
+      "continent": "Asia",
+      "flag": "qatar.png",
+      "name": "Qatar",
+      "slug": "qatar"
+    },
+    "republic_of_korea": {
+      "alpha2": "KR",
+      "alpha3": "KOR",
+      "continent": "Asia",
+      "continent_fr": "Asie",
+      "flag": "republic_of_korea.png",
+      "name": "Republic of Korea",
+      "slug": "republic_of_korea"
+    },
+    "republic_of_moldova": {
+      "alpha2": "MD",
+      "alpha3": "MDA",
+      "continent": "Europa",
+      "flag": "republic_of_moldova.png",
+      "name": "Republic of Moldova",
+      "name_fr": "République de Moldovie",
+      "slug": "republic_of_moldova"
+    },
+    "republic_of_south_sudan": {
+      "alpha2": "SS",
+      "alpha3": "SSD",
+      "continent": "",
+      "flag": "republic_of_south_sudan.png",
+      "name": "Republic of South Sudan",
+      "slug": "republic_of_south_sudan"
+    },
+    "republic_of_the_congo": {
+      "alpha2": "CG",
+      "alpha3": "COG",
+      "continent": "Africa",
+      "flag": "republic_of_the_congo.png",
+      "name": "Republic of the Congo",
+      "slug": "republic_of_the_congo"
+    },
+    "reunion": {
+      "alpha2": "RE",
+      "alpha3": "REU",
+      "continent": "",
+      "flag": "reunion.png",
+      "name": "Reunion",
+      "slug": "reunion"
+    },
+    "romania": {
+      "alpha2": "RO",
+      "alpha3": "ROU",
+      "continent": "Europa",
+      "flag": "romania.png",
+      "name": "Romania",
+      "slug": "romania"
+    },
+    "russia": {
+      "alpha2": "RU",
+      "alpha3": "RUS",
+      "continent": "Europa",
+      "flag": "russia.png",
+      "name": "Russia",
+      "slug": "russia"
+    },
+    "rwanda": {
+      "alpha2": "RW",
+      "alpha3": "RWA",
+      "continent": "Africa",
+      "flag": "rwanda.png",
+      "name": "Rwanda",
+      "slug": "rwanda"
+    },
+    "saint_helena": {
+      "alpha2": "SH",
+      "alpha3": "SHN",
+      "continent": "",
+      "flag": "saint_helena.png",
+      "name": "Saint Helena",
+      "slug": "saint_helena"
+    },
+    "saint_kitts_and_nevis": {
+      "alpha2": "KN",
+      "alpha3": "KNA",
+      "continent": "America",
+      "flag": "saint_kitts_and_nevis.png",
+      "name": "Saint Kitts and Nevis",
+      "slug": "saint_kitts_and_nevis"
+    },
+    "saint_lucia": {
+      "alpha2": "LC",
+      "alpha3": "LCA",
+      "continent": "America",
+      "flag": "saint_lucia.png",
+      "name": "Saint Lucia",
+      "slug": "saint_lucia"
+    },
+    "saint_pierre_and_miquelon": {
+      "alpha2": "PM",
+      "alpha3": "SPM",
+      "continent": "",
+      "flag": "saint_pierre_and_miquelon.png",
+      "name": "Saint-Pierre and Miquelon",
+      "slug": "saint_pierre_and_miquelon"
+    },
+    "saint_vincent_and_the_grenadines": {
+      "alpha2": "VC",
+      "alpha3": "VCT",
+      "continent": "America",
+      "flag": "saint_vincent_and_the_grenadines.png",
+      "name": "Saint Vincent and the Grenadines",
+      "slug": "saint_vincent_and_the_grenadines"
+    },
+    "samoa": {
+      "alpha2": "WS",
+      "alpha3": "WSM",
+      "continent": "Oceania",
+      "flag": "samoa.png",
+      "name": "Samoa",
+      "slug": "samoa"
+    },
+    "san_marino": {
+      "alpha2": "SM",
+      "alpha3": "SMR",
+      "continent": "Europa",
+      "flag": "san_marino.png",
+      "name": "San Marino",
+      "slug": "san_marino"
+    },
+    "sao_tome_and_principe": {
+      "alpha2": "ST",
+      "alpha3": "STP",
+      "continent": "Africa",
+      "flag": "sao_tome_and_principe.png",
+      "name": "Sao Tome and Principe",
+      "slug": "sao_tome_and_principe"
+    },
+    "saudi_arabia": {
+      "alpha2": "SA",
+      "alpha3": "SAU",
+      "continent": "Asia",
+      "flag": "saudi_arabia.png",
+      "name": "Saudi Arabia",
+      "slug": "saudi_arabia"
+    },
+    "scotland": {
+      "alpha2": "",
+      "alpha3": "SCO",
+      "continent": "Europa",
+      "flag": "scotland.png",
+      "name": "Scotland",
+      "slug": "scotland"
+    },
+    "senegal": {
+      "alpha2": "SN",
+      "alpha3": "SEN",
+      "continent": "Africa",
+      "flag": "senegal.png",
+      "name": "Senegal",
+      "slug": "senegal"
+    },
+    "serbia": {
+      "alpha2": "RS",
+      "alpha3": "SRB",
+      "continent": "Europa",
+      "flag": "serbia.png",
+      "name": "Serbia",
+      "slug": "serbia"
+    },
+    "seychelles": {
+      "alpha2": "SC",
+      "alpha3": "SYC",
+      "continent": "Africa",
+      "flag": "seychelles.png",
+      "name": "Seychelles",
+      "slug": "seychelles"
+    },
+    "sierra_leone": {
+      "alpha2": "SL",
+      "alpha3": "SLE",
+      "continent": "Africa",
+      "flag": "sierra_leone.png",
+      "name": "Sierra Leone",
+      "slug": "sierra_leone"
+    },
+    "singapore": {
+      "alpha2": "SG",
+      "alpha3": "SGP",
+      "continent": "Asia",
+      "flag": "singapore.png",
+      "name": "Singapore",
+      "name_fr": "Singapour",
+      "slug": "singapore"
+    },
+    "slovakia": {
+      "alpha2": "SK",
+      "alpha3": "SVK",
+      "continent": "Europa",
+      "flag": "slovakia.png",
+      "name": "Slovakia",
+      "slug": "slovakia"
+    },
+    "slovenia": {
+      "alpha2": "SI",
+      "alpha3": "SVN",
+      "continent": "Europa",
+      "flag": "slovenia.png",
+      "name": "Slovenia",
+      "slug": "slovenia"
+    },
+    "solomon_islands": {
+      "alpha2": "SB",
+      "alpha3": "SLB",
+      "continent": "Oceania",
+      "flag": "solomon_islands.png",
+      "name": "Solomon Islands",
+      "slug": "solomon_islands"
+    },
+    "somalia": {
+      "alpha2": "SO",
+      "alpha3": "SOM",
+      "continent": "Africa",
+      "flag": "somalia.png",
+      "name": "Somalia",
+      "slug": "somalia"
+    },
+    "south_africa": {
+      "alpha2": "ZA",
+      "alpha3": "ZAF",
+      "continent": "Africa",
+      "flag": "south_africa.png",
+      "name": "South Africa",
+      "slug": "south_africa"
+    },
+    "south_georgia_and_the_south_sandwich_islands": {
+      "alpha2": "GS",
+      "alpha3": "SGS",
+      "continent": "",
+      "continent_fr": "",
+      "flag": "south_georgia_and_the_south_sandwich_islands.png",
+      "name": "South Georgia and the South Sandwich Islands",
+      "slug": "south_georgia_and_the_south_sandwich_islands"
+    },
+    "spain": {
+      "alpha2": "ES",
+      "alpha3": "ESP",
+      "competitions": true,
+      "continent": "Europa",
+      "flag": "spain.png",
+      "name": "Spain",
+      "slug": "spain"
+    },
+    "sri_lanka": {
+      "alpha2": "LK",
+      "alpha3": "LKA",
+      "continent": "Asia",
+      "flag": "sri_lanka.png",
+      "name": "Sri Lanka",
+      "slug": "sri_lanka"
+    },
+    "sudan": {
+      "alpha2": "SD",
+      "alpha3": "SDN",
+      "continent": "Africa",
+      "flag": "sudan.png",
+      "name": "Sudan",
+      "slug": "sudan"
+    },
+    "suriname": {
+      "alpha2": "SR",
+      "alpha3": "SUR",
+      "continent": "America",
+      "flag": "suriname.png",
+      "name": "Suriname",
+      "slug": "suriname"
+    },
+    "svalbard_and_jan_mayen": {
+      "alpha2": "SJ",
+      "alpha3": "SJM",
+      "continent": "",
+      "flag": "svalbard_and_jan_mayen.png",
+      "name": "Svalbard and Jan Mayen",
+      "slug": "svalbard_and_jan_mayen"
+    },
+    "swaziland": {
+      "alpha2": "SZ",
+      "alpha3": "SWZ",
+      "continent": "Africa",
+      "flag": "swaziland.png",
+      "name": "Swaziland",
+      "name_fr": "Swaziland",
+      "slug": "swaziland"
+    },
+    "sweden": {
+      "alpha2": "SE",
+      "alpha3": "SWE",
+      "continent": "Europa",
+      "flag": "sweden.png",
+      "name": "Sweden",
+      "slug": "sweden"
+    },
+    "switzerland": {
+      "alpha2": "CH",
+      "alpha3": "CHE",
+      "competitions": true,
+      "continent": "Europa",
+      "flag": "switzerland.png",
+      "languages": {
+        "allemand": {
+          "name": "Allemand",
+          "slug": "allemand"
+        },
+        "francais": {
+          "name": "Français",
+          "slug": "francais"
+        }
+      },
+      "name": "Switzerland",
+      "slug": "switzerland"
+    },
+    "syrian_arab_republic": {
+      "alpha2": "SY",
+      "alpha3": "SYR",
+      "continent": "Asia",
+      "flag": "syrian_arab_republic.png",
+      "name": "Syrian Arab Republic",
+      "slug": "syrian_arab_republic"
+    },
+    "tahiti": {
+      "alpha2": "",
+      "alpha3": "TAH",
+      "continent": "Oceania",
+      "flag": "tahiti.png",
+      "name": "Tahiti",
+      "slug": "tahiti"
+    },
+    "taiwan": {
+      "alpha2": "TW",
+      "alpha3": "TWN",
+      "continent": "Asia",
+      "flag": "taiwan.png",
+      "name": "Taiwan",
+      "slug": "taiwan"
+    },
+    "tajikistan": {
+      "alpha2": "TJ",
+      "alpha3": "TJK",
+      "continent": "Asia",
+      "flag": "tajikistan.png",
+      "name": "Tajikistan",
+      "name_fr": "Tadjikistan",
+      "slug": "tajikistan"
+    },
+    "tanzania": {
+      "alpha2": "TZ",
+      "alpha3": "TZN",
+      "continent": "Africa",
+      "flag": "tanzania.png",
+      "name": "Tanzania",
+      "slug": "tanzania"
+    },
+    "thailand": {
+      "alpha2": "TH",
+      "alpha3": "THA",
+      "continent": "Asia",
+      "flag": "thailand.png",
+      "name": "Thailand",
+      "slug": "thailand"
+    },
+    "the_democratic_republic_of_the_congo": {
+      "alpha2": "CD",
+      "alpha3": "COD",
+      "continent": "Africa",
+      "flag": "the_democratic_republic_of_the_congo.png",
+      "name": "The Democratic Republic of the Congo",
+      "slug": "the_democratic_republic_of_the_congo"
+    },
+    "timor_leste": {
+      "alpha2": "TL",
+      "alpha3": "TLS",
+      "continent": "Asia",
+      "flag": "timor_leste.png",
+      "name": "Timor-Leste",
+      "slug": "timor_leste"
+    },
+    "togo": {
+      "alpha2": "TG",
+      "alpha3": "TGO",
+      "continent": "Africa",
+      "flag": "togo.png",
+      "name": "Togo",
+      "slug": "togo"
+    },
+    "tokelau": {
+      "alpha2": "TK",
+      "alpha3": "TJKL",
+      "continent": "",
+      "flag": "tokelau.png",
+      "name": "Tokelau",
+      "slug": "tokelau"
+    },
+    "tonga": {
+      "alpha2": "TO",
+      "alpha3": "TON",
+      "continent": "Oceania",
+      "flag": "tonga.png",
+      "name": "Tonga",
+      "slug": "tonga"
+    },
+    "trinidad_and_tobago": {
+      "alpha2": "TT",
+      "alpha3": "TTO",
+      "continent": "America",
+      "flag": "trinidad_and_tobago.png",
+      "name": "Trinidad and Tobago",
+      "slug": "trinidad_and_tobago"
+    },
+    "tunisia": {
+      "alpha2": "TN",
+      "alpha3": "TUN",
+      "continent": "Africa",
+      "flag": "tunisia.png",
+      "name": "Tunisia",
+      "slug": "tunisia"
+    },
+    "turkey": {
+      "alpha2": "TR",
+      "alpha3": "TUR",
+      "continent": "Europa",
+      "flag": "turkey.png",
+      "name": "Turkey",
+      "slug": "turkey"
+    },
+    "turkmenistan": {
+      "alpha2": "TM",
+      "alpha3": "TKM",
+      "continent": "Asia",
+      "flag": "turkmenistan.png",
+      "name": "Turkmenistan",
+      "slug": "turkmenistan"
+    },
+    "turks_and_caicos_islands": {
+      "alpha2": "TC",
+      "alpha3": "TCA",
+      "continent": "America",
+      "flag": "turks_and_caicos_islands.png",
+      "name": "Turks and Caicos Islands",
+      "slug": "turks_and_caicos_islands"
+    },
+    "tuvalu": {
+      "alpha2": "TV",
+      "alpha3": "TUV",
+      "continent": "Oceania",
+      "flag": "tuvalu.png",
+      "name": "Tuvalu",
+      "slug": "tuvalu"
+    },
+    "uganda": {
+      "alpha2": "UG",
+      "alpha3": "UGA",
+      "continent": "Africa",
+      "flag": "uganda.png",
+      "name": "Uganda",
+      "slug": "uganda"
+    },
+    "ukraine": {
+      "alpha2": "IA",
+      "alpha3": "UKR",
+      "continent": "Europa",
+      "flag": "ukraine.png",
+      "name": "Ukraine",
+      "slug": "ukraine"
+    },
+    "united_arab_emirates": {
+      "alpha2": "AE",
+      "alpha3": "ARE",
+      "continent": "Asia",
+      "flag": "united_arab_emirates.png",
+      "name": "United Arab Emirates",
+      "slug": "united_arab_emirates"
+    },
+    "united_kingdom": {
+      "alpha2": "GB",
+      "alpha3": "GBR",
+      "competitions": false,
+      "continent": "Europa",
+      "flag": "united_kingdom.png",
+      "name": "United Kingdom",
+      "slug": "united_kingdom"
+    },
+    "united_states": {
+      "alpha2": "US",
+      "alpha3": "USA",
+      "continent": "America",
+      "flag": "united_states.png",
+      "name": "United States",
+      "slug": "united_states"
+    },
+    "united_states_minor_outlying_islands": {
+      "alpha2": "UM",
+      "alpha3": "UMI",
+      "continent": "",
+      "flag": "united_states_minor_outlying_islands.png",
+      "name": "United States Minor Outlying Islands",
+      "slug": "united_states_minor_outlying_islands"
+    },
+    "uruguay": {
+      "alpha2": "UY",
+      "alpha3": "URY",
+      "continent": "America",
+      "flag": "uruguay.png",
+      "name": "Uruguay",
+      "slug": "uruguay"
+    },
+    "us_virgin_islands": {
+      "alpha2": "VI",
+      "alpha3": "VIR",
+      "continent": "America",
+      "flag": "us_virgin_islands.png",
+      "name": "U.S. Virgin Islands",
+      "slug": "us_virgin_islands"
+    },
+    "uzbekistan": {
+      "alpha2": "UZ",
+      "alpha3": "UZB",
+      "continent": "Asia",
+      "flag": "uzbekistan.png",
+      "name": "Uzbekistan",
+      "slug": "uzbekistan"
+    },
+    "vanuatu": {
+      "alpha2": "VU",
+      "alpha3": "VUT",
+      "continent": "Oceania",
+      "flag": "vanuatu.png",
+      "name": "Vanuatu",
+      "slug": "vanuatu"
+    },
+    "vatican_city_state": {
+      "alpha2": "VA",
+      "alpha3": "VAT",
+      "continent": "Europa",
+      "flag": "vatican_city_state.png",
+      "name": "Vatican City State",
+      "slug": "vatican_city_state"
+    },
+    "venezuela": {
+      "alpha2": "VE",
+      "alpha3": "VEN",
+      "continent": "America",
+      "flag": "venezuela.png",
+      "name": "Venezuela",
+      "slug": "venezuela"
+    },
+    "vietnam": {
+      "alpha2": "VN",
+      "alpha3": "VNM",
+      "continent": "Asia",
+      "flag": "vietnam.png",
+      "name": "Vietnam",
+      "slug": "vietnam"
+    },
+    "wales": {
+      "alpha2": "",
+      "alpha3": "WAL",
+      "continent": "Europa",
+      "flag": "wales.png",
+      "name": "Wales",
+      "slug": "wales"
+    },
+    "wallis_and_futuna": {
+      "alpha2": "WF",
+      "alpha3": "WLF",
+      "continent": "",
+      "flag": "wallis_and_futuna.png",
+      "name": "Wallis and Futuna",
+      "slug": "wallis_and_futuna"
+    },
+    "western_sahara": {
+      "alpha2": "EH",
+      "alpha3": "ESH",
+      "continent": "",
+      "flag": "western_sahara.png",
+      "name": "Western Sahara",
+      "slug": "western_sahara"
+    },
+    "yemen": {
+      "alpha2": "YE",
+      "alpha3": "YWM",
+      "continent": "Asia",
+      "flag": "yemen.png",
+      "name": "Yemen",
+      "slug": "yemen"
+    },
+    "zambia": {
+      "alpha2": "ZM",
+      "alpha3": "ZMB",
+      "continent": "Africa",
+      "flag": "zambia.png",
+      "name": "Zambia",
+      "slug": "zambia"
+    },
+    "zimbabwe": {
+      "alpha2": "ZW",
+      "alpha3": "ZWE",
+      "continent": "Africa",
+      "flag": "zimbabwe.png",
+      "name": "Zimbabwe",
+      "slug": "zimbabwe"
+    }
+  },
+  "languages": {
+    "abkhaz": {
+      "code": "ab",
+      "name": "Abkhaz",
+      "slug": "abkhaz",
+      "nativeName": "аҧсуа"
+    },
+    "afar": {
+      "code": "aa",
+      "name": "Afar",
+      "slug": "afar",
+      "nativeName": "Afaraf"
+    },
+    "afrikaans": {
+      "code": "af",
+      "name": "Afrikaans",
+      "slug": "afrikaans",
+      "nativeName": "Afrikaans"
+    },
+    "akan": {
+      "code": "ak",
+      "name": "Akan",
+      "slug": "akan",
+      "nativeName": "Akan"
+    },
+    "albanian": {
+      "code": "sq",
+      "name": "Albanian",
+      "slug": "albanian",
+      "nativeName": "Shqip"
+    },
+    "amharic": {
+      "code": "am",
+      "name": "Amharic",
+      "slug": "amharic",
+      "nativeName": "አማርኛ"
+    },
+    "arabic": {
+      "code": "ar",
+      "name": "Arabic",
+      "slug": "arabic",
+      "nativeName": "العربية"
+    },
+    "aragonese": {
+      "code": "an",
+      "name": "Aragonese",
+      "slug": "aragonese",
+      "nativeName": "Aragonés"
+    },
+    "armenian": {
+      "code": "hy",
+      "name": "Armenian",
+      "slug": "armenian",
+      "nativeName": "Հայերեն"
+    },
+    "assamese": {
+      "code": "as",
+      "name": "Assamese",
+      "slug": "assamese",
+      "nativeName": "অসমীয়া"
+    },
+    "avaric": {
+      "code": "av",
+      "name": "Avaric",
+      "slug": "avaric",
+      "nativeName": "авар мацӀ, магӀарул мацӀ"
+    },
+    "avestan": {
+      "code": "ae",
+      "name": "Avestan",
+      "slug": "avestan",
+      "nativeName": "avesta"
+    },
+    "aymara": {
+      "code": "ay",
+      "name": "Aymara",
+      "slug": "aymara",
+      "nativeName": "aymar aru"
+    },
+    "azerbaijani": {
+      "code": "az",
+      "name": "Azerbaijani",
+      "slug": "azerbaijani",
+      "nativeName": "azərbaycan dili"
+    },
+    "bambara": {
+      "code": "bm",
+      "name": "Bambara",
+      "slug": "bambara",
+      "nativeName": "bamanankan"
+    },
+    "bashkir": {
+      "code": "ba",
+      "name": "Bashkir",
+      "slug": "bashkir",
+      "nativeName": "башҡорт теле"
+    },
+    "basque": {
+      "code": "eu",
+      "name": "Basque",
+      "slug": "basque",
+      "nativeName": "euskara, euskera"
+    },
+    "belarusian": {
+      "code": "be",
+      "name": "Belarusian",
+      "slug": "belarusian",
+      "nativeName": "Беларуская"
+    },
+    "bengali": {
+      "code": "bn",
+      "name": "Bengali",
+      "slug": "bengali",
+      "nativeName": "বাংলা"
+    },
+    "bihari": {
+      "code": "bh",
+      "name": "Bihari",
+      "slug": "bihari",
+      "nativeName": "भोजपुरी"
+    },
+    "bislama": {
+      "code": "bi",
+      "name": "Bislama",
+      "slug": "bislama",
+      "nativeName": "Bislama"
+    },
+    "bosnian": {
+      "code": "bs",
+      "name": "Bosnian",
+      "slug": "bosnian",
+      "nativeName": "bosanski jezik"
+    },
+    "breton": {
+      "code": "br",
+      "name": "Breton",
+      "slug": "breton",
+      "nativeName": "brezhoneg"
+    },
+    "bulgarian": {
+      "code": "bg",
+      "name": "Bulgarian",
+      "slug": "bulgarian",
+      "nativeName": "български език"
+    },
+    "burmese": {
+      "code": "my",
+      "name": "Burmese",
+      "slug": "burmese",
+      "nativeName": "ဗမာစာ"
+    },
+    "catalan": {
+      "code": "ca",
+      "name": "Catalan; Valencian",
+      "slug": "catalan",
+      "nativeName": "Català"
+    },
+    "chamorro": {
+      "code": "ch",
+      "name": "Chamorro",
+      "slug": "chamorro",
+      "nativeName": "Chamoru"
+    },
+    "chechen": {
+      "code": "ce",
+      "name": "Chechen",
+      "slug": "chechen",
+      "nativeName": "нохчийн мотт"
+    },
+    "chichewa": {
+      "code": "ny",
+      "name": "Chichewa; Chewa; Nyanja",
+      "slug": "chichewa",
+      "nativeName": "chiCheŵa, chinyanja"
+    },
+    "chinese": {
+      "code": "zh",
+      "name": "Chinese",
+      "slug": "chinese",
+      "nativeName": "中文 (Zhōngwén), 汉语, 漢語"
+    },
+    "chuvash": {
+      "code": "cv",
+      "name": "Chuvash",
+      "slug": "chuvash",
+      "nativeName": "чӑваш чӗлхи"
+    },
+    "cornish": {
+      "code": "kw",
+      "name": "Cornish",
+      "slug": "cornish",
+      "nativeName": "Kernewek"
+    },
+    "corsican": {
+      "code": "co",
+      "name": "Corsican",
+      "slug": "corsican",
+      "nativeName": "corsu, lingua corsa"
+    },
+    "cree": {
+      "code": "cr",
+      "name": "Cree",
+      "slug": "cree",
+      "nativeName": "ᓀᐦᐃᔭᐍᐏᐣ"
+    },
+    "croatian": {
+      "code": "hr",
+      "name": "Croatian",
+      "slug": "croatian",
+      "nativeName": "hrvatski"
+    },
+    "czech": {
+      "code": "cs",
+      "name": "Czech",
+      "slug": "czech",
+      "nativeName": "česky, čeština"
+    },
+    "danish": {
+      "code": "da",
+      "name": "Danish",
+      "slug": "danish",
+      "nativeName": "dansk"
+    },
+    "divehi": {
+      "code": "dv",
+      "name": "Divehi; Dhivehi; Maldivian;",
+      "slug": "divehi",
+      "nativeName": "ދިވެހި"
+    },
+    "dutch": {
+      "code": "nl",
+      "name": "Dutch",
+      "slug": "dutch",
+      "nativeName": "Nederlands, Vlaams"
+    },
+    "english": {
+      "code": "en",
+      "name": "English",
+      "slug": "english",
+      "nativeName": "English"
+    },
+    "esperanto": {
+      "code": "eo",
+      "name": "Esperanto",
+      "slug": "esperanto",
+      "nativeName": "Esperanto"
+    },
+    "estonian": {
+      "code": "et",
+      "name": "Estonian",
+      "slug": "estonian",
+      "nativeName": "eesti, eesti keel"
+    },
+    "ewe": {
+      "code": "ee",
+      "name": "Ewe",
+      "slug": "ewe",
+      "nativeName": "Eʋegbe"
+    },
+    "faroese": {
+      "code": "fo",
+      "name": "Faroese",
+      "slug": "faroese",
+      "nativeName": "føroyskt"
+    },
+    "fijian": {
+      "code": "fj",
+      "name": "Fijian",
+      "slug": "fijian",
+      "nativeName": "vosa Vakaviti"
+    },
+    "finnish": {
+      "code": "fi",
+      "name": "Finnish",
+      "slug": "finnish",
+      "nativeName": "suomi, suomen kieli"
+    },
+    "french": {
+      "code": "fr",
+      "name": "French",
+      "slug": "french",
+      "nativeName": "français, langue française"
+    },
+    "fula": {
+      "code": "ff",
+      "name": "Fula; Fulah; Pulaar; Pular",
+      "slug": "fula",
+      "nativeName": "Fulfulde, Pulaar, Pular"
+    },
+    "galician": {
+      "code": "gl",
+      "name": "Galician",
+      "slug": "galician",
+      "nativeName": "Galego"
+    },
+    "georgian": {
+      "code": "ka",
+      "name": "Georgian",
+      "slug": "georgian",
+      "nativeName": "ქართული"
+    },
+    "german": {
+      "code": "de",
+      "name": "German",
+      "slug": "german",
+      "nativeName": "Deutsch"
+    },
+    "greek": {
+      "code": "el",
+      "name": "Greek, Modern",
+      "slug": "greek",
+      "nativeName": "Ελληνικά"
+    },
+    "guarani": {
+      "code": "gn",
+      "name": "Guaraní",
+      "slug": "guarani",
+      "nativeName": "Avañeẽ"
+    },
+    "gujarati": {
+      "code": "gu",
+      "name": "Gujarati",
+      "slug": "gujarati",
+      "nativeName": "ગુજરાતી"
+    },
+    "haitian": {
+      "code": "ht",
+      "name": "Haitian; Haitian Creole",
+      "slug": "haitian",
+      "nativeName": "Kreyòl ayisyen"
+    },
+    "hausa": {
+      "code": "ha",
+      "name": "Hausa",
+      "slug": "hausa",
+      "nativeName": "Hausa, هَوُسَ"
+    },
+    "hebrew": {
+      "code": "he",
+      "name": "Hebrew (modern)",
+      "slug": "hebrew",
+      "nativeName": "עברית"
+    },
+    "herero": {
+      "code": "hz",
+      "name": "Herero",
+      "slug": "herero",
+      "nativeName": "Otjiherero"
+    },
+    "hindi": {
+      "code": "hi",
+      "name": "Hindi",
+      "slug": "hindi",
+      "nativeName": "हिन्दी, हिंदी"
+    },
+    "hiri_motu": {
+      "code": "ho",
+      "name": "Hiri Motu",
+      "slug": "hiri_motu",
+      "nativeName": "Hiri Motu"
+    },
+    "hungarian": {
+      "code": "hu",
+      "name": "Hungarian",
+      "slug": "hungarian",
+      "nativeName": "Magyar"
+    },
+    "interlingua": {
+      "code": "ia",
+      "name": "Interlingua",
+      "slug": "interlingua",
+      "nativeName": "Interlingua"
+    },
+    "indonesian": {
+      "code": "id",
+      "name": "Indonesian",
+      "slug": "indonesian",
+      "nativeName": "Bahasa Indonesia"
+    },
+    "interlingue": {
+      "code": "ie",
+      "name": "Interlingue",
+      "slug": "interlingue",
+      "nativeName": "Originally called Occidental; then Interlingue after WWII"
+    },
+    "irish": {
+      "code": "ga",
+      "name": "Irish",
+      "slug": "irish",
+      "nativeName": "Gaeilge"
+    },
+    "igbo": {
+      "code": "ig",
+      "name": "Igbo",
+      "slug": "igbo",
+      "nativeName": "Asụsụ Igbo"
+    },
+    "inupiaq": {
+      "code": "ik",
+      "name": "Inupiaq",
+      "slug": "inupiaq",
+      "nativeName": "Iñupiaq, Iñupiatun"
+    },
+    "ido": {
+      "code": "io",
+      "name": "Ido",
+      "slug": "ido",
+      "nativeName": "Ido"
+    },
+    "icelandic": {
+      "code": "is",
+      "name": "Icelandic",
+      "slug": "icelandic",
+      "nativeName": "Íslenska"
+    },
+    "italian": {
+      "code": "it",
+      "name": "Italian",
+      "slug": "italian",
+      "nativeName": "Italiano"
+    },
+    "inuktitut": {
+      "code": "iu",
+      "name": "Inuktitut",
+      "slug": "inuktitut",
+      "nativeName": "ᐃᓄᒃᑎᑐᑦ"
+    },
+    "japanese": {
+      "code": "ja",
+      "name": "Japanese",
+      "slug": "japanese",
+      "nativeName": "日本語 (にほんご／にっぽんご)"
+    },
+    "Javanese": {
+      "code": "jv",
+      "name": "Javanese",
+      "slug": "javanese",
+      "nativeName": "basa Jawa"
+    },
+    "kalaallisut": {
+      "code": "kl",
+      "name": "Kalaallisut, Greenlandic",
+      "slug": "kalaallisut",
+      "nativeName": "kalaallisut, kalaallit oqaasii"
+    },
+    "kannada": {
+      "code": "kn",
+      "name": "Kannada",
+      "slug": "kannada",
+      "nativeName": "ಕನ್ನಡ"
+    },
+    "kanuri": {
+      "code": "kr",
+      "name": "Kanuri",
+      "slug": "kanuri",
+      "nativeName": "Kanuri"
+    },
+    "kashmiri": {
+      "code": "ks",
+      "name": "Kashmiri",
+      "slug": "kashmiri",
+      "nativeName": "कश्मीरी, كشميري‎"
+    },
+    "kazakh": {
+      "code": "kk",
+      "name": "Kazakh",
+      "slug": "kazakh",
+      "nativeName": "Қазақ тілі"
+    },
+    "khmer": {
+      "code": "km",
+      "name": "Khmer",
+      "slug": "khmer",
+      "nativeName": "ភាសាខ្មែរ"
+    },
+    "kikuyu": {
+      "code": "ki",
+      "name": "Kikuyu, Gikuyu",
+      "slug": "kikuyu",
+      "nativeName": "Gĩkũyũ"
+    },
+    "kinyarwanda": {
+      "code": "rw",
+      "name": "Kinyarwanda",
+      "slug": "kinyarwanda",
+      "nativeName": "Ikinyarwanda"
+    },
+    "kirghiz": {
+      "code": "ky",
+      "name": "Kirghiz, Kyrgyz",
+      "slug": "kirghiz",
+      "nativeName": "кыргыз тили"
+    },
+    "komi": {
+      "code": "kv",
+      "name": "Komi",
+      "slug": "komi",
+      "nativeName": "коми кыв"
+    },
+    "kongo": {
+      "code": "kg",
+      "name": "Kongo",
+      "slug": "kongo",
+      "nativeName": "KiKongo"
+    },
+    "korean": {
+      "code": "ko",
+      "name": "Korean",
+      "slug": "korean",
+      "nativeName": "한국어 (韓國語), 조선말 (朝鮮語)"
+    },
+    "kurdish": {
+      "code": "ku",
+      "name": "Kurdish",
+      "slug": "kurdish",
+      "nativeName": "Kurdî, كوردی‎"
+    },
+    "kwanyama": {
+      "code": "kj",
+      "name": "Kwanyama, Kuanyama",
+      "slug": "kwanyama",
+      "nativeName": "Kuanyama"
+    },
+    "latin": {
+      "code": "la",
+      "name": "Latin",
+      "slug": "latin",
+      "nativeName": "latine, lingua latina"
+    },
+    "luxembourgish": {
+      "code": "lb",
+      "name": "Luxembourgish, Letzeburgesch",
+      "slug": "luxembourgish",
+      "nativeName": "Lëtzebuergesch"
+    },
+    "luganda": {
+      "code": "lg",
+      "name": "Luganda",
+      "slug": "luganda",
+      "nativeName": "Luganda"
+    },
+    "limburgish": {
+      "code": "li",
+      "name": "Limburgish, Limburgan, Limburger",
+      "slug": "limburgish",
+      "nativeName": "Limburgs"
+    },
+    "lingala": {
+      "code": "ln",
+      "name": "Lingala",
+      "slug": "lingala",
+      "nativeName": "Lingála"
+    },
+    "lao": {
+      "code": "lo",
+      "name": "Lao",
+      "slug": "lao",
+      "nativeName": "ພາສາລາວ"
+    },
+    "lithuanian": {
+      "code": "lt",
+      "name": "Lithuanian",
+      "slug": "lithuanian",
+      "nativeName": "lietuvių kalba"
+    },
+    "luba_katanga": {
+      "code": "lu",
+      "name": "Luba-Katanga",
+      "slug": "luba_katanga",
+      "nativeName": ""
+    },
+    "latvian": {
+      "code": "lv",
+      "name": "Latvian",
+      "slug": "latvian",
+      "nativeName": "latviešu valoda"
+    },
+    "manx": {
+      "code": "gv",
+      "name": "Manx",
+      "slug": "manx",
+      "nativeName": "Gaelg, Gailck"
+    },
+    "macedonian": {
+      "code": "mk",
+      "name": "Macedonian",
+      "slug": "macedonian",
+      "nativeName": "македонски јазик"
+    },
+    "malagasy": {
+      "code": "mg",
+      "name": "Malagasy",
+      "slug": "malagasy",
+      "nativeName": "Malagasy fiteny"
+    },
+    "malay": {
+      "code": "ms",
+      "name": "Malay",
+      "slug": "malay",
+      "nativeName": "bahasa Melayu, بهاس ملايو‎"
+    },
+    "malayalam": {
+      "code": "ml",
+      "name": "Malayalam",
+      "slug": "malayalam",
+      "nativeName": "മലയാളം"
+    },
+    "maltese": {
+      "code": "mt",
+      "name": "Maltese",
+      "slug": "maltese",
+      "nativeName": "Malti"
+    },
+    "maori": {
+      "code": "mi",
+      "name": "Māori",
+      "slug": "maori",
+      "nativeName": "te reo Māori"
+    },
+    "marathi": {
+      "code": "mr",
+      "name": "Marathi (Marāṭhī)",
+      "slug": "marathi",
+      "nativeName": "मराठी"
+    },
+    "marshallese": {
+      "code": "mh",
+      "name": "Marshallese",
+      "slug": "marshallese",
+      "nativeName": "Kajin M̧ajeļ"
+    },
+    "mongolian": {
+      "code": "mn",
+      "name": "Mongolian",
+      "slug": "mongolian",
+      "nativeName": "монгол"
+    },
+    "nauru": {
+      "code": "na",
+      "name": "Nauru",
+      "slug": "nauru",
+      "nativeName": "Ekakairũ Naoero"
+    },
+    "navajo": {
+      "code": "nv",
+      "name": "Navajo, Navaho",
+      "slug": "navajo",
+      "nativeName": "Diné bizaad, Dinékʼehǰí"
+    },
+    "norwegian_bokmal": {
+      "code": "nb",
+      "name": "Norwegian Bokmål",
+      "slug": "norwegian_bokmal",
+      "nativeName": "Norsk bokmål"
+    },
+    "north_ndebele": {
+      "code": "nd",
+      "name": "North Ndebele",
+      "slug": "north_ndebele",
+      "nativeName": "isiNdebele"
+    },
+    "nepali": {
+      "code": "ne",
+      "name": "Nepali",
+      "slug": "nepali",
+      "nativeName": "नेपाली"
+    },
+    "ndonga": {
+      "code": "ng",
+      "name": "Ndonga",
+      "slug": "ndonga",
+      "nativeName": "Owambo"
+    },
+    "norwegian_nynorsk": {
+      "code": "nn",
+      "name": "Norwegian Nynorsk",
+      "slug": "norwegian_nynorsk",
+      "nativeName": "Norsk nynorsk"
+    },
+    "norwegian": {
+      "code": "no",
+      "name": "Norwegian",
+      "slug": "norwegian",
+      "nativeName": "Norsk"
+    },
+    "nuosu": {
+      "code": "ii",
+      "name": "Nuosu",
+      "slug": "nuosu",
+      "nativeName": "ꆈꌠ꒿ Nuosuhxop"
+    },
+    "south_ndebele": {
+      "code": "nr",
+      "name": "South Ndebele",
+      "slug": "south_ndebele",
+      "nativeName": "isiNdebele"
+    },
+    "occitan": {
+      "code": "oc",
+      "name": "Occitan",
+      "slug": "occitan",
+      "nativeName": "Occitan"
+    },
+    "ojibwe": {
+      "code": "oj",
+      "name": "Ojibwe, Ojibwa",
+      "slug": "ojibwe",
+      "nativeName": "ᐊᓂᔑᓈᐯᒧᐎᓐ"
+    },
+    "old_church_slavonic": {
+      "code": "cu",
+      "name": "Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic",
+      "slug": "old_church_slavonic",
+      "nativeName": "ѩзыкъ словѣньскъ"
+    },
+    "oromo": {
+      "code": "om",
+      "name": "Oromo",
+      "slug": "oromo",
+      "nativeName": "Afaan Oromoo"
+    },
+    "oriya": {
+      "code": "or",
+      "name": "Oriya",
+      "slug": "oriya",
+      "nativeName": "ଓଡ଼ିଆ"
+    },
+    "ossetian": {
+      "code": "os",
+      "name": "Ossetian, Ossetic",
+      "slug": "ossetian",
+      "nativeName": "ирон æвзаг"
+    },
+    "panjabi": {
+      "code": "pa",
+      "name": "Panjabi, Punjabi",
+      "slug": "panjabi",
+      "nativeName": "ਪੰਜਾਬੀ, پنجابی‎"
+    },
+    "pali": {
+      "code": "pi",
+      "name": "Pāli",
+      "slug": "pali",
+      "nativeName": "पाऴि"
+    },
+    "persian": {
+      "code": "fa",
+      "name": "Persian",
+      "slug": "persian",
+      "nativeName": "فارسی"
+    },
+    "polish": {
+      "code": "pl",
+      "name": "Polish",
+      "slug": "polish",
+      "nativeName": "polski"
+    },
+    "pashto": {
+      "code": "ps",
+      "name": "Pashto, Pushto",
+      "slug": "pashto",
+      "nativeName": "پښتو"
+    },
+    "portuguese": {
+      "code": "pt",
+      "name": "Portuguese",
+      "slug": "portuguese",
+      "nativeName": "Português"
+    },
+    "quechua": {
+      "code": "qu",
+      "name": "Quechua",
+      "slug": "quechua",
+      "nativeName": "Runa Simi, Kichwa"
+    },
+    "romansh": {
+      "code": "rm",
+      "name": "Romansh",
+      "slug": "romansh",
+      "nativeName": "rumantsch grischun"
+    },
+    "kirundi": {
+      "code": "rn",
+      "name": "Kirundi",
+      "slug": "kirundi",
+      "nativeName": "kiRundi"
+    },
+    "romanian": {
+      "code": "ro",
+      "name": "Romanian, Moldavian, Moldovan",
+      "slug": "romanian",
+      "nativeName": "română"
+    },
+    "russian": {
+      "code": "ru",
+      "name": "Russian",
+      "slug": "russian",
+      "nativeName": "русский язык"
+    },
+    "sanskrit": {
+      "code": "sa",
+      "name": "Sanskrit (Saṁskṛta)",
+      "slug": "sanskrit",
+      "nativeName": "संस्कृतम्"
+    },
+    "sardinian": {
+      "code": "sc",
+      "name": "Sardinian",
+      "slug": "sardinian",
+      "nativeName": "sardu"
+    },
+    "sindhi": {
+      "code": "sd",
+      "name": "Sindhi",
+      "slug": "sindhi",
+      "nativeName": "सिन्धी, سنڌي، سندھی‎"
+    },
+    "Davvisámegiella": {
+      "code": "se",
+      "name": "Northern Sami",
+      "slug": "northern_sami",
+      "nativeName": "Davvisámegiella"
+    },
+    "samoan": {
+      "code": "sm",
+      "name": "Samoan",
+      "slug": "samoan",
+      "nativeName": "gagana faa Samoa"
+    },
+    "sango": {
+      "code": "sg",
+      "name": "Sango",
+      "slug": "sango",
+      "nativeName": "yângâ tî sängö"
+    },
+    "serbian": {
+      "code": "sr",
+      "name": "Serbian",
+      "slug": "serbian",
+      "nativeName": "српски језик"
+    },
+    "scottish_gaelic": {
+      "code": "gd",
+      "name": "Scottish Gaelic; Gaelic",
+      "slug": "scottish_gaelic",
+      "nativeName": "Gàidhlig"
+    },
+    "shona": {
+      "code": "sn",
+      "name": "Shona",
+      "slug": "shona",
+      "nativeName": "chiShona"
+    },
+    "sinhala": {
+      "code": "si",
+      "name": "Sinhala, Sinhalese",
+      "slug": "sinhala",
+      "nativeName": "සිංහල"
+    },
+    "slovak": {
+      "code": "sk",
+      "name": "Slovak",
+      "slug": "slovak",
+      "nativeName": "slovenčina"
+    },
+    "slovene": {
+      "code": "sl",
+      "name": "Slovene",
+      "slug": "slovene",
+      "nativeName": "slovenščina"
+    },
+    "somali": {
+      "code": "so",
+      "name": "Somali",
+      "slug": "somali",
+      "nativeName": "Soomaaliga, af Soomaali"
+    },
+    "southern_sotho": {
+      "code": "st",
+      "name": "Southern Sotho",
+      "slug": "southern_sotho",
+      "nativeName": "Sesotho"
+    },
+    "spanish": {
+      "code": "es",
+      "name": "Spanish; Castilian",
+      "slug": "spanish",
+      "nativeName": "español, castellano"
+    },
+    "sundanese": {
+      "code": "su",
+      "name": "Sundanese",
+      "slug": "sundanese",
+      "nativeName": "Basa Sunda"
+    },
+    "swahili": {
+      "code": "sw",
+      "name": "Swahili",
+      "slug": "swahili",
+      "nativeName": "Kiswahili"
+    },
+    "swati": {
+      "code": "ss",
+      "name": "Swati",
+      "slug": "swati",
+      "nativeName": "SiSwati"
+    },
+    "swedish": {
+      "code": "sv",
+      "name": "Swedish",
+      "slug": "swedish",
+      "nativeName": "svenska"
+    },
+    "tamil": {
+      "code": "ta",
+      "name": "Tamil",
+      "slug": "tamil",
+      "nativeName": "தமிழ்"
+    },
+    "telugu": {
+      "code": "te",
+      "name": "Telugu",
+      "slug": "telugu",
+      "nativeName": "తెలుగు"
+    },
+    "tajik": {
+      "code": "tg",
+      "name": "Tajik",
+      "slug": "tajik",
+      "nativeName": "тоҷикӣ, toğikī, تاجیکی‎"
+    },
+    "thai": {
+      "code": "th",
+      "name": "Thai",
+      "slug": "thai",
+      "nativeName": "ไทย"
+    },
+    "tigrinya": {
+      "code": "ti",
+      "name": "Tigrinya",
+      "slug": "tigrinya",
+      "nativeName": "ትግርኛ"
+    },
+    "tibetan_standard": {
+      "code": "bo",
+      "name": "Tibetan Standard, Tibetan, Central",
+      "slug": "tibetan_standard",
+      "nativeName": "བོད་ཡིག"
+    },
+    "turkmen": {
+      "code": "tk",
+      "name": "Turkmen",
+      "slug": "turkmen",
+      "nativeName": "Türkmen, Түркмен"
+    },
+    "tagalog": {
+      "code": "tl",
+      "name": "Tagalog",
+      "slug": "tagalog",
+      "nativeName": "Wikang Tagalog, ᜏᜒᜃᜅ᜔ ᜆᜄᜎᜓᜄ᜔"
+    },
+    "tswana": {
+      "code": "tn",
+      "name": "Tswana",
+      "slug": "tswana",
+      "nativeName": "Setswana"
+    },
+    "tonga": {
+      "code": "to",
+      "name": "Tonga (Tonga Islands)",
+      "slug": "tonga",
+      "nativeName": "faka Tonga"
+    },
+    "turkish": {
+      "code": "tr",
+      "name": "Turkish",
+      "slug": "turkish",
+      "nativeName": "Türkçe"
+    },
+    "tsonga": {
+      "code": "ts",
+      "name": "Tsonga",
+      "slug": "tsonga",
+      "nativeName": "Xitsonga"
+    },
+    "tatar": {
+      "code": "tt",
+      "name": "Tatar",
+      "slug": "tatar",
+      "nativeName": "татарча, tatarça, تاتارچا‎"
+    },
+    "twi": {
+      "code": "tw",
+      "name": "Twi",
+      "slug": "twi",
+      "nativeName": "Twi"
+    },
+    "tahitian": {
+      "code": "ty",
+      "name": "Tahitian",
+      "slug": "tahitian",
+      "nativeName": "Reo Tahiti"
+    },
+    "uighur": {
+      "code": "ug",
+      "name": "Uighur, Uyghur",
+      "slug": "uighur",
+      "nativeName": "Uyƣurqə, ئۇيغۇرچە‎"
+    },
+    "ukrainian": {
+      "code": "uk",
+      "name": "Ukrainian",
+      "slug": "ukrainian",
+      "nativeName": "українська"
+    },
+    "urdu": {
+      "code": "ur",
+      "name": "Urdu",
+      "slug": "urdu",
+      "nativeName": "اردو"
+    },
+    "uzbek": {
+      "code": "uz",
+      "name": "Uzbek",
+      "slug": "uzbek",
+      "nativeName": "zbek, Ўзбек, أۇزبېك‎"
+    },
+    "venda": {
+      "code": "ve",
+      "name": "Venda",
+      "slug": "venda",
+      "nativeName": "Tshivenḓa"
+    },
+    "vietnamese": {
+      "code": "vi",
+      "name": "Vietnamese",
+      "slug": "vietnamese",
+      "nativeName": "Tiếng Việt"
+    },
+    "volapuk": {
+      "code": "vo",
+      "name": "Volapük",
+      "slug": "volapuk",
+      "nativeName": "Volapük"
+    },
+    "walloon": {
+      "code": "wa",
+      "name": "Walloon",
+      "slug": "walloon",
+      "nativeName": "Walon"
+    },
+    "welsh": {
+      "code": "cy",
+      "name": "Welsh",
+      "slug": "welsh",
+      "nativeName": "Cymraeg"
+    },
+    "wolof": {
+      "code": "wo",
+      "name": "Wolof",
+      "slug": "wolof",
+      "nativeName": "Wollof"
+    },
+    "western_frisian": {
+      "code": "fy",
+      "name": "Western Frisian",
+      "slug": "western_frisian",
+      "nativeName": "Frysk"
+    },
+    "xhosa": {
+      "code": "xh",
+      "name": "Xhosa",
+      "slug": "xhosa",
+      "nativeName": "isiXhosa"
+    },
+    "yiddish": {
+      "code": "yi",
+      "name": "Yiddish",
+      "slug": "yiddish",
+      "nativeName": "ייִדיש"
+    },
+    "yoruba": {
+      "code": "yo",
+      "name": "Yoruba",
+      "slug": "yoruba",
+      "nativeName": "Yorùbá"
+    },
+    "zhuang": {
+      "code": "za",
+      "name": "Zhuang, Chuang",
+      "slug": "zhuang",
+      "nativeName": "Saɯ cueŋƅ, Saw cuengh"
+    }
+  }
+}

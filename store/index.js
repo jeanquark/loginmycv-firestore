@@ -65,6 +65,9 @@ export const actions = {
             // this.$router.push({ path: "home" })
 
             // await dispatch('users/fetchAuthenticatedUser', req.user)
+            // if (req.user.email === 'jeanquark3@visitor.loginmycv.com') {
+                // req.user['status'] = 'visitor'
+            // }
             commit('users/setLoadedUser', req.user, { root: true })
         } else {
             console.log('User is not logged in from nuxtServerInit')
@@ -76,13 +79,14 @@ export const actions = {
             const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser'].uid : null
             console.log('userId from nuxtClientInit: ', userId)
             // const userId = 'AdGWmQi4aadNeVgQxkfRKZHQzvb2'
+            const email = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser'].email : null
             
             if (userId) {
                 // const snapshot = await firestore.collection('users').doc(userId).collection('private').doc(userId).get()
                 // console.log('snapshot.data(): ', snapshot.data())
                 firestore.collection('users').doc(userId).onSnapshot(function(doc) {
                     // console.log('doc.data() from nuxtClientInit: ', doc.data())
-                    commit('users/setLoadedUser', { ...doc.data(), id: doc.id }, { root: true })
+                    commit('users/setLoadedUser', { ...doc.data(), status: 'visitor', id: doc.id }, { root: true })
 		            // commit('users/setLoadedUser', { ...doc.data(), private: snapshot.data(), id: doc.id })
                 })
             }

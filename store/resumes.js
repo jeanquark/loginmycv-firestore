@@ -93,7 +93,7 @@ export const actions = {
 		const slug = payload
 		const authUser = rootGetters['users/loadedUser']
 		console.log('authUser: ', authUser)
-    	if (authUser) { // User is connected
+    	if (authUser && authUser.status != 'visitor') { // User is connected
   			const authUserId = authUser.id ? authUser.id : authUser.uid
   			console.log('authUserId: ', authUserId)
 			try {

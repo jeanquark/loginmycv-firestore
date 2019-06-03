@@ -1,6 +1,6 @@
 // ORIGINAL CODE:
-const admin = require("firebase-admin");
-const key = require("../serviceAccountKey.js");
+const admin = require('firebase-admin');
+const key = require('../serviceAccountKey.js');
 
 module.exports = admin.initializeApp({
   	credential: admin.credential.cert(key),
@@ -8,18 +8,18 @@ module.exports = admin.initializeApp({
 });
 
 
-// // UPDATED CODE FOR SEEDS:
-// const admin = require("firebase-admin");
+// UPDATED CODE FOR SEEDS:
+// const admin = require('firebase-admin');
 // const firestoreService = require('firestore-export-import');
-// const serviceAccount = require("../serviceAccountKey.js");
+// const serviceAccount = require('../serviceAccountKey.js');
 // const databaseURL = `https://${serviceAccount.project_id}.firebaseio.com`;
 // const fs = require('fs');
 
-// // Initiate Firebase App
-// // firestoreService.initializeApp(serviceAccount, databaseURL);
+// Initiate Firebase App
+// firestoreService.initializeApp(serviceAccount, databaseURL);
 // module.exports = firestoreService.initializeApp(serviceAccount, databaseURL);
 
-// // Start exporting your data
+// Start exporting your data
 // firestoreService
 //  	.backups(['app_parameters', 'authorizations', 'countries', 'key_competences', 'languages', 'resumes_long', 'resumes_short', 'templates', 'users'])
 //   	.then(data => {
@@ -27,5 +27,5 @@ module.exports = admin.initializeApp({
 //   		fs.writeFileSync('database/seeds2.json', jsonData);  
 //   	})
 
-// // Seed database
-// // firestoreService.restore('database/seeds.json');
+// Start importing your data
+// firestoreService.restore('database/03June2019.json');

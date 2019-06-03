@@ -1,0 +1,14 @@
+<template>
+	<div>
+		<h1>About page</h1>
+	</div>
+</template>
+
+<script>
+	export default {
+		layout: 'layoutFront'
+	}
+</script>
+
+<style scoped>
+</style>

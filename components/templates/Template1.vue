@@ -47,7 +47,7 @@
 											<span>Phone number: <b>{{ resume.personal_data.phone_number }}</b></span>
 										</v-flex>
 									</v-layout>
-									<v-layout row wrap class="my-3 px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
+									<v-layout row wrap class="px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
 										<v-flex xs12 sm6 v-if="resume.personal_data.nationalities">
 											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
 												<span>Nationalities:</span>
@@ -110,7 +110,7 @@
 			      	<br />
 			      	<v-card class="secondary-color-background">
 						<v-expansion-panel expand :value="[1]">
-						    <v-expansion-panel-content v-for="(education, index) in resume.education" :key="index">
+						    <v-expansion-panel-content v-for="(education, index) in resume.education" :key="index" style="background: var(--secondary-color);">
 						      	<template v-slot:header>
 							        <h3><v-icon :color="primaryColor" class="mr-2">school</v-icon> {{ education.title }}, {{ education.school }}</h3>
 						      	</template>
@@ -118,7 +118,7 @@
 							        <v-card-text class="tertiary-color-background">
 							        	<p>
 							        		{{ education.city }} - {{ education.country }},
-							        		<i>From {{ education.start_date }}</i> <span v-if="education.end_date"></span> <i>to {{ education.end_date }}</i>
+							        		<i>from {{ education.start_date }}</i> <span v-if="education.end_date"></span> <i>to {{ education.end_date }}</i>
 							        	</p>
 							        	<p>{{ education.description }}</p>
 							        </v-card-text>
@@ -137,7 +137,7 @@
 			      	<br />
 			      	<v-card class="secondary-color-background">
 						<v-expansion-panel expand :value="[1]">
-						    <v-expansion-panel-content v-for="(work_experience, index) in resume.work_experience" :key="index">
+						    <v-expansion-panel-content v-for="(work_experience, index) in resume.work_experience" :key="index" style="background: var(--secondary-color);">
 						      	<template v-slot:header>
 							        <h3><v-icon :color="primaryColor" class="mr-2">work</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}</h3>
 						      	</template>
@@ -145,7 +145,7 @@
 							        <v-card-text class="tertiary-color-background">
 							        	<p>
 							        		{{ work_experience.city }} - {{ work_experience.country }},
-							        		<i>From {{ work_experience.start_date }}</i> <span v-if="work_experience.end_data">to</span> <i>to {{ work_experience.end_date }}</i>
+							        		<i>from {{ work_experience.start_date }}</i> <span v-if="work_experience.end_data">to</span> <i>to {{ work_experience.end_date }}</i>
 							        	</p>
 							        	<p>{{ work_experience.job_description }}</p>
 							        </v-card-text>
@@ -239,7 +239,7 @@
 					<span class="title">LoginMyCV</span>
 				</v-layout>
 			</nuxt-link>
-			<span class="ml-2">{{ new Date() | moment('Y') }}</span>
+			<!-- <span class="ml-2">{{ new Date() | moment('Y') }}</span> -->
 		</v-footer>
 	</v-app>
 </template>
@@ -352,6 +352,9 @@
 </script>
 
 <style scoped>
+	.abc {
+		background-color: yellow;
+	}
 	p, span, h1, h2, h3, h4, li {
 		color: var(--text-color);
 	}

@@ -70,39 +70,41 @@
 
 			console.log('load component')
 
-			// 3) Redirect to password page for visitors
-			return this.$router.replace(`/resume/${slug}/login`)
+			
 
 
 			// 2) Fetch resume if user has authorization
-			// const authUser = this.$store.getters['users/loadedUser']
-			// console.log('authUser: ', authUser)
-   //      	if (authUser) { // User is connected
-	  // 			const authUserId = authUser.id ? authUser.id : authUser.uid
-	  // 			console.log('authUserId: ', authUserId)
-			// 	try {
-			// 		console.log('Check user authorization')
-			// 		const resume = await axios.post('/check-user-authorization', { authUserId, slug })
-			// 		console.log('resume received from check user authorization: ', resume)
-			// 		console.log('resume.data: ', resume.data)
-			// 		console.log('resume.data.status: ', resume.data.status)
-			// 		return resume.data.status;
-			// 		// this.resume = resume.data
-			// 		// await this.$store.dispatch('templates/fetchTemplates')
-		 //   //          const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-		 //   //          console.log('template: ', template)
-		 //   //          return this.component = () => import(`~/components/templates/${template.file}`)  
-			// 		// return { resume }
-			// 	} catch (error) {
-			// 		console.log('error check-user-authorization: ', error)
-			// 		// new Noty({
-			// 		// 	type: 'error',
-			// 		// 	text: 'Sorry, an error occured during the authorization checking process.',
-			// 		// 	timeout: 5000,
-			// 		// 	theme: 'metroui'
-			// 		// }).show()
-			// 	}
-   //      	}
+			const authUser = this.$store.getters['users/loadedUser']
+			console.log('authUser: ', authUser)
+        	if (authUser) { // User is connected
+	  			const authUserId = authUser.id ? authUser.id : authUser.uid
+	  			console.log('authUserId: ', authUserId)
+				try {
+					console.log('Check user authorization')
+					const resume = await axios.post('/check-user-authorization', { authUserId, slug })
+					console.log('resume received from check user authorization: ', resume)
+					console.log('resume.data: ', resume.data)
+					console.log('resume.data.status: ', resume.data.status)
+					// return resume.data.status;
+					this.resume = resume.data.resume
+					await this.$store.dispatch('templates/fetchTemplates')
+		            const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
+		            console.log('template: ', template)
+		            return this.component = () => import(`~/components/templates/${template.file}`)  
+					// return { resume }
+				} catch (error) {
+					console.log('error check-user-authorization: ', error)
+					// new Noty({
+					// 	type: 'error',
+					// 	text: 'Sorry, an error occured during the authorization checking process.',
+					// 	timeout: 5000,
+					// 	theme: 'metroui'
+					// }).show()
+				}
+        	}
+
+			// 3) Redirect to password page for visitors
+			return this.$router.replace(`/resume/${slug}/login`)
 
    //      	console.log('redirect to visitor login if resume exists')
         	

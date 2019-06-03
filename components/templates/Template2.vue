@@ -49,6 +49,12 @@
 							duration: '1000',
 							offset: -100
 						}" v-if="resume.skills && resume.skills.length > 0">Skills</nuxt-link>
+						<nuxt-link class="nav-item" to="#files" v-scroll-to="{
+							el: '#files',
+							container: '',
+							duration: '1000',
+							offset: -100
+						}" v-if="files && files.length > 0">Files</nuxt-link>
 						<nuxt-link class="nav-item" to="#contact" v-scroll-to="{
 							el: '#contact',
 							container: '',						
@@ -144,6 +150,23 @@
 					</v-list-tile-action>
 					<v-list-tile-content>
 						<v-list-tile-title>Skills</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile 
+					to="#files"
+					v-scroll-to="{
+						el: '#files',
+						container: '',
+						duration: '1000',
+						offset: -100
+					}"
+					v-if="files && files.length > 0"
+				>
+					<v-list-tile-action>
+						<v-icon>picture_as_pdf</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>Files</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile 
@@ -456,13 +479,13 @@
 		</v-content>
 
 		<v-footer :color="backgroundColor" class="white--text justify-center pa-4">
+			<!-- <span class="ml-2">{{ new Date() | moment('Y') }} - </span> -->
 			<nuxt-link to="/" class="link">
 				<v-layout align-center justify-center>
 					<img src="/images/logo_small.png" width="30" />&nbsp;
 					<span class="title">LoginMyCV</span>
 				</v-layout>
 			</nuxt-link>
-			<span class="ml-2">{{ new Date() | moment('Y') }}</span>
 		</v-footer>
     </v-app>
 </template>

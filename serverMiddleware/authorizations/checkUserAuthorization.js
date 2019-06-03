@@ -26,7 +26,7 @@ module.exports = app.use(async function (req, res, next) {
 		console.log('authorization: ', authorization);
 		let status = ''
 
-		switch (authorization.status) {
+		switch (authorization.status.slug) {
 			case 'allowed': {
 				status = 'accorded';
 				break;
@@ -58,6 +58,7 @@ module.exports = app.use(async function (req, res, next) {
 		}
 
 		if (status === 'accorded') {
+			console.log('Status is accorded!')
 			const userResumes = await admin.firestore().collection('resumes_long').where('slug', '==', slug).get();
 			let userResume = {};
 			userResumes.forEach(doc => {

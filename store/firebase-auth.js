@@ -81,14 +81,16 @@ export const actions = {
             console.log('authData: ', authData)
             const authUserId = authData.user.uid
             console.log('authUserId: ', authUserId)
-            const user = {
-                id: authUserId,
-                email: authData.user.email,
-                status: 'visitor'
-                // ...authData.user
-            }
+            // Do not create user in store
+            
+            // const user = {
+            //     id: authUserId,
+            //     status: 'visitor',
+            //     email: authData.user.email
+            //     // ...authData.user
+            // }
             // console.log('user: ', user)
-            commit('users/setLoadedUser', user, { root: true })
+            // commit('users/setLoadedUser', user, { root: true })
         } catch (error) {
             console.log('error2: ', error)
             commit("setError", error, { root: true })

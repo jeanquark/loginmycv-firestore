@@ -10,7 +10,13 @@ export const mutations = {
 	setLoadedUser (state, payload) {
 		console.log('Call to setLoadedUser mutation: ', payload)
 		// if (!payload.id) {
-			// payload['id'] = payload.uid
+		// 	payload['id'] = payload.uid
+		// }
+		// const email = payload.email
+		// console.log('email: ', email)
+		// if (email && email.substr(email.length - 22 === '@visitor.loginmycv.com')) {
+		// if (email === 'jeanquark3@visitor.loginmycv.com') {
+			// payload.status = 'visitor'
 		// }
 		state.loadedUser = payload
 	}
