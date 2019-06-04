@@ -73,10 +73,10 @@
                                     label="Job description*"
                                     id="job_description"
                                     name="job_description"
-                                    v-validate="'required|max:250'"
+                                    v-validate="'required|max:100'"
                                     :error-messages="errors ? errors.collect('job_description') : null"
                                     data-vv-as="Job description"
-                                    :counter="250"
+                                    :counter="100"
                                     v-model="userResume.job_description"
                                 ><font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -216,6 +216,7 @@
                                     label="Country of residence*"
                                     :items="loadedCountries"
                                     item-text="name"
+                                    :return-object="true"
                                     chips
                                     small-chips
                                     :deletable-chips="true"

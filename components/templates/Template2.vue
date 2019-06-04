@@ -315,7 +315,8 @@
 								{{ education.title }} from&nbsp;<span class="primary-color accentuate italic">{{ education.school }}</span>
 							</v-card-title>
 							<v-card-text class="card-text">
-								<p class="primary-color accentuate">{{ formatDate(education.start_date) }} - {{ formatDate(education.end_date) }}</p>
+								<p class="primary-color accentuate" v-if="!education.end_date">{{ education.start_date }}</p>
+								<p class="primary-color accentuate" v-else>{{ education.start_date }} - {{ education.end_date }}</p>
 								<p>{{ education.description }}</p>
 							</v-card-text>
 						</v-card>
@@ -327,7 +328,8 @@
 								{{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span>
 							</v-card-title>
 							<v-card-text class="card-text">
-								<p class="primary-color accentuate">{{ formatDate(work_experience.start_date) }} - {{ formatDate(work_experience.end_date) }}</p>
+								<p class="primary-color accentuate" v-if="!work_experience.end_date">{{ work_experience.start_date }}</p>
+								<p class="primary-color accentuate" v-else>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
 								<p>{{ work_experience.job_description }}</p>
 							</v-card-text>
 						</v-card>
@@ -591,7 +593,7 @@
 			},
 			errors () {
                 return this.$store.getters['errors']
-            },			
+            },		
 			skills () {
 				// return this.resume.skills
 				if (this.resume.skills) {

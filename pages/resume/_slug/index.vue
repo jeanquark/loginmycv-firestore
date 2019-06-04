@@ -87,11 +87,13 @@
 					console.log('resume.data.status: ', resume.data.status)
 					// return resume.data.status;
 					this.resume = resume.data.resume
-					await this.$store.dispatch('templates/fetchTemplates')
-		            const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-		            console.log('template: ', template)
-		            return this.component = () => import(`~/components/templates/${template.file}`)  
-					// return { resume }
+					if (this.resume) {
+						await this.$store.dispatch('templates/fetchTemplates')
+						const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
+						console.log('template: ', template)
+						return this.component = () => import(`~/components/templates/${template.file}`)  
+						// return { resume }
+					}
 				} catch (error) {
 					console.log('error check-user-authorization: ', error)
 					// new Noty({

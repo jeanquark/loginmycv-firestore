@@ -114,11 +114,16 @@
 						      	<template v-slot:header>
 							        <h3><v-icon :color="primaryColor" class="mr-2">school</v-icon> {{ education.title }}, {{ education.school }}</h3>
 						      	</template>
+								<v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
 						      	<v-card>
 							        <v-card-text class="tertiary-color-background">
-							        	<p>
+							        	<p v-if="!education.end_date">
 							        		{{ education.city }} - {{ education.country }},
-							        		<i>from {{ education.start_date }}</i> <span v-if="education.end_date"></span> <i>to {{ education.end_date }}</i>
+							        		<i>since {{ education.start_date }}</i>
+							        	</p>
+							        	<p v-else>
+							        		{{ education.city }} - {{ education.country }},
+							        		<i>from {{ education.start_date }} to {{ education.end_date }}</i>
 							        	</p>
 							        	<p>{{ education.description }}</p>
 							        </v-card-text>
@@ -141,12 +146,17 @@
 						      	<template v-slot:header>
 							        <h3><v-icon :color="primaryColor" class="mr-2">work</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}</h3>
 						      	</template>
+								<v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
 						      	<v-card>
 							        <v-card-text class="tertiary-color-background">
-							        	<p>
+							        	<p v-if="!work_experience.end_date">
 							        		{{ work_experience.city }} - {{ work_experience.country }},
-							        		<i>from {{ work_experience.start_date }}</i> <span v-if="work_experience.end_data">to</span> <i>to {{ work_experience.end_date }}</i>
+							        		<i>since {{ work_experience.start_date }}</i>
 							        	</p>
+										<p v-else>
+											{{ work_experience.city }} - {{ work_experience.country }},
+							        		<i>from {{ work_experience.start_date }} to {{ work_experience.end_date }}</i>
+										</p>
 							        	<p>{{ work_experience.job_description }}</p>
 							        </v-card-text>
 						      	</v-card>

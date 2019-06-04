@@ -69,10 +69,12 @@
                 </v-dialog>
         	</v-layout>
         </v-content>
+        <!-- :fixed="this.$route.path != '/'" -->
         <v-footer
 		    height="auto"
 		    color="primary lighten-1"
-            :fixed="this.$route.path != '/'"
+            
+            :fixed="false"
 		>
 		    <v-layout
 		      	justify-center

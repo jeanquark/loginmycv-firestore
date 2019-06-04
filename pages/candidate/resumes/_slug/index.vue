@@ -4,8 +4,8 @@
             <v-flex xs12>
                 <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
             </v-flex>
-            loadedUserResume: {{ loadedUserResume }}<br /><br />
-            errors: {{ errors }}<br /><br />
+            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
+            <!-- errors: {{ errors }}<br /><br /> -->
         </v-layout>
         <v-layout row>
             <v-flex xs12>

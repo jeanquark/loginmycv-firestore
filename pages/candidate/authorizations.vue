@@ -596,8 +596,8 @@
 
 	.fadeOut {
 		background-color: var(--v-secondary-base);
-    	animation: fadeout 5s linear forwards;
-    	-webkit-animation: fadeout 5s linear forwards;
+    	animation: fadeout 8s linear forwards;
+    	-webkit-animation: fadeout 8s linear forwards;
 	}
 	@keyframes fadeout {
   		100% { background-color: transparent; }

@@ -163,40 +163,57 @@
 					<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
 						<!-- resume: {{ resume }}<br /> -->
         				<v-card flat hover class="card ma-2">
-        					<!-- resume.resume_long_id: {{ resume.resume_long_id }}<br /> -->
-        					<v-layout fill-height align-center justify-space-around class="pa-2">
-                                <v-avatar
-                                    :size="78"
-                                >
-                                    <img :src="`/images/resumes/${resume.image}`" alt="Candidate image" v-if="resume.image">
-                                    <img src="/images/resumes/default.jpg" alt="default candidate image" v-else/>
-                                </v-avatar>
-                            </v-layout>
-        					<v-card-title primary-title class="pa-2 justify-center">
-        						<div>
-        							<h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
-        							<div class="pt-1 text-xs-center">{{ resume.job_description }}</div>
-        						</div>
-        					</v-card-title>
-        					<v-card-actions>
-								<v-layout justify-center v-if="resume.visibility === 'public'">
-									<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
-								</v-layout>
-								<v-layout justify-center v-if="resume.visibility === 'semi-private'">
-									<div v-if="loadedUser">
-										<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-											<v-btn small nuxt color="green" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
-											<v-chip color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
-	        							</div>
-										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
-										<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+							<v-layout row wrap>
+								<v-flex xs12 style="white-space: nowrap;">
+									<div class="country-flag">
+										<v-img :src="`/images/countries/${resume.personal_data.country.slug}.png`" width="25" class="mb-1" v-if="resume.personal_data && resume.personal_data.country"></v-img>
 									</div>
-									<div v-else>
-										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+									<div class="language-flag">
+										<v-img :src="`/images/languages/${language.slug}.png`" width="25" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
 									</div>
-								</v-layout>
-        					</v-card-actions>
+									<v-avatar
+										:size="78"
+										class="mb-2"
+										v-if="resume.picture"
+									>
+										<img :src="`${resume.picture}`" alt="Candidate picture">
+									</v-avatar>
+								</v-flex>
+							</v-layout>
+
+							<v-layout fill-height align-center justify-space-around>
+								<div>
+									<v-card-text>
+										<h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
+										<div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
+									</v-card-text>
+									<v-card-actions>
+										<v-layout justify-center v-if="resume.visibility === 'public'">
+											<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
+										</v-layout>
+										<v-layout justify-center v-if="resume.visibility === 'semi-private'">
+											<div v-if="loadedUser">
+												<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
+													<v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
+													<v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
+													<v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
+													<v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
+												</div>
+												<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+												<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+											</div>
+											<div v-else>
+												<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+											</div>
+										</v-layout>
+									</v-card-actions>
+								</div>
+								
+							</v-layout>
         				</v-card>
+
+
+						
         			</v-flex>
 				</v-layout>
 
@@ -502,5 +519,15 @@
 	.link {
 		text-decoration: none;
 		color: #fff;
+	}
+	.country-flag {
+		position: absolute;
+		top: 15px;
+		left: 0;
+	}
+	.language-flag {
+		position: absolute;
+		top: 15px;
+		right: 0;
 	}
 </style>
