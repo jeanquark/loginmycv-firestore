@@ -67,6 +67,7 @@
             >
                 Send request
             </v-btn><br /><br />
+            <v-btn color="secondary" flat @click="closeModal">Cancel</v-btn>
         </v-card-actions>
         <v-card-actions class="justify-center">
             <small v-if="loading && waiting" class="primaryColor">Almost there...</small>
@@ -107,6 +108,9 @@
             
         },
         methods: {
+            closeModal () {
+                this.$emit('closeRequestAuthorizationModal')
+            },
             wait () {
                 setTimeout(() => {
                     this.waiting = true

@@ -56,7 +56,7 @@
                     width="750"
                     lazy
                 >
-                    <Register v-on:registerChildToParent="switchToLogin" />
+                    <Register v-on:switchToLoginModal="switchToLogin" />
                 </v-dialog>
 
                 <!-- Forgot Password Modal -->

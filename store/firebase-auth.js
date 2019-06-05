@@ -1,7 +1,8 @@
-import { firestore, auth } from '~/plugins/firebase-client-init.js'
+import { firestore, auth, GoogleAuthProvider, FacebookAuthProvider } from '~/plugins/firebase-client-init.js'
 import axios from 'axios'
 import Noty from 'noty'
-// import moment from "moment"
+// import moment = require('moment')
+import moment from 'moment'
 
 export const state = () => ({})
 
@@ -102,37 +103,25 @@ export const actions = {
         // const slug = 'greg'
     },
 
-    async signUserUp({ commit }, payload) {
-        // commit('setLoading', true, { root: true })
+    async signUserUp({ commit, dispatch }, payload) {
         try {
-            // console.log('payload: ', payload)
-            // return
-
             let authData = await auth.createUserWithEmailAndPassword(
                 payload.email,
                 payload.password
             )
             console.log('authData: ', authData)
             console.log('authData.user.uid: ', authData.user.uid)
-            const userId = authData.user ? authData.user.uid : null
-            payload['id'] = userId
-            console.log('payload: ', payload)
-            const idToken = await auth.currentUser.getIdToken()
-            payload['idToken'] = idToken
-
-
-            return await axios.post('/register-new-user', {data: payload})
-            // await firestore.collection('users').add({
-            //     email: payload.email,
-            //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            //     created_at: new Date(),
-            //     updated_at: new Date()
-            // })
-            // return 'Success'
-
-            
+            authData['firstname'] = payload.firstname,
+            authData['lastname'] = payload.lastname
+            authData['email'] = payload.email
+            const snapshot = await axios.post('/register-new-user', {
+                data: authData.user
+            })
+            const newUser = snapshot.data.newUser
+            console.log('newUser: ', newUser)
+            dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
         } catch (error) {
-            console.log(error)
+            console.log('error: ', error)
             commit('setLoading', false, { root: true })
             if (error.code === 'auth/email-already-in-use') {
                 new Noty({
@@ -142,141 +131,54 @@ export const actions = {
                     theme: 'metroui'
                 }).show()
             }
-            throw new Error(error)
+            // throw new Error(error)
+            throw error
         }
     },
 
-    async signInWithGooglePopup({ commit }) {
+    async signInWithGooglePopup({ commit, dispatch }) {
         try {
-            commit("setLoading", true, { root: true })
-            let authData = await Auth.signInWithPopup(GoogleAuthProvider)
-            console.log("authData: ", authData)
-            console.log("authData.user: ", authData.user)
+            commit('setLoading', true, { root: true })
+            let authData = await auth.signInWithPopup(GoogleAuthProvider)
+            console.log('authData: ', authData)
+            console.log('authData.user: ', authData.user)
             const userId = authData.user.uid
-            console.log("userId: ", userId)
+            console.log('userId: ', userId)
 
             // Check if user already exists in database
-            const snapshot = await firebase
-                .database()
-                .ref("/users/" + userId)
-                .once("value")
-            const registeredUser = snapshot.val()
-
-            // If user does not exists, save user data in database at the user node
-            if (!registeredUser) {
-                return axios
-                    .post("/register-new-user", {
-                        type: "oauth",
-                        data: authData.user
-                    })
-                    .then(response => {
-                        // Load newly registered user in store
-                        commit("users/setLoadedUser", response.data, {
-                            root: true
-                        })
-                        // commit('setLoading', false, { root: true })
-                        new Noty({
-                            type: "success",
-                            text: "Successful registration",
-                            timeout: 10000,
-                            theme: "metroui"
-                        }).show()
-                    })
-                    .catch(function(error) {
-                        commit("setLoading", false, { root: true })
-                        new Noty({
-                            type: "error",
-                            text:
-                                "Sorry, an error occured during your registration process.",
-                            timeout: 5000,
-                            theme: "metroui"
-                        }).show()
-                    })
+            const snapshot = await firestore.collection('/users/').doc(userId).get()
+            if (!snapshot.exists) {
+                // Register new user
+                const registerNewUser = await axios.post('/register-new-user', {
+                    type: 'oauth',
+                    data: authData.user
+                })
+                const newUser = registerNewUser.data.newUser
+                console.log('newUser: ', newUser)
+                await dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
+                return
             } else {
-                // Load user in store
-                commit("users/setLoadedUser", registeredUser, { root: true })
-                commit("setLoading", false, { root: true })
-                // new Noty({type: 'success', text: this.app.i18n.t('messages.login.success'), timeout: 5000, theme: 'metroui'}).show()
+                const user = {
+                    ...snapshot.data(),
+                    id: snapshot.id
+                }
+                console.log('user: ', user)
+                await dispatch('users/fetchAuthenticatedUser', user, { root: true })
+                commit('setLoading', false, { root: true })
+                return
             }
         } catch (error) {
-            new Noty({
-                type: "error",
-                text: "Sorry, an error occured during your registration process.",
-                timeout: 5000,
-                theme: "metroui"
-            }).show()
-            commit("setError", error, { root: true })
-            commit("setLoading", false, { root: true })
+            console.log('error: ', error)
+            commit('setError', error, { root: true })
+            commit('setLoading', false, { root: true })
+            throw error
         }
     },
     async signInWithFacebookPopup({ commit }) {
         try {
-            commit("setLoading", true, { root: true })
-            let authData = await Auth.signInWithPopup(FacebookAuthProvider)
-            console.log("authData: ", authData)
-            console.log("authData.user: ", authData.user)
-            const userId = authData.user.uid
-            console.log("userId: ", userId)
-
-            // Check if user already exists in database
-            const snapshot = await firebase
-                .database()
-                .ref("/users/" + userId)
-                .once("value")
-            const registeredUser = snapshot.val()
-
-            // If user does not exists, save user data in database at the user node
-            if (!registeredUser) {
-                return axios
-                    .post("/register-new-user", {
-                        type: "oauth",
-                        data: authData.user
-                    })
-                    .then(response => {
-                        // Load newly registered user in store
-                        commit("users/setLoadedUser", response.data, {
-                            root: true
-                        })
-                        commit("setLoading", false, { root: true })
-                        new Noty({
-                            type: "success",
-                            text: this.app.i18n.t(
-                                "messages.registration.success"
-                            ),
-                            timeout: 10000,
-                            theme: "metroui"
-                        }).show()
-                    })
-                    .catch(function(error) {
-                        commit("setLoading", false, { root: true })
-                        new Noty({
-                            type: "error",
-                            text:
-                                "Sorry, an error occured during your registration process.",
-                            timeout: 5000,
-                            theme: "metroui"
-                        }).show()
-                    })
-            } else {
-                // Load user in store
-                commit("users/setLoadedUser", registeredUser, { root: true })
-                commit("setLoading", false, { root: true })
-                new Noty({
-                    type: "success",
-                    text: this.app.i18n.t("messages.login.success"),
-                    timeout: 5000,
-                    theme: "metroui"
-                }).show()
-            }
+            
         } catch (error) {
-            new Noty({
-                type: "error",
-                text: this.app.i18n.t("messages.login.error"),
-                timeout: 5000,
-                theme: "metroui"
-            }).show()
-            commit("setError", error, { root: true })
-            commit("setLoading", false, { root: true })
+            
         }
     },
     async resetPassword ({ commit }, payload) {

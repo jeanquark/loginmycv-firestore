@@ -1,237 +1,160 @@
 <template>
-            <v-container grid-list-md text-xs-center>
-    			<v-layout row wrap>
-      				<v-flex xs12 class="">
-        				<v-card class="ma-2 pa-0">
-          					<v-card-text class="pa-0">
-          						<h1>Welcome to LoginMyCV</h1>
-          						<h3>Now your career will take off</h3>
-								<br />
-								<h2>Deployment with clear config var 5</h2>
-								<!-- process.env.PROJECT_ID: {{ process.env.PROJECT_ID }}<br /> -->
-          						<!-- <b>Logged in candidate:</b> {{ auth }}<br /><br /> -->
-          						<!-- <v-btn @click="getResume('jeanquark')">Go to jeanquark resume (button)</v-btn><br /> -->
-          						<nuxt-link to="/resume/jeanquark3">Go to jeanquark's resume (client)</nuxt-link><br />
-          						<a href="/resume/jeanquark3">Go to jeanquark's resume (server)</a><br />
-          						<a href="/resume/ivan">Go to ivan's resume (server)</a><br />
-								<!-- <a href="/resume/greg">Go to greg's resume (server)</a><br /> -->
-								<!-- <nuxt-link to="/ivan">Go to Ivan's page</nuxt-link><br /> -->
-								<!-- <nuxt-link to="/ivan2">Go to Ivan 2's page</nuxt-link><br /> -->
-								<v-btn color="success">Success button</v-btn>
-          						<!-- <nuxt-link to="/candidate">Go to candidate page</nuxt-link><br /> -->
-          						<!-- <v-btn class="warning" @click="getCurrentUserIdToken">Get current user id token</v-btn><br /> -->
-          						<!-- <b>loadedShortResumes: </b>{{ loadedShortResumes }}<br /> -->
-          						<!-- <b>loadedUserAuthorizationsArray: </b>{{ loadedUserAuthorizationsArray }}<br /> -->
-          						<!-- {{ loadedUserAuthorizations ? loadedUserAuthorizations['ZLljq0Ypk5hjHl7aimdX'] : null }}<br /> -->
-          						loadedUser:{{ loadedUser }}<br />
-          						<b>loadedUserReceivedAuthorizations: </b>{{ loadedUserReceivedAuthorizations }}<br />
-								<b>myArray:</b> {{ myArray }}<br />
-								this.$route: {{ this.$route.path }}<br />
+	<v-container grid-list-md text-xs-center>
+		
+		<v-layout row wrap justify-center class="mb-5">
+			<v-flex xs12>
+				<h1>Welcome to LoginMyCV</h1>
+				<h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
+				<v-layout justify-center>
+					<v-img src="/images/logo3.png" max-width="220" />
+				</v-layout>
+			</v-flex>
+		</v-layout>
 
-								<br /><br />
-								<draggable v-model="myArray" group="people" @start="drag=true" @end="drag=false">
-   									<div v-for="element in myArray" :key="element.id" style="border: 1px solid grey;">{{ element.name }}</div>
-								</draggable>
+		<v-layout row wrap justify-center class="">
+			<v-flex xs12>
+				<h2 class="subtitle display-1">What we offer</h2>
+			</v-flex>
+		</v-layout>
 
-								<br /><br />
-								<v-expansion-panel>
-									<v-expansion-panel-content
-										v-for="(item, i) in myArray"
-										:key="i"
-									>
-										<template v-slot:header>
-											<div>{{ item.title }}</div>
-										</template>
-										<v-card>
-											<v-card-text>{{ item.text }}</v-card-text>
-										</v-card>
-									</v-expansion-panel-content>
-								</v-expansion-panel>
+		
+		<v-layout row wrap class="mb-5">
+			<v-flex xs12 sm4>
+				<v-card flat class="transparent ma-2">
+					<v-card-text class="text-xs-center">
+						<font-awesome-icon :icon="['fas', 'file-alt']" size="2x" class="primaryColor" />
+					</v-card-text>
+					<v-card-title primary-title class="layout justify-center">
+						<div class="headline text-xs-center">Your online CV for free</div>
+					</v-card-title>
+					<v-card-text>
+						Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in not time your resume will be accessible online at the endpoint of your choice.
+					</v-card-text>
+				</v-card>
+			</v-flex>
+			<v-flex xs12 sm4>
+				<v-card flat class="transparent ma-2">
+					<v-card-text class="text-xs-center">
+						<font-awesome-icon :icon="['fas', 'lock']" size="2x" class="primaryColor" />
+					</v-card-text>
+					<v-card-title primary-title class="layout justify-center">
+						<div class="headline text-xs-center">Private & Secured data</div>
+					</v-card-title>
+					<v-card-text>
+						All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
+					</v-card-text>
+				</v-card>
+			</v-flex>
+			<v-flex xs12 sm4>
+				<v-card flat class="transparent ma-2">
+					<v-card-text class="text-xs-center">
+						<font-awesome-icon :icon="['fas', 'search']" size="2x" class="primaryColor" />
+					</v-card-text>
+					<v-card-title primary-title class="layout justify-center">
+						<div class="headline text-xs-center">Let recruiters find you</div>
+					</v-card-title>
+					<v-card-text>
+						An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
+					</v-card-text>
+				</v-card>
+			</v-flex>
+		</v-layout>
 
-								<br /><br />
-								<v-expansion-panel>
-									<draggable v-model="myArray" group="experience" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
-										<v-expansion-panel-content
-											v-for="(item, i) in myArray"
-											:key="i"
-										>
-											<template v-slot:header>
-												<v-layout align-center>
-													<v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp;
-													<div>{{ item.title }}</div>
-												</v-layout>
-											</template>
-											<v-card>
-												<v-card-text>{{ item.text }}</v-card-text>
-											</v-card>
-										</v-expansion-panel-content>
-									</draggable>
-								</v-expansion-panel>
 
-          						<v-layout>
-	          						<v-flex xs12>
-	          							<img src="/images/logo-min.jpg" width="100%" />
-	          						</v-flex>
-	          					</v-layout>
-          					</v-card-text>
-        				</v-card>
-        			</v-flex>
-    			</v-layout>
 
-				<v-layout row wrap justify-center class="mb-5">
-					<v-flex xs12>
-						<h1>Welcome to LoginMyCV</h1>
-						<h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
-						<v-layout justify-center>
-							<v-img src="/images/logo3.png" max-width="220" />
-						</v-layout>
+
+		<v-layout row wrap justify-center class="mb-5">
+			<v-flex xs12>
+				<h2 class="subtitle display-1">How it works</h2>
+				<v-layout>
+					<v-flex xs6>
+						<v-img src="/images/frontpage-text.svg" />
+					</v-flex>
+					<v-flex xs6>
+						<v-img src="/images/frontpage-img6.png" />
 					</v-flex>
 				</v-layout>
+			</v-flex>
+		</v-layout>
 
-				<v-layout row wrap justify-center class="">
-					<v-flex xs12>
-						<h2 class="subtitle display-1">What we offer</h2>
-					</v-flex>
-				</v-layout>
+
+		<v-layout row wrap justify-center>
+			<v-flex xs12>
+				<h2 class="subtitle display-1">Browse candidates</h2>
+				<br />
+			</v-flex>
+			<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
+				<!-- resume: {{ resume }}<br /> -->
+				<v-card flat hover class="card ma-2">
+					<v-layout row wrap>
+						<v-flex xs12 style="white-space: nowrap;">
+							<div class="country-flag" v-if="resume.country">
+								<v-img :src="`/images/countries/${resume.country.slug}.png`" width="25" class="mb-1"></v-img>
+							</div>
+							<div class="language-flag">
+								<v-img :src="`/images/languages/${language.slug}.png`" width="25" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
+							</div>
+							<v-avatar
+								:size="78"
+								class="mb-2"
+								v-if="resume.picture"
+							>
+								<img :src="`${resume.picture}`" alt="Candidate picture">
+							</v-avatar>
+						</v-flex>
+					</v-layout>
+
+					<v-layout fill-height align-center justify-space-around>
+						<div>
+							<v-card-text>
+								<h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
+								<div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
+							</v-card-text>
+							<v-card-actions>
+								<v-layout justify-center v-if="resume.visibility === 'public'">
+									<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
+								</v-layout>
+								<v-layout justify-center v-if="resume.visibility === 'semi-private'">
+									<div v-if="loadedUser">
+										<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
+											<v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
+											<v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
+											<v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
+											<v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
+										</div>
+										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
+										<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+									</div>
+									<div v-else>
+										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
+									</div>
+								</v-layout>
+							</v-card-actions>
+						</div>
+						
+					</v-layout>
+				</v-card>
+
 
 				
-				<v-layout row wrap class="mb-5">
-					<v-flex xs12 sm4>
-						<v-card flat class="transparent ma-2">
-							<v-card-text class="text-xs-center">
-								<font-awesome-icon :icon="['fas', 'file-alt']" size="2x" class="primaryColor" />
-							</v-card-text>
-							<v-card-title primary-title class="layout justify-center">
-								<div class="headline text-xs-center">Your online CV for free</div>
-							</v-card-title>
-							<v-card-text>
-								Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in not time your resume will be accessible online at the endpoint of your choice.
-							</v-card-text>
-						</v-card>
-					</v-flex>
-					<v-flex xs12 sm4>
-						<v-card flat class="transparent ma-2">
-							<v-card-text class="text-xs-center">
-								<font-awesome-icon :icon="['fas', 'lock']" size="2x" class="primaryColor" />
-							</v-card-text>
-							<v-card-title primary-title class="layout justify-center">
-								<div class="headline text-xs-center">Private & Secured data</div>
-							</v-card-title>
-							<v-card-text>
-								All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
-							</v-card-text>
-						</v-card>
-					</v-flex>
-					<v-flex xs12 sm4>
-						<v-card flat class="transparent ma-2">
-							<v-card-text class="text-xs-center">
-								<font-awesome-icon :icon="['fas', 'search']" size="2x" class="primaryColor" />
-							</v-card-text>
-							<v-card-title primary-title class="layout justify-center">
-								<div class="headline text-xs-center">Let recruiters find you</div>
-							</v-card-title>
-							<v-card-text>
-								An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
-							</v-card-text>
-						</v-card>
-					</v-flex>
-				</v-layout>
+			</v-flex>
+		</v-layout>
 
 
+		<v-layout row wrap>
+			
 
-
-				<v-layout row wrap justify-center class="mb-5">
-					<v-flex xs12>
-						<h2 class="subtitle display-1">How it works</h2>
-						<v-layout>
-							<v-flex xs6>
-								<v-img src="/images/frontpage-text.svg" />
-							</v-flex>
-							<v-flex xs6>
-								<v-img src="/images/frontpage-img6.png" />
-							</v-flex>
-						</v-layout>
-					</v-flex>
-				</v-layout>
-
-
-				<v-layout row wrap justify-center>
-					<v-flex xs12>
-						<h2 class="subtitle display-1">Browse candidates</h2>
-						<br />
-					</v-flex>
-					<v-flex xs12 sm6 md4 lg3 v-for="resume of loadedShortResumes" :key="resume.username">
-						<!-- resume: {{ resume }}<br /> -->
-        				<v-card flat hover class="card ma-2">
-							<v-layout row wrap>
-								<v-flex xs12 style="white-space: nowrap;">
-									<div class="country-flag">
-										<v-img :src="`/images/countries/${resume.personal_data.country.slug}.png`" width="25" class="mb-1" v-if="resume.personal_data && resume.personal_data.country"></v-img>
-									</div>
-									<div class="language-flag">
-										<v-img :src="`/images/languages/${language.slug}.png`" width="25" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
-									</div>
-									<v-avatar
-										:size="78"
-										class="mb-2"
-										v-if="resume.picture"
-									>
-										<img :src="`${resume.picture}`" alt="Candidate picture">
-									</v-avatar>
-								</v-flex>
-							</v-layout>
-
-							<v-layout fill-height align-center justify-space-around>
-								<div>
-									<v-card-text>
-										<h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
-										<div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
-									</v-card-text>
-									<v-card-actions>
-										<v-layout justify-center v-if="resume.visibility === 'public'">
-											<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
-										</v-layout>
-										<v-layout justify-center v-if="resume.visibility === 'semi-private'">
-											<div v-if="loadedUser">
-												<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-													<v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
-													<v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
-													<v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
-													<v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
-												</div>
-												<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
-												<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
-											</div>
-											<div v-else>
-												<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
-											</div>
-										</v-layout>
-									</v-card-actions>
-								</div>
-								
-							</v-layout>
-        				</v-card>
-
-
-						
-        			</v-flex>
-				</v-layout>
-
-
-				<v-layout row wrap>
-        			
-
-					<!-- Request Authorization Modal -->
-                    <v-dialog
-        				v-model="requestAuthorizationModal"
-        				width="500"
-        				lazy
-						persistent
-    				>
-    					<RequestAuthorization v-on:closeModal="requestAuthorizationModal = false" :resume="candidateResume" />
-    				</v-dialog>
-        		</v-layout>
-        	</v-container>
+			<!-- Request Authorization Modal -->
+			<v-dialog
+				v-model="requestAuthorizationModal"
+				width="500"
+				lazy
+				persistent
+			>
+				<RequestAuthorization v-on:closeRequestAuthorizationModal="requestAuthorizationModal = false" :resume="candidateResume" />
+			</v-dialog>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>

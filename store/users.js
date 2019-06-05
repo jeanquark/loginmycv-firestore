@@ -23,23 +23,14 @@ export const mutations = {
 }
 
 export const actions = {
-	// async fetchUser ({ commit }, payload) { // Not necessary?
-	// 	console.log('Call to fetchUser action: ', payload)
-	// 	const snapshot = await firestore.collection('users').doc(payload).get()
-	// 	console.log('snapshot.id: ', snapshot.id)
-	// 	// commit('setLoadedUser', snapshot.data())
-	// 	// commit('setLoadedUser', { id: snapshot.id, ...snapshot.data() })
-	// },
-	async fetchAuthenticatedUser2 ({ state, commit }, payload) {
+	async fetchAuthenticatedUser ({ commit }, payload) {
 		console.log('Call to fetchAuthenticatedUser action: ', payload)
-		const snapshot = await firestore.collection('users').doc(payload.uid).get()
-		// console.log('snapshot.data(): ', snapshot.data())
-		// console.log('snapshot.id: ', snapshot.id)
-
-		// Also get private data in subcollection
-		const childSnapshot = await firestore.collection('users').doc(payload.uid).collection('private').doc(payload.uid).get()
-
-		commit('setLoadedUser', { ...snapshot.data(), private: childSnapshot.data(), id: snapshot.id })
+		const userId = payload.id
+		if (userId) {
+			firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+				commit('users/setLoadedUser', { ...doc.data(), id: doc.id }, { root: true })
+			})
+		}
 	},
 	async deleteUserNotifications ({ rootGetters }) {
 		const userId = rootGetters['users/loadedUser'].id

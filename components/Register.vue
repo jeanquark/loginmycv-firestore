@@ -59,7 +59,9 @@
                             prepend-icon="lock" 
                             type="password"
                             ref="password"
-                            v-validate="'required|max:30'"
+                            v-validate="'required|min:6|max:30'"
+                            :error-messages="errors ? errors.collect('password') : null"
+                            data-vv-as="Password"
                             :counter="30"
                             v-model="form.password"
                         ></v-text-field>
@@ -112,39 +114,37 @@
                     email: '',
                     username: '',
                     password: '',
-                    password_confirmation: '',
-                    protectResume: '',
-                    guest_password: '',
-                    guest_password_confirmation: ''
-				},
+                    password_confirmation: ''
+				}
 			}
 		},
 		computed: {
             loading () {
-                return this.$store.getters['index/loading']
+                return this.$store.getters['loading']
             },
             error () {
-                return this.$store.getters['index/error']
+                return this.$store.getters['error']
             },
 		},
 		methods: {
             switchToLogin () {
-                this.$emit('registerChildToParent')
+                this.$emit('switchToLoginModal')
             },
 			async signUserUp () {
                 await this.$validator.validateAll()
                 if (!this.errors.any()) {
-                    console.log('signUserUp')
-                    this.$store.commit('setLoading', true)
-                    const registerData = this.form
-                    console.log('registerData: ', registerData)
+                    console.log('signUserUp!')
                     try {
-                        await this.$store.dispatch('firebase-auth/signUserUp', registerData)
-                        this.$store.commit('setLoading', false)
+                        this.$store.commit('setLoading', true, { root: true })
+                        await this.$store.dispatch('firebase-auth/signUserUp', this.form)
+                        this.$store.commit('setLoading', false, { root: true })
+                        // this.$router.replace('/candidate/resumes')
+                        this.$router.push('/candidate/resumes')
+                        // redirect('/candidate/resumes')
                     } catch (error) {
+                        console.log('error2: ', error)
                         this.$store.commit('setError', error.response.data.errors)
-                        this.$store.commit('setLoading', false)
-                        this.$router.replace('/candidate')
+                        this.$store.commit('setLoading', false, { root: true })
                     }
                 }
 			}

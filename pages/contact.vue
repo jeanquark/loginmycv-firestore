@@ -72,6 +72,11 @@
 			errors () {
                 return this.$store.getters['errors']
             }
+		},
+		methods: {
+			sendMessage () {
+				alert('Send message is not operational for now.')
+			}
 		}
 	}
 </script>

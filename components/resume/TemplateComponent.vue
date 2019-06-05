@@ -1,35 +1,15 @@
 <template>
-    <!-- <div style="padding: 30px;"> -->
     <div class="pa-4">
-        <p>
+        <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
             <!-- userResume: {{ userResume }}<br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
-        </p>
-        <v-layout row wrap pa-2>
-            <!-- <v-flex xs4 v-for="template in loadedTemplates" :key="template.id" class="pa-2" v-if="loadedUserResume">
-                <v-card hover :value="template.id" @click="selectTemplate(template.id)" :class="[ loadedUserResume.template_id === template.id ? 'active' : null ]">
-                    <v-img
-                        :src="`/images/templates/${template.image}`"
-                        :lazy-src="`/images/templates/${template.image}`"
-                        aspect-ratio="1.5"
-                    ></v-img>
-                </v-card>
-            </v-flex> -->
-            <!-- <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[ template.id === userResume.template_id ? 'active' : null ]">
-                    <v-img
-                        :src="`/images/templates/${template.image}`"
-                        :lazy-src="`/images/templates/${template.image}`"
-                        aspect-ratio="1.5"
-                    ></v-img>
-                </v-card>
-            </v-flex> -->
-
+        </div>
+        <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
-                    <v-card-title class="justify-center">
+                    <v-card-title class="justify-center pb-0">
                         <h2 class="headline mb-0">Choose a template</h2>
                     </v-card-title>
 
@@ -52,21 +32,20 @@
 
         <v-layout row wrap pa-2>
             <v-flex xs12>
-                <v-card :elevation="12" v-if="loadedTemplate">
-                    {{ userResume.template_id }}<br />
+                <v-card :elevation="12" class="pa-2" v-if="loadedTemplate">
                     <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
                     <!-- loadedTemplate: {{ loadedTemplate }}<br /> -->
-                    userResume: {{ userResume }}<br />
+                    <!-- userResume: {{ userResume }}<br /> -->
                     <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
-                    <p class="text-xs-center">{{ loadedTemplate.description }}</p><br />
+                    <p class="text-xs-center">{{ loadedTemplate.description }}</p>
                     <!-- <v-img :src="`/images/templates/${loadedTemplate.image}`" width="100%" /> -->
-                    userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br />
-                    userResume.colors.backgroundColor: {{ userResume.colors.backgroundColor }}<br />
+                    <!-- userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br /> -->
+                    <!-- userResume.colors.backgroundColor: {{ userResume.colors.backgroundColor }}<br /> -->
                 </v-card>
             </v-flex>
         </v-layout>
 
-        <v-layout row wrap>
+        <v-layout row wrap style="display: none;">
             <v-flex xs12>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1000 1800">
                     <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->     

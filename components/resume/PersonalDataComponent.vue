@@ -1,7 +1,7 @@
 <template>
     <div class="pa-4" v-if="userResume">
         <div>
-            resumeSlug: {{ this.resumeSlug }}<br /><br />
+            <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- candidateLongResume.image: {{ candidateLongResume.image }}<br /><br /> -->
@@ -14,7 +14,7 @@
             <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- getCurrentPicture: {{ getCurrentPicture }}<br /><br /> -->
-            userResume.uploads: {{ this.userResume.uploads }}<br /><br />
+            <!-- userResume.uploads: {{ this.userResume.uploads }}<br /><br /> -->
             <!-- <v-btn color="primary" @click="addUpload">Add upload</v-btn> -->
             
         </div>

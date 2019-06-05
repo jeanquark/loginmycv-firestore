@@ -6,17 +6,17 @@
             </v-flex>
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
-            loadedUserResumes: {{ loadedUserResumes }}<br /><br />
+            <!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
-            errors: {{ errors }}<br /><br />
+            <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedUser: {{ loadedUser }}<br /><br /> -->
-            loadingCreateResume: {{ loadingCreateResume }}<br /><br />
-            loadingUploadFiles: {{ loadingUploadFiles }}<br /><br />
-            stepEducationErrorsArray: {{ stepEducationErrorsArray }}<br /><br />
-            stepPersonalDataErrors: {{ stepPersonalDataErrors }}<br /><br />
+            <!-- loadingCreateResume: {{ loadingCreateResume }}<br /><br /> -->
+            <!-- loadingUploadFiles: {{ loadingUploadFiles }}<br /><br /> -->
+            <!-- stepEducationErrorsArray: {{ stepEducationErrorsArray }}<br /><br /> -->
+            <!-- stepPersonalDataErrors: {{ stepPersonalDataErrors }}<br /><br /> -->
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">

@@ -7,7 +7,7 @@ export const state = () => ({
     loading: false,
     loadingResume: false,
     loadingFiles: false,
-    error: {},
+    error: null,
     errors: [],
     notification: {} 
 })
@@ -37,7 +37,7 @@ export const mutations = {
     clearError (state) {
         console.log('Call to clearError mutation')
         state.error = null
-        state.errors = []
+        // state.errors = []
     }
 }
 
@@ -86,7 +86,7 @@ export const actions = {
                 // console.log('snapshot.data(): ', snapshot.data())
                 firestore.collection('users').doc(userId).onSnapshot(function(doc) {
                     // console.log('doc.data() from nuxtClientInit: ', doc.data())
-                    commit('users/setLoadedUser', { ...doc.data(), status: 'visitor', id: doc.id }, { root: true })
+                    commit('users/setLoadedUser', { ...doc.data(), id: doc.id }, { root: true })
 		            // commit('users/setLoadedUser', { ...doc.data(), private: snapshot.data(), id: doc.id })
                 })
             }

@@ -16,29 +16,44 @@
             >
                 {{ this.message }}
             </v-alert><br />
+            <v-alert
+                :value="error"
+                color="error"
+                icon="error"
+                outline
+            >
+                {{ error }}
+            </v-alert><br />
             <v-form v-on:submit.prevent="signUserIn">
                 <v-text-field
-                    name="email"
                     label="Email"
+                    name="email"
                     type="email"
                     prepend-icon="person"
-                    required
                     v-model="form.email"
                 ></v-text-field>
 
                 <v-text-field
-                	name="password" 
                     label="Password" 
+                	name="password" 
                     type="password"
                     prepend-icon="lock" 
-                    required
                     v-model="form.password"
-                    :error-messages="error ? error.message : ''"
                 ></v-text-field>
 
                 <v-layout justify-center class="mb-2">
                     <v-btn color="primary" type="submit" :loading="loading">Login</v-btn>
                 </v-layout>
+
+                <v-layout row wrap class="mb-2">
+                    <v-flex xs6 class="px-2">
+                        <v-btn block color="#df4a32" class="white--text" @click="signInWithGoogle">Login with Google</v-btn>
+                    </v-flex>
+                    <v-flex xs6 class="px-2">
+                        <v-btn block color="#3c5a99" class="white--text" @click="signInWithFacebook" :disabled="true">Login with Facebook</v-btn>
+                    </v-flex>
+                </v-layout>
+
                 <v-layout justify-center class="mb-1"> 
                     <!-- <a href="/candidate/password/reset">Forgot Password</a> -->
                     <v-btn flat color="secondary" @click="switchToForgotPassword">
@@ -61,7 +76,8 @@
 </template>
 
 <script>
-	import axios from 'axios'
+    import axios from 'axios'
+    import Noty from 'noty'
 	export default {
         inject: ['$validator'], // inject parent validator
         props: ['message'],
@@ -114,7 +130,33 @@
                     //     theme: "metroui"
                     // }).show()
                 }
-            }
+            },
+            async signInWithGoogle () {
+                try {
+                    console.log('signInWithGoogle')
+                    await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
+                    new Noty({
+                        type: 'success',
+                        text: 'Login went successfully!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    this.$router.replace('/candidate/resumes')
+                } catch (error) {
+                    console.log('error: ', error)
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and you could not log in.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            },
+            async signInWithFacebook () {
+                console.log('signInWithFacebook')
+                await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
+                this.$router.replace('/candidate/resumes')
+            },
 		}
 	}
 

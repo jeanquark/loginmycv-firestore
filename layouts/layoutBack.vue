@@ -1,5 +1,5 @@
 <template>
-	<div id="app" v-cloak>
+	<div id="app" v-cloak v-if="loadedUser && loadedUser.private">
         <v-app id="inspire" :dark="dark === true">
             <v-navigation-drawer
                 v-model="drawer"
@@ -125,6 +125,7 @@
                 { name: "robots", content: "noindex" }
             ]
         },
+        middleware: ['auth-check'],
         async created () {
             // const authUserId = this.loadedUser.id
             // console.log('authUserId from layoutBack: ', authUserId)
