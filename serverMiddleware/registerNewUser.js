@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 function buildUserObject (payload, maximum_number_of_resumes, total_space_in_bytes) {
     let user = {
         // id: payload.user.uid,
-        firstname: payload.firstname,
-        lastname: payload.lastname,
-        email: payload.email,
+        firstname: payload.firstname ? payload.firstname : '',
+        lastname: payload.lastname ? payload.lastname : '',
+        email: payload.user ? payload.user.email : '',
         private: {
             maximum_number_of_resumes,
             total_space_in_bytes
@@ -37,8 +37,8 @@ function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_i
         // id: payload.uid,
         firstname,
         lastname,
-        email: payload['email'],
-        picture: payload['photoURL'],
+        email: payload.user.email ? payload.user.email : '',
+        picture: payload.user.photoURL ? payload.user.photoURL : '',
         private: {
             maximum_number_of_resumes,
             total_space_in_bytes
@@ -64,7 +64,7 @@ module.exports = app.use(async function (req, res, next) {
         }
 
         let newUser = {};
-        const userId = req.body.data.uid;
+        const userId = req.body.data.user.uid;
         if (req.body.type === 'oauth') {
             newUser = buildUserObjectOauth(req.body.data, maximum_number_of_resumes, total_space_in_bytes);
             console.log('newUser: ', newUser);

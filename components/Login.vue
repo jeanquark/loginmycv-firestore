@@ -82,8 +82,8 @@
         inject: ['$validator'], // inject parent validator
         props: ['message'],
         created () {
-            this.$store.commit('clearError')
-            this.$store.commit('setLoading', false)
+            // this.$store.commit('clearError')
+            // this.$store.commit('setLoading', false)
         },
 		data () {
 			return {

@@ -98,7 +98,8 @@
 </template>
 
 <script>
-	import axios from 'axios'
+    import axios from 'axios'
+    import Noty from 'noty'
 	export default {
         inject: ['$validator'], // inject parent validator
         created () {
@@ -139,12 +140,27 @@
                         await this.$store.dispatch('firebase-auth/signUserUp', this.form)
                         this.$store.commit('setLoading', false, { root: true })
                         // this.$router.replace('/candidate/resumes')
-                        this.$router.push('/candidate/resumes')
+                        // this.$router.push('/candidate/resumes')
                         // redirect('/candidate/resumes')
                     } catch (error) {
                         console.log('error2: ', error)
-                        this.$store.commit('setError', error.response.data.errors)
+                        this.$store.commit('setError', error)
                         this.$store.commit('setLoading', false, { root: true })
+                        if (error.code === 'auth/email-already-in-use') {
+                            new Noty({
+                                type: 'error',
+                                text: error.message,
+                                timeout: 5000,
+                                theme: 'metroui'
+                            }).show()
+                        } else {
+                             new Noty({
+                                type: 'error',
+                                text: 'Sorry, an error occured and the registration process was interrupted.',
+                                timeout: 5000,
+                                theme: 'metroui'
+                            }).show()
+                        }
                     }
                 }
 			}

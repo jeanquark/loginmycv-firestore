@@ -60,15 +60,14 @@
 			</v-flex>
 		</v-layout>
 
-
-
-
 		<v-layout row wrap justify-center class="mb-5">
 			<v-flex xs12>
-				<h2 class="subtitle display-1">How it works</h2>
+				<h2 class="subtitle display-1 mb-2">How it works</h2>
 				<v-layout>
 					<v-flex xs6>
-						<v-img src="/images/frontpage-text.svg" />
+						<h4 class="primaryColor">Create a new resume:</h4><br />
+						<!-- <v-img src="/images/frontpage-text.svg" /> -->
+						<v-img src="/images/gifs/create_resume.gif" />
 					</v-flex>
 					<v-flex xs6>
 						<v-img src="/images/frontpage-img6.png" />
@@ -340,22 +339,6 @@
 			}
 		},
 		methods: {
-			switchToLogin () {
-				this.registerModal = false
-				this.loginModal = true
-			},
-			switchToRegister () {
-				this.loginModal = false
-				this.registerModal = true
-			},
-			switchToForgotPassword () {
-				this.loginModal = false
-				this.forgotPasswordModal = true
-			},
-			openLoginModal () {
-				this.message = null
-				this.loginModal = true
-			},
 			async showAuthModal (resume) {
 				console.log('resume: ', resume)
 				if (!this.loadedUser) {

@@ -23,7 +23,7 @@ export const mutations = {
 }
 
 export const actions = {
-	async fetchAuthenticatedUser ({ commit }, payload) {
+	async fetchAuthenticatedUser ({ commit, redirect }, payload) {
 		console.log('Call to fetchAuthenticatedUser action: ', payload)
 		const userId = payload.id
 		if (userId) {

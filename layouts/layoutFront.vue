@@ -46,6 +46,7 @@
                     v-model="loginModal"
                     width="500"
                     lazy
+                    :persistent="loading"
                 >
                     <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" :message="message" />
                 </v-dialog>
@@ -55,6 +56,7 @@
                     v-model="registerModal"
                     width="750"
                     lazy
+                    :persistent="loading"
                 >
                     <Register v-on:switchToLoginModal="switchToLogin" />
                 </v-dialog>
@@ -143,6 +145,9 @@
             }
         },
         computed: {
+            loading () {
+                return this.$store.getters['loading']
+            },
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
             },
@@ -162,6 +167,8 @@
             },
             openLoginModal () {
                 this.message = null
+                this.$store.commit('clearError')
+                this.$store.commit('setLoading', false)
                 this.loginModal = true
             },
             async logout () {

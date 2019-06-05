@@ -105,33 +105,35 @@ export const actions = {
 
     async signUserUp({ commit, dispatch }, payload) {
         try {
+            console.log('payload: ', payload)
             let authData = await auth.createUserWithEmailAndPassword(
                 payload.email,
                 payload.password
             )
+            // console.log('authData.user.uid: ', authData.user.uid)
+            // authData.user['firstname'] = payload.firstname
+            authData.firstname = payload.firstname
+            // authData.user['lastname'] = payload.lastname
+            authData.lastname = payload.lastname
+            // authData.user.email = payload.email
+            
+            // authData['user']['firstname'] = payload.firstname
+            // authData['user']['lastname'] = payload.lastname
+            // authData['user']['email'] = payload.email
+            
             console.log('authData: ', authData)
-            console.log('authData.user.uid: ', authData.user.uid)
-            authData['firstname'] = payload.firstname,
-            authData['lastname'] = payload.lastname
-            authData['email'] = payload.email
+
             const snapshot = await axios.post('/register-new-user', {
-                data: authData.user
+                data: authData
             })
             const newUser = snapshot.data.newUser
             console.log('newUser: ', newUser)
-            dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
+            // dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
+            commit('users/setLoadedUser', newUser, { root: true })
+            window.location.replace('/candidate/resumes')
         } catch (error) {
             console.log('error: ', error)
             commit('setLoading', false, { root: true })
-            if (error.code === 'auth/email-already-in-use') {
-                new Noty({
-                    type: 'error',
-                    text: error.message,
-                    timeout: 5000,
-                    theme: 'metroui'
-                }).show()
-            }
-            // throw new Error(error)
             throw error
         }
     },
