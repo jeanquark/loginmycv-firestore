@@ -81,7 +81,7 @@
 
                                 <v-list-tile-content v-if="loadedUser">
                                     <v-list-tile-title>{{ loadedUser.firstname }} {{ loadedUser.lastname }}</v-list-tile-title>
-                                    <v-list-tile-sub-title>{{ loadedUser.city }}, {{ loadedUser.country }}</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title v-if="loadedUser.city">{{ loadedUser.city }}, {{ loadedUser.country }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
 
                                 <v-list-tile-action>

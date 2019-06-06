@@ -64,6 +64,9 @@
                     <v-btn flat color="primary" @click="switchToRegister">
                         Switch to register
                     </v-btn>
+                    <v-btn flat color="secondary" @click="closeModal" v-if="loading">
+                        Close
+                    </v-btn>
                 </v-layout>
             </v-form>
         </v-card-text>
@@ -103,6 +106,9 @@
             }
 		},
 		methods: {
+            closeModal () {
+                this.$emit('closeLoginModal')
+            },
             switchToRegister () {
                 this.$emit('switchToRegisterModal')
             },

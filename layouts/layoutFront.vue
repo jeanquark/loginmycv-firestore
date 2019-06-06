@@ -48,7 +48,7 @@
                     lazy
                     :persistent="loading"
                 >
-                    <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" :message="message" />
+                    <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" :message="message" />
                 </v-dialog>
 
                 <!-- Register Candidate Modal -->
@@ -58,7 +58,7 @@
                     lazy
                     :persistent="loading"
                 >
-                    <Register v-on:switchToLoginModal="switchToLogin" />
+                    <Register v-on:switchToLoginModal="switchToLogin" v-on:closeRegisterModal="closeRegisterModal" />
                 </v-dialog>
 
                 <!-- Forgot Password Modal -->
@@ -170,6 +170,12 @@
                 this.$store.commit('clearError')
                 this.$store.commit('setLoading', false)
                 this.loginModal = true
+            },
+            closeLoginModal () {
+                this.loginModal = false
+            },
+            closeRegisterModal () {
+                this.registerModal = false
             },
             async logout () {
                 await this.$store.dispatch('firebase-auth/signOut')

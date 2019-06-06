@@ -86,6 +86,9 @@
                     <v-btn flat color="primary" @click="switchToLogin">
                         Switch to login
                     </v-btn>
+                    <v-btn flat color="secondary" @click="closeModal" v-if="loading">
+                        Close
+                    </v-btn>
                 </v-layout>
             </form>
         </v-card-text>
@@ -131,6 +134,9 @@
             switchToLogin () {
                 this.$emit('switchToLoginModal')
             },
+            closeModal () {
+                this.$emit('closeRegisterModal')
+            },
 			async signUserUp () {
                 await this.$validator.validateAll()
                 if (!this.errors.any()) {
@@ -139,8 +145,13 @@
                         this.$store.commit('setLoading', true, { root: true })
                         await this.$store.dispatch('firebase-auth/signUserUp', this.form)
                         this.$store.commit('setLoading', false, { root: true })
-                        // this.$router.replace('/candidate/resumes')
-                        // this.$router.push('/candidate/resumes')
+                        new Noty({
+                            type: 'success',
+                            text: 'Registration went successfully. Welcome to loginMyCV!',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                        this.$router.push('/candidate/resumes')
                         // redirect('/candidate/resumes')
                     } catch (error) {
                         console.log('error2: ', error)

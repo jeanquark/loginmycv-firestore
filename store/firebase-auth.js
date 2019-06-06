@@ -102,8 +102,37 @@ export const actions = {
         // const authUserId = 'LiBYgaTsW9UgzNjhwu0bhQn4O883'
         // const slug = 'greg'
     },
-
     async signUserUp({ commit, dispatch }, payload) {
+        // Promise is necessary so that redirection does not occur when user is not already loaded in vuex state
+        return new Promise((resolve, reject) => {
+            console.log('payload: ', payload)
+            auth.createUserWithEmailAndPassword(
+                payload.email,
+                payload.password
+            ).then(authData => {
+                authData.firstname = payload.firstname
+                authData.lastname = payload.lastname
+                console.log('authData: ', authData)
+                return axios.post('/register-new-user', {
+                    data: authData
+                }).then(response => {
+                    const newUser = response.data.newUser
+                    console.log('newUser: ', newUser)
+                    commit('users/setLoadedUser', newUser, { root: true })
+                    resolve()
+                })
+                .catch(error => {
+                    console.log('error from axios: ', error)
+                    commit('setLoading', false, { root: true })
+                })
+            }).catch (error => {
+                console.log('error from firebase auth: ', error)
+                commit('setLoading', false, { root: true })
+                reject(error)
+            })
+        })
+    },
+    async signUserUp2({ commit, dispatch }, payload) {
         try {
             console.log('payload: ', payload)
             let authData = await auth.createUserWithEmailAndPassword(
@@ -137,8 +166,55 @@ export const actions = {
             throw error
         }
     },
-
     async signInWithGooglePopup({ commit, dispatch }) {
+        // Promise is necessary so that redirection does not occur when user is not already loaded in state
+        return new Promise((resolve, reject) => {
+            commit('setLoading', true, { root: true })
+            // 1) First sign in with Google
+            let userId = ''
+            // let authData = ''
+            auth.signInWithPopup(GoogleAuthProvider).then(authData => {
+                console.log('authData: ', authData)
+                console.log('authData.user: ', authData.user)
+                userId = authData.user.uid
+                console.log('userId: ', userId)
+                // 2) Then update users state
+                firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+                    const registeredUser = {
+                        ...doc.data(),
+                        id: doc.id  
+                    }
+                    console.log('registeredUser: ', registeredUser)
+
+                    // If user does not exists, save user data in database at the users node
+                    if (!registeredUser.private) {
+                        return axios.post('/register-new-user', {
+                            type: 'oauth',
+                            data: authData
+                        })
+                        .then(response => {
+                            // Load newly registered user in store
+                            console.log('response: ', response)
+                            console.log('response.data: ', response.data)
+                            commit('users/setLoadedUser', response.data.newUser, { root: true })
+                        })
+                        .catch(function(error) {
+                            commit('setLoading', false, { root: true })
+                        })
+                    } else {
+                        commit('users/setLoadedUser', registeredUser, { root: true })
+                    }
+                    commit('setLoading', false, { root: true })
+                    resolve()
+                })
+            }).catch(error => {
+                commit('setLoading', false, { root: true })
+                console.log(error)
+                reject(error)
+            }) 
+        })
+    },
+    async signInWithGooglePopup2({ commit, dispatch }) {
         try {
             commit('setLoading', true, { root: true })
             let authData = await auth.signInWithPopup(GoogleAuthProvider)
@@ -153,21 +229,24 @@ export const actions = {
                 // Register new user
                 const registerNewUser = await axios.post('/register-new-user', {
                     type: 'oauth',
-                    data: authData.user
+                    data: authData
                 })
                 const newUser = registerNewUser.data.newUser
                 console.log('newUser: ', newUser)
-                await dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
-                return
+                commit('setLoading', false, { root: true })
+                // await dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
+                commit('users/setLoadedUser', newUser, { root: true })
+                // window.location.replace('/candidate/resumes')
             } else {
                 const user = {
                     ...snapshot.data(),
                     id: snapshot.id
                 }
                 console.log('user: ', user)
-                await dispatch('users/fetchAuthenticatedUser', user, { root: true })
                 commit('setLoading', false, { root: true })
-                return
+                // await dispatch('users/fetchAuthenticatedUser', user, { root: true })
+                commit('users/setLoadedUser', newUser, { root: true })
+                window.location.replace('/candidate/resumes')
             }
         } catch (error) {
             console.log('error: ', error)

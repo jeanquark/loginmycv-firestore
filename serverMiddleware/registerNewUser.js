@@ -26,19 +26,19 @@ function buildUserObject (payload, maximum_number_of_resumes, total_space_in_byt
 }
 
 function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_in_bytes) {
-    const spaceIndex = payload.displayName ? payload.displayName.indexOf(' ') : 0;
+    const spaceIndex = payload.user && payload.user.displayName ? payload.user.displayName.indexOf(' ') : 0;
     console.log('spaceIndex: ', spaceIndex);
-    const firstname = payload.displayName ? payload.displayName.substr(0, spaceIndex) : '';
+    const firstname = payload.user && payload.user.displayName ? payload.user.displayName.substr(0, spaceIndex) : '';
     console.log('firstname: ', firstname);
-    const lastname = payload.displayName ? payload.displayName.substr(spaceIndex + 1) : '';
+    const lastname = payload.user && payload.user.displayName ? payload.user.displayName.substr(spaceIndex + 1) : '';
     console.log('lastname: ', lastname);
 
     let user = {
         // id: payload.uid,
         firstname,
         lastname,
-        email: payload.user.email ? payload.user.email : '',
-        picture: payload.user.photoURL ? payload.user.photoURL : '',
+        email: payload.user && payload.user.email ? payload.user.email : '',
+        picture: payload.user && payload.user.photoURL ? payload.user.photoURL : '',
         private: {
             maximum_number_of_resumes,
             total_space_in_bytes
