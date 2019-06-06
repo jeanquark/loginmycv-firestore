@@ -3,9 +3,9 @@
         <div>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
-            errors: {{ errors }}<br /><br />
-            userResume.education: {{ userResume.education }}<br /><br />
-            educationErrors: {{ educationErrors }}<br /><br />
+            <!-- errors: {{ errors }}<br /><br /> -->
+            <!-- userResume.education: {{ userResume.education }}<br /><br /> -->
+            <!-- educationErrors: {{ educationErrors }}<br /><br /> -->
         </div>
         <h2>Education</h2>
         <v-layout row wrap class="pa-3" v-if="userResume">
@@ -51,11 +51,11 @@
                                         label="Title"
                                         name="education_title"
                                         placeholder="Bachelor in Geography"
-                                        v-validate="{ max: 2 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('education_title') : null"
                                         data-vv-as="Title"
                                         v-model="newEducation.title"
-                                        :counter="2"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
@@ -63,11 +63,11 @@
                                         label="University/School/Institute"
                                         name="education_school"
                                         placeholder="University of Geneva"
-                                        v-validate="{ max: 2 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('education_school') : null"
                                         data-vv-as="School"
                                         v-model="newEducation.school"
-                                        :counter="2"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 class="pr-2">

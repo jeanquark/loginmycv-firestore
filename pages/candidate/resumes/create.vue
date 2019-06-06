@@ -253,14 +253,14 @@
             // console.log('snapshot2: ', snapshot2)
             // console.log('snapshot2.data(): ', snapshot2.data())
             // this.errors.items = []
-            if (!this.$store.getters['countries/loadedCountries']) {
+            if (this.$store.getters['countries/loadedCountries'].length < 1) {
                 // console.log('Fetching countries...')
                 await this.$store.dispatch('countries/fetchCountries')
             }
-            if (!this.$store.getters['languages/loadedLanguages']) {
+            if (this.$store.getters['languages/loadedLanguages'].length < 1) {
                 await this.$store.dispatch('languages/fetchLanguages')
             }
-            if (!this.$store.getters['competences/loadedCompetences']) {
+            if (this.$store.getters['competences/loadedCompetences'].length < 1) {
                 await this.$store.dispatch('competences/fetchCompetences')
             }
         },
@@ -403,6 +403,7 @@
             async saveResume () {
                 try {
                     console.log('saveResume')
+                    this.loadedNewResume['user_id'] = this.loadedUser.id
                     // console.log('this.loadedNewResume: ', this.loadedNewResume)
 
                     // const userExistingUploads = this.$store.getters['resumes/loadedUserResumes']

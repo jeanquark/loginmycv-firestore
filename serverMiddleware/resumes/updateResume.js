@@ -12,6 +12,7 @@ const app_key = process.env.APP_KEY;
 module.exports = app.use(async function (req, res, next) {
 	try {
 		let updatedResume = req.body;
+		console.log('updatedResume: ', updatedResume);
 		updatedResume._updated_at = moment().unix();
 
         // 1) Check API KEY (so that we know request is sent from server)
@@ -146,7 +147,7 @@ module.exports = app.use(async function (req, res, next) {
 					console.log('Update visitor\'s password: ', password);
 					const user = await admin.auth().getUserByEmail(`${updatedResume.slug}@visitor.loginmycv.com`);
 					console.log('user.uid: ', user.uid);
-					await admin.auth().deleteUser(user.uid);
+					// await admin.auth().deleteUser(user.uid);
 				} catch (error) { // User does not exist
 					console.log('user does not exist');
 				}
@@ -192,7 +193,7 @@ module.exports = app.use(async function (req, res, next) {
 		}
 	} catch (error) {
 		console.log('error from server: ', error)
-		res.status(500).send({ message: 'Update resume failed.', error });		
+		res.status(500).send({ message: 'Update resume failed.', error });
 	}
 
 

@@ -13,10 +13,11 @@ export const mutations = {
 
 export const actions = {
 	async fetchLanguages ({ commit }, payload) {
-		const snapshot = await firestore.collection('languages').orderBy('name').get();
+		const snapshot = await firestore.collection('languages').get();
 
 		const languagesArray = []
 		snapshot.forEach(language => {
+			console.log('language: ', language)
 			languagesArray.push(language.data())
 		})
 		commit('setLanguages', languagesArray)

@@ -1,6 +1,6 @@
 <template>
-	<div id="app" v-cloak v-if="loadedUser && loadedUser.private">
-        <v-app id="inspire" :dark="dark === true">
+	<!-- <div id="app" v-cloak v-if="loadedUser && loadedUser.private"> -->
+        <v-app id="app" :dark="dark === true" v-cloak>
             <v-navigation-drawer
                 v-model="drawer"
                 clipped
@@ -115,7 +115,7 @@
                 <span>LoginMyCV &copy; 2019</span>
             </v-footer>
         </v-app>
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>

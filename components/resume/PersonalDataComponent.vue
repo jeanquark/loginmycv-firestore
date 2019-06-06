@@ -55,7 +55,6 @@
 
                         <v-layout row wrap>
                             <v-flex xs12 sm4 class="px-3">
-                                
                                 <v-text-field
                                     label="Job title*"
                                     id="job_title"

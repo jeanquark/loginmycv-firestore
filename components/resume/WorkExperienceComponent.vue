@@ -45,10 +45,10 @@
                                         name="work_experience_company_name"
                                         placeholder="Google Inc."
                                         v-model="newWorkExperience.company"
-                                        v-validate="{ max: 2 }"
+                                        v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('work_experience_company_name') : null"
                                         data-vv-as="Company"
-                                        :counter="2"
+                                        :counter="50"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
@@ -378,13 +378,13 @@
             addNewWorkExperience () {
                 this.modalNewWorkExperience = false
                 this.userResume.work_experience.push({
-                    company: newWorkExperience.company,
-                    job_title: newWorkExperience.job_title,
-                    job_description: newWorkExperience.job_description,
-                    city: newWorkExperience.city,
-                    country: newWorkExperience.country,
-                    start_date: newWorkExperience.start_date,
-                    end_date: newWorkExperience.end_date
+                    company: this.newWorkExperience.company,
+                    job_title: this.newWorkExperience.job_title,
+                    job_description: this.newWorkExperience.job_description,
+                    city: this.newWorkExperience.city,
+                    country: this.newWorkExperience.country,
+                    start_date: this.newWorkExperience.start_date,
+                    end_date: this.newWorkExperience.end_date
                 })
                 this.newWorkExperience = {}
                 new Noty({

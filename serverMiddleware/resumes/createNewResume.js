@@ -118,7 +118,8 @@ module.exports = app.use(async function (req, res, next) {
         
         // Remove uploaded files
         // console.log('newResume: ', newResume)
-        res.status(500).send({ error });
+        // res.status(500).send({ error });
+		res.status(500).send({ message: 'Create resume failed.', error });
 
         // res.status(500).send({ message: 'Create resume failed.', error });      
     }
