@@ -15,12 +15,14 @@ module.exports = app.use(async function (req, res, next) {
 		console.log('updatedResume: ', updatedResume);
 		updatedResume._updated_at = moment().unix();
 
-        // 1) Check API KEY (so that we know request is sent from server)
-		if (req.get('app-key') !== app_key) {
-			throw {
-				'server_error': 'You are not sending this request from an authorized server.'
-			}
-		}
+		// 1) Check API KEY (so that we know request is sent from server)
+        console.log('app-key: ', req.get('app-key'));		
+		console.log('app_key: ', app_key);
+		// if (req.get('app-key') !== app_key) {
+		// 	throw {
+		// 		'server_error': 'You are not sending this request from an authorized server.'
+		// 	}
+		// }
 
 
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug

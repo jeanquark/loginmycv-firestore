@@ -17,11 +17,11 @@ module.exports = app.use(async function (req, res, next) {
 
         console.log('app-key: ', req.get('app-key'));
         console.log('app_key: ', app_key);
-        if (req.get('app-key') !== app_key) {
-            throw {
-                'wrong-app-key': 'You are not sending this request from an authorized server.'
-            }
-        }
+        // if (req.get('app-key') !== app_key) {
+        //     throw {
+        //         'wrong-app-key': 'You are not sending this request from an authorized server.'
+        //     }
+        // }
 
         // Check slug existence
         const snapshot = await admin.firestore().collection('resumes_long').doc(slug).get();

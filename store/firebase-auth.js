@@ -10,6 +10,32 @@ export const mutations = {}
 
 export const actions = {
     async signUserIn ({ commit }, payload) {
+        // Promise is necessary so that redirection does not occur when user is not already loaded in vuex state
+        return new Promise((resolve, reject) => {
+            commit('setLoading', true, { root: true })
+            auth.signInWithEmailAndPassword(payload.email, payload.password).then(authData => {
+                console.log('authData: ', authData)
+                console.log('authData.user.uid: ', authData.user.uid)
+                let userId = authData.user.uid
+
+                firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+                    const user = {
+                        ...doc.data(),
+                        id: doc.id  
+                    }
+                    commit('users/setLoadedUser', user, { root: true })
+                    commit('setLoading', false, { root: true })
+                    resolve()
+                })
+            }).catch(error => {
+                console.log('error: ', error)
+                commit('setError', error, { root: true })
+                commit('setLoading', false, { root: true })
+                reject(error)
+            })
+        })
+    },
+    async signUserIn2 ({ commit }, payload) {
         try {
             commit('setLoading', true, { root: true })
             let authData = await auth.signInWithEmailAndPassword(payload.email, payload.password)
@@ -37,7 +63,7 @@ export const actions = {
             throw new Error(error)
         }
     },
-    async signUserIn2 ({ commit }, payload) {
+    async signUserIn3 ({ commit }, payload) {
         console.log(payload)
         try {
             commit('setLoading', true, { root: true })

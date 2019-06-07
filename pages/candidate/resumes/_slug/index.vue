@@ -3,6 +3,7 @@
         <v-layout row wrap>
             <v-flex xs12>
                 <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
+                <br />
             </v-flex>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
