@@ -38,7 +38,7 @@ module.exports = app.use(async function (req, res, next) {
         
         newResume._created_at = moment().unix();
         newResume._updated_at = moment().unix();
-        newResume['uploads'] = []
+        newResume['uploads'] = [];
         const password = newResume.password;
         delete newResume['id'];
         delete newResume['password'];
@@ -47,7 +47,7 @@ module.exports = app.use(async function (req, res, next) {
 
 
 
-        // 3) Create visitor password 
+        // 3) Create visitor auth account 
         if (password) {
             try {
                 console.log('Update visitor\'s password: ', password);
@@ -77,36 +77,34 @@ module.exports = app.use(async function (req, res, next) {
 
 
         // 4) Save long & short resumes in DB
-        let batch = admin.firestore().batch()
+        let batch = admin.firestore().batch();
+        const newShortResume = admin.firestore().collection('resumes_short').doc();
+        newResume['resume_short_id'] = newShortResume.id
             
-        const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug)
-        batch.set(newLongResume, newResume)
+        const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug);
+        batch.set(newLongResume, newResume);
 
-        const newShortResume = admin.firestore().collection('resumes_short').doc()
         batch.set(newShortResume, {
             user_id: newResume.user_id, 
-            slug: newResume.slug,
+            resume_long_id: newResume.slug,
             visibility: newResume.visibility,
             job_title: newResume.job_title,
             job_description: newResume.job_description,
-            personal_data: {
-                firstname: newResume['personal_data']['firstname'],
-                lastname: newResume['personal_data']['lastname'],
-                email: newResume['personal_data']['email'],
-                country: newResume['personal_data']['country'],
-                city: newResume['personal_data']['city']
-            },
+            firstname: newResume.personal_data.firstname ? newResume.personal_data.firstname : '',
+            lastname: newResume.personal_data.lastname ? newResume.personal_data.lastname : '',
+            country: newResume.personal_data.country ? newResume.personal_data.country : '',
+            city: newResume.personal_data.city ? newResume.personal_data.city : '',
             key_competences: newResume.key_competences ? newResume.key_competences : null,
-            languages: newResume.languages,
+            languages: newResume.languages ? newResume.languages : null,
             _created_at: newResume._created_at,
             _updated_at: newResume._updated_at
-        })
+        });
 
-        await batch.commit()
+        await batch.commit();
 
         res.send({
             message: 'POST request to create resume went successfully.',
-            data: newShortResume.id
+            newShortResumeId: newShortResume.id
         });
     } catch (error) {
         console.log('error from server: ', error)

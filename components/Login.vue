@@ -8,22 +8,32 @@
             <!-- message: {{ this.message }} -->
             <v-alert
                 :value="true"
+                type="info"
                 color="info"
-                icon="info"
                 outline
-                class=""
+                class="mb-3"
                 v-if="this.message"
             >
                 {{ this.message }}
-            </v-alert><br />
+            </v-alert>
             <v-alert
                 :value="error"
+                type="error"
                 color="error"
-                icon="error"
+                outline
+                class="mb-3"
+                v-if="error"
+            >
+                {{ error.message }}
+            </v-alert>
+            <!-- <v-alert
+                :value="loading"
+                color="info"
+                icon="info"
                 outline
             >
-                {{ error }}
-            </v-alert><br />
+                Loading...
+            </v-alert> -->
             <v-form v-on:submit.prevent="signUserIn">
                 <v-text-field
                     label="Email"

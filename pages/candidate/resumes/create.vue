@@ -7,8 +7,9 @@
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
-            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
-            <!-- errors: {{ errors }}<br /><br /> -->
+            loadedNewResume: {{ loadedNewResume }}<br /><br />
+            <!-- this.$validator: {{ this.$validator }}<br /><br /> -->
+            errors: {{ errors }}<br /><br />
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
@@ -204,21 +205,21 @@
 
                 <v-card-text>
                     <v-alert
-                        :value="loadingCreateResume"
-                        color="primary"
-                        outline
-                    >
-                        <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Saving resume in database...
-                        </div>
-                    </v-alert>
-                    <v-alert
                         :value="loadingUploadFiles"
                         color="secondary"
                         outline
                     >
                         <div class="text-xs-center">
-                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Uploading files...
+                            <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
+                        </div>
+                    </v-alert>
+                    <v-alert
+                        :value="loadingCreateResume"
+                        color="primary"
+                        outline
+                    >
+                        <div class="text-xs-center">
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular> Saving resume...
                         </div>
                     </v-alert>
                 </v-card-text>
@@ -285,7 +286,7 @@
                 stepEducationErrorsArray: [],
                 stepWorkExperienceErrorsArray: [],
                 stepSkillErrorsArray: [],
-                stepFileUploadErrorsArray: []
+                stepFileUploadErrorsArray: [],
 			}
 		},
 		computed: {
@@ -319,6 +320,14 @@
             // hasError () {
             //     return true
             // },
+            // stepPersonalDataErrors () {
+            //     console.log('stepPersonalDataErrors')
+            //     const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
+            //     if (this.errors.items.some(e => inputs.includes(e.field))) {
+            //         return true
+            //     }
+            //     return false
+            // }
 		},
 		methods: {
             hasError (step) {
@@ -332,52 +341,6 @@
                 //     return false
                 // }
                 // return false
-            },
-            stepPersonalDataValidate () {
-                console.log('call to stepPersonalDataValidate')
-                // if (this.errors.items.some(e => e.field === ('job_title')) ||
-                //     this.errors.items.some(e => e.field === 'slug')
-                // ) {
-                //     return false
-                // }
-                // return true
-                const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
-                // if (this.errorsArray.some(e => inputs.includes(e))) {
-                if (this.errors && this.errors.items && this.errors.items.some(e => inputs.includes(e.field))) {
-                    return false
-                }
-                return true
-            },
-            stepEducationValidate () {
-                // console.log('stepEducationValidate: ', this.errors)
-                // this.stepError2.educationArray.length = 0
-                // if (this.errors && this.errors.items && this.errors.items.length > 0) {
-                //     const abc = this.errors.items.filter(item => item.field.includes('education'))
-                //     if (abc.length > 0) {
-                //         console.log('stepEducation error!')
-                //         console.log('abc: ', abc)
-                //         // console.log(abc.map(a => a.field.match(/\d+/g)))
-                //         abc.forEach(a => {
-                //             this.stepError.educationArray[a.field.match(/\d+/g)] = true
-                            
-                //         })
-                //         return false
-                //     }
-                // }
-                // return true
-            },
-            stepEducationValidate2 (value) {
-                console.log('Call to stepEducationValidate2')
-                if (value) {
-                    return false
-                }
-                return true
-            },
-            stepWorkExperienceValidate () {
-                return true
-            },
-            stepSkillsValidate () {
-                return true
             },
             moveOneStepForward () {
                 if (this.step < 7) {
@@ -423,7 +386,8 @@
                     // this.$store.commit('setLoadingFiles', true, { root: true })
                     await this.$validator.validateAll()
                     if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
-                        const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
+                        console.log('Validation error!')
+                        const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email', 'visibiliy', 'password']
                         if (this.errors.items.some(e => inputs.includes(e.field))) {
                             console.log('Personal data errors')
                             this.stepPersonalDataErrors = true
@@ -486,22 +450,24 @@
                             theme: 'metroui'
                         }).show()
                     } else {
-                        // this.$store.commit('setLoadingResume', true, { root: true })
+                        this.$store.commit('setLoadingResume', true, { root: true })
                         await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
-                        // this.$store.commit('setLoadingFiles', false, { root: true })
-                        // this.$router.push('/candidate/resumes')
+                        this.$store.commit('setLoadingFiles', false, { root: true })
+                        this.$store.commit('setLoading', false, { root: true })
                         this.creatingResumeDialog = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was created successfully.',
+                            text: 'Your resume was created successfully!',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
+                        this.$router.push('/candidate/resumes')
                     }
                 } catch (error) {
                     this.creatingResumeDialog = false
                     this.$store.commit('setLoadingFiles', false, { root: true })
                     this.$store.commit('setLoadingResume', false, { root: true })
+                    this.$store.commit('setLoading', false, { root: true })
 
                     console.log('error from catch block: ', error)
                     new Noty({
@@ -520,6 +486,13 @@
                                 field: field,
                                 msg: value,
                             })
+
+                            // if (key === 'slug') {
+                            //     this.stepPersonalDataErrors = true
+                            // }
+                            // if (key === 'not_enough_space') {
+                            //     this.stepFileUploadErrorsArray = true
+                            // }
 
                             new Noty({
                                 type: 'warning',

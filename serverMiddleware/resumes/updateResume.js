@@ -108,13 +108,10 @@ module.exports = app.use(async function (req, res, next) {
 				resume_long_id: newSlug,
 				job_title: updatedResume.job_title,
 				job_description: updatedResume.job_description,
-				personal_data: {
-					firstname: updatedResume['personal_data']['firstname'],
-					lastname: updatedResume['personal_data']['lastname'],
-					email: updatedResume['personal_data']['email'],
-					country: updatedResume['personal_data']['country'],
-					city: updatedResume['personal_data']['city']
-				},
+				firstname: updatedResume.personal_data.firstname ? updatedResume.personal_data.firstname : '',
+				lastname: updatedResume.personal_data.lastname ? updatedResume.personal_data.lastname : '',
+				country: updatedResume.personal_data.country ? updatedResume.personal_data.country : '',
+				city: updatedResume.personal_data.city ? updatedResume.personal_data.city : '',
 				picture: picture ? picture.downloadUrl : null,
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages,
@@ -147,7 +144,7 @@ module.exports = app.use(async function (req, res, next) {
 					console.log('Update visitor\'s password: ', password);
 					const user = await admin.auth().getUserByEmail(`${updatedResume.slug}@visitor.loginmycv.com`);
 					console.log('user.uid: ', user.uid);
-					// await admin.auth().deleteUser(user.uid);
+					await admin.auth().deleteUser(user.uid);
 				} catch (error) { // User does not exist
 					console.log('user does not exist');
 				}
@@ -173,16 +170,13 @@ module.exports = app.use(async function (req, res, next) {
 			batch.update(updatedShortResume, {
 				job_title: updatedResume.job_title,
 				job_description: updatedResume.job_description,
-				personal_data: {
-					firstname: updatedResume['personal_data']['firstname'],
-					lastname: updatedResume['personal_data']['lastname'],
-					email: updatedResume['personal_data']['email'],
-					country: updatedResume['personal_data']['country'],
-					city: updatedResume['personal_data']['city']
-				},
+				firstname: updatedResume.personal_data.firstname ? updatedResume.personal_data.firstname : '',
+				lastname: updatedResume.personal_data.lastname ? updatedResume.personal_data.lastname : '',
+				country: updatedResume.personal_data.country ? updatedResume.personal_data.country : '',
+				city: updatedResume.personal_data.city ? updatedResume.personal_data.city : '',
 				picture: picture ? picture.downloadUrl : null,
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
-				languages: updatedResume.languages,
+				languages: updatedResume.languages ? updatedResume.languages : null,
 				visibility: updatedResume.visibility
 			});
 			await batch.commit();

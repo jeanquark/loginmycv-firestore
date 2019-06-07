@@ -3,7 +3,8 @@
         <p>
 			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
-            <!-- userResume.uploads: {{ userResume.uploads }}<br /><br /> -->
+            loadedUserResumes: {{ loadedUserResumes }}<br /><br />
+            userResume.uploads: {{ userResume.uploads }}<br /><br />
 			<!-- fileName: {{ fileName }}<br /><br /> -->
 			<!-- downloadUrl: {{ downloadUrl }}<br /><br /> -->
 			<!-- fileName2: {{ fileName2 }}<br /><br /> -->
@@ -20,9 +21,9 @@
 			<!-- this.totalUploadSize: {{ this.totalUploadSize }}<br /><br /> -->
 			<!-- this.totalSize: {{ this.totalSize }}<br /><br /> -->
 			<!-- geUserFiles.length: {{ getUserFiles.length }}<br /><br /> -->
-			<!-- userAllocatedSpace: {{ userAllocatedSpace }}<br /><br /> -->
-			<!-- totalUsedSpace: {{ totalUsedSpace }}<br /><br /> -->
-			<!-- totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br /> -->
+			userAllocatedSpace: {{ userAllocatedSpace }}<br /><br />
+			totalUsedSpace: {{ totalUsedSpace }}<br /><br />
+			totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br />
         </p>
         <h2>File uploads</h2><br />
 
@@ -37,7 +38,7 @@
 		</v-progress-circular>
 		of your total space ({{ userAllocatedSpace / (1024 * 1024) }} MiB)
 		<br /><br />
-		<v-btn color="secondary">Get more space</v-btn>
+		<!-- <v-btn color="secondary">Get more space</v-btn> -->
 
 		<v-layout row wrap v-if="userResume.uploads">
 			<!-- <v-flex xs12> -->
@@ -55,6 +56,7 @@
 					</v-card-title>
 
 					<v-card-text>
+						<!-- file: {{ file }} -->
 						<!-- <input type="hidden" v-validate:length="'min_value:5'" name="file_title" data-vv-as="Files uploads"> -->
 						<!-- length: {{ length }}<br /> -->
 						<v-text-field
@@ -62,27 +64,36 @@
 							:name="`file_title_${index}`"
 							placeholder="eg. My CV, Company X recommandation letter, etc."
 							prepend-icon="title"
-							v-validate="{ max: 2 }"
+							v-validate="{ max: 50 }"
                             :error-messages="errors ? errors.collect(`file_title_${index}`) : null"
                             data-vv-as="File title"
 							v-model="userResume.uploads[index].title"
-							:counter="2"
+							:counter="50"
 							v-if="file.type === 'downloadable_file'"
 						></v-text-field>
 
 						<v-text-field
 							label="File Title"
-							v-if="file.type === 'profile_picture'"
 							value="Profile picture"
 							readonly
+							v-if="file.type === 'profile_picture'"
 						></v-text-field>
 						<!-- v-model="getCurrentFiles[index].title" -->
 						<!-- v-model="userResume.uploads[index].title" -->
 
 
 						<br />
+						
+						<!-- :disabled="userResume.uploads[index].new ? false : true || file.type === 'profile_picture'" -->
+						<v-text-field 
+							label="My File" 
+							prepend-icon='attach_file'
+							:disabled="file.type === 'profile_picture'"
+							@click="pickFile(`file${index}`)"
+							v-model="userResume.uploads[index].name"
+						></v-text-field>
 
-						<v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true"></v-text-field>
+						<!-- <v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true" v-if="file.type === 'profile_picture'"></v-text-field> -->
 						<!-- <v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="getCurrentFiles[index].name" prepend-icon='attach_file' :disabled="getCurrentFiles[index].new ? false : true"></v-text-field> -->
 						<!-- <v-text-field label="My File" @click="pickFile(`file${index}`)" v-model="userResume.uploads[index].name" prepend-icon='attach_file' :disabled="userResume.uploads[index].new ? false : true"></v-text-field> -->
 
@@ -90,9 +101,10 @@
 							type="file"
 							style="display: none"
 							:ref="`file${index}`"
-							accept="application/pdf"
+							:accept="file.type === 'downloadable_file' ? 'application/pdf' : 'image/*'"
 							@change="onFilePicked($event, index)"
 						>
+
 						<!-- @change="onFilePicked($event, index)" -->
 					</v-card-text>
 
@@ -216,14 +228,18 @@
 			// },
 			totalUsedSpace () {
 				let sum = 0
-				const userResumes = this.$store.getters['resumes/loadedUserResumes']
-				userResumes.forEach(resume => {
+				// const userResumes = this.$store.getters['resumes/loadedUserResumes']
+				this.loadedUserResumes.forEach(resume => {
 					const uploadsArray = resume.uploads
 					if (uploadsArray) {
 						uploadsArray.forEach(upload => {
+							console.log('upload: ', upload)
 							sum += upload.size_in_bytes
 						})
 					}
+				})
+				this.userResume.uploads.forEach(upload => {
+					sum += upload.size_in_bytes
 				})
 				return sum
 			},
@@ -233,7 +249,7 @@
 			},
 			userAllocatedSpace () {
 				if (this.loadedUser.private) {
-					return this.loadedUser.private.allocated_space_in_bytes
+					return this.loadedUser.private.total_space_in_bytes
 				}
 			}
         },
@@ -242,7 +258,7 @@
 				if (this.userResume.uploads && this.userResume.uploads.length < 30) {
 					this.userResume.uploads.push({
 						file: {},
-						title: 'ABC',
+						title: '',
 						name: '',
 						size_in_bytes: 0,
 						new: true,

@@ -137,11 +137,11 @@
                             <br /><br /><br />
                             <v-alert
                                 :value="loadingFiles"
-                                color="primary"
+                                color="secondary"
                                 outline
                             >
                                 <div class="text-xs-center" >
-                                    <v-progress-circular indeterminate color="primary"></v-progress-circular> Uploading files...
+                                    <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                                 </div>
                             </v-alert>
                             <v-alert
@@ -361,10 +361,11 @@
                         this.updatingResumeDialog = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was updated successfully.',
+                            text: 'Your resume was updated successfully!',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
+                        this.$router.push('/candidate/resumes')
                     }
                 } catch (error) {
                     this.updatingResumeDialog = false
@@ -413,7 +414,7 @@
                     
                     new Noty({
                         type: 'success',
-                        text: 'Your resume was successfully updated.',
+                        text: 'Your resume was updated successfully!',
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()

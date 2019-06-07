@@ -7,12 +7,12 @@
                     <v-flex xs12 sm8 md4 v-cloak>
                         <v-card class="elevation-12">
                             <v-toolbar dark color="primary">
-                                <v-toolbar-title>Login form</v-toolbar-title>
+                                <v-toolbar-title>Password protected resume</v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-card-text>
                                 <v-form>
-									<p class="text-xs-center">Have a password? Gain direct access <span v-if="candidate.personal_data && candidate.personal_data.firstname">to {{ candidate.personal_data.firstname }}'s resume now!</span></p>
+									<p class="text-xs-center">Have a password? Gain direct access to {{ slug }}'s resume now!</p>
 									<!-- error: {{ error }}<br /> -->
 									<!-- errors: {{ errors }}<br /> -->
                                     <!-- <v-text-field 
@@ -54,7 +54,7 @@
 			// console.log('slug: ', slug)
 			// this.$store.commit('clearError', { root: true })
             this.slug = this.$route.params.slug
-			// console.log('slug3: ', slug)
+			console.log('this.slug: ', this.slug)
             // this.form.username = slug
 
             // // Check that resume exists

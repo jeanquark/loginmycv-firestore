@@ -6,16 +6,16 @@
 				<h1>Welcome to LoginMyCV</h1>
 				<h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
 				<v-layout justify-center>
-					<v-img src="/images/logo3.png" max-width="220" />
+					<v-img src="/images/logo3.png" :lazy-src="'/images/logo3.png'" max-width="220" />
 				</v-layout>
 			</v-flex>
 		</v-layout>
 
-		<v-layout row wrap justify-center class="">
+		<!-- <v-layout row wrap justify-center class="">
 			<v-flex xs12>
 				<h2 class="subtitle display-1">What we offer</h2>
 			</v-flex>
-		</v-layout>
+		</v-layout> -->
 
 		
 		<v-layout row wrap class="mb-5">
@@ -111,18 +111,18 @@
 							</v-card-text>
 							<v-card-actions>
 								<v-layout justify-center v-if="resume.visibility === 'public'">
-									<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`">View resume</v-btn>
+									<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`">View resume</v-btn>
 								</v-layout>
 								<v-layout justify-center v-if="resume.visibility === 'semi-private'">
 									<div v-if="loadedUser">
 										<div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-											<v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.slug}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
+											<v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.resume_long_id}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
 											<v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
 											<v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
 											<v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
 										</div>
 										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
-										<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.slug}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
+										<v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
 									</div>
 									<div v-else>
 										<v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>

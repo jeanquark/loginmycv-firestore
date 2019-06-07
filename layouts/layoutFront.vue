@@ -31,7 +31,7 @@
             </div>
             <div v-else>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
-                <v-btn color="success" @click="registerModal = true">Register</v-btn>
+                <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
             <!-- <v-btn icon>
                 <v-icon>apps</v-icon>
@@ -113,6 +113,7 @@
 	import Register from '~/components/Register'
 	import ForgotPassword from '~/components/ForgotPassword'
 	export default {
+        inject: ['$validator'], // inject parent validator
 		components: { Login, Register, ForgotPassword },
         data () {
             return {
@@ -166,6 +167,7 @@
                 this.forgotPasswordModal = true
             },
             openLoginModal () {
+                this.$validator.reset() // Clear validator errors
                 this.message = null
                 this.$store.commit('clearError')
                 this.$store.commit('setLoading', false)
@@ -173,6 +175,12 @@
             },
             closeLoginModal () {
                 this.loginModal = false
+            },
+            openRegisterModal () {
+                this.$validator.reset() // Clear validator errors
+                this.$store.commit('clearError')
+                this.$store.commit('setLoading', false)
+                this.registerModal = true
             },
             closeRegisterModal () {
                 this.registerModal = false

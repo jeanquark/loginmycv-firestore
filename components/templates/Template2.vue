@@ -386,7 +386,7 @@
 
 
 				<!-- Section Files -->
-				<v-layout row wrap id="files" class="my-5 section">
+				<v-layout row wrap id="files" class="my-5 section" v-if="files">
 					<v-flex xs12 sm8 offset-sm2>
 						<h2 class="text-xs-center">Files</h2>
 						<br /><br />

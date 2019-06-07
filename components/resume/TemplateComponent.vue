@@ -16,12 +16,14 @@
                     <v-card-text>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[ template.id === userResume.template_id ? 'active' : null ]">
+                                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template_id === template.id ? 'active' : null]">
                                     <v-img
                                         :src="`/images/templates/${template.image}`"
                                         :lazy-src="`/images/templates/${template.image}`"
                                         aspect-ratio="1.5"
                                     ></v-img>
+                                    <!-- <div class="text-xs-center">{{ template.name }}</div> -->
+                                    <!-- <div class="text-xs-center">{{ template.description }}</div> -->
                                 </v-card>
                             </v-flex>
                         </v-layout>
@@ -172,7 +174,14 @@
             console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
             await this.$store.dispatch('templates/fetchTemplates')
-            this.primaryColor = this.userResume.colors.primaryColor
+            // this.primaryColor = this.userResume.colors.primaryColor
+            if (!this.resumeSlug) {
+                const template = this.$store.getters['templates/loadedTemplates'].find(template => template.slug === 'template1')
+                if (template) {
+                    this.userResume.template_id = template.id
+                    this.userResume.colors = template.colors
+                }
+            }
         },
         data () {
             return {

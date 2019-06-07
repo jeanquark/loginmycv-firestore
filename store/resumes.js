@@ -31,7 +31,14 @@ export const mutations = {
 	setEmptyResume (state) {
 		state.newResume = {
 			template_id: '',
-			personal_data: {},
+			slug: 'jeanquark',
+			job_title: 'Web developer',
+			job_description: 'Develops websites & web apps',
+			personal_data: {
+				firstname: 'John',
+				lastname: 'Doe',
+				email: 'john.doe@example.com'
+			},
 			education: [],
 			work_experience: [],
 			skills: [],
@@ -203,12 +210,13 @@ export const actions = {
 			console.log('newResume.slug: ', newResume.slug)
 
 			// 1) Create resume server-side
-			const resumeCreation = await axios.post('/create-new-resume', newResume, {
+			const createdResume = await axios.post('/create-new-resume', newResume, {
 				headers: {
 					'app-key': process.env.APP_KEY
 				}
 			})
-			console.log('resumeCreation: ', resumeCreation)
+			console.log('createdResume: ', createdResume)
+			const newShortResumeId = createdResume.data.newShortResumeId
 
 	        commit('setLoadingResume', false, { root: true })
 	        commit('setLoadingFiles', true, { root: true })
@@ -288,8 +296,8 @@ export const actions = {
 				if (picture) {
 					console.log('update resumes_short')
 					// console.log('newResume.user_id: ', newResume.user_id)
-					// await firestore.collection('resumes_short').doc(newShortResume.id).update({
-					await firestore.collection('resumes_short').where('user_id', '==', newResume.user_id).update({
+					await firestore.collection('resumes_short').doc(newShortResumeId).update({
+					// await firestore.collection('resumes_short').where('resume_short_id', '==', newResume.user_id).update({
 						picture: picture.downloadUrl
 					})
 				}

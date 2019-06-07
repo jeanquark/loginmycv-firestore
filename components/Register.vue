@@ -4,9 +4,20 @@
             <v-toolbar-title>Register</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-            <form @submit.prevent="signUserUp">
+            <form @submit.prevent="signUserUp('register')" data-vv-scope="register">
                 <v-layout row wrap>
                     <!-- errors: {{ errors }} -->
+                    <v-alert
+                        :value="error"
+                        type="error"
+                        color="error"
+                        outline
+                        class="mb-3"
+                        v-if="error"
+                    >
+                        {{ error.message }}
+                    </v-alert>
+
                     <v-flex xs6>
                         <v-text-field
                             label="Firstname"
@@ -15,7 +26,7 @@
                             prepend-icon="person"
                             v-validate="'required|max:50'"
                             :counter="50"
-                            :error-messages="errors ? errors.collect('firstname') : null"
+                            :error-messages="errors ? errors.collect('register.firstname') : null"
                             v-model="form.firstname"
                         ></v-text-field>
 
@@ -26,7 +37,7 @@
                             prepend-icon="person"
                             v-validate="'required|max:50'"
                             :counter="50"
-                            :error-messages="errors ? errors.collect('lastname') : null"
+                            :error-messages="errors ? errors.collect('register.lastname') : null"
                             v-model="form.lastname"
                         ></v-text-field>
                     
@@ -36,7 +47,7 @@
                             name="email"
                             prepend-icon="person"
                             v-validate="'required|email'"
-                            :error-messages="errors ? errors.collect('email') : null"
+                            :error-messages="errors ? errors.collect('register.email') : null"
                             v-model="form.email"
                         ></v-text-field>
                     </v-flex>
@@ -60,7 +71,7 @@
                             type="password"
                             ref="password"
                             v-validate="'required|min:6|max:30'"
-                            :error-messages="errors ? errors.collect('password') : null"
+                            :error-messages="errors ? errors.collect('register.password') : null"
                             data-vv-as="Password"
                             :counter="30"
                             v-model="form.password"
@@ -72,7 +83,7 @@
                             prepend-icon="lock" 
                             type="password"
                             v-validate="'required|confirmed:password'"
-                            :error-messages="errors ? errors.collect('password_confirmation') : null"
+                            :error-messages="errors ? errors.collect('register.password_confirmation') : null"
                             data-vv-as="Password"
                             v-model="form.password_confirmation"
                         ></v-text-field>        
@@ -80,7 +91,7 @@
                 </v-layout>
 
                 <v-layout justify-center>
-                    <v-btn color="primary" type="submit" :loading="loading" :disabled="errors && errors.items.length > 0">Register</v-btn>
+                    <v-btn color="primary" type="submit" :loading="loading">Register</v-btn>
                 </v-layout>
                 <v-layout justify-center>
                     <v-btn flat color="primary" @click="switchToLogin">
@@ -113,12 +124,11 @@
 		data () {
 			return {
 				form: {
-					firstname: '',
-					lastname: '',
-                    email: '',
-                    username: '',
-                    password: '',
-                    password_confirmation: ''
+					firstname: 'John',
+					lastname: 'Doe',
+                    email: 'john.doe@example.com',
+                    password: 'secret',
+                    password_confirmation: 'secret'
 				}
 			}
 		},
@@ -137,8 +147,8 @@
             closeModal () {
                 this.$emit('closeRegisterModal')
             },
-			async signUserUp () {
-                await this.$validator.validateAll()
+            async signUserUp (scope) {
+                await this.$validator.validateAll(scope)
                 if (!this.errors.any()) {
                     console.log('signUserUp!')
                     try {
@@ -148,6 +158,43 @@
                         new Noty({
                             type: 'success',
                             text: 'Registration went successfully. Welcome to loginMyCV!',
+                            timeout: 5000,
+                            theme: 'metroui'
+                        }).show()
+                        this.$router.push('/candidate/resumes')
+                    } catch (error) {
+                        console.log('error2: ', error)
+                        this.$store.commit('setError', error)
+                        this.$store.commit('setLoading', false, { root: true })
+                        if (error.code === 'auth/email-already-in-use') {
+                            new Noty({
+                                type: 'error',
+                                text: error.message,
+                                timeout: 5000,
+                                theme: 'metroui'
+                            }).show()
+                        } else {
+                             new Noty({
+                                type: 'error',
+                                text: 'Sorry, an error occured and the registration process was interrupted.',
+                                timeout: 5000,
+                                theme: 'metroui'
+                            }).show()
+                        }
+                    }
+                }
+            },
+            async signUserUp2 () {
+                await this.$validator.validateAll()
+                if (!this.errors.any()) {
+                    console.log('signUserUp!')
+                    try {
+                        this.$store.commit('setLoading', true, { root: true })
+                        await this.$store.dispatch('firebase-auth/signUserUp', this.form)
+                        this.$store.commit('setLoading', false, { root: true })
+                        new Noty({
+                            type: 'success',
+                            text: 'Registration went successfully. Welcome to LoginMyCV!',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()

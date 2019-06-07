@@ -34,10 +34,10 @@
 										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.birthday">
 											<span>Age: <b>{{ calculateAge(resume.personal_data.birthday) }}</b></span>
 										</v-flex>
-										<v-flex xs12 sm6 class="pa-2">
+										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.city">
 											<span>City: <b>{{ resume.personal_data.city }}</b></span>
 										</v-flex>
-										<v-flex xs12 sm6 class="pa-2">
+										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.country">
 											<span>Country: <b>{{ resume.personal_data.country }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.email">
@@ -104,7 +104,7 @@
 			
 
 			<!-- Section Education -->
-			<v-layout row wrap class="margin-bottom" v-if="resume.education">
+			<v-layout row wrap class="margin-bottom" v-if="resume.education && resume.education.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
 			      	<h2 class="text-xs-center display-1 text-color">Education</h2>
 			      	<br />
@@ -136,7 +136,7 @@
 
 
 			<!-- Section Work experience -->
-			<v-layout row wrap class="margin-bottom" v-if="resume.work_experience">
+			<v-layout row wrap class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
 			      	<h2 class="text-xs-center display-1 text-color">Work experience</h2>
 			      	<br />
@@ -168,7 +168,7 @@
 
 
 			<!-- Section Skills -->
-			<v-layout row wrap class="margin-bottom" v-if="resume.skills">
+			<v-layout row wrap class="margin-bottom" v-if="resume.skills && resume.skills.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
 			      	<h2 class="text-xs-center display-1 text-color">Skills</h2>
 			      	<br />
@@ -220,7 +220,7 @@
 
 
 			<!-- Section Files -->
-			<v-layout row wrap class="margin-bottom" v-if="files.length > 0">
+			<v-layout row wrap class="margin-bottom" v-if="files && files.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
 				    <h2 class="text-xs-center display-1 text-color">Files</h2>
 				    <br />
@@ -259,13 +259,11 @@
 	export default {
 		head () {
 		    return {
-		  //     	title: `${this.resume.personal_data.firstname}'s resume`,
-		  //     	meta: [
-			 //        { hid: 'description', name: 'description', content: `Resume of ${this.resume.personal_data.firstname} ${this.resume.personal_data.lastname}` }
-				// ],
-				// link: [
-				// 	// { type: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.8.1/css/all.css' }
-				// ]
+		      	title: this.title,
+		      	meta: [
+			        { hid: 'description', name: 'description', content: 'Ma description personnalisée' }
+				],
+				link: []
 		    }
 		},
 		props: ['resume'],
@@ -283,6 +281,7 @@
 		},
 		data () {
 			return {
+		      	title: `${this.resume.personal_data.firstname}'s resume`,
 				layoutWindow: 0,
 				primaryColor: '',
 				secondaryColor: '',

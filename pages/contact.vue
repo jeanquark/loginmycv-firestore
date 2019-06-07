@@ -3,34 +3,34 @@
 		<h1 class="text-xs-center primary-color my-4">Contact Us</h1>
 		<v-layout row wrap>
 			<v-flex xs6 offset-xs3 class="mb-3">
-				<v-form class="form">
+				<v-form @submit.prevent="sendMessage('contact')" class="form" data-vv-scope="contact">
 					<v-layout row wrap>
 						<v-flex xs6 class="pr-3">
 							<v-text-field
-								label="First name"
-								name="firstname_contact"
+								label="Firstname"
+								name="firstname"
 								v-validate="'required|max:40'"
-								:error-messages="errors ? errors.collect('firstname_contact') : null"
-								data-vv-as="First name"
+								:error-messages="errors ? errors.collect('contact.firstname') : null"
+								data-vv-as="Firstname"
 								v-model="form.firstname"
 							></v-text-field>
 						</v-flex>
 						<v-flex xs6 class="pl-3">
 							<v-text-field
-								label="Last name"
-								name="lastname_contact"
+								label="Lastname"
+								name="lastname"
 								v-validate="'required|max:40'"
-								:error-messages="errors ? errors.collect('lastname_contact') : null"
-								data-vv-as="Last name"
+								:error-messages="errors ? errors.collect('contact.lastname') : null"
+								data-vv-as="Lastname"
 								v-model="form.lastname"
 							></v-text-field>
 						</v-flex>
 						<v-flex xs12>
 							<v-text-field
 								label="Your Email"
-								name="email_contact"
+								name="email"
 								v-validate="'required|email'"
-								:error-messages="errors ? errors.collect('email_contact') : null"
+								:error-messages="errors ? errors.collect('contact.email') : null"
 								data-vv-as="Email"
 								v-model="form.email"
 							></v-text-field>
@@ -38,14 +38,14 @@
 						<v-flex xs12>
 							<v-textarea
 								label="Your message"
-								name="message_contact"
+								name="message"
 								v-validate="'required|max:2056'"
-								:error-messages="errors ? errors.collect('message_contact') : null"
+								:error-messages="errors ? errors.collect('contact.message') : null"
 								data-vv-as="Message"
 								v-model="form.message"
 							></v-textarea>
 						</v-flex>
-						<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" color="primary" @click.prevent="sendMessage">Send message</v-btn>
+						<v-btn round block large class="white--text" type="submit" style="padding-top: 0px; padding-bottom: 0px;" color="primary">Send message</v-btn>
 					</v-layout>
 				</v-form>
 			</v-flex>
@@ -69,13 +69,16 @@
 			}
 		},
 		computed: {
-			errors () {
+			error () {
                 return this.$store.getters['errors']
             }
 		},
 		methods: {
-			sendMessage () {
-				alert('Send message is not operational for now.')
+			async sendMessage (scope) {
+				await this.$validator.validateAll(scope)
+                if (!this.errors.any()) {
+					alert('Send message is not operational for now.')
+				}
 			}
 		}
 	}
