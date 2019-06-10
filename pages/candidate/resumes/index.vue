@@ -17,6 +17,7 @@
 					    <template v-slot:items="props">
 					     	<td class="text-xs-left">{{ props.index + 1 }}</td>
 					      	<td class="text-xs-left">{{ props.item.slug }}</td>
+							<td class="text-xs-left">{{ props.item.language }}</td>
 					      	<td class="text-xs-left">{{ props.item.job_title }}</td>
 					      	<td class="text-xs-left">{{ props.item.job_description }}</td>
 					      	<td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>					      
@@ -102,7 +103,8 @@
 			return {
 				headers: [
 					{ text: 'N°', value: 'index' },
-		          	{ text: 'Slug', value: 'slug' },
+					{ text: 'Slug', value: 'slug' },
+					{ text: 'Language', value: 'language'},
 		          	{ text: 'Job title', value: 'job_title' },
 		          	{ text: 'Job description', value: 'job_description' },
 		          	{ text: 'Created at', value: 'created_at' },

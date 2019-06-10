@@ -17,7 +17,7 @@ export const actions = {
 
 		const languagesArray = []
 		snapshot.forEach(language => {
-			console.log('language: ', language)
+			// console.log('language: ', language)
 			languagesArray.push(language.data())
 		})
 		commit('setLanguages', languagesArray)

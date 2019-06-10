@@ -29,12 +29,15 @@ module.exports = app.use(async function (req, res, next) {
 			console.log('You changed the resume slug!');
 
 			// 2) Check slug existence
-			const slugSnapshot = await admin.firestore().collection('resumes_long').doc(updatedResume.new_slug).get();
-			const existingSlug = slugSnapshot.data();
-			console.log('existingSlug: ', existingSlug);
-			if (existingSlug) {
+			const querySnapshot = await admin.firestore().collection('resumes_long').where('slug', '==', newResume.slug).get();
+			const resumesLongArray = []
+			querySnapshot.forEach(doc => {
+				resumesLongArray.push(doc.data().slug);
+			});
+
+			if (resumesLongArray.length > 0) {
 				throw {
-					'new_slug': 'Slug already exists. Please provide another identifier for the resume.',
+					'slug': 'Slug already exists. Please provide another identifier for the resume.',
 				}
 			}
 

@@ -162,10 +162,9 @@
 	import Noty from 'noty'
 	import axios from 'axios'
 	import RequestAuthorization from '~/components/RequestAuthorization'
-	import Draggable from 'vuedraggable'
 	export default {
 		// inject: ['$validator'], // inject vee-validate validator
-		components: { RequestAuthorization, Draggable },
+		components: { RequestAuthorization },
 		layout: 'layoutFront',
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')
@@ -174,6 +173,7 @@
 			// await store.dispatch('resumes/loadedShortResumes2')
 		// },
 		async created () {
+			console.log('firebase.auth().currentUser: ', firebase.auth().currentUser)
 			console.log('Entering created lifecycle hook...')
 			await this.$store.dispatch('resumes/fetchShortResumes')
 			const authUser = this.$store.getters['users/loadedUser']

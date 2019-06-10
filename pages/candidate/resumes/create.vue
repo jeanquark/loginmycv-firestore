@@ -264,6 +264,9 @@
             if (this.$store.getters['competences/loadedCompetences'].length < 1) {
                 await this.$store.dispatch('competences/fetchCompetences')
             }
+            if (this.$store.getters['socialNetworks/loadedSocialNetworks'].length < 1) {
+                await this.$store.dispatch('socialNetworks/fetchSocialNetworks')
+            }
         },
         mounted () {
             // this.$validator.reset()

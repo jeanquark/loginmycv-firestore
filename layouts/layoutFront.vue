@@ -56,7 +56,7 @@
                     v-model="registerModal"
                     width="750"
                     lazy
-                    :persistent="loading"
+                    :persistent="true"
                 >
                     <Register v-on:switchToLoginModal="switchToLogin" v-on:closeRegisterModal="closeRegisterModal" />
                 </v-dialog>

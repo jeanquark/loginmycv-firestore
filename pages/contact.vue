@@ -7,21 +7,21 @@
 					<v-layout row wrap>
 						<v-flex xs6 class="pr-3">
 							<v-text-field
-								label="Firstname"
+								label="First name"
 								name="firstname"
 								v-validate="'required|max:40'"
 								:error-messages="errors ? errors.collect('contact.firstname') : null"
-								data-vv-as="Firstname"
+								data-vv-as="First name"
 								v-model="form.firstname"
 							></v-text-field>
 						</v-flex>
 						<v-flex xs6 class="pl-3">
 							<v-text-field
-								label="Lastname"
+								label="Last name"
 								name="lastname"
 								v-validate="'required|max:40'"
 								:error-messages="errors ? errors.collect('contact.lastname') : null"
-								data-vv-as="Lastname"
+								data-vv-as="Last name"
 								v-model="form.lastname"
 							></v-text-field>
 						</v-flex>

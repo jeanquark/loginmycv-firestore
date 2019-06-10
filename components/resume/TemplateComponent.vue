@@ -3,7 +3,7 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            <!-- userResume: {{ userResume }}<br /> -->
+            userResume: {{ userResume }}<br />
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
         </div>
         <v-layout row wrap class="pa-2">

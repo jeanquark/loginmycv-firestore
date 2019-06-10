@@ -29,6 +29,26 @@
                     <div class="text-xs-center"><small>(entries with an <v-icon small>remove_red_eye</v-icon> are public</small>)</div>
 
                     <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-autocomplete
+                                    :items="loadedLanguages"
+                                    item-text="name"
+                                    :return-object="true"
+                                    chips
+                                    small-chips
+                                    :deletable-chips="true"
+                                    color="secondary"
+                                    v-model="userResume.language"
+                                >
+                                    <template v-slot:label>
+                                        Language of the resume <v-icon small class="valign-top">visibility</v-icon>
+                                    </template>
+                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
+                            </v-flex>
+                        </v-layout>
+
                         <v-layout v-if="!this.resumeSlug">
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
@@ -96,12 +116,27 @@
                                     name="firstname"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('firstname') : null"
-                                    data-vv-as="Firstname"
+                                    data-vv-as="First name"
                                     :counter="50"
                                     v-model="userResume.personal_data.firstname"
                                 >
                                 <template v-slot:label>
-                                    Firstname <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    First name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                </template>
+                                <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    name="middlename"
+                                    v-validate="'required|max:50'"
+                                    :error-messages="errors ? errors.collect('middlename') : null"
+                                    data-vv-as="Middle name"
+                                    :counter="50"
+                                    v-model="userResume.personal_data.middlename"
+                                >
+                                <template v-slot:label>
+                                    Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -111,12 +146,12 @@
                                     name="lastname"
                                     v-validate="'required|max:50'"
                                     :error-messages="errors ? errors.collect('lastname') : null"
-                                    data-vv-as="Lastname"
+                                    data-vv-as="Last name"
                                     :counter="50"
                                     v-model="userResume.personal_data.lastname"
                                 >
                                 <template v-slot:label>
-                                    Lastname <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    Last name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -174,7 +209,7 @@
                             <v-flex xs12 sm8 class="px-3">
                                 <v-select
                                     label="Social links"
-                                    :items="social_links"
+                                    :items="loadedSocialNetworks"
                                     attach
                                     chips
                                     multiple
@@ -183,19 +218,21 @@
                                     deletable-chips
                                     item-text="name"
                                     return-object
-                                    v-model="userResume.social_links"
-                                ></v-select>
+                                    v-model="userResume.social_networks"
+                                >
+                                    <font-awesome-icon :icon="['fas', 'hashtag']" slot="prepend" style="margin-top: 4px;" />
+                                </v-select>
                             </v-flex>
 
                             <!-- url: { require_protocol: true }} -->
-                            <v-flex xs12 sm4 class="px-3" v-for="(social_link, index) of userResume.social_links" :key="index">
+                            <v-flex xs12 sm4 class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index">
                                 <v-text-field
-                                    :label="social_link.name"
-                                    :name="social_link.slug"
+                                    :label="social_network.name"
+                                    :name="social_network.slug"
                                     v-validate="{ required: true }"
                                     :error-messages="errors ? errors.collect(`${social_link.slug}`) : null"
-                                    v-model="userResume.social_links[index]['link']"
-                                ><font-awesome-icon :icon="['fab', `${social_link.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                    v-model="userResume.social_networks[index]['link']"
+                                ><font-awesome-icon :icon="['fab', `${social_networks.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -235,6 +272,7 @@
                                     chips
                                     small-chips
                                     :deletable-chips="true"
+                                    color="secondary"
                                     v-model="userResume.personal_data.country"
                                 >
                                     <template v-slot:label>
@@ -261,7 +299,7 @@
                             <v-flex xs12 sm4 class="px-3">
                                 <v-dialog
                                     ref="dialog"
-                                    :return-value.sync="personal_data.birthday"
+                                    :return-value.sync="userResume.personal_data.birthday"
                                     persistent
                                     lazy
                                     full-width
@@ -273,13 +311,13 @@
                                             label="Birth date"
                                             readonly
                                             v-on="on"
-                                            v-model="personal_data.birthday"
+                                            v-model="userResume.personal_data.birthday"
                                         ><font-awesome-icon :icon="['fas', 'birthday-cake']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="personal_data.birthday">
+                                    <v-date-picker v-model="userResume.personal_data.birthday">
                                         <v-spacer></v-spacer>
                                         <v-btn flat color="secondary" @click="modalDate = false">Cancel</v-btn>
-                                        <v-btn flat color="secondary" @click="$refs.dialog.save(personal_data.birthday)">OK</v-btn>
+                                        <v-btn flat color="secondary" @click="$refs.dialog.save(userResume.personal_data.birthday)">OK</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
                             </v-flex>
@@ -625,15 +663,15 @@
                 // errors: [],
                 uploadingNewImage: false,
                 // loadedUserResume: {}
-                personal_data: {
-                    firstname: '',
-                    lastname: '',
-                    email: '',
-                    job_title: '',
-                    job_description: '',
-                    birthday: '',
-                    picture: []
-                },
+                // personal_data: {
+                //     firstname: '',
+                //     lastname: '',
+                //     email: '',
+                //     job_title: '',
+                //     job_description: '',
+                //     birthday: '',
+                //     picture: []
+                // },
                 modalDate: false,
                 // date: moment().subtract(30, 'years').format('YYYY-MM-DD'),
                 showPassword: false,
@@ -703,6 +741,9 @@
             },
             loadedCompetences () {
                 return this.$store.getters['competences/loadedCompetences']
+            },
+            loadedSocialNetworks () {
+                return this.$store.getters['socialNetworks/loadedSocialNetworks']
             },
             getCurrentPicture () {
                 if (this.userResume.uploads) {

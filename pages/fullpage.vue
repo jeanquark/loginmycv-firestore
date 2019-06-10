@@ -9,32 +9,8 @@
 				<button type="button" :class="{active:index == 4}" @click="moveTo(4)">Contact</button>
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
-				<div class="page-1 page" style="background: url('https://picsum.photos/id/976/1024/900') no repeat center center; background-size: cover;">
-					<v-layout row wrap>
-						<v-flex xs6 class="pa-4" style="border: 1px solid orange;">
-							<v-layout row wrap>
-								<v-flex xs6 class="text-xs-center">
-									<v-avatar
-										:tile="false"
-										:size="250"
-										color="grey lighten-4"
-									>
-										<img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
-									</v-avatar>
-								</v-flex>
-								<v-flex xs6>
-									<h2>{{ resume.personal_data.firstname }} {{ resume.personal_data.lastname }}</h2>
-									<h3>{{ resume.job_title }}</h3>
-									<h4>{{ resume.job_description }}</h4>
-								</v-flex>
-							</v-layout>
-						</v-flex>
-						<v-flex xs6 class="pa-4" style="border: 1px solid orangered;">
-							<div class="text-xs-left">
-								abc
-							</div>
-						</v-flex>
-					</v-layout>
+				<div class="page-1 page" style="background: yellow;">
+					<p class="part-1" v-animate="{value: 'bounceInLeft'}">page-1 page</p>
 				</div>
 				<div class="page-2 page" style="border: 1px solid red;">
 					<p class="part-2" v-animate="{value: 'bounceInRight'}">page-2 page</p>
@@ -57,24 +33,6 @@
 <script>
 
 export default {
-	head () {
-		return {
-			title: this.title,
-			meta: [
-				{ hid: 'description', name: 'description', content: 'Ma description personnalisée' }
-			],
-			link: []
-		}
-	},
-	props: ['resume'],
-	mounted () {
-		this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
-		this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
-		this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
-		this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
-		this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
-		this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
-	},
 	data() {
 		// var that = this
 		return {
@@ -94,44 +52,13 @@ export default {
 					// console.log('after', current)
 				}
 			},
-			image: 'https://picsum.photos/id/975/1024/900',
-			primaryColor: '',
-			secondaryColor: '',
-			tertiaryColor: '',
-			backgroundColor: '',
-			textColor: '',
-			profilePicture: {},
+			image: 'https://picsum.photos/id/975/1024/900'
 		}
 	},
 	computed: {
 		cssProps() { 
 			return {
-				'--url2': url('https://picsum.photos/id/975/1024/900'),
-			}
-		},
-		skills () {
-			if (this.resume.skills) {
-				const res = this.resume.skills.reduce((acc, curr) => {
-					if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
-					acc[curr.category].push(curr)
-					return acc
-				},{})
-				return res
-			}
-		},
-		nationalities () {
-			if (this.resume.personal_data.nationalities) {
-				return this.resume.personal_data.nationalities.slice(0).sort((a, b) => a.priority - b.priority)
-			}
-		},
-		languages () {
-			if (this.resume.languages) {
-				return this.resume.languages.slice(0).sort((a, b) => b.level - a.level)
-			}
-		},
-		files () {
-			if (this.resume.uploads) {
-				return this.resume.uploads.filter(file => file.type === 'downloadable_file')
+				'--url': 'https://picsum.photos/id/975/1024/900',
 			}
 		}
 	},
@@ -139,33 +66,6 @@ export default {
 		moveTo: function(index) {
 			this.$refs.fullpage.$fullpage.moveTo(index, true);
 			this.index = index
-		},
-		calculateAge (birthday) {
-			return moment().diff(birthday, 'years')
-		},
-		getLanguageQualitativeLevel (level) {
-			console.log('level: ', level)
-			if (level < 20) {
-				return 'Beginner'
-			} else
-			if (level < 40) {
-				return 'Low intermediate'
-			} else
-			if (level < 60) {
-				return 'Intermediate'
-			} else
-			if (level < 80) {
-				return 'High intermediate'
-			} else
-			if (level < 100) {
-				return 'Advanced'
-			} else
-			if (level = 100) {
-				return 'Mother tongue'
-			}
-		},
-		redirectTo (link) {
-			window.open(link, '_blank')
 		}
 	}
 }
@@ -178,12 +78,12 @@ export default {
 	body {
         margin: 0;
     }
-	/* .fullpage-container {
+	.fullpage-container {
 		position: relative;
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
-	} */
+	}
 	.fullpage-wp {
 		display: flex;
 		width: 100%;
@@ -203,7 +103,7 @@ export default {
 		justify-content: flex-start;
 		align-items: center;
 	}
-	/* .page {
+	.page {
 		box-sizing: border-box;
 		display: block;
 		position: relative;
@@ -211,7 +111,7 @@ export default {
 		height: 100%;
 		flex-shrink: 0;
 		overflow: hidden;
-	} */
+	}
 	.animated {
 		opacity: 1;
 	}
@@ -238,7 +138,7 @@ export default {
     .page-2 {
         padding-top: 50px;
 		/* background: url('https://picsum.photos/id/975/1024/900') no-repeat center center; */
-		background: var(--url2) no-repeat center center;
+		background: var(--url) no-repeat center center;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;

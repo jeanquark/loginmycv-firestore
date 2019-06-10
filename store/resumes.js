@@ -1,7 +1,6 @@
 export const strict = false
 import { firestore, storage, auth } from '~/plugins/firebase-client-init.js'
 import moment from 'moment'
-import Noty from 'noty'
 import axios from 'axios'
 
 export const state = () => ({
@@ -43,6 +42,8 @@ export const mutations = {
 			work_experience: [],
 			skills: [],
 			uploads: [],
+			social_networks: [],
+			visibility: '',
 			colors: {},
 			parameters: {},
 			others: []
@@ -78,11 +79,18 @@ export const actions = {
 		// 1) Fetch resume if its visibility is set to public
 		try {
 			console.log('Call to fetchLongResume action: ', payload)
-			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-			const resume = snapshot.data()
-			console.log('resume from store: ', resume)
+			const resumes2 = await axios.post('/fetch-long-resumes', { data: payload })
+			console.log('resumes2: ', resumes2)
+			return 
+			// const snapshot = await firestore.collection('resumes_long').doc(payload).get()
+			const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
+			const resumesArray = []
+			querySnapshot.forEach(doc => {
+				console.log('doc.data(): ', doc.data())
+				resumesArray.push(doc.data())
+			})
 
-			return resume
+			return resumesArray
 
 		} catch (error) {
 			console.log('error from fetchLongResume action: ', error)
@@ -216,6 +224,7 @@ export const actions = {
 				}
 			})
 			console.log('createdResume: ', createdResume)
+			const newLongResumeId = createdResume.data.newLongResumeId
 			const newShortResumeId = createdResume.data.newShortResumeId
 
 	        commit('setLoadingResume', false, { root: true })
@@ -287,7 +296,7 @@ export const actions = {
 			// 6) Update long & short resumes with uploads
 			if (uploads && uploads.length > 0) {
 				console.log('update resumes_long')
-				await firestore.collection('resumes_long').doc(newResume.slug).update({
+				await firestore.collection('resumes_long').doc(newLongResumeId).update({
 					uploads
 				})
 				// console.log('newShortResume.id: ', newShortResume.id)

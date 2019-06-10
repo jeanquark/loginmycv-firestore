@@ -52,7 +52,8 @@ module.exports = {
                 ]
             }
         ],
-        'nuxt-client-init-module'
+        'nuxt-client-init-module',
+        'fullpage-nuxt'
     ],
     axios: {
         proxyHeaders: false
@@ -76,6 +77,7 @@ module.exports = {
         { src: '~/plugins/vue-scrollto', ssr: false },
         { src: '~/plugins/vue2-scrollspy', ssr: false },
         // { src: '~/plugins/vue-draggable', ssr: false },
+        // { src: '~/plugins/fullpage-vue', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
@@ -135,9 +137,13 @@ module.exports = {
             path: '/delete-resume-authorization', // POST request
             handler: '~/serverMiddleware/authorizations/deleteResumeAuthorization'
         },
+        // {
+        //     path: '/check-resume-slug', // POST request
+        //     handler: '~/serverMiddleware/resumes/checkResumeSlug'
+        // }
         {
-            path: '/check-resume-slug', // POST request
-            handler: '~/serverMiddleware/resumes/checkResumeSlug'
+            path: '/fetch-long-resumes',
+            handler: '~/serverMiddleware/resumes/fetchLongResumes'
         }
     ],
     css: ["~/assets/style/app.styl"],

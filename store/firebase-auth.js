@@ -13,20 +13,34 @@ export const actions = {
         // Promise is necessary so that redirection does not occur when user is not already loaded in vuex state
         return new Promise((resolve, reject) => {
             commit('setLoading', true, { root: true })
-            auth.signInWithEmailAndPassword(payload.email, payload.password).then(authData => {
+            auth.signInWithEmailAndPassword(payload.email, payload.password)
+            .then(authData => {
                 console.log('authData: ', authData)
                 console.log('authData.user.uid: ', authData.user.uid)
                 let userId = authData.user.uid
 
-                firestore.collection('users').doc(userId).onSnapshot(function(doc) {
-                    const user = {
-                        ...doc.data(),
-                        id: doc.id  
-                    }
-                    commit('users/setLoadedUser', user, { root: true })
-                    commit('setLoading', false, { root: true })
-                    resolve()
-                })
+                if (!authData.user.emailVerified) {
+                    auth.signOut()
+                    .then(() => {
+                        console.log('You were immediately signed out because your email is not verified.')
+                    })
+                    .catch(error => {
+                        console.log('error: ', error)
+                        throw error
+                    })
+                } else {
+                    console.log('Email is verified, continue sign in.')
+                    firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+                        const user = {
+                            ...doc.data(),
+                            id: doc.id  
+                        }
+                        console.log('user: ', user)
+                        commit('users/setLoadedUser', user, { root: true })
+                        commit('setLoading', false, { root: true })
+                        resolve()
+                    })
+                }
             }).catch(error => {
                 console.log('error: ', error)
                 commit('setError', error, { root: true })
@@ -89,8 +103,8 @@ export const actions = {
             commit('setLoading', false, { root: true })
         } catch (error) {
             console.log(error)
-            commit("setLoading", false, { root: true })
-            commit("setError", error, { root: true })
+            commit('setLoading', false, { root: true })
+            commit('setError', error, { root: true })
             throw new Error(error)
         }
     },
@@ -120,7 +134,7 @@ export const actions = {
             // commit('users/setLoadedUser', user, { root: true })
         } catch (error) {
             console.log('error2: ', error)
-            commit("setError", error, { root: true })
+            commit('setError', error, { root: true })
             throw new Error(error)
             // return
         }
@@ -135,22 +149,26 @@ export const actions = {
             auth.createUserWithEmailAndPassword(
                 payload.email,
                 payload.password
-            ).then(authData => {
+            )
+            .then(authData => {
+                console.log('authData: ', authData)
+                authData.user.sendEmailVerification()
+                return authData
+            })
+            .then(authData => {
+                console.log('authData2: ', authData)
+                console.log('Process server side registration.')
                 authData.firstname = payload.firstname
                 authData.lastname = payload.lastname
-                console.log('authData: ', authData)
-                return axios.post('/register-new-user', {
-                    data: authData
-                }).then(response => {
-                    const newUser = response.data.newUser
-                    console.log('newUser: ', newUser)
-                    commit('users/setLoadedUser', newUser, { root: true })
-                    resolve()
-                })
-                .catch(error => {
-                    console.log('error from axios: ', error)
-                    commit('setLoading', false, { root: true })
-                })
+                return axios.post('/register-new-user', { data: authData })
+            })
+            .then(verificationEmail => {
+                console.log('Email sent: ', verificationEmail)
+                return auth.signOut()
+            })
+            .then(() => {
+                console.log('You were immediately signed out because your email is not verified. Open login modal.')
+                resolve()
             }).catch (error => {
                 console.log('error from firebase auth: ', error)
                 commit('setLoading', false, { root: true })
