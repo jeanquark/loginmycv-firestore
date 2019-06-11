@@ -38,7 +38,7 @@
 											<span>City: <b>{{ resume.personal_data.city }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.country">
-											<span>Country: <b>{{ resume.personal_data.country }}</b></span>
+											<span>Country: <b>{{ resume.personal_data.country.name }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.email">
 											<span>Email: <b>{{ resume.personal_data.email }}</b></span>
@@ -261,7 +261,7 @@
 		    return {
 		      	title: this.title,
 		      	meta: [
-			        { hid: 'description', name: 'description', content: 'Ma description personnalisée' }
+			        { hid: 'description', name: 'description', content: `Resume of ${this.resume.personal_data.firstname}` }
 				],
 				link: []
 		    }

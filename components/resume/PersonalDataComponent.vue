@@ -129,7 +129,7 @@
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     name="middlename"
-                                    v-validate="'required|max:50'"
+                                    v-validate="'max:50'"
                                     :error-messages="errors ? errors.collect('middlename') : null"
                                     data-vv-as="Middle name"
                                     :counter="50"
@@ -227,12 +227,13 @@
                             <!-- url: { require_protocol: true }} -->
                             <v-flex xs12 sm4 class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index">
                                 <v-text-field
-                                    :label="social_network.name"
+                                    :label="`${social_network.name} link`"
                                     :name="social_network.slug"
                                     v-validate="{ required: true }"
-                                    :error-messages="errors ? errors.collect(`${social_link.slug}`) : null"
+                                    :error-messages="errors ? errors.collect(`${social_network.slug}`) : null"
+                                    :data-vv-as="social_network.name"
                                     v-model="userResume.social_networks[index]['link']"
-                                ><font-awesome-icon :icon="['fab', `${social_networks.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                ><font-awesome-icon :icon="['fab', `${social_network.fontawesome}`]" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card-text>

@@ -27,13 +27,17 @@
                 {{ error.message }}
             </v-alert>
             <!-- <v-alert
-                :value="loading"
+                :value="true"
+                type="info"
                 color="info"
-                icon="info"
                 outline
-            >
-                Loading...
-            </v-alert> -->
+                class="mb-3"
+                v-if="error && error.code === 'email_not_verified'"
+            > -->
+            <div class="text-xs-center" v-if="error && error.code === 'email_not_verified' && error.authData">
+                <v-btn color="primary" small class="mb-3" @click="sendVerificationEmail(error.authData)" :loading="loadingSendVerificationEmail">Send me a new verification email</v-btn>
+            <!-- </v-alert> -->
+            </div>
             <v-form v-on:submit.prevent="signUserIn">
                 <v-text-field
                     label="Email"
@@ -57,10 +61,10 @@
 
                 <v-layout row wrap class="mb-2">
                     <v-flex xs6 class="px-2">
-                        <v-btn block color="#df4a32" class="white--text" @click="signInWithGoogle">Login with Google</v-btn>
+                        <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Login with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
                     </v-flex>
                     <v-flex xs6 class="px-2">
-                        <v-btn block color="#3c5a99" class="white--text" @click="signInWithFacebook" :disabled="true">Login with Facebook</v-btn>
+                        <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Login with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
                     </v-flex>
                 </v-layout>
 
@@ -104,7 +108,10 @@
 					email: 'jm.kleger@gmail.com',
 					password: 'secret'
 				},
-				// errors: []
+                // errors: []
+                loadingGoogle: false,
+                loadingFacebook: false,
+                loadingSendVerificationEmail: false
 			}
 		},
 		computed: {
@@ -125,6 +132,30 @@
             switchToForgotPassword () {
                 this.$emit('switchToForgotPasswordModal')
             },
+            async sendVerificationEmail (authData) {
+                try {
+                    console.log('sendVerificationEmail: ', authData)
+                    this.loadingSendVerificationEmail = true
+                    await this.$store.dispatch('firebase-auth/sendVerificationEmail', authData)
+                    this.loadingSendVerificationEmail = false
+                    this.$store.commit('clearError')
+                    new Noty({
+                        type: 'success',
+                        text: 'Email sent successfully!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                } catch (error) {
+                    console.log('error: ', error)
+                    this.loadingSendVerificationEmail = false
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and the verification email could not be sent.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            },
 			async signUserIn () {
                 console.log('signUserIn')
                 try {
@@ -138,7 +169,7 @@
                     // }).show()
                     this.$router.replace('/candidate/resumes')
                 } catch (error) {
-                    console.log('error: ', error)
+                    console.log('error from client: ', error)
                     // new Noty({
                     //     type: "error",
                     //     text: "Sorry, an error occured and you could not log in.",
@@ -150,6 +181,7 @@
             async signInWithGoogle () {
                 try {
                     console.log('signInWithGoogle')
+                    this.loadingGoogle = true
                     await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
                     new Noty({
                         type: 'success',
@@ -157,9 +189,11 @@
                         timeout: 5000,
                         theme: 'metroui'
                     }).show()
+                    this.loadingGoogle = false
                     this.$router.replace('/candidate/resumes')
                 } catch (error) {
                     console.log('error: ', error)
+                    this.loadingGoogle = false
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and you could not log in.',
@@ -169,10 +203,29 @@
                 }
             },
             async signInWithFacebook () {
-                console.log('signInWithFacebook')
-                await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
-                this.$router.replace('/candidate/resumes')
-            },
+                try {
+                    console.log('signInWithFacebook')
+                    this.loadingFacebook = true
+                    await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
+                    new Noty({
+                        type: 'success',
+                        text: 'Login went successfully!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    this.loadingFacebook = false
+                    this.$router.replace('/candidate/resumes')
+                } catch (error) {
+                    console.log('error: ', error)
+                    this.loadingFacebook = false
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and you could not log in.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            }
 		}
 	}
 

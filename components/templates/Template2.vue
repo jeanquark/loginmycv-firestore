@@ -218,7 +218,7 @@
 								<v-chip class="primary-color-background text-color rounded-border py-2 px-3"
 									><b>{{ resume.personal_data.greeting_phrase }}</b>
 								</v-chip><br /><br />
-								<h1 id="fullName" class="">{{ resume.personal_data.firstname }} {{ resume.personal_data.lastname }}</h1>
+								<h1 id="fullName" class="">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename ? resume.personal_data.middlename : '' }} {{ resume.personal_data.lastname }}</h1>
 								<h2 class="">{{ resume.job_title }}</h2><br />
 
 								<div class="mb-1">

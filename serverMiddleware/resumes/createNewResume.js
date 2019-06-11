@@ -25,25 +25,33 @@ module.exports = app.use(async function (req, res, next) {
 
 
 
-        // 2) Check slug existence among other users' resumes
-        // const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
-        const querySnapshot = await admin.firestore().collection('resumes_long').where('slug', '==', newResume.slug).get();
-        const resumesLongArray = []
-        querySnapshot.forEach(doc => {
-            console.log('doc.data().user_id: ', doc.data().user_id)
-            console.log('newResume.user_id: ', newResume.user_id)
-            if (doc.data().user_id !== newResume.user_id) {
-                resumesLongArray.push(doc.data().slug);
-            }
-        });
-        console.log('resumesLongArray: ', resumesLongArray);
-        console.log('resumesLongArray.length: ', resumesLongArray.length);
-
-        if (resumesLongArray.length > 0) {
+        // 2) Check slug existence
+        const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
+        const existingSlug = snapshot.data();
+        console.log('existingSlug: ', existingSlug);
+        if (existingSlug) {
             throw {
                 'slug': 'Slug already exists. Please provide another identifier for the resume.',
             }
         }
+        // const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
+        // const querySnapshot = await admin.firestore().collection('resumes_long').where('slug', '==', newResume.slug).get();
+        // const resumesLongArray = []
+        // querySnapshot.forEach(doc => {
+        //     console.log('doc.data().user_id: ', doc.data().user_id)
+        //     console.log('newResume.user_id: ', newResume.user_id)
+        //     if (doc.data().user_id !== newResume.user_id) {
+        //         resumesLongArray.push(doc.data().slug);
+        //     }
+        // });
+        // console.log('resumesLongArray: ', resumesLongArray);
+        // console.log('resumesLongArray.length: ', resumesLongArray.length);
+
+        // if (resumesLongArray.length > 0) {
+        //     throw {
+        //         'slug': 'Slug already exists. Please provide another identifier for the resume.',
+        //     }
+        // }
 
         
         newResume._created_at = moment().unix();
@@ -90,7 +98,7 @@ module.exports = app.use(async function (req, res, next) {
         let batch = admin.firestore().batch();
         const newShortResume = admin.firestore().collection('resumes_short').doc();
         newResume['resume_short_id'] = newShortResume.id;
-        const newLongResume = admin.firestore().collection('resumes_long').doc();
+        const newLongResume = admin.firestore().collection('resumes_long').doc(newResume.slug);
         // newResume['resume_long_id'] = newLongResume.id;
             
         // const newLongResume = admin.firestore().collection('resumes_long').doc(newLongResume.id);
@@ -98,8 +106,7 @@ module.exports = app.use(async function (req, res, next) {
 
         batch.set(newShortResume, {
             user_id: newResume.user_id, 
-            resume_long_id: newLongResume.id,
-            slug: newResume.slug,
+            resume_long_id: newResume.slug,
             visibility: newResume.visibility,
             job_title: newResume.job_title,
             job_description: newResume.job_description,

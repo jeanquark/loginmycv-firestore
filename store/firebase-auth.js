@@ -1,8 +1,8 @@
 import { firestore, auth, GoogleAuthProvider, FacebookAuthProvider } from '~/plugins/firebase-client-init.js'
 import axios from 'axios'
-import Noty from 'noty'
+// import Noty from 'noty'
 // import moment = require('moment')
-import moment from 'moment'
+// import moment from 'moment'
 
 export const state = () => ({})
 
@@ -23,10 +23,14 @@ export const actions = {
                     auth.signOut()
                     .then(() => {
                         console.log('You were immediately signed out because your email is not verified.')
+                        throw { code: 'email_not_verified', message: 'Your email address is not verified.', authData }
                     })
                     .catch(error => {
-                        console.log('error: ', error)
-                        throw error
+                        console.log('error2: ', error)
+                        // throw error
+                        commit('setLoading', false, { root: true })
+                        commit('setError', error, { root: true })
+                        reject(error)
                     })
                 } else {
                     console.log('Email is verified, continue sign in.')
@@ -300,11 +304,52 @@ export const actions = {
         }
     },
     async signInWithFacebookPopup({ commit }) {
-        try {
-            
-        } catch (error) {
-            
-        }
+        // Promise is necessary so that redirection does not occur when user is not already loaded in state
+        return new Promise((resolve, reject) => {
+            commit('setLoading', true, { root: true })
+            // 1) First sign in with Google
+            let userId = ''
+            // let authData = ''
+            auth.signInWithPopup(FacebookAuthProvider).then(authData => {
+                console.log('authData: ', authData)
+                console.log('authData.user: ', authData.user)
+                userId = authData.user.uid
+                console.log('userId: ', userId)
+                // 2) Then update users state
+                firestore.collection('users').doc(userId).onSnapshot(function(doc) {
+                    const registeredUser = {
+                        ...doc.data(),
+                        id: doc.id  
+                    }
+                    console.log('registeredUser: ', registeredUser)
+
+                    // If user does not exists, save user data in database at the users node
+                    if (!registeredUser.private) {
+                        return axios.post('/register-new-user', {
+                            type: 'oauth',
+                            data: authData
+                        })
+                        .then(response => {
+                            // Load newly registered user in store
+                            console.log('response: ', response)
+                            console.log('response.data: ', response.data)
+                            commit('users/setLoadedUser', response.data.newUser, { root: true })
+                        })
+                        .catch(function(error) {
+                            commit('setLoading', false, { root: true })
+                        })
+                    } else {
+                        commit('users/setLoadedUser', registeredUser, { root: true })
+                    }
+                    commit('setLoading', false, { root: true })
+                    resolve()
+                })
+            }).catch(error => {
+                commit('setLoading', false, { root: true })
+                console.log(error)
+                reject(error)
+            }) 
+        })
     },
     async resetPassword ({ commit }, payload) {
         console.log('payload: ', payload)
@@ -316,6 +361,14 @@ export const actions = {
         }).catch(function(error) {
             console.log('error: ', error)
         })
+    },
+    async sendVerificationEmail ({ commit }, authData) {
+        try {
+            await authData.user.sendEmailVerification()
+        } catch (error) {
+            console.log('error3: ', error)
+            throw error
+        }
     },
     async signOut({ commit }) {
         commit('setLoading', true, { root: true })

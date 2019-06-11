@@ -157,11 +157,12 @@
                         this.$store.commit('setLoading', false, { root: true })
                         new Noty({
                             type: 'success',
-                            text: 'Registration went successfully. Welcome to loginMyCV!',
+                            text: `Registration went successfully. Please check your inbox at ${this.form.email} to confirm your identity. Welcome aboard &#128522;!`,
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
-                        this.$router.push('/candidate/resumes')
+                        // this.$router.push('/candidate/resumes')
+                        this.switchToLogin()
                     } catch (error) {
                         console.log('error2: ', error)
                         this.$store.commit('setError', error)

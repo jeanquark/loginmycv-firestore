@@ -79,42 +79,6 @@ module.exports = app.use(async function (req, res, next) {
         await admin.firestore().collection('users').doc(userId).set(newUser);
         newUser['id'] = userId;
         
-
-        // const newUser = buildCandidateObject(req.body.data);
-        // console.log('newUser: ', newUser);
-
-        // const store = admin.firestore();
-        // if (newUser.id) {
-        //     store.collection('users').doc(newUser.id).set(newUser);
-        // } else {
-        //     store.collection('users').add(newUser);
-        // }
-
-        // Get auth user id
-        // const decodedToken = await admin.auth().verifyIdToken(req.body.data.idToken);
-        // console.log('decodedToken: ', decodedToken);
-        // const uid = decodedToken.uid;
-        // console.log('uid: ', uid);
-       
-        // const password_encode = btoa(newCandidate.password)
-
-        // const newRecruiter = await admin.auth().createUser({
-        //     email: 'loginmycv_recruiter_jm.kleger@gmail.com',
-        //     emailVerified: false,
-        //     phoneNumber: "+11234567890",
-        //     password: newCandidate.password,
-        //     displayName: "Recruiter",
-        //     photoURL: "http://www.example.com/photo.png",
-        //     disabled: false
-        // });
-
-        // store.collection('recruiters').doc(newCandidate.id).set({
-        //     id: req.body.data.id,
-        //     candidate_id: newCandidate.id,
-        //     password_encode: req.body.data.password_encode
-        // });
-
-        // res.send(newUser);
         res.send({
             message: 'POST request to register new user went successfully.',
             newUser

@@ -55,7 +55,7 @@
 			try {
 				this.resume = await this.$store.dispatch('resumes/fetchLongResume', slug)
 				console.log('resume from index.vue: ', this.resume)
-				return
+				// return
 
 				if (this.resume) {
 					// this.resume = resume

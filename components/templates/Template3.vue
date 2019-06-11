@@ -1,15 +1,15 @@
 <template>
 	<v-app>
-		<div class="fullpage-container">
+		<div class="fullpage-container background-color text-color">
 			<div class="button-group">
 				<button type="button" :class="{active:index == 0}" @click="moveTo(0)">Presentation</button>
-				<button type="button" :class="{active:index == 1}" @click="moveTo(1)">Education</button>
-				<button type="button" :class="{active:index == 2}" @click="moveTo(2)">Work experience</button>
-				<button type="button" :class="{active:index == 3}" @click="moveTo(3)">Files</button>
-				<button type="button" :class="{active:index == 4}" @click="moveTo(4)">Contact</button>
+				<button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length > 0">Education</button>
+				<button type="button" :class="{active:index == 2}" @click="moveTo(2)" v-if="resume.work_experience && resume.work_experience.length > 0">Work experience</button>
+				<button type="button" :class="{active:index == 3}" @click="moveTo(3)" v-if="resume.uploads && resume.uploads.length > 0">Files</button>
+				<!-- <button type="button" :class="{active:index == 4}" @click="moveTo(4)">Contact</button> -->
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
-				<div class="page-1 page" style="background: url('https://picsum.photos/id/976/1024/900') no repeat center center; background-size: cover;">
+				<div class="page-1 page text-color">
 					<v-layout row wrap>
 						<v-flex xs6 class="pa-4" style="border: 1px solid orange;">
 							<v-layout row wrap>
@@ -18,25 +18,31 @@
 										:tile="false"
 										:size="250"
 										color="grey lighten-4"
+										v-if="profilePicture"
 									>
-										<img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+										<img :src="profilePicture" alt="profile picture">
 									</v-avatar>
 								</v-flex>
 								<v-flex xs6>
 									<h2>{{ resume.personal_data.firstname }} {{ resume.personal_data.lastname }}</h2>
 									<h3>{{ resume.job_title }}</h3>
 									<h4>{{ resume.job_description }}</h4>
+									<p>{{ resume.personal_data.country.name }}</p>
+									<p>{{ resume.personal_data.email }}</p>
+									<p>{{ resume.languages }}</p>
+									<p>{{ resume.social_networks }}</p>
 								</v-flex>
 							</v-layout>
 						</v-flex>
 						<v-flex xs6 class="pa-4" style="border: 1px solid orangered;">
-							<div class="text-xs-left">
-								abc
+							<div class="text-xs-left" v-for="(file, index) in files" :key="index">
+								 {{ file.name }}
 							</div>
 						</v-flex>
 					</v-layout>
 				</div>
-				<div class="page-2 page" style="border: 1px solid red;">
+				<div class="page-2 page" style="background-image: linear-gradient(120deg, orangered, white);">
+				<!-- <div class="page-2 page" style="background-color: red;"> -->
 					<p class="part-2" v-animate="{value: 'bounceInRight'}">page-2 page</p>
 				</div>
 				<div class="page-3 page">
@@ -177,6 +183,7 @@ export default {
 	}
 	body {
         margin: 0;
+		color: green;
     }
 	/* .fullpage-container {
 		position: relative;
@@ -216,8 +223,6 @@ export default {
 		opacity: 1;
 	}
 
-
-	
     .fullpage-container {
         position: absolute;
         left: 0;
@@ -233,12 +238,13 @@ export default {
     }
     .page-1 {
         padding-top: 100px;
-        background: #1bbc9b;
+        background-color: #1bbc9b;
     }
     .page-2 {
         padding-top: 50px;
 		/* background: url('https://picsum.photos/id/975/1024/900') no-repeat center center; */
-		background: var(--url2) no-repeat center center;
+		/* background: var(--url2) no-repeat center center; */
+		background-color: var(--background-color);
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
@@ -254,7 +260,6 @@ export default {
 
 		/* background: url('https://picsum.photos/id/976/1024/900') no-repeat center center fixed;*/
     }
-
 
 	.button-group {
         position: absolute;
@@ -278,4 +283,13 @@ export default {
         background: rgba(0, 0, 0, .5);
         color: #fff;
     }
+
+	.background-color {
+		/* background-color: var(--background-color); */
+		background-color: orange;
+	}
+	.text-color {
+		/* color: var(--text-color); */
+		color: blue;
+	}
 </style>

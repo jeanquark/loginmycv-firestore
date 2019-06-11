@@ -79,18 +79,21 @@ export const actions = {
 		// 1) Fetch resume if its visibility is set to public
 		try {
 			console.log('Call to fetchLongResume action: ', payload)
-			const resumes2 = await axios.post('/fetch-long-resumes', { data: payload })
-			console.log('resumes2: ', resumes2)
-			return 
-			// const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-			const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
-			const resumesArray = []
-			querySnapshot.forEach(doc => {
-				console.log('doc.data(): ', doc.data())
-				resumesArray.push(doc.data())
-			})
+			// const resumes2 = await axios.post('/fetch-long-resumes', { data: payload })
+			// console.log('resumes2: ', resumes2)
+			// return 
+			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
+			const resume = snapshot.data()
+			console.log('resume from store: ', resume)
 
-			return resumesArray
+			return resume
+			// const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
+			// const resumesArray = []
+			// querySnapshot.forEach(doc => {
+			// 	console.log('doc.data(): ', doc.data())
+			// 	resumesArray.push(doc.data())
+			// })
+			// return resumesArray
 
 		} catch (error) {
 			console.log('error from fetchLongResume action: ', error)
@@ -152,7 +155,6 @@ export const actions = {
 	},
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
-		// firestore.collection('resumes_short').onSnapshot(snapshot => {
 		firestore.collection('resumes_short').where('visibility', '>=', 'public').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
