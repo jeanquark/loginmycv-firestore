@@ -168,6 +168,7 @@
                     //     theme: 'metroui'
                     // }).show()
                     this.$router.replace('/candidate/resumes')
+                    this.$store.commit('setLoading', false, { root: true })
                 } catch (error) {
                     console.log('error from client: ', error)
                     // new Noty({

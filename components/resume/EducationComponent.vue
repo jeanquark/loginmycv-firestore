@@ -218,11 +218,11 @@
                                         <v-text-field
                                             label="Title"
                                             :name="`education_title_${index}`"
-                                            v-validate="{ required: true, max: 2 }"
+                                            v-validate="{ required: true, max: 50 }"
                                             :error-messages="errors ? errors.collect(`education_title_${index}`) : null"
                                             data-vv-as="Title"
                                             v-model="candidateEducation[index].title"
-                                            :counter="2"
+                                            :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
@@ -230,11 +230,11 @@
                                         <v-text-field
                                             label="University/School/Institute name"
                                             :name="`education_school_${index}`"
-                                            v-validate="{ max: 2 }"
+                                            v-validate="{ max: 50 }"
                                             :error-messages="errors ? errors.collect(`education_school_${index}`) : null"
                                             data-vv-as="University/School/Institute"
                                             v-model="candidateEducation[index].school"
-                                            :counter="2"
+                                            :counter="50"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">

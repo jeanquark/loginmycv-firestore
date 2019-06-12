@@ -27,8 +27,6 @@ export const actions = {
                     })
                     .catch(error => {
                         console.log('error2: ', error)
-                        // throw error
-                        commit('setLoading', false, { root: true })
                         commit('setError', error, { root: true })
                         reject(error)
                     })

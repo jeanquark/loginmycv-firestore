@@ -370,7 +370,7 @@
                                     multiple
                                     chips
                                     small-chips
-                                    hint="Click checkbox to display levels"
+                                    hint="Click checkbox to display levels. Order matters."
                                     persistent-hint
                                     :deletable-chips="true"
                                     color="secondary"

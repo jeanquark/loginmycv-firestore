@@ -144,6 +144,14 @@ module.exports = {
         {
             path: '/fetch-long-resumes',
             handler: '~/serverMiddleware/resumes/fetchLongResumes'
+        },
+        {
+            path: 'set-custom-claims',
+            handler: '~/serverMiddleware/setCustomClaims'
+        },
+        {
+            path: 'update-user-tokens',
+            handler: '~/serverMiddleware/updateUserTokens'
         }
     ],
     css: ["~/assets/style/app.styl"],

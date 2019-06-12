@@ -36,11 +36,14 @@
 		// },
 		// components: { DynamicResumeTemplate },
 		async created () {
+			console.log('Entering created lifecycle hook')
+		},
+		async mounted () {
     		// await this.$store.commit('resumes/setResume', {firstname: 'Jean-Marc'})
 			// setTimeout(() => {
 			// 	console.log('OK!')
 			// }, 3000)
-			console.log('Entering created lifecycle hook resume/_user_id/index.vue')
+			console.log('Entering mounted lifecycle hook resume/_user_id/index.vue')
 			// const template = await this.$store.getters['resumes/loadedResume'].template
             // console.log('template: ', template)
             // const type = `Template${template}`
@@ -50,7 +53,8 @@
 
 
             // 1) Fetch resume if resume is public or it is user's resume or user has registered as a visitor		      
-        	const slug = this.$route.params.slug
+			const slug = this.$route.params.slug
+			console.log('this.$route.params: ', this.$route.params)
 			console.log('slug2: ', slug)
 			try {
 				this.resume = await this.$store.dispatch('resumes/fetchLongResume', slug)
@@ -113,8 +117,6 @@
    //      	console.log('redirect to visitor login if resume exists')
         	
 
-		},
-		async mounted () {
 		},
 		data() {
 			return {

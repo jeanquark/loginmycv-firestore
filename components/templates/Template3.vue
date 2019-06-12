@@ -1,54 +1,83 @@
 <template>
 	<v-app>
 		<div class="fullpage-container background-color text-color">
-			<div class="button-group">
+			<div class="button-group" v-if="resume.education.length > 0 || resume.work_experience.length > 0 || resume.skills.length > 0">
 				<button type="button" :class="{active:index == 0}" @click="moveTo(0)">Presentation</button>
 				<button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length > 0">Education</button>
 				<button type="button" :class="{active:index == 2}" @click="moveTo(2)" v-if="resume.work_experience && resume.work_experience.length > 0">Work experience</button>
-				<button type="button" :class="{active:index == 3}" @click="moveTo(3)" v-if="resume.uploads && resume.uploads.length > 0">Files</button>
 				<!-- <button type="button" :class="{active:index == 4}" @click="moveTo(4)">Contact</button> -->
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
-				<div class="page-1 page text-color">
+				<div class="page page-1 text-color">
 					<v-layout row wrap>
 						<v-flex xs6 class="pa-4" style="border: 1px solid orange;">
 							<v-layout row wrap>
-								<v-flex xs6 class="text-xs-center">
+								<v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture">
 									<v-avatar
 										:tile="false"
 										:size="250"
 										color="grey lighten-4"
-										v-if="profilePicture"
 									>
 										<img :src="profilePicture" alt="profile picture">
 									</v-avatar>
 								</v-flex>
-								<v-flex xs6>
-									<h2>{{ resume.personal_data.firstname }} {{ resume.personal_data.lastname }}</h2>
-									<h3>{{ resume.job_title }}</h3>
+								<v-flex v-bind="{[`xs12 sm${column}`]: true}" class="text-xs-center">
+									<h1>{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename }} {{ resume.personal_data.lastname }}</h1><br />
+									<h2>{{ resume.job_title }}</h2>
 									<h4>{{ resume.job_description }}</h4>
-									<p>{{ resume.personal_data.country.name }}</p>
-									<p>{{ resume.personal_data.email }}</p>
-									<p>{{ resume.languages }}</p>
-									<p>{{ resume.social_networks }}</p>
+									<br /><br />
+									<v-layout row wrap class="text-big text-xs-left">
+										<v-flex xs6 class="mb-3" v-if="resume.personal_data.city || resume.personal_data.country">
+											<div v-if="resume.personal_data.city">
+												<font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.city }} {{ resume.personal_data.country.name }}
+											</div>
+											<div v-else>
+												<font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.country.name }}
+											</div>
+										</v-flex>
+										<v-flex xs6 class="mb-3" v-if="resume.personal_data.email">
+											<font-awesome-icon :icon="['fas', 'envelope']" class="icon" /> {{ resume.personal_data.email }}
+										</v-flex>
+										<v-flex xs6 class="mb-3" v-if="resume.personal_data.phone_number">
+											<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
+										</v-flex>
+										<v-flex class="mb-3" v-if="resume.personal_data.nationalities">
+											<font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
+											<span v-for="(nationality, index) in resume.personal_data.nationalities" :key="index">
+												{{ nationality.name }}<span v-if="index + 1 < resume.personal_data.nationalities.length">, </span>
+											</span>
+										</v-flex>
+										<v-flex class="mb-3" v-if="resume.languages">
+											<font-awesome-icon :icon="['fas', 'language']" class="icon" />
+											<span v-for="(language, index) in resume.languages" :key="index">
+												{{ language.name }}<span v-if="index + 1 < resume.languages.length">, </span>
+											</span>
+										</v-flex>
+									</v-layout>
+									<v-layout row wrap>
+										<v-flex xs12 class="text-xs-center">
+												<v-chip label class="social-link" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" /></v-chip>
+										</v-flex>
+									</v-layout>
+
 								</v-flex>
 							</v-layout>
 						</v-flex>
 						<v-flex xs6 class="pa-4" style="border: 1px solid orangered;">
 							<div class="text-xs-left" v-for="(file, index) in files" :key="index">
-								 {{ file.name }}
+								<font-awesome-icon :icon="['fas', 'file-pdf']" /> {{ file.name }}
 							</div>
 						</v-flex>
 					</v-layout>
 				</div>
-				<div class="page-2 page" style="background-image: linear-gradient(120deg, orangered, white);">
+				<div class="page page-2" style="background-image: linear-gradient(120deg, orangered, white);" v-if="resume.education && resume.education.length > 0">
 				<!-- <div class="page-2 page" style="background-color: red;"> -->
 					<p class="part-2" v-animate="{value: 'bounceInRight'}">page-2 page</p>
 				</div>
-				<div class="page-3 page">
+				<div class="page page-3" v-if="resume.work_experience && resume.work_experience.length > 0">
 					<p class="part-3" v-animate="{value: 'bounceInLeft', delay: 0}">page-3 page</p>
 				</div>
-				<div class="page-4 page" style="background: yellow;">
+				<div class="page page-4" v-if="resume.skills && resume.skills.length > 0" style="background: yellow;">
 					<p class="part-4" v-animate="{value: 'bounceInLeft'}">page-4 page</p>
 				</div>
 				<div class="page-5 page" style="background: yellow;">
@@ -76,10 +105,13 @@ export default {
 	mounted () {
 		this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
 		this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
-		this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
+		this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#1BBC9B'
 		this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
 		this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
 		this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
+		if (!this.profilePicture) {
+			this.column = 12
+		}
 	},
 	data() {
 		// var that = this
@@ -107,6 +139,7 @@ export default {
 			backgroundColor: '',
 			textColor: '',
 			profilePicture: {},
+			column: 6
 		}
 	},
 	computed: {
@@ -232,40 +265,33 @@ export default {
     }
     .page {
         display: block;
-        text-align: center;
-        font-size: 26px;
-        color: #eee;
     }
     .page-1 {
-        padding-top: 100px;
-        background-color: #1bbc9b;
+        padding-top: 50px;
+        background-color: var(--background-color);
     }
     .page-2 {
         padding-top: 50px;
-		/* background: url('https://picsum.photos/id/975/1024/900') no-repeat center center; */
-		/* background: var(--url2) no-repeat center center; */
-		background-color: var(--background-color);
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
+		background-color: var(--tertiary-color);
     }
     .page-3 {
         padding-top: 50px;
-		background: url('https://picsum.photos/id/976/1024/900') no-repeat center center;
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
-
-		/* background: url('https://picsum.photos/id/976/1024/900') no-repeat center center fixed;*/
+		background-color: var(--background-color);
     }
+	.page-4 {
+		padding-top: 50px;
+		background-color: var(--tertiary-color);
+	}
 
 	.button-group {
         position: absolute;
-        top: 30px;
-        left: 30px;
+        /* top: 30px; */
+        /* left: 30px; */
         z-index: 9;
+		width: 100%;
+		/* padding-top: 30px; */
+		/* padding-left: 30px; */
+		margin-bottom: 50px;
     }
     .button-group button {
         display: inline-block;
@@ -291,5 +317,19 @@ export default {
 	.text-color {
 		/* color: var(--text-color); */
 		color: blue;
+	}
+	.text-big {
+		font-size: 1.2em;
+	}
+	.social-link {
+		background-color: var(--background-color);
+		color: var(--text-color);
+		cursor: pointer;
+	}
+	.social-link:hover {
+		background-color: var(--background-color);
+		color: var(--primary-color);
+		color: pink;
+		cursor: pointer;
 	}
 </style>

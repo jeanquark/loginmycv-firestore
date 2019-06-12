@@ -245,7 +245,7 @@
 								
 								<br />
 								<v-layout class="justify-center">
-									<v-chip label class="social-link" @click="redirectTo(social.link)" v-for="(social, index) in resume.social_links" :key="index"><font-awesome-icon :icon="['fab', social.fontawesome]" size="2x" /></v-chip>
+									<v-chip label class="social-link" @click="redirectTo(social.link)" v-for="(social_network, index) in resume.social_networks" :key="index"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" /></v-chip>
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'linkedin-in']" size="2x" /></v-chip> -->
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip> -->
 								</v-layout>

@@ -88,10 +88,10 @@
 					<v-layout row wrap>
 						<v-flex xs12 style="white-space: nowrap;">
 							<div class="country-flag" v-if="resume.country">
-								<v-img :src="`/images/countries/${resume.country.slug}.png`" width="25" class="mb-1"></v-img>
+								<v-img :src="`/images/countries/${resume.country.slug}.png`" width="20" class="mb-1"></v-img>
 							</div>
 							<div class="language-flag">
-								<v-img :src="`/images/languages/${language.slug}.png`" width="25" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
+								<v-img :src="`/images/languages/${language.slug}.png`" width="20" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
 							</div>
 							<v-avatar
 								:size="78"

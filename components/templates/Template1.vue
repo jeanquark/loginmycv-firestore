@@ -81,8 +81,8 @@
 									</v-layout>
 									<v-layout class="my-3 px-2" v-if="resume.social_links">
 										<v-flex xs12 class="text-xs-center">
-											<v-chip label v-for="(social, index) in resume.social_links" :key="index" class="social-link" @click="redirectTo(social.link)">
-												<font-awesome-icon :icon="['fab', social.fontawesome]" size="2x" />
+											<v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link" @click="redirectTo(social_network.link)">
+												<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />
 											</v-chip>
 										</v-flex>
 									</v-layout>
