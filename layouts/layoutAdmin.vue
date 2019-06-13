@@ -16,7 +16,7 @@
 			  app
 			  v-model="drawer"
 			>
-				<v-list dense>
+				<v-list>
 					<template v-for="item in items">
 						<v-layout
 						  row

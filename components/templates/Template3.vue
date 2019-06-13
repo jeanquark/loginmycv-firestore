@@ -1,18 +1,21 @@
 <template>
 	<v-app>
 		<div class="fullpage-container background-color text-color">
-			<div class="button-group" v-if="resume.education.length > 0 || resume.work_experience.length > 0 || resume.skills.length > 0">
+			<div class="button-group ma-4" v-if="resume.education.length > 0 || resume.work_experience.length > 0 || resume.skills.length > 0" style="">
 				<button type="button" :class="{active:index == 0}" @click="moveTo(0)">Presentation</button>
 				<button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length > 0">Education</button>
 				<button type="button" :class="{active:index == 2}" @click="moveTo(2)" v-if="resume.work_experience && resume.work_experience.length > 0">Work experience</button>
 				<!-- <button type="button" :class="{active:index == 4}" @click="moveTo(4)">Contact</button> -->
+				<!-- primaryColor: {{ primaryColor }}<br /> -->
+				index: {{ index }}<br />
+				opts.def: {{ opts.def }}<br />
 			</div>
-			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
-				<div class="page page-1 text-color">
-					<v-layout row wrap>
-						<v-flex xs6 class="pa-4" style="border: 1px solid orange;">
+			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage" style="">
+				<div class="page page-1 text-color" style="border: 3px solid green; height: 100%; overflow-y: auto;" ref="page">
+					<v-layout row wrap ref="subpage" style="">
+						<v-flex xs12 sm6 class="pa-4" style="border: 2px solid red; height: 100%; overflow-y: auto;">
 							<v-layout row wrap>
-								<v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture">
+								<v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture" :ref="'subpage3'">
 									<v-avatar
 										:tile="false"
 										:size="250"
@@ -26,6 +29,7 @@
 									<h2>{{ resume.job_title }}</h2>
 									<h4>{{ resume.job_description }}</h4>
 									<br /><br />
+									index: {{ this.index }}<br />
 									<v-layout row wrap class="text-big text-xs-left">
 										<v-flex xs6 class="mb-3" v-if="resume.personal_data.city || resume.personal_data.country">
 											<div v-if="resume.personal_data.city">
@@ -59,20 +63,40 @@
 												<v-chip label class="social-link" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" /></v-chip>
 										</v-flex>
 									</v-layout>
-
+									<p class="primary-color">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 								</v-flex>
 							</v-layout>
 						</v-flex>
-						<v-flex xs6 class="pa-4" style="border: 1px solid orangered;">
+						<v-flex xs12 sm6 class="pa-4" style="border: 1px solid orangered;">
 							<div class="text-xs-left" v-for="(file, index) in files" :key="index">
 								<font-awesome-icon :icon="['fas', 'file-pdf']" /> {{ file.name }}
+								<p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 							</div>
 						</v-flex>
+						
 					</v-layout>
+					
 				</div>
 				<div class="page page-2" style="background-image: linear-gradient(120deg, orangered, white);" v-if="resume.education && resume.education.length > 0">
+					index: {{ this.index }}<br />
+
 				<!-- <div class="page-2 page" style="background-color: red;"> -->
 					<p class="part-2" v-animate="{value: 'bounceInRight'}">page-2 page</p>
+					<v-layout row wrap class="mt-5 px-4">
+						<v-flex xs12 sm6 md4 v-for="(education, index) in resume.education" :key="index">
+							<v-card color="#202026" style="border-radius: 10px;" v-animate="{value: 'rotateIn'}">
+								<v-card-title primary-title>
+									<div>
+										<h3 class="headline mb-0 white--text">UI Design</h3>
+									</div>
+								</v-card-title>
+
+								<v-card-text class="white--text">
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+								</v-card-text>
+							</v-card>
+						</v-flex>
+					</v-layout>
 				</div>
 				<div class="page page-3" v-if="resume.work_experience && resume.work_experience.length > 0">
 					<p class="part-3" v-animate="{value: 'bounceInLeft', delay: 0}">page-3 page</p>
@@ -92,6 +116,7 @@
 <script>
 
 export default {
+	props: ['resume'],
 	head () {
 		return {
 			title: this.title,
@@ -101,7 +126,6 @@ export default {
 			link: []
 		}
 	},
-	props: ['resume'],
 	mounted () {
 		this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
 		this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
@@ -112,6 +136,14 @@ export default {
 		if (!this.profilePicture) {
 			this.column = 12
 		}
+		// console.log('Fullpage height: ' + this.$refs.fullpage2.clientHeight)
+		// console.log('Fullpage scrollHeight: ' + this.$refs.fullpage2.scrollHeight)
+		// console.log('Subpage height: ' + this.$refs.subpage.clientHeight)
+		// console.log('Subpage scrollHeight: ' + this.$refs.subpage.scrollHeight)
+		// console.log('page clientHeight: ' + this.$refs.subpage.clientHeight)
+		// console.log('window.scrollY: ', document.body.scrollHeight)
+		// this.fullPageHeight = this.$refs.fullpage2.clientHeight
+		// this.subPageHeight = this.$refs.subpage.clientHeight
 	},
 	data() {
 		// var that = this
@@ -123,13 +155,17 @@ export default {
 				dir: 'v',
 				loop: false,
 				duration: 300,
+				def: 'def',
 				beforeChange (ele, current, next) {
-					// console.log('before', current, next)
-					this.index = next;
+					console.log('before', current, next)
+					console.log('this.index: ', this.index)
+					this.index = next
+					// this.index += 1
+					alert('this.index: ', this.index)
 				},
-				afterChange (ele, current) {
-					this.index = current;
-					// console.log('after', current)
+				afterChange: function (ele, current) {
+					this.index = current
+					console.log('after', current)
 				}
 			},
 			image: 'https://picsum.photos/id/975/1024/900',
@@ -139,13 +175,18 @@ export default {
 			backgroundColor: '',
 			textColor: '',
 			profilePicture: {},
-			column: 6
+			column: 6,
+			abc: '',
 		}
 	},
 	computed: {
 		cssProps() { 
 			return {
-				'--url2': url('https://picsum.photos/id/975/1024/900'),
+				'--primary-color': this.primaryColor,
+				'--secondary-color': this.secondaryColor,
+				'--tertiary-color': this.tertiaryColor,
+				'--background-color': this.backgroundColor,
+				'--text-color': this.textColor
 			}
 		},
 		skills () {
@@ -175,7 +216,7 @@ export default {
 		}
 	},
 	methods: {
-		moveTo: function(index) {
+		moveTo (index) {
 			this.$refs.fullpage.$fullpage.moveTo(index, true);
 			this.index = index
 		},
@@ -288,14 +329,14 @@ export default {
         /* top: 30px; */
         /* left: 30px; */
         z-index: 9;
-		width: 100%;
+		/* width: 100%; */
 		/* padding-top: 30px; */
 		/* padding-left: 30px; */
 		margin-bottom: 50px;
     }
     .button-group button {
         display: inline-block;
-        margin: 10px;
+        /* margin: 10px; */
         color: #000;
         background: #fff;
         background: rgba(255, 255, 255, .5);
@@ -328,8 +369,29 @@ export default {
 	}
 	.social-link:hover {
 		background-color: var(--background-color);
-		color: var(--primary-color);
+		/* color: var(--primary-color); */
 		color: pink;
 		cursor: pointer;
+	}
+	.primary-color {
+		color: yellow;
+		/* color: var(--primary-color); */
+	}
+
+	::-webkit-scrollbar {
+		width: 15px;
+	}
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 5px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #888;
+		/* background: var(--primary-color); */
+		border-radius: 5px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #555;
+		/* background: var(--secondary-color); */
 	}
 </style>

@@ -31,7 +31,6 @@
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
             </div>
             <div v-else>
-                <v-btn color="info" nuxt to="/admin">Admin</v-btn>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
@@ -116,7 +115,12 @@
 	import ForgotPassword from '~/components/ForgotPassword'
 	export default {
         inject: ['$validator'], // inject parent validator
-		components: { Login, Register, ForgotPassword },
+        components: { Login, Register, ForgotPassword },
+        head: {
+            meta: [
+                { name: "robots", content: "noindex" }
+            ]
+        },
         data () {
             return {
                 message: '',

@@ -2,6 +2,7 @@ export const strict = false
 import { firestore } from '~/plugins/firebase-client-init.js'
 import firebase from 'firebase/app'
 import axios from 'axios'
+import moment from 'moment'
 
 export const state = () => ({
 	loadedUser: null,
@@ -35,13 +36,21 @@ export const actions = {
 			firestore.collection('users').doc(userId).onSnapshot(function(doc) {
 				commit('users/setLoadedUser', { ...doc.data(), id: doc.id }, { root: true })
 			})
-		}
+        }
 	},
 	async fetchAllUsers ({ commit }) {
 		console.log('Call to fetchAllUsers action')
-		const snapshot = await firestore.collection('users').get()
-		console.log('snapshot: ', snapshot.docs.map(doc => doc.data()))
-		commit('setAllUsers', snapshot.docs.map(doc => doc.data()))
+		// const snapshot = await firestore.collection('users').get()
+		// console.log('snapshot: ', snapshot.docs.map(doc => doc.data()))
+        // commit('setAllUsers', snapshot.docs.map(doc => doc.data()))
+        firestore.collection('users').onSnapshot(function (querySnapshot) {
+            const users = []
+            querySnapshot.forEach(function (doc) {
+                users.push(doc.data());
+            })
+            console.log('users: ', users)
+            commit('setAllUsers', users)
+        })
 	},
 	async updateUserAccount({ commit, state, dispatch }, payload) {
         // We have to update user custom claims in token and user status in database
@@ -63,6 +72,10 @@ export const actions = {
                 }
             }
             console.log('status: ', status)
+
+            const customClaims = await axios.post('/set-custom-claims', { userEmail, action })
+            console.log('customClaims: ', customClaims)
+            return
 
             let promises = []
             promises.push(axios.post('/set-custom-claims', { userEmail, action }))

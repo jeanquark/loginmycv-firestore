@@ -9,6 +9,7 @@
 				backgroundColor: {{ this.backgroundColor }}<br />
 				textColor: {{ this.textColor }}<br />
 			</p><br /><br /> -->
+			<p class="primary-color">Some random text</p>
 
 			<!-- Section Personal data -->
 			<v-layout row wrap class="margin-top margin-bottom">
