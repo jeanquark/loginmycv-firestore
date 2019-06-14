@@ -171,12 +171,12 @@
                     this.$store.commit('setLoading', false, { root: true })
                 } catch (error) {
                     console.log('error from client: ', error)
-                    // new Noty({
-                    //     type: "error",
-                    //     text: "Sorry, an error occured and you could not log in.",
-                    //     timeout: 5000,
-                    //     theme: "metroui"
-                    // }).show()
+                    new Noty({
+                        type: "error",
+                        text: "Sorry, an error occured and you could not log in.",
+                        timeout: 5000,
+                        theme: "metroui"
+                    }).show()
                 }
             },
             async signInWithGoogle () {

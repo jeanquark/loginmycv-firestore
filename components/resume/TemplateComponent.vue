@@ -32,6 +32,10 @@
             </v-flex>
         </v-layout>
 
+        <v-layout>
+            Menu names
+        </v-layout>
+
         <v-layout row wrap pa-2>
             <v-flex xs12>
                 <v-card :elevation="12" class="pa-2" v-if="loadedTemplate">

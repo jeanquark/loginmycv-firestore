@@ -269,11 +269,16 @@
 		},
 		props: ['resume'],
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
-			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
+			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
+			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
+			// this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
+			// this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
+			// this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
+			// this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
 
 			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
 			if (!this.profilePicture) {

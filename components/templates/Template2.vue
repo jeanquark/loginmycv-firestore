@@ -241,15 +241,13 @@
 									<span v-for="(language, index) in resume.languages" :key="index">
 										{{ language.name }}<span v-if="index + 1 < resume.languages.length">, </span>
 									</span>
-								</div>
-								
+								</div>								
 								<br />
 								<v-layout class="justify-center">
 									<v-chip label class="social-link" @click="redirectTo(social.link)" v-for="(social_network, index) in resume.social_networks" :key="index"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" /></v-chip>
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'linkedin-in']" size="2x" /></v-chip> -->
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip> -->
 								</v-layout>
-
 							</v-flex>
 							<v-flex xs12 sm6 style="">
 								<v-layout justify-center>
@@ -498,6 +496,7 @@
 	import moment from 'moment'
 	export default {
 		inject: ['$validator'], // inject vee-validate validator
+		props: ['resume'],
 		head () {
 		    return {
 		      	title: this.title,
@@ -507,13 +506,17 @@
 				link: []
 		    }
 		},
-		props: ['resume'],
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#202026'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#000'
-			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#fff'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
+			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
+			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
+			// this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
+			// this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#202026'
+			// this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#000'
+			// this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#fff'
 		},
 		data () {
 		    return {

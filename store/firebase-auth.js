@@ -215,7 +215,7 @@ export const actions = {
     async signInWithGooglePopup({ commit, dispatch }) {
         // Promise is necessary so that redirection does not occur when user is not already loaded in state
         return new Promise((resolve, reject) => {
-            commit('setLoading', true, { root: true })
+            // commit('setLoading', true, { root: true })
             // 1) First sign in with Google
             let userId = ''
             // let authData = ''
@@ -243,18 +243,19 @@ export const actions = {
                             console.log('response: ', response)
                             console.log('response.data: ', response.data)
                             commit('users/setLoadedUser', response.data.newUser, { root: true })
+                            resolve()                            
                         })
                         .catch(function(error) {
-                            commit('setLoading', false, { root: true })
+                            // commit('setLoading', false, { root: true })
+                            reject(error)
                         })
                     } else {
                         commit('users/setLoadedUser', registeredUser, { root: true })
+                        resolve()
                     }
-                    commit('setLoading', false, { root: true })
-                    resolve()
                 })
             }).catch(error => {
-                commit('setLoading', false, { root: true })
+                // commit('setLoading', false, { root: true })
                 console.log(error)
                 reject(error)
             }) 
@@ -262,7 +263,7 @@ export const actions = {
     },
     async signInWithGooglePopup2({ commit, dispatch }) {
         try {
-            commit('setLoading', true, { root: true })
+            // commit('setLoading', true, { root: true })
             let authData = await auth.signInWithPopup(GoogleAuthProvider)
             console.log('authData: ', authData)
             console.log('authData.user: ', authData.user)
@@ -279,7 +280,7 @@ export const actions = {
                 })
                 const newUser = registerNewUser.data.newUser
                 console.log('newUser: ', newUser)
-                commit('setLoading', false, { root: true })
+                // commit('setLoading', false, { root: true })
                 // await dispatch('users/fetchAuthenticatedUser', newUser, { root: true })
                 commit('users/setLoadedUser', newUser, { root: true })
                 // window.location.replace('/candidate/resumes')
@@ -289,7 +290,7 @@ export const actions = {
                     id: snapshot.id
                 }
                 console.log('user: ', user)
-                commit('setLoading', false, { root: true })
+                // commit('setLoading', false, { root: true })
                 // await dispatch('users/fetchAuthenticatedUser', user, { root: true })
                 commit('users/setLoadedUser', newUser, { root: true })
                 window.location.replace('/candidate/resumes')
@@ -297,14 +298,14 @@ export const actions = {
         } catch (error) {
             console.log('error: ', error)
             commit('setError', error, { root: true })
-            commit('setLoading', false, { root: true })
+            // commit('setLoading', false, { root: true })
             throw error
         }
     },
     async signInWithFacebookPopup({ commit }) {
         // Promise is necessary so that redirection does not occur when user is not already loaded in state
         return new Promise((resolve, reject) => {
-            commit('setLoading', true, { root: true })
+            // commit('setLoading', true, { root: true })
             // 1) First sign in with Google
             let userId = ''
             // let authData = ''
@@ -332,18 +333,19 @@ export const actions = {
                             console.log('response: ', response)
                             console.log('response.data: ', response.data)
                             commit('users/setLoadedUser', response.data.newUser, { root: true })
+                            resolve()
                         })
                         .catch(function(error) {
-                            commit('setLoading', false, { root: true })
+                            // commit('setLoading', false, { root: true })
+                            reject(error)
                         })
                     } else {
                         commit('users/setLoadedUser', registeredUser, { root: true })
+                        resolve()
                     }
-                    commit('setLoading', false, { root: true })
-                    resolve()
                 })
             }).catch(error => {
-                commit('setLoading', false, { root: true })
+                // commit('setLoading', false, { root: true })
                 console.log(error)
                 reject(error)
             }) 

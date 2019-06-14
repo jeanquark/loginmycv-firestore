@@ -93,6 +93,16 @@
                 <v-layout justify-center>
                     <v-btn color="primary" type="submit" :loading="loading">Register</v-btn>
                 </v-layout>
+
+                <v-layout row wrap class="mb-2">
+                    <v-flex xs6 class="px-2">
+                        <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Register with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
+                    </v-flex>
+                    <v-flex xs6 class="px-2">
+                        <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Register with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
+                    </v-flex>
+                </v-layout>
+
                 <v-layout justify-center>
                     <v-btn flat color="primary" @click="switchToLogin">
                         Switch to login
@@ -129,7 +139,9 @@
                     email: 'john.doe@example.com',
                     password: 'secret',
                     password_confirmation: 'secret'
-				}
+                },
+                loadingGoogle: false,
+                loadingFacebook: false
 			}
 		},
 		computed: {
@@ -222,7 +234,55 @@
                         }
                     }
                 }
-			}
+            },
+            async signInWithGoogle () {
+                try {
+                    console.log('signInWithGoogle')
+                    this.loadingGoogle = true
+                    await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
+                    new Noty({
+                        type: 'success',
+                        text: 'Login went successfully!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    this.loadingGoogle = false
+                    this.$router.replace('/candidate/resumes')
+                } catch (error) {
+                    console.log('error: ', error)
+                    this.loadingGoogle = false
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and you could not log in.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            },
+            async signInWithFacebook () {
+                try {
+                    console.log('signInWithFacebook')
+                    this.loadingFacebook = true
+                    await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
+                    new Noty({
+                        type: 'success',
+                        text: 'Login went successfully!',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                    this.loadingFacebook = false
+                    this.$router.replace('/candidate/resumes')
+                } catch (error) {
+                    console.log('error: ', error)
+                    this.loadingFacebook = false
+                    new Noty({
+                        type: 'error',
+                        text: 'Sorry, an error occured and you could not log in.',
+                        timeout: 5000,
+                        theme: 'metroui'
+                    }).show()
+                }
+            }
 		}
 	}
 

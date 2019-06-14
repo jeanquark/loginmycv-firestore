@@ -133,7 +133,7 @@
 						link: '/'
 					},
 					{
-						name: 'About Us',
+						name: 'About',
 						link: '/about'
 					},
 					{

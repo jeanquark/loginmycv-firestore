@@ -53,7 +53,7 @@ module.exports = {
             }
         ],
         'nuxt-client-init-module',
-        ['fullpage-nuxt', { animate: true }]
+        ['fullpage-nuxt']
     ],
     axios: {
         proxyHeaders: false
