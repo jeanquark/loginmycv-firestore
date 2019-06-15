@@ -78,6 +78,7 @@ module.exports = {
         { src: '~/plugins/vue2-scrollspy', ssr: false },
         // { src: '~/plugins/vue-draggable', ssr: false },
         // { src: '~/plugins/fullpage-vue', ssr: false },
+        { src: '~/plugins/vue-stripe-checkout', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
@@ -152,6 +153,10 @@ module.exports = {
         {
             path: 'update-user-tokens',
             handler: '~/serverMiddleware/updateUserTokens'
+        },
+        {
+            path: '/stripe-payments',
+            handler: '~/serverMiddleware/payments/stripePayments'
         }
     ],
     css: ["~/assets/style/app.styl"],
@@ -174,6 +179,9 @@ module.exports = {
             }
         }
     },
-    dev: (process.env.NODE_ENV !== 'production')
+    dev: (process.env.NODE_ENV !== 'production'),
+    loading: {
+        color: '#7a528f'
+    }
 }
 
