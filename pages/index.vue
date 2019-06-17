@@ -247,6 +247,9 @@
 			// console.log('res: ', res);
 
 		},
+		mounted () {
+			this.$store.commit('closeLoginModal')
+		},
 		data () {
 			return {
 				loading: false,
@@ -429,11 +432,11 @@
 	.country-flag {
 		position: absolute;
 		top: 15px;
-		left: 0;
+		left: -5px;
 	}
 	.language-flag {
 		position: absolute;
 		top: 15px;
-		right: 0;
+		right: -5px;
 	}
 </style>

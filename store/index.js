@@ -9,7 +9,10 @@ export const state = () => ({
     loadingFiles: false,
     error: null,
     errors: [],
-    notification: {} 
+    notification: {},
+    loginModal: false,
+    message: '',
+    redirect: ''
 })
 
 export const mutations = {
@@ -38,6 +41,21 @@ export const mutations = {
         console.log('Call to clearError mutation: ')
         state.error = null
         state.errors = []
+    },
+    openLoginModal (state) {
+        console.log('openLoginModal')
+        state.loginModal = true
+    },
+    closeLoginModal (state) {
+        console.log('closeLoginModal')
+        state.loginModal = false
+    },
+    setMessage (state, payload) {
+        console.log('setMessage: ', payload)
+        state.message = payload
+    },
+    setRedirect (state, payload) {
+        state.redirect = payload
     }
 }
 
@@ -114,5 +132,14 @@ export const getters = {
     },
     notification (state) {
         return state.notification
+    },
+    loginModal (state) {
+        return state.loginModal
+    },
+    loadedMessage (state) {
+        return state.message
+    },
+    loadedRedirect (state) {
+        return state.redirect
     }
 }

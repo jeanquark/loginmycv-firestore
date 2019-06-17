@@ -25,14 +25,15 @@
             <!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
             <div v-if="loadedUser && loadedUser.private">
-                <v-btn nuxt to="/stripe">Stripe</v-btn>
-                <v-btn color="success" @click="loginModal = true">Login</v-btn>
+                <v-btn nuxt to="/stripe2">Stripe</v-btn>
+                <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="info" nuxt to="/admin">Admin</v-btn>
                 <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
             </div>
             <div v-else>
-                <v-btn nuxt to="/stripe">Stripe</v-btn>
+                <!-- loginModal: {{ this.loginModal }} -->
+                <v-btn nuxt to="/stripe2">Stripe</v-btn>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
@@ -125,8 +126,8 @@
         },
         data () {
             return {
-                message: '',
-                loginModal: false,
+                // message: '',
+                // loginModal: false,
                 registerModal: false,
                 forgotPasswordModal: false,
                 links: [
@@ -160,18 +161,27 @@
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
             },
+            loginModal () {
+                return this.$store.getters['loginModal']
+            },
+            message () {
+                return this.$store.getters['loadedMessage']
+            }
         },
         methods: {
             switchToLogin () {
                 this.registerModal = false
-                this.loginModal = true
+                // this.loginModal = true
+                this.$store.commit('openLoginModal')
             },
             switchToRegister () {
-                this.loginModal = false
+                // this.loginModal = false
+                this.$store.commit('closeLoginModal')
                 this.registerModal = true
             },
             switchToForgotPassword () {
-                this.loginModal = false
+                // this.loginModal = false
+                this.$store.commit('closeLoginModal')
                 this.forgotPasswordModal = true
             },
             openLoginModal () {
@@ -179,10 +189,12 @@
                 this.message = null
                 this.$store.commit('clearError')
                 this.$store.commit('setLoading', false)
-                this.loginModal = true
+                // this.loginModal = true
+                this.$store.commit('openLoginModal')
             },
             closeLoginModal () {
-                this.loginModal = false
+                // this.loginModal = false
+                this.$store.commit('closeLoginModal')
             },
             openRegisterModal () {
                 this.$validator.reset() // Clear validator errors

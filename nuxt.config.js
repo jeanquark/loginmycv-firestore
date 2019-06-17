@@ -78,7 +78,7 @@ module.exports = {
         { src: '~/plugins/vue2-scrollspy', ssr: false },
         // { src: '~/plugins/vue-draggable', ssr: false },
         // { src: '~/plugins/fullpage-vue', ssr: false },
-        { src: '~/plugins/vue-stripe-checkout', ssr: false },
+        // { src: '~/plugins/vue-stripe-checkout', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
