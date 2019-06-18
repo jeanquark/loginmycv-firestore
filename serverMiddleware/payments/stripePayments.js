@@ -40,7 +40,7 @@ module.exports = app.use(async function (req, res, next) {
 				maximum_number_of_resumes: selectedPack.maximum_number_of_resumes,
 				total_space_in_bytes: selectedPack.total_space_in_bytes,
 				available_templates: selectedPack.available_templates,
-				valid_until: moment().add('1', 'years').add('1', 'days').unix()
+				valid_until: moment().add('1', 'years').add('0', 'days').unix()
 			}
 		})
 

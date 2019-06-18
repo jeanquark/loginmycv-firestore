@@ -247,7 +247,7 @@
 			// console.log('res: ', res);
 			this.$store.commit('clearError')
 			this.$store.commit('closeLoginModal')
-			this.$store.commit('clearMessage')
+			// this.$store.commit('clearMessage')
 			this.$store.commit('clearRedirect')
 		},
 		mounted () {

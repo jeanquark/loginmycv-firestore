@@ -11,7 +11,7 @@
 				<v-flex xs12>
 					<h1 class="text-xs-center secondary-color">Choose your package</h1>
 				</v-flex>
-				<v-flex xs4 class="pa-4">
+				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-basic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'basic'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
@@ -72,7 +72,7 @@
 						</v-card-actions>
 					</v-card>
 				</v-flex>
-				<v-flex xs4 class="pa-4">
+				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-classic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'classic'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
@@ -124,17 +124,28 @@
 							</v-layout>
 						</v-card-text>
 
-						<v-card-actions>
-							<v-layout justify-center v-if="loadedUser && loadedUser.package && loadedUser.package.slug === 'classic'">
-								<v-chip label outline color="secondary" text-color="secondary">Current active package</v-chip>
+						<v-card-actions v-if="loadedUser && loadedUser.package && loadedUser.package.slug !== 'basic'">
+							<v-layout justify-center v-if="loadedUser.package.slug === 'classic' && daysRemaining > 60">
+								<v-chip label outline color="secondary" text-color="secondary" class="px-2 py-4">Current active package.<br />{{ daysRemaining }} days remaining.</v-chip>
 							</v-layout>
-							<v-layout justify-center v-else>
+							<v-layout row wrap justify-center v-if="loadedUser.package.slug === 'classic' && daysRemaining <= 60">
+								<v-chip label outline color="secondary" text-color="secondary" class="mb-2 px-2 py-4">Current active package.<br />Only {{ daysRemaining }} days remaining.</v-chip>
+								<v-flex xs12 class="text-xs-center">
+									<v-btn flat color="secondary" @click.stop="selectPackage(packageClassic)">Renew package!</v-btn>
+								</v-flex>
+							</v-layout>
+							<v-layout justify-center v-if="loadedUser.package.slug === 'advanced' && daysRemaining <= 60">
+								<v-btn flat color="secondary" @click.stop="selectPackage(packageClassic)">Downgrade to classic!</v-btn>
+							</v-layout>
+						</v-card-actions>
+						<v-card-actions v-else>
+							<v-layout justify-center>
 								<v-btn flat color="secondary" @click.stop="selectPackage(packageClassic)">Pick me!</v-btn>
 							</v-layout>
 						</v-card-actions>
 					</v-card>
 				</v-flex>
-				<v-flex xs4 class="pa-4">
+				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-advanced': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'advanced'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
@@ -185,11 +196,25 @@
 							</v-layout>
 						</v-card-text>
 
-						<v-card-actions>
-							<v-layout justify-center v-if="loadedUser && loadedUser.package && loadedUser.package.slug === 'advanced'">
-								<v-chip label outline color="tertiary" text-color="tertiary">Current active package</v-chip>
+						<v-card-actions v-if="loadedUser && loadedUser.package && loadedUser.package.slug !== 'basic'">
+							<v-layout justify-center v-if="loadedUser.package.slug === 'advanced' && daysRemaining > 60">
+								<v-chip label outline color="tertiary" text-color="tertiary" class="px-2 py-4">Current active package.<br />{{ daysRemaining }} days remaining.</v-chip>
 							</v-layout>
-							<v-layout justify-center v-else>
+							<v-layout row wrap justify-center v-if="loadedUser.package.slug === 'advanced' && daysRemaining <= 60">
+								<v-chip label outline color="tertiary" text-color="tertiary" class="mb-2 px-2 py-4">Current active package.<br />Only {{ daysRemaining }} days remaining.</v-chip>
+								<v-flex xs12 class="text-xs-center">
+									<v-btn flat color="tertiary" @click.stop="selectPackage(packageAdvanced)">Renew package!</v-btn>
+								</v-flex>
+							</v-layout>
+							<v-layout justify-center v-if="loadedUser.package.slug === 'classic' && daysRemaining > 60">
+								<v-btn flat color="tertiary" @click.stop="selectPackage(packageAdvanced)">Upgrade to advanced for €{{ (29.90 / 365 * daysRemaining).toFixed(2) }}</v-btn>
+							</v-layout>
+							<v-layout justify-center v-if="loadedUser.package.slug === 'classic' && daysRemaining <= 60">
+								<v-btn flat color="tertiary" @click.stop="selectPackage(packageAdvanced)">Upgrade to advanced!</v-btn>
+							</v-layout>
+						</v-card-actions>
+						<v-card-actions v-else>
+							<v-layout justify-center>
 								<v-btn flat color="tertiary" @click.stop="selectPackage(packageAdvanced)">Pick me!</v-btn>
 							</v-layout>
 						</v-card-actions>
@@ -246,6 +271,7 @@
 						        </template>
 							</v-list>
 							<br />
+							valid_until: {{ this.loadedUser.private.valid_until | moment('LLL')}}<br />
 
 							<!-- Proceed to secured payment with Stripe<br /><br /> -->
 							<div style="min-width: 300px;">
@@ -431,6 +457,9 @@
 			},
 			loadedUser () {
 				return this.$store.getters['users/loadedUser']
+			},
+			daysRemaining () {
+				return Math.floor((this.loadedUser.private.valid_until - moment().add(6, 'month').unix())/(60*60*24))
 			}
 		},
 		methods: {
