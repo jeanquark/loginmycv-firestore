@@ -11,7 +11,7 @@ export const state = () => ({
     errors: [],
     notification: {},
     loginModal: false,
-    message: '',
+    // message: '',
     redirect: ''
 })
 
@@ -50,12 +50,18 @@ export const mutations = {
         console.log('closeLoginModal')
         state.loginModal = false
     },
-    setMessage (state, payload) {
-        console.log('setMessage: ', payload)
-        state.message = payload
-    },
+    // setMessage (state, payload) {
+    //     console.log('setMessage: ', payload)
+    //     state.message = payload
+    // },
+    // clearMessage (state) {
+    //     state.message = ''
+    // },
     setRedirect (state, payload) {
         state.redirect = payload
+    },
+    clearRedirect (state) {
+        state.redirect = null
     }
 }
 
@@ -136,9 +142,9 @@ export const getters = {
     loginModal (state) {
         return state.loginModal
     },
-    loadedMessage (state) {
-        return state.message
-    },
+    // loadedMessage (state) {
+    //     return state.message
+    // },
     loadedRedirect (state) {
         return state.redirect
     }

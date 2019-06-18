@@ -6,7 +6,7 @@
         <v-card-text>
             <!-- error: {{ error }}<br /> -->
             <!-- message: {{ this.message }} -->
-            <v-alert
+            <!-- <v-alert
                 :value="true"
                 type="info"
                 color="info"
@@ -15,7 +15,7 @@
                 v-if="this.message"
             >
                 {{ this.message }}
-            </v-alert>
+            </v-alert> -->
             <v-alert
                 :value="error"
                 type="error"
@@ -97,7 +97,7 @@
     import Noty from 'noty'
 	export default {
         inject: ['$validator'], // inject parent validator
-        props: ['message'],
+        // props: ['message'],
         created () {
             // this.$store.commit('clearError')
             // this.$store.commit('setLoading', false)
@@ -105,8 +105,8 @@
 		data () {
 			return {
 				form: {
-					email: 'jm.kleger@gmail.com',
-					password: 'secret'
+					email: '',
+					password: ''
 				},
                 // errors: []
                 loadingGoogle: false,
@@ -167,7 +167,13 @@
                     //     timeout: 5000,
                     //     theme: 'metroui'
                     // }).show()
-                    this.$router.replace('/candidate/resumes')
+                    this.$store.commit('closeLoginModal')
+                    if (this.$store.getters['loadedRedirect']) {
+                        this.$router.replace(this.$store.getters['loadedRedirect'])
+                        // this.$store.commit('clearRedirect')
+                    } else {
+                        this.$router.replace('/candidate/resumes')
+                    }
                     this.$store.commit('setLoading', false, { root: true })
                 } catch (error) {
                     console.log('error from client: ', error)

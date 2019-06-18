@@ -3,6 +3,10 @@
 		<h1 class="text-xs-center primary-color my-4">Contact Us</h1>
 		<v-layout row wrap>
 			<v-flex xs6 offset-xs3 class="mb-3">
+				<div class="pa-3">
+					Please feel free to contact us for any question/problem you may have regarding the use of our services.
+					We'll do our best to come back to you as quickly as possible (usually the next business day).
+				</div>
 				<v-form @submit.prevent="sendMessage('contact')" class="form" data-vv-scope="contact">
 					<v-layout row wrap>
 						<v-flex xs6 class="pr-3">

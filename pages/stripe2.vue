@@ -3,15 +3,16 @@
     	wrap
   	>
 		<v-container>
-			this.package: {{ this.package }}<br />
-			this.amount: {{ this.amount }}<br />
+			this.pack: {{ this.pack }}<br />
+			this.amount_in_cents: {{ this.amount_in_cents }}<br />
 			this.currency: {{ this.currency }}<br />
+			loadedUser: {{ this.loadedUser }}<br />
 			<v-layout row wrap justify-center>
 				<v-flex xs12>
 					<h1 class="text-xs-center secondary-color">Choose your package</h1>
 				</v-flex>
 				<v-flex xs4 class="pa-4">
-					<v-card hover>
+					<v-card hover :class="{'active-basic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'basic'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
 							aspect-ratio="2.75"
@@ -62,14 +63,17 @@
 						</v-card-text>
 
 						<v-card-actions>
-							<v-layout justify-center>
+							<v-layout justify-center v-if="loadedUser && loadedUser.package && loadedUser.package.slug === 'basic'">
+								<v-chip label outline color="primary" text-color="primary">Current active package</v-chip>
+							</v-layout>
+							<v-layout justify-center v-if="!loadedUser">
 								<v-btn flat color="primary" @click.stop="selectPackage(packageBasic)">Pick me!</v-btn>
 							</v-layout>
 						</v-card-actions>
 					</v-card>
 				</v-flex>
 				<v-flex xs4 class="pa-4">
-					<v-card hover>
+					<v-card hover :class="{'active-classic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'classic'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
 							aspect-ratio="2.75"
@@ -115,20 +119,23 @@
 
 							<v-layout justify-center>
 								<v-chip color="secondary" text-color="#fff" class="headline pa-2">
-									$14.90 / year
+									€14.90 / year
 								</v-chip>
 							</v-layout>
 						</v-card-text>
 
 						<v-card-actions>
-							<v-layout justify-center>
+							<v-layout justify-center v-if="loadedUser && loadedUser.package && loadedUser.package.slug === 'classic'">
+								<v-chip label outline color="secondary" text-color="secondary">Current active package</v-chip>
+							</v-layout>
+							<v-layout justify-center v-else>
 								<v-btn flat color="secondary" @click.stop="selectPackage(packageClassic)">Pick me!</v-btn>
 							</v-layout>
 						</v-card-actions>
 					</v-card>
 				</v-flex>
 				<v-flex xs4 class="pa-4">
-					<v-card hover>
+					<v-card hover :class="{'active-advanced': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'advanced'}">
 						<v-img
 							src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
 							aspect-ratio="2.75"
@@ -173,13 +180,16 @@
 							</v-list>
 							<v-layout justify-center>
 								<v-chip color="tertiary" text-color="#fff" class="headline pa-2">
-									$ 29.90 / year
+									€29.90 / year
 								</v-chip>
 							</v-layout>
 						</v-card-text>
 
 						<v-card-actions>
-							<v-layout justify-center>
+							<v-layout justify-center v-if="loadedUser && loadedUser.package && loadedUser.package.slug === 'advanced'">
+								<v-chip label outline color="tertiary" text-color="tertiary">Current active package</v-chip>
+							</v-layout>
+							<v-layout justify-center v-else>
 								<v-btn flat color="tertiary" @click.stop="selectPackage(packageAdvanced)">Pick me!</v-btn>
 							</v-layout>
 						</v-card-actions>
@@ -188,30 +198,116 @@
 			</v-layout>
 		</v-container>
 
-		<v-navigation-drawer
-			v-model="drawer"
-			absolute
-			temporary
-			app
-			right
-		>
-			<div class="pa-4 text-xs-center">
-				<h4>Your command:</h4>
-				Package: {{ this.package }}<br />
-				Valid until: {{ this.valid_until }}<br />
-				Total: {{ this.amount/100 }}<br />
+		<v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+			<v-card v-if="!paymentCompleted">
+				<v-toolbar dark color="primary">
+					<v-btn icon dark @click="dialog = false">
+						<v-icon>close</v-icon>
+					</v-btn>
+				</v-toolbar>
+				<v-card-title primary-title>
+					<v-layout justify-center>
+						<h3 class="headline mb-0">Process payment</h3>
+					</v-layout>
+				</v-card-title>
 
-				Proceed to secured payment with Stripe<br />
-				<card class='stripe-card'
-					:class='{ complete }'
-					stripe='pk_test_mfRXE3nfVNydQzc5zhpTrdoU004DyRbBvo'
-					:options="stripeOptions"
-					@change='complete = $event.complete'
-					v-if="loadedStripe"
-				/><br />
-				<v-btn color='success' @click='pay' :disabled='!complete'>Pay with credit card</v-btn>
-			</div>
-		</v-navigation-drawer>
+				<v-card-text>
+					<v-layout justify-center align-center>
+						<div>
+						    <v-list>
+						    	<template>
+						    		<v-divider></v-divider>
+						        	<v-list-tile avatar ripple>
+						              	<v-list-tile-content>
+						                	<v-list-tile-sub-title>Package</v-list-tile-sub-title>
+						              	</v-list-tile-content>
+						              	<v-list-tile-action>
+							                <v-list-tile-action-text class="black--text">{{ this.pack }}</v-list-tile-action-text>
+						              	</v-list-tile-action>
+						            </v-list-tile>
+						            <v-divider ></v-divider>
+						            <v-list-tile avatar ripple>
+						              	<v-list-tile-content>
+						                	<v-list-tile-sub-title>Valid until</v-list-tile-sub-title>
+						              	</v-list-tile-content>
+						              	<v-list-tile-action>
+							                <v-list-tile-action-text class="black--text">{{ this.valid_until}}</v-list-tile-action-text>
+						              	</v-list-tile-action>
+						            </v-list-tile>
+						            <v-divider ></v-divider>
+						            <v-list-tile avatar ripple>
+						              	<v-list-tile-content>
+						                	<v-list-tile-sub-title>Total (in EUR)</v-list-tile-sub-title>
+						              	</v-list-tile-content>
+						              	<v-list-tile-action>
+							                <v-list-tile-action-text class="black--text">{{ parseFloat(this.amount_in_cents/100).toFixed(2) }}</v-list-tile-action-text>
+						              	</v-list-tile-action>
+						            </v-list-tile>
+						        </template>
+							</v-list>
+							<br />
+
+							<!-- Proceed to secured payment with Stripe<br /><br /> -->
+							<div style="min-width: 300px;">
+								<card class='stripe-card'
+									:class='{ complete }'
+									stripe='pk_test_mfRXE3nfVNydQzc5zhpTrdoU004DyRbBvo'
+									:options="stripeOptions"
+									@change='complete = $event.complete'
+									v-if="loadedStripe"
+								/><br />
+							</div>
+						</div>
+					</v-layout>
+				</v-card-text>
+
+				<v-card-actions>
+					<v-layout justify-center>
+						<v-btn color='success' @click='pay' :disabled='!complete' :loading="loading">Pay €{{ parseFloat(this.amount_in_cents/100).toFixed(2) }} with credit card</v-btn>
+					</v-layout>
+				</v-card-actions>
+			</v-card>
+
+			<v-card v-else>
+				<v-toolbar dark color="primary">
+					<v-btn icon dark @click="dialog = false">
+						<v-icon>close</v-icon>
+					</v-btn>
+				</v-toolbar>
+
+				<v-card-title primary-title>
+					<v-layout justify-center>
+						<h3 class="headline success--text mb-0">Successfull payment</h3>
+					</v-layout>
+				</v-card-title>
+
+				<v-card-text>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+  						<circle class="path circle" fill="none" stroke="var(--v-success-base)" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+  						<polyline class="path check" fill="none" stroke="var(--v-success-base" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+					</svg>
+					<br /><br />
+					<v-layout justify-center>
+						<h4 class="headline success--text">Thank you very much!</h4>
+					</v-layout>
+				</v-card-text>
+
+				<v-card-actions>
+					<v-layout justify-center>
+						<v-btn color="primary" nuxt to="/candidate/resumes">Start managing my resumes</v-btn>
+					</v-layout>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+
+		<v-snackbar
+      		v-model="snackbar"
+      		top
+      		right
+      		:timeout="5000"
+    	>
+      		<span class="subheading"><v-icon color="warning">warning</v-icon> You need to be authenticated to select a package.</span>
+    	</v-snackbar>
   	</v-layout>
 </template>
 
@@ -232,9 +328,10 @@
 	        	}
         		document.body.appendChild(domElement)
       		}
+      		this.$store.commit('clearError')
+			this.$store.commit('closeLoginModal')
 		},
 		mounted () {
-			this.$store.commit('closeLoginModal')
 		},
 		data () {
 			return {
@@ -242,11 +339,10 @@
 				maximum_number_of_resumes: null,
 				total_space_in_bytes: null,
 				available_templates: null,
-				package: '',
-				amount: 0,
+				pack: '',
 				valid_until: '',
 				currency: 'EUR',
-				amount_in_cents: 1490,
+				amount_in_cents: 0,
 				complete: false,
 				stripeOptions: {
         			// see https://stripe.com/docs/stripe.js#element-options for details
@@ -273,7 +369,7 @@
 					{ divider: true, inset: true },
 					{
 						image: '/images/1_2.jpg',
-						title: 'Available templates',
+						title: 'Available template',
 					}
 				],
 				packageClassic: {
@@ -323,26 +419,36 @@
 						image: '/images/5_plus_2.jpg',
 						title: 'Available templates',
 					}
-				]
+				],
+				dialog: false,
+				paymentCompleted: false,
+				snackbar: false
 			}
 		},
 		computed: {
+			loading () {
+				return this.$store.getters['loading']
+			},
 			loadedUser () {
 				return this.$store.getters['users/loadedUser']
 			}
 		},
 		methods: {
 			async selectPackage (pack) {
-				if (this.loadedUser) {
-					this.$store.commit('setMessage', 'You must be authenticated to select a package.')
-					return this.$store.commit('openLoginModal')
+				// return this.$store.commit('openLoginModal')
+				if (!this.loadedUser) {
+					this.snackbar = true
+					this.$store.commit('setRedirect', '/stripe')
+					this.$store.commit('openLoginModal')
+					return
 				}
+				this.dialog = true
 				this.drawer = !this.drawer
 				console.log('pack: ', pack)
-				this.maximum_number_of_resumes = pack.maximum_number_of_resumes
-				this.currency = pack.currency
-				this.package = pack.type
-				this.amount = pack.price
+				// this.maximum_number_of_resumes = pack.maximum_number_of_resumes
+				// this.currency = pack.currency
+				this.pack = pack.type
+				this.amount_in_cents = pack.price
 				this.valid_until = moment().add('1', 'years').format('LL')
 			},
 			async pay () {
@@ -352,25 +458,30 @@
 				// See https://stripe.com/docs/api#errors for the error object.
 				// More general https://stripe.com/docs/stripe.js#stripe-create-token.
 				try {
+					this.$store.commit('setLoading', true, { root: true })
 					const payment = await createToken()
 					console.log('payment: ', payment)
 					const process = await axios.post('/stripe-payments', { 
 						token: payment.token.id,
 						amount_in_cents: this.amount_in_cents,
 						currency: this.currency,
-						pack: this.package,
-						// userId: this.loadedUser.id
-						userId: 'gy64ItWgdAUye2Vr6g0cisjihno1'
+						pack: this.pack,
+						userId: this.loadedUser.id,
+						email: this.loadedUser.email,
+						name: `${this.loadedUser.firstname} ${this.loadedUser.lastname}`
 					})
 					console.log('process: ', process)
-					new Noty({
-						type: 'success',
-						text: 'Paiement went successfully!',
-						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+					this.paymentCompleted = true
+					this.$store.commit('setLoading', false, { root: true })
+					// new Noty({
+					// 	type: 'success',
+					// 	text: 'Paiement went successfully!',
+					// 	timeout: 5000,
+					// 	theme: 'metroui'
+					// }).show()
 				} catch (error) {
 					console.log('error: ', error)
+					this.$store.commit('setLoading', false, { root: true })
 					new Noty({
 						type: 'error',
 						text: 'Sorry, an error occured and the payment process could not be fullfilled successfully. No charge incurred.',
@@ -395,5 +506,71 @@
 	}
 	.secondary-color {
 		color: var(--v-secondary-base);
+	}
+	.active-basic {
+		border: 5px solid var(--v-primary-base);
+	}
+	.active-classic {
+		border: 5px solid var(--v-secondary-base);
+	}
+	.active-advanced {
+		border: 5px solid var(--v-tertiary-base);
+	}
+
+	/* CSS green check */
+	svg {
+	  	width: 100px;
+	  	display: block;
+	  	margin: 40px auto 0;
+	}
+	.path {
+	  	stroke-dasharray: 1000;
+	  	stroke-dashoffset: 0;
+	}
+	.path.circle {
+	  	-webkit-animation: dash 0.9s ease-in-out;
+	  	animation: dash 0.9s ease-in-out;
+	}
+	.path.line {
+	  	stroke-dashoffset: 1000;
+	  	-webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+	  	animation: dash 0.9s 0.35s ease-in-out forwards;
+	}
+	.path.check {
+	  	stroke-dashoffset: -100;
+	  	-webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+	  	animation: dash-check 0.9s 0.35s ease-in-out forwards;
+	}
+	@-webkit-keyframes dash {
+	  	0% {
+		    stroke-dashoffset: 1000;
+	  	}
+	  	100% {
+		    stroke-dashoffset: 0;
+	  	}
+	}
+	@keyframes dash {
+	  	0% {
+		    stroke-dashoffset: 1000;
+	  	}
+	  	100% {
+		    stroke-dashoffset: 0;
+	  	}
+	}
+	@-webkit-keyframes dash-check {
+	  	0% {
+		    stroke-dashoffset: -100;
+	  	}
+	  	100% {
+		    stroke-dashoffset: 900;
+	  	}
+	}
+	@keyframes dash-check {
+	  	0% {
+		    stroke-dashoffset: -100;
+	  	}
+	  	100% {
+		    stroke-dashoffset: 900;
+	  	}
 	}
 </style>

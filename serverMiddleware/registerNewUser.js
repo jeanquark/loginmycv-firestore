@@ -14,6 +14,7 @@ function buildUserObject (payload, maximum_number_of_resumes, total_space_in_byt
         firstname: payload.firstname ? payload.firstname : '',
         lastname: payload.lastname ? payload.lastname : '',
         email: payload.user ? payload.user.email : '',
+        package,
         private: {
             maximum_number_of_resumes,
             total_space_in_bytes
@@ -39,6 +40,7 @@ function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_i
         lastname,
         email: payload.user && payload.user.email ? payload.user.email : '',
         picture: payload.user && payload.user.photoURL ? payload.user.photoURL : '',
+        package,
         private: {
             maximum_number_of_resumes,
             total_space_in_bytes
@@ -56,9 +58,11 @@ module.exports = app.use(async function (req, res, next) {
         console.log('req.body.data: ', req.body.data);
 
         const app_parameters = await admin.firestore().collection('app_parameters').doc('users').get();
+        let package = 'basic';
         let maximum_number_of_resumes = 1;
         let total_space_in_bytes = 5242880;
         if (app_parameters.exists) {
+            package = app.parameters.data().intial_package
             maximum_number_of_resumes = app_parameters.data().initial_resumes_number
             total_space_in_bytes = app_parameters.data().initial_space_in_bytes
         }

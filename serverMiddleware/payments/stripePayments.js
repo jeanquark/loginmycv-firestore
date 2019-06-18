@@ -12,19 +12,20 @@ app.use(bodyParser.json());
 module.exports = app.use(async function (req, res, next) {
 	try {
 		console.log('req.body: ', req.body);
-		const { token, amount_in_cents, currency, pack, userId } = req.body;
+		const { token, amount_in_cents, currency, pack, userId, email } = req.body;
 		console.log('token: ', token);
 		console.log('amount_in_cents: ', amount_in_cents);
 		console.log('currency: ', currency);
 		console.log('pack: ', pack);
 		console.log('userId: ', userId);
+		console.log('email: ', email);
 		const amount = amount_in_cents;
 
 		// 1) Load the selected package
 		let selectedPack = '';
 		const packRef = await admin.firestore().collection('packages').doc(pack).get();
 		if (packRef.exists) {
-			selectedPack = packRef.data()
+			selectedPack = packRef.data();
 		} else {
 			throw 'Selected package does not exists.'
 		}
@@ -47,9 +48,13 @@ module.exports = app.use(async function (req, res, next) {
 		const charge = await stripe.charges.create({
 			amount,
 			currency,
-			description: 'Payment from LoginMyCV website',
+			description: `Payment to LoginMyCV`,
 			source: token,
-			receipt_email: 'jm.kleger@gmail.com',
+			metadata: {
+				user_id: userId,
+				name,
+				email
+			},
 		});
 		console.log('charge: ', charge);
 

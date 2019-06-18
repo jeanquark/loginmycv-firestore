@@ -26,7 +26,6 @@
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
             <div v-if="loadedUser && loadedUser.private">
                 <v-btn nuxt to="/stripe2">Stripe</v-btn>
-                <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="info" nuxt to="/admin">Admin</v-btn>
                 <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
@@ -46,13 +45,15 @@
             <nuxt />
             <v-layout row wrap>
                 <!-- Login Candidate Modal -->
+                    <!-- v-model="loginModal" -->
                 <v-dialog
-                    v-model="loginModal"
+                    :value="loginModal"
                     width="500"
                     lazy
                     :persistent="loading"
+                    @input="closeLoginModal"
                 >
-                    <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" :message="message" />
+                    <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" />
                 </v-dialog>
 
                 <!-- Register Candidate Modal -->
@@ -161,12 +162,22 @@
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
             },
+            loginModal2: {
+                get () {
+                    return this.$store.getters['loginModal']
+                },
+                // setter
+                set (newValue) {
+                    this.$store.commit('openLoginModal')
+                }
+            },
             loginModal () {
+                // return true
                 return this.$store.getters['loginModal']
             },
-            message () {
-                return this.$store.getters['loadedMessage']
-            }
+            // message () {
+            //     return this.$store.getters['loadedMessage']
+            // }
         },
         methods: {
             switchToLogin () {
@@ -186,7 +197,7 @@
             },
             openLoginModal () {
                 this.$validator.reset() // Clear validator errors
-                this.message = null
+                // this.message = null
                 this.$store.commit('clearError')
                 this.$store.commit('setLoading', false)
                 // this.loginModal = true
