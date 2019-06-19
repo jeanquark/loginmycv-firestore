@@ -11,6 +11,8 @@
 				<v-flex xs12>
 					<h1 class="text-xs-center secondary-color">Choose your package</h1>
 				</v-flex>
+
+				<!-- Basic package -->
 				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-basic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'basic'}">
 						<v-img
@@ -72,6 +74,8 @@
 						</v-card-actions>
 					</v-card>
 				</v-flex>
+
+				<!-- Classic package -->
 				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-classic': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'classic'}">
 						<v-img
@@ -145,6 +149,8 @@
 						</v-card-actions>
 					</v-card>
 				</v-flex>
+
+				<!-- Advanced package -->
 				<v-flex xs12 sm6 md4 class="pa-4">
 					<v-card hover :class="{'active-advanced': this.loadedUser && this.loadedUser.package && this.loadedUser.package.slug === 'advanced'}">
 						<v-img
@@ -271,7 +277,7 @@
 						        </template>
 							</v-list>
 							<br />
-							valid_until: {{ this.loadedUser.private.valid_until | moment('LLL')}}<br />
+							<!-- valid_until: {{ this.loadedUser.private.valid_until | moment('LLL')}}<br /> -->
 
 							<!-- Proceed to secured payment with Stripe<br /><br /> -->
 							<div style="min-width: 300px;">
@@ -458,7 +464,11 @@
 			loadedUser () {
 				return this.$store.getters['users/loadedUser']
 			},
+			loadedPackages () {
+				return this.$store.getters['packages/loadedPackages']
+			},
 			daysRemaining () {
+				return null
 				return Math.floor((this.loadedUser.private.valid_until - moment().add(6, 'month').unix())/(60*60*24))
 			}
 		},

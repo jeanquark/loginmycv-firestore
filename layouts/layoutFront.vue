@@ -25,14 +25,14 @@
             <!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
             <div v-if="loadedUser && loadedUser.private">
-                <v-btn nuxt to="/stripe2">Stripe</v-btn>
+                <v-btn color="tertiary" nuxt to="/packages">Packages</v-btn>
                 <v-btn color="info" nuxt to="/admin">Admin</v-btn>
                 <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
             </div>
             <div v-else>
                 <!-- loginModal: {{ this.loginModal }} -->
-                <v-btn nuxt to="/stripe2">Stripe</v-btn>
+                <v-btn nuxt to="/packages">Packages</v-btn>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
@@ -118,7 +118,10 @@
 	import Register from '~/components/Register'
 	import ForgotPassword from '~/components/ForgotPassword'
 	export default {
-        inject: ['$validator'], // inject parent validator
+        $_veeValidate: {
+            validator: 'new' // give me my own validator scope.
+        },
+        // inject: ['$validator'], // inject parent validator
         components: { Login, Register, ForgotPassword },
         head: {
             meta: [
