@@ -5,9 +5,9 @@
 			<!-- opts.start: {{ opts.start }}<br /> -->
 			<div class="button-group ma-4" v-if="resume.menus && (resume.education.length > 0 || resume.work_experience.length < 10 || resume.skills.length > 0)">
 				<button type="button" :class="{active:index == 0}" @click="moveTo(0)">{{ resume.menus.home ? resume.menus.home : 'Presentation' }}</button>
-				<button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length < 10">{{ resume.menus.education ? resume.menus.education : 'Education'}}</button>
-				<button type="button" :class="{active:index == 2}" @click="moveTo(2)" v-if="resume.work_experience && resume.work_experience.length > 10">{{ resume.menus.work_experience ? resume.menus.work_experience : 'Work experience' }}</button>
-				<button type="button" :class="{active:index == 3}" @click="moveTo(3)" v-if="resume.skills && resume.skills.length < 10">{{ resume.menus.skills ? resume.menus.skills : 'Skills' }}</button>
+				<button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length > 0">{{ resume.menus.education ? resume.menus.education : 'Education'}}</button>
+				<button type="button" :class="{active:index == 2}" @click="moveTo(2)" v-if="resume.work_experience && resume.work_experience.length > 0">{{ resume.menus.work_experience ? resume.menus.work_experience : 'Work experience' }}</button>
+				<button type="button" :class="{active:index == 3}" @click="moveTo(3)" v-if="resume.skills && resume.skills.length > 0">{{ resume.menus.skills ? resume.menus.skills : 'Skills' }}</button>
 				<button type="button" :class="{active:index == 4}" @click="moveTo(4)" v-if="resume.parameters && resume.parameters.show_contact_form">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</button>
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
@@ -126,8 +126,47 @@
 					</v-layout>
 				</div>
 				<div class="page page-4" data-index="3">
-					<v-layout row wrap v-if="resume.skills && resume.skills.length > 0">
-						<p class="part-4" v-animate="{value: 'bounceInLeft'}">Skills</p>
+					<v-layout row wrap align-center v-if="resume.skills && resume.skills.length > 0">
+						<!-- <p class="part-4" v-animate="{value: 'bounceInLeft'}">Skills</p> -->
+
+
+						<v-flex sm12 md6 offset-md3 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center">
+							<h2 class="text-xs-center mb-2">{{ skill[0].category }}</h2>
+							<div class="my-5 mx-0" v-for="s in skill" :key="s.name">
+								<div v-if="s.type === 'pie'" class="">
+									<v-progress-circular
+										:rotate="270"
+										:size="100"
+										:width="10"
+										:value="s.value"
+										:color="secondaryColor"
+										class="pie"
+									>
+										{{ s.value }}%
+									</v-progress-circular><br /><br />
+									{{ s.name }}
+								</div>
+								<div v-else class="">
+									<v-layout>
+										<v-flex class="text-xs-left py-2">
+											<span>{{ s.name }}</span>
+										</v-flex>
+										<v-flex class="text-xs-right py-2">
+											<span>{{ s.value }}%</span>
+										</v-flex>
+									</v-layout>
+									<v-progress-linear
+										:color="secondaryColor"
+										height="20"
+										:value="s.value"
+										class="bar"
+									></v-progress-linear>
+								</div>			
+							</div>
+						</v-flex>
+
+
+
 					</v-layout>
 				</div>
 				<div class="page page-5" data-index="4">
@@ -433,6 +472,14 @@ export default {
 	}
 	.active {
 		color: red;
+	}
+	.pie {
+		background: var(--primary-color);
+		border-radius: 50px;
+	}
+	.bar {
+		border-radius: 10px;
+		margin: 0px 0px;
 	}
 
 	.social-link {

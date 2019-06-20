@@ -37,7 +37,7 @@
 												<img :src="`/images/${pack.image_maximum_number_of_resumes}`">
 											</v-list-tile-avatar>
 											<v-list-tile-content>
-												<v-list-tile-sub-title style="color: #000;">Number of resumes</v-list-tile-sub-title>
+												<v-list-tile-sub-title style="color: #000;">Number of resume(s)</v-list-tile-sub-title>
 											</v-list-tile-content>
 										</v-list-tile>
 										<v-divider></v-divider>
@@ -63,7 +63,7 @@
 												<img :src="`/images/${pack.image_available_templates}`">
 											</v-list-tile-avatar>
 											<v-list-tile-content>
-												<v-list-tile-sub-title style="color: #000;">Available resumes</v-list-tile-sub-title>
+												<v-list-tile-sub-title style="color: #000;">Available template(s)</v-list-tile-sub-title>
 											</v-list-tile-content>
 										</v-list-tile>
 										<v-divider></v-divider>

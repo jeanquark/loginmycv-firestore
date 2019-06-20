@@ -53,7 +53,10 @@ module.exports = {
             }
         ],
         'nuxt-client-init-module',
-        ['fullpage-nuxt']
+        ['fullpage-nuxt'],
+        ['@nuxtjs/google-analytics', {
+            id: 'UA-71694605-8'
+        }]
     ],
     axios: {
         proxyHeaders: false
@@ -79,6 +82,7 @@ module.exports = {
         // { src: '~/plugins/vue-draggable', ssr: false },
         // { src: '~/plugins/fullpage-vue', ssr: false },
         // { src: '~/plugins/vue-stripe-checkout', ssr: false },
+        { src: '~plugins/ga.js', ssr: false }
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
