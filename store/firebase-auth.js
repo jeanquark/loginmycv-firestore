@@ -379,11 +379,7 @@ export const actions = {
     },
     async currentUserIdToken () {
         if (auth.currentUser) {
-            // return 'abc'
             return auth.currentUser.uid
-            const idToken = await auth.currentUser.getIdToken
-            console.log('idToken: ', idToken)
-            return idToken
         } else {
             return 'No auth user found.'
         }

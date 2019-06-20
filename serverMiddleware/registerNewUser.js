@@ -8,17 +8,13 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-function buildUserObject (payload, maximum_number_of_resumes, total_space_in_bytes) {
+function buildUserObject (payload, privateData) {
     let user = {
         // id: payload.user.uid,
         firstname: payload.firstname ? payload.firstname : '',
         lastname: payload.lastname ? payload.lastname : '',
         email: payload.user ? payload.user.email : '',
-        package,
-        private: {
-            maximum_number_of_resumes,
-            total_space_in_bytes
-        },
+        private: privateData,
         notifications: [],
         _created_at: moment().unix(),
         _updated_at: moment().unix()
@@ -26,7 +22,7 @@ function buildUserObject (payload, maximum_number_of_resumes, total_space_in_byt
     return user;
 }
 
-function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_in_bytes) {
+function buildUserObjectOauth (payload, privateData) {
     const spaceIndex = payload.user && payload.user.displayName ? payload.user.displayName.indexOf(' ') : 0;
     console.log('spaceIndex: ', spaceIndex);
     const firstname = payload.user && payload.user.displayName ? payload.user.displayName.substr(0, spaceIndex) : '';
@@ -40,11 +36,7 @@ function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_i
         lastname,
         email: payload.user && payload.user.email ? payload.user.email : '',
         picture: payload.user && payload.user.photoURL ? payload.user.photoURL : '',
-        package,
-        private: {
-            maximum_number_of_resumes,
-            total_space_in_bytes
-        },
+        private: privateData,
         notifications: [],
         _created_at: moment().unix(),
         _updated_at: moment().unix()
@@ -52,28 +44,35 @@ function buildUserObjectOauth (payload, maximum_number_of_resumes, total_space_i
     return user;
 }
 
-module.exports = app.use(async function (req, res, next) {
+module.exports = app.use(async function (req, res) {
     try {
         console.log('REGISTER NEW USER');
         console.log('req.body.data: ', req.body.data);
 
-        const app_parameters = await admin.firestore().collection('app_parameters').doc('users').get();
-        let package = 'basic';
-        let maximum_number_of_resumes = 1;
-        let total_space_in_bytes = 5242880;
-        if (app_parameters.exists) {
-            package = app.parameters.data().intial_package
-            maximum_number_of_resumes = app_parameters.data().initial_resumes_number
-            total_space_in_bytes = app_parameters.data().initial_space_in_bytes
+        let privateData = {
+            package_name: 'Basic',
+            package_slug: 'basic',
+            maximum_number_of_resumes: 1,
+            total_space_in_bytes: 5242880, // 5MB
+            available_templates: 1
+        };
+        const basicPackage = await admin.firestore().collection('packages').doc('basic').get();
+        if (basicPackage.exists) {
+            privateData.package_name = basicPackage.data().name
+            privateData.package_slug = basicPackage.data().slug
+            privateData.maximum_number_of_resumes = basicPackage.data().maximum_number_of_resumes
+            privateData.total_space_in_bytes = basicPackage.data().total_space_in_bytes
+            privateData.available_templates = basicPackage.data().available_templates
         }
+        console.log('privateData: ', privateData);
 
         let newUser = {};
         const userId = req.body.data.user.uid;
         if (req.body.type === 'oauth') {
-            newUser = buildUserObjectOauth(req.body.data, maximum_number_of_resumes, total_space_in_bytes);
+            newUser = buildUserObjectOauth(req.body.data, privateData);
             console.log('newUser: ', newUser);
         } else {
-            newUser = buildUserObject(req.body.data, maximum_number_of_resumes, total_space_in_bytes);
+            newUser = buildUserObject(req.body.data, privateData);
             console.log('newUser: ', newUser);
         }
 

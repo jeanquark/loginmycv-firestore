@@ -78,7 +78,7 @@
                     <v-btn flat color="primary" @click="switchToRegister">
                         Switch to register
                     </v-btn>
-                    <v-btn flat color="secondary" @click="closeModal" v-if="loading">
+                    <v-btn flat color="secondary" @click="closeModal">
                         Close
                     </v-btn>
                 </v-layout>

@@ -1,6 +1,6 @@
 <template>
     <v-app id="app" v-cloak>
-        <v-toolbar dark color="primary">
+        <v-toolbar app dark color="primary">
             <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
             <nuxt-link to="/">
                 <v-layout align-center>
@@ -25,63 +25,67 @@
             <!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
             <div v-if="loadedUser && loadedUser.private">
-                <v-btn color="tertiary" nuxt to="/packages">Packages</v-btn>
                 <v-btn color="info" nuxt to="/admin">Admin</v-btn>
-                <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
+                <v-btn color="warning" @click="logout">Logout</v-btn>
+                <v-avatar
+                    size="40"
+                    color="grey lighten-4"
+                    v-if="loadedUser.picture"
+                >
+                    <img :src="loadedUser.picture" alt="user picture">
+                </v-avatar>
             </div>
             <div v-else>
-                <!-- loginModal: {{ this.loginModal }} -->
-                <v-btn nuxt to="/packages">Packages</v-btn>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
-            <!-- <v-btn icon>
-                <v-icon>apps</v-icon>
-            </v-btn> -->
         </v-toolbar>
 
         <v-content>
-            <nuxt />
-            <v-layout row wrap>
-                <!-- Login Candidate Modal -->
-                    <!-- v-model="loginModal" -->
-                <v-dialog
-                    :value="loginModal"
-                    width="500"
-                    lazy
-                    :persistent="loading"
-                    @input="closeLoginModal"
-                >
-                    <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" />
-                </v-dialog>
+            <v-container fluid>
+                <nuxt />
+                <v-layout row wrap>
+                    <!-- Login Candidate Modal -->
+                        <!-- v-model="loginModal" -->
+                    <v-dialog
+                        :value="loginModal"
+                        width="500"
+                        lazy
+                        :persistent="true"
+                        @input="closeLoginModal"
+                    >
+                        <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" />
+                    </v-dialog>
 
-                <!-- Register Candidate Modal -->
-                <v-dialog
-                    v-model="registerModal"
-                    width="750"
-                    lazy
-                    :persistent="true"
-                >
-                    <Register v-on:switchToLoginModal="switchToLogin" v-on:closeRegisterModal="closeRegisterModal" />
-                </v-dialog>
+                    <!-- Register Candidate Modal -->
+                    <v-dialog
+                        v-model="registerModal"
+                        width="750"
+                        lazy
+                        :persistent="true"
+                    >
+                        <Register v-on:switchToLoginModal="switchToLogin" v-on:closeRegisterModal="closeRegisterModal" />
+                    </v-dialog>
 
-                <!-- Forgot Password Modal -->
-                <v-dialog
-                    v-model="forgotPasswordModal"
-                    width="750"
-                    lazy
-                >
-                    <ForgotPassword />
-                </v-dialog>
-        	</v-layout>
+                    <!-- Forgot Password Modal -->
+                    <v-dialog
+                        v-model="forgotPasswordModal"
+                        width="750"
+                        lazy
+                    >
+                        <ForgotPassword />
+                    </v-dialog>
+                </v-layout>
+            </v-container>
         </v-content>
+        
         <!-- :fixed="this.$route.path != '/'" -->
         <v-footer
 		    height="auto"
 		    color="primary lighten-1"
-            
-            :fixed="false"
+            app
+            v-if="showFooter"
 		>
 		    <v-layout
 		      	justify-center
@@ -106,7 +110,7 @@
 			        white--text
 		        	xs12
 		      	>
-			        &copy;2019 — <strong>LoginMyCV</strong>
+			        &copy;{{ new Date().getFullYear() }} — <strong>LoginMyCV</strong>
 		      	</v-flex>
 		    </v-layout>
 		</v-footer>
@@ -128,6 +132,12 @@
                 { name: "robots", content: "noindex" }
             ]
         },
+        mounted () {
+            window.addEventListener('scroll', this.onScroll)
+        },
+        beforeDestroy () {
+            window.removeEventListener('scroll', this.onScroll)
+        },
         data () {
             return {
                 // message: '',
@@ -147,15 +157,17 @@
 						name: 'Team',
 						link: '/team'
 					},
-					// {
-					// 	name: 'Services',
-					// 	link: '/services'
-					// },
+					{
+						name: 'Packages',
+						link: '/packages'
+					},
 					{
 						name: 'Contact Us',
 						link: '/contact'
 					}
-			    ],
+                ],
+                showFooter: true,
+                lastScrollPosition: 0
             }
         },
         computed: {
@@ -222,6 +234,24 @@
             async logout () {
                 await this.$store.dispatch('firebase-auth/signOut')
                 this.$router.replace('/')
+            },
+            onScroll () {
+                // Get the current scroll position
+                const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop
+                // Because of momentum scrolling on mobiles, we shouldn't continue if it is less than zero
+                if (currentScrollPosition < 0) {
+                    return
+                }
+
+                // Stop executing this function if the difference between
+                // current scroll position and last scroll position is less than some offset
+                if (Math.abs(currentScrollPosition - this.lastScrollPosition) < 60) {
+                    return
+                }
+                // Here we determine whether we need to show or hide the footer
+                this.showFooter = currentScrollPosition < this.lastScrollPosition
+                // Set the current scroll position as the last scroll position
+                this.lastScrollPosition = currentScrollPosition
             }
         }
 	}

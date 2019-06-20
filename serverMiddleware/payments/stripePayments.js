@@ -12,37 +12,40 @@ app.use(bodyParser.json());
 module.exports = app.use(async function (req, res, next) {
 	try {
 		console.log('req.body: ', req.body);
-		const { token, amount_in_cents, currency, pack, userId, email } = req.body;
+		const { token, pack, amount_in_cents, currency, valid_until, userId, email, name } = req.body;
 		console.log('token: ', token);
+		console.log('pack: ', pack);
 		console.log('amount_in_cents: ', amount_in_cents);
 		console.log('currency: ', currency);
-		console.log('pack: ', pack);
+		console.log('valid_until: ', valid_until);
 		console.log('userId: ', userId);
 		console.log('email: ', email);
+		console.log('name: ', name);
 		const amount = amount_in_cents;
 
 		// 1) Load the selected package
-		let selectedPack = '';
-		const packRef = await admin.firestore().collection('packages').doc(pack).get();
-		if (packRef.exists) {
-			selectedPack = packRef.data();
-		} else {
-			throw 'Selected package does not exists.'
-		}
-		console.log('selectedPack: ', selectedPack);
+		// let selectedPack = '';
+		// const packRef = await admin.firestore().collection('packages').doc(pack).get();
+		// if (packRef.exists) {
+		// 	selectedPack = packRef.data();
+		// } else {
+		// 	throw 'Selected package does not exists.'
+		// }
+		// console.log('selectedPack: ', selectedPack);
+
 
 		// 2) Update user with package info
 		const userRef = await admin.firestore().collection('users').doc(userId)
 		userRef.update({
 			_updated_at: moment().unix(),
-			package: selectedPack,
-			private: {
-				maximum_number_of_resumes: selectedPack.maximum_number_of_resumes,
-				total_space_in_bytes: selectedPack.total_space_in_bytes,
-				available_templates: selectedPack.available_templates,
-				valid_until: moment().add('1', 'years').add('0', 'days').unix()
-			}
+			'private.package_name': pack.name,
+			'private.package_slug': pack.slug,
+			'private.maximum_number_of_resumes': pack.maximum_number_of_resumes,
+			'private.total_space_in_bytes': pack.total_space_in_bytes,
+			'private.available_templates': pack.available_templates,
+			'private.package_valid_until': valid_until
 		})
+
 
 		// 3) Process payment
 		const charge = await stripe.charges.create({
@@ -59,8 +62,23 @@ module.exports = app.use(async function (req, res, next) {
 		console.log('charge: ', charge);
 
 
-		res.status(200).send(`POST request to make stripe payment went successfully: ${charge}`);
+		// 4) Save payment in database
+		const newPayment = await admin.firestore().collection('payments').add({
+			userId,
+			name,
+			email,
+			amount_in_cents,
+			currency,
+			package: {
+				name: pack.name,
+				slug: pack.slug,
+				valid_until
+			},
+			_created_at: moment().unix(),
+			_updated_at: moment().unix()
+		});
 
+		res.status(200).send(`POST request to make stripe payment went successfully: ${charge}`);
   	} catch (error) {
   		console.log('error: ', error);
 		res.status(500).send(`Server error, stripe payment failed: ${error}`);		  
