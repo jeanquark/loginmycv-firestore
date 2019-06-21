@@ -82,7 +82,8 @@ module.exports = {
         // { src: '~/plugins/vue-draggable', ssr: false },
         // { src: '~/plugins/fullpage-vue', ssr: false },
         // { src: '~/plugins/vue-stripe-checkout', ssr: false },
-        { src: '~plugins/ga.js', ssr: false }
+        { src: '~/plugins/ga.js', ssr: false },
+        // { src: '~/plugins/snackbarstack', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',

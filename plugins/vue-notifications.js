@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueNotifications from 'vue-notifications'
 import Noty from 'noty'// https://github.com/needim/noty
 import 'noty/lib/noty.css'
-import 'noty/lib/themes/metroui.css'
+// import 'noty/lib/themes/metroui.css'
+import '~/assets/style/noty-theme-metroui.css'
 
 function toast ({title, message, type, timeout, cb}) {
   	if (type === VueNotifications.types.warn) type = 'warning'

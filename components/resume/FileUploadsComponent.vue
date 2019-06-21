@@ -3,8 +3,8 @@
         <p>
 			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
-            loadedUserResumes: {{ loadedUserResumes }}<br /><br />
-            userResume.uploads: {{ userResume.uploads }}<br /><br />
+            <!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
+            <!-- userResume.uploads: {{ userResume.uploads }}<br /><br /> -->
 			<!-- fileName: {{ fileName }}<br /><br /> -->
 			<!-- downloadUrl: {{ downloadUrl }}<br /><br /> -->
 			<!-- fileName2: {{ fileName2 }}<br /><br /> -->
@@ -21,9 +21,9 @@
 			<!-- this.totalUploadSize: {{ this.totalUploadSize }}<br /><br /> -->
 			<!-- this.totalSize: {{ this.totalSize }}<br /><br /> -->
 			<!-- geUserFiles.length: {{ getUserFiles.length }}<br /><br /> -->
-			userAllocatedSpace: {{ userAllocatedSpace }}<br /><br />
-			totalUsedSpace: {{ totalUsedSpace }}<br /><br />
-			totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br />
+			<!-- userAllocatedSpace: {{ userAllocatedSpace }}<br /><br /> -->
+			<!-- totalUsedSpace: {{ totalUsedSpace }}<br /><br /> -->
+			<!-- totalUsedSpacePercent: {{ totalUsedSpacePercent }}<br /><br /> -->
         </p>
         <h2>File uploads</h2><br />
 

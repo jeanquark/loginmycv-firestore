@@ -6,7 +6,7 @@
 
 <script>
 	import axios from 'axios'
-	import DynamicResumeTemplate from '~/components/DynamicResumeTemplate'
+	import DynamicResumeTemplate from '~/components/TOBEDELETED_DynamicResumeTemplate'
 	import Noty from 'noty'
 	import { firestore } from '~/plugins/firebase-client-init.js'
 	export default {

@@ -49,6 +49,7 @@
     "vue2-scrollspy": "^2.3.1",
     "vuedraggable": "^2.20.0",
     "vuetify": "^1.5.4",
+    "vuetify-toast-snackbar": "^0.3.0",
     "vuex-persist": "^2.0.0"
   },
   "devDependencies": {

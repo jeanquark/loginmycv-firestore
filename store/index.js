@@ -11,8 +11,11 @@ export const state = () => ({
     errors: [],
     notification: {},
     loginModal: false,
+    requestAuthorizationModal: false,
     // message: '',
-    redirect: ''
+    redirect: '',
+    // snackbar: {}
+    openComponent: null
 })
 
 export const mutations = {
@@ -50,6 +53,14 @@ export const mutations = {
         console.log('closeLoginModal')
         state.loginModal = false
     },
+    openRequestAuthorizationModal (state) {
+        console.log('openLoginModal')
+        state.requestAuthorizationModal = true
+    },
+    closeRequestAuthorizationModal (state) {
+        console.log('closeLoginModal')
+        state.requestAuthorizationModal = false
+    },
     // setMessage (state, payload) {
     //     console.log('setMessage: ', payload)
     //     state.message = payload
@@ -62,7 +73,27 @@ export const mutations = {
     },
     clearRedirect (state) {
         state.redirect = null
-    }
+    },
+    setOpenComponent (state, payload) {
+        console.log('setOpenComponent: ', payload)
+        state.openComponent = payload
+    },
+    clearOpenComponent (state) {
+        state.openComponent = null
+    },
+    // setSnackbar (state, payload) {
+    //     state.snackbar = {
+    //         show: payload.show,
+    //         type: payload.type,
+    //         message: payload.message
+    //     }
+    // },
+    // clearSnackbar (state, payload) {
+    //     console.log('clearSnackbar!')
+    //     state.snackbar = {
+    //         show: false
+    //     }
+    // }
 }
 
 export const actions = {
@@ -142,10 +173,19 @@ export const getters = {
     loginModal (state) {
         return state.loginModal
     },
+    requestAuthorizationModal (state) {
+        return state.requestAuthorizationModal
+    },
     // loadedMessage (state) {
     //     return state.message
     // },
     loadedRedirect (state) {
         return state.redirect
+    },
+    // snackbar (state) {
+    //     return state.snackbar
+    // }
+    loadedOpenComponent (state) {
+        return state.openComponent
     }
 }

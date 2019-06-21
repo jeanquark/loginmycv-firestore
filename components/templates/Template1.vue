@@ -241,6 +241,76 @@
 		      		</v-layout>
 				</v-flex>
 			</v-layout>
+
+
+			<!-- Section Contact -->
+			<v-layout row wrap id="contact" class="my-5 section">
+				<v-flex xs12 sm8 offset-sm2>
+					<h2 class="text-xs-center">Contact Me</h2>
+					<br /><br />
+					<v-form>
+						<v-layout row wrap>
+							<v-flex xs6 class="pr-3">
+								<v-text-field
+									outline
+									name="firstname_template1"
+									label="First name"
+									v-model="contactForm.firstname"
+									v-validate="'required|max:40'"
+									:error-messages="errors ? errors.collect('firstname_template1') : null"
+									data-vv-as="First name"
+									:color="primaryColor"
+									:background-color="primaryColor"
+									dark
+								></v-text-field>
+							</v-flex>
+							<v-flex xs6 class="pl-3">
+								<v-text-field
+									outline
+									name="lastname_template1"
+									label="Last name"
+									v-model="contactForm.lastname"
+									v-validate="'required|max:40'"
+									:error-messages="errors ? errors.collect('lastname_template1') : null"
+									data-vv-as="Last name"
+									:color="primaryColor"
+									:background-color="primaryColor"
+									dark
+								></v-text-field>
+							</v-flex>
+							<v-flex xs12>
+								<v-text-field
+									outline
+									name="email_template1"
+									label="Your Email"
+									v-model="contactForm.email"
+									v-validate="'required|email'"
+									:error-messages="errors ? errors.collect('email_template1') : null"
+									data-vv-as="Email"
+									:color="primaryColor"
+									:background-color="primaryColor"
+									dark
+								></v-text-field>
+							</v-flex>
+							<v-flex xs12>
+								<v-textarea
+									outline
+									name="message_template1"
+									label="Your message"
+									v-model="contactForm.message"
+									v-validate="'required|max:2056'"
+									:error-messages="errors ? errors.collect('message_template1') : null"
+									data-vv-as="Message"
+									:color="primaryColor"
+									:background-color="primaryColor"
+									dark
+								></v-textarea>
+							</v-flex>
+							<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" @click.prevent="sendMessage">Send message</v-btn>
+						</v-layout>
+					</v-form>
+				</v-flex>
+			</v-layout>
 		</v-content>
 
 		<v-footer :color="backgroundColor" class="white--text justify-center pa-4">
@@ -295,7 +365,13 @@
 				backgroundColor: '',
 				textColor: '',
 				profilePicture: {},
-				column: 8
+				column: 8,
+				contactForm: {
+					firstname: '',
+					lastname: '',
+					email: '',
+					message: ''
+				}
 			}
 		},
 		computed: {
@@ -357,6 +433,39 @@
 				} else
 				if (level = 100) {
 					return 'Mother tongue'
+				}
+			},
+			async sendMessage () {
+				try {
+					await this.$validator.validateAll()
+					if (this.errors && this.errors.items && this.errors.items.length > 0) {
+						new Noty({
+							type: 'error',
+							text: 'Please check validation errors.',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
+					} else {
+						console.log('sendMessage: ', this.contactForm)
+						await axios.post('/send-contact-form-message', { 
+							data: this.contactForm,
+							receiverAddress: 'me@example.com'
+						})
+						new Noty({
+							type: 'success',
+							text: 'Your message was successfully sent.',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
+					}
+				} catch (error) {
+					console.log('error: ', error)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error ocurred and your message could not be sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
 				}
 			},
 			redirectTo (link) {

@@ -14,30 +14,31 @@ app.use(bodyParser.json());
 
 module.exports = app.use(async function (req, res, next) {
 	try {
-		console.log('req.body.data: ', req.body.data);
-		console.log('req.body.receiverAddress: ', req.body.receiverAddress);
-		console.log('req.body.slug: ', req.body.slug);
-		console.log('app-key: ', req.get('app-key'));
+		const data = req.body.data;
+		const recipient = req.body.receiverAddress;
+		const slug = req.body.resumeSlug;
+		console.log('data: ', data);
+		console.log('recipient: ', recipient);
+		console.log('slug: ', slug);
 
 		const message = {
-			from: 'General Office <info@loginmycv.com>',
+			from: 'noreply <noreply@loginmycv.com>',
 			to: 'jm.kleger@gmail.com',
-			subject: 'You received a message for your resume @loginMyCV',
-			html: '<h2>LoginMyCV</h2><p>A message was sent through your contact form at the following address: <a href="localhost:3000/resume/ivan" target="_blank">ivan</a></p>'
+			subject: `You received a new message from your resume "${slug}" hosted on www.loginmycv.com`,
+			html: `
+				<h2 style="color: #7A528F;">LoginMyCV</h2>
+				<p>A message was sent through the contact form of your resume located at the following <a href="http://loginmycv.com/resume/${slug}">location</a>. Here is its content:</p>
+				<p><b>Sender:</b> ${data.firstname} ${data.lastname}, ${data.email}</p>
+				<p><b>Message:</b> ${data.message}</p>
+				<p style="color: #A9A9A9;">Best regards, <br />
+				Your loginMyCV team</p>
+			`
 		};
-		const recipient = req.body.receiverAddress;
-
-		// mailgun.messages().send(data, (error, body) => {
-		// 	console.log(body);
-		// });
-
-	
-
 
 		const sendEmail = (recipient, message) => new Promise((resolve, reject) => {
 			const data = {
 				from: message.from,
-				to: recipient,
+				to: 'jm.kleger@gmail.com',
 				subject: message.subject,
 				html: message.html,
 			};
@@ -51,12 +52,11 @@ module.exports = app.use(async function (req, res, next) {
 		});
 
 		await sendEmail(recipient, message);
-		res.json({message: 'Your message has been sent'});
-		await next();
 
-		res.send('POST request to send message went successfully.');
+		res.status(200).send(`POST request to send message went successfully.`);
   	} catch (error) {
   		console.log('error: ', error);
-  		res.end('POST request to send message failed.');
+  		// res.end('POST request to send message failed.');
+		res.status(500).send({ message: 'POST request to send message failed.', error });
   	}
 });

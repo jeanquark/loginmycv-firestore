@@ -3,7 +3,7 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            userResume: {{ userResume }}<br />
+            <!-- userResume: {{ userResume }}<br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
         </div>
         <v-layout row wrap class="pa-2">
@@ -32,11 +32,7 @@
             </v-flex>
         </v-layout>
 
-        <v-layout>
-            Menu names
-        </v-layout>
-
-        <v-layout row wrap pa-2>
+        <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12" class="pa-2" v-if="loadedTemplate">
                     <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
@@ -130,7 +126,7 @@
             </v-flex>
         </v-layout>
 
-        <v-layout row wrap pa-2>
+        <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
@@ -164,6 +160,34 @@
                 </v-card>
             </v-flex>
         </v-layout>
+
+        <v-layout row wrap class="pa-2">
+            <v-flex xs12>
+                <v-card :elevation="12" class="pa-2">
+                    <v-card-title class="justify-center">
+                        <h2 class="headline mb-0">Menu names</h2>
+                    </v-card-title>
+
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm6 class="px-4" v-for="(menu, index) in loadedTemplate.menus" :key="index">
+                                <v-subheader class="px-0">{{ menu.name }}</v-subheader>
+                                <v-text-field
+                                    :name="menu.slug"
+                                    item-text="name"
+                                    class="my-0 py-0"
+                                    v-validate="{ max: 50 }"
+                                    :error-messages="errors ? errors.collect(menu.slug) : null"
+                                    :data-vv-as="menu.name"
+                                    :counter="50"
+                                    v-model="userResume.menus[menu.slug]"
+                                ></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+        </v-layout>
     </div>
 </template>
 
@@ -172,6 +196,7 @@
     import { VueColorpicker } from 'vue-pop-colorpicker'
     export default {
         // props: ['edit'],
+        inject: ['$validator'], // Inject parent validator
         components: { VueColorpicker },
         async created () {
             const resumeSlug = this.$route.params.slug

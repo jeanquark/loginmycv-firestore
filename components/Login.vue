@@ -81,6 +81,11 @@
                     <v-btn flat color="secondary" @click="closeModal">
                         Close
                     </v-btn>
+
+
+                    <!-- <v-btn flat color="tertiary" @click="openRequestAuthorizationModal">
+                        Open request authorization modal
+                    </v-btn> -->
                 </v-layout>
             </v-form>
         </v-card-text>
@@ -168,9 +173,13 @@
                     //     theme: 'metroui'
                     // }).show()
                     this.$store.commit('closeLoginModal')
+                    if (this.$store.getters['loadedOpenComponent']) {
+                        this.$store.commit(this.$store.getters['loadedOpenComponent'])
+                        this.$store.commit('clearOpenComponent')
+                    }
                     if (this.$store.getters['loadedRedirect']) {
                         this.$router.replace(this.$store.getters['loadedRedirect'])
-                        // this.$store.commit('clearRedirect')
+                        this.$store.commit('clearRedirect')
                     } else {
                         this.$router.replace('/candidate/resumes')
                     }
@@ -197,7 +206,16 @@
                         theme: 'metroui'
                     }).show()
                     this.loadingGoogle = false
-                    this.$router.replace('/candidate/resumes')
+                    if (this.$store.getters['loadedOpenComponent']) {
+                        this.$store.commit(this.$store.getters['loadedOpenComponent'])
+                        this.$store.commit('clearOpenComponent')
+                    }
+                    if (this.$store.getters['loadedRedirect']) {
+                        this.$router.replace(this.$store.getters['loadedRedirect'])
+                        this.$store.commit('clearRedirect')
+                    } else {
+                        this.$router.replace('/candidate/resumes')
+                    }
                 } catch (error) {
                     console.log('error: ', error)
                     this.loadingGoogle = false
@@ -221,7 +239,16 @@
                         theme: 'metroui'
                     }).show()
                     this.loadingFacebook = false
-                    this.$router.replace('/candidate/resumes')
+                    if (this.$store.getters['loadedOpenComponent']) {
+                        this.$store.commit(this.$store.getters['loadedOpenComponent'])
+                        this.$store.commit('clearOpenComponent')
+                    }
+                    if (this.$store.getters['loadedRedirect']) {
+                        this.$router.replace(this.$store.getters['loadedRedirect'])
+                        this.$store.commit('clearRedirect')
+                    } else {
+                        this.$router.replace('/candidate/resumes')
+                    }
                 } catch (error) {
                     console.log('error: ', error)
                     this.loadingFacebook = false
@@ -232,6 +259,11 @@
                         theme: 'metroui'
                     }).show()
                 }
+            },
+            openRequestAuthorizationModal () {
+                this.$store.commit('closeLoginModal')
+                this.$store.commit('openRequestAuthorizationModal')
+                this.$router.replace('/')
             }
 		}
 	}

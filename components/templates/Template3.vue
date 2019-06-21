@@ -12,7 +12,7 @@
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
 				<div class="page page-1" data-index="0" tyle="border: 3px solid green;" ref="page">
-					<v-layout row wrap class="subpage" style="border: 2px dashed brown;">
+					<v-layout row wrap class="subpage" style="border: 2px dashed brown;" v-animate="{value: animationEffect}">
 						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4" style="border: 2px solid red;">
 							<v-layout row wrap>
 								<!-- files: {{ files }}<br /> -->
@@ -73,8 +73,7 @@
 											<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link" />
 										</v-flex>
 									</v-layout>
-									<p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-									<v-btn @click="index += 1">Click</v-btn>
+									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-flex>
 							</v-layout>
 						</v-flex>
@@ -102,16 +101,17 @@
 									<p class="primary-color accentuate" v-if="!education.end_date">{{ education.start_date }}</p>
 									<p class="primary-color accentuate" v-else>{{ education.start_date }} - {{ education.end_date }}</p>
 									<p>{{ education.description }}</p>
-									<p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-card-text>
 							</v-card>
 						</v-flex>
 					</v-layout>
 				</div>
+
 				<div class="page page-3" data-index="2">
-					<v-layout row wrap justify-center class="subpage" style="border: 2px dashed brown;" v-if="resume.work_experience && resume.work_experience > 0">
+					<v-layout row wrap justify-center class="subpage" style="border: 2px dashed brown;" v-if="resume.work_experience && resume.work_experience.length > 0">
 						<v-flex xs12 sm6 md4 style="height: 100%;">
-							<v-card :color="secondaryColor" class="card" v-for="work_experience in resume.work_experience" :key="work_experience.title" v-animate="{value: animationEffect}" style="">
+							<v-card :color="secondaryColor" class="card" v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" style="">
 								<v-card-title class="card-title">
 									{{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span><br />
 								</v-card-title>
@@ -119,59 +119,118 @@
 									<p class="primary-color accentuate" v-if="!work_experience.end_date">{{ work_experience.start_date }}</p>
 									<p class="primary-color accentuate" v-else>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
 									<p>{{ work_experience.job_description }}</p>
-									<p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-card-text>
 							</v-card>
 						</v-flex>
 					</v-layout>
 				</div>
+
 				<div class="page page-4" data-index="3">
-					<v-layout row wrap align-center v-if="resume.skills && resume.skills.length > 0">
+					<v-layout row wrap align-center class="subpage" style="border: 2px dashed brown;" v-if="resume.skills && resume.skills.length > 0" v-animate="{value: animationEffect}">
 						<!-- <p class="part-4" v-animate="{value: 'bounceInLeft'}">Skills</p> -->
 
 
-						<v-flex sm12 md6 offset-md3 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center">
+						<v-flex xs12 sm6 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center" style="height: 100%; border: 1px solid red;">
 							<h2 class="text-xs-center mb-2">{{ skill[0].category }}</h2>
-							<div class="my-5 mx-0" v-for="s in skill" :key="s.name">
-								<div v-if="s.type === 'pie'" class="">
-									<v-progress-circular
-										:rotate="270"
-										:size="100"
-										:width="10"
-										:value="s.value"
-										:color="secondaryColor"
-										class="pie"
-									>
-										{{ s.value }}%
-									</v-progress-circular><br /><br />
-									{{ s.name }}
-								</div>
-								<div v-else class="">
-									<v-layout>
-										<v-flex class="text-xs-left py-2">
-											<span>{{ s.name }}</span>
-										</v-flex>
-										<v-flex class="text-xs-right py-2">
-											<span>{{ s.value }}%</span>
-										</v-flex>
-									</v-layout>
-									<v-progress-linear
-										:color="secondaryColor"
-										height="20"
-										:value="s.value"
-										class="bar"
-									></v-progress-linear>
-								</div>			
-							</div>
+							<v-layout row wrap justify-center>
+								<v-flex xs12 sm6 class="my-4 mx-0 px-3" style="border: 1px dashed orange;" v-for="s in skill" :key="s.name">
+									<div v-if="s.type === 'pie'" class="">
+										<v-progress-circular
+											:rotate="270"
+											:size="100"
+											:width="10"
+											:value="s.value"
+											:color="secondaryColor"
+											class="pie"
+										>
+											{{ s.value }}%
+										</v-progress-circular><br /><br />
+										{{ s.name }}
+									</div>
+									<div v-else class="">
+										<v-layout>
+											<v-flex class="text-xs-left py-2">
+												<span>{{ s.name }}</span>
+											</v-flex>
+											<v-flex class="text-xs-right py-2">
+												<span>{{ s.value }}%</span>
+											</v-flex>
+										</v-layout>
+										<v-progress-linear
+											:color="secondaryColor"
+											height="20"
+											:value="s.value"
+											class="bar"
+										></v-progress-linear>
+									</div>			
+								<!-- </div> -->
+								</v-flex>
+							</v-layout>
 						</v-flex>
-
-
-
 					</v-layout>
 				</div>
 				<div class="page page-5" data-index="4">
-					<v-layout row wrap v-if="resume.parameters.show_contact_form">
-						<p class="part-5" v-animate="{value: 'bounceInLeft'}">Contact</p>
+					<v-layout row wrap class="subpage" style="border: 2px dashed brown;" v-animate="{value: animationEffect}" v-if="resume.parameters.show_contact_form">
+						<v-flex xs12 sm8 offset-sm2 class="pa-4" style="height: 100%;">
+							<v-form>
+								<v-layout row wrap>
+									<v-flex xs6 class="pr-3">
+										<v-text-field
+											outline
+											name="firstname_template3"
+											label="First name"
+											v-model="contactForm.firstname"
+											v-validate="'required|max:40'"
+											:error-messages="errors ? errors.collect('firstname_template3') : null"
+											data-vv-as="First name"
+											:color="primaryColor"
+											:background-color="primaryColor"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs6 class="pl-3">
+										<v-text-field
+											outline
+											name="lastname_template3"
+											label="Last name"
+											v-model="contactForm.lastname"
+											v-validate="'required|max:40'"
+											:error-messages="errors ? errors.collect('lastname_template3') : null"
+											data-vv-as="Last name"
+											:color="primaryColor"
+											:background-color="primaryColor"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12>
+										<v-text-field
+											outline
+											name="email_template3"
+											label="Your Email"
+											v-model="contactForm.email"
+											v-validate="'required|email'"
+											:error-messages="errors ? errors.collect('email_template3') : null"
+											data-vv-as="Email"
+											:color="primaryColor"
+											:background-color="primaryColor"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12>
+										<v-textarea
+											outline
+											name="message_template3"
+											label="Your message"
+											v-model="contactForm.message"
+											v-validate="'required|max:2056'"
+											:error-messages="errors ? errors.collect('message_template3') : null"
+											data-vv-as="Message"
+											:color="primaryColor"
+											:background-color="primaryColor"
+										></v-textarea>
+									</v-flex>
+									<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" :loading="loading" @click.prevent="sendMessage">Send message</v-btn>
+								</v-layout>
+							</v-form>
+						</v-flex>
 					</v-layout>
 				</div>
 			</div>
@@ -180,159 +239,239 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import Noty from 'noty'
 
-export default {
-	props: ['resume'],
-	head () {
-		return {
-			title: this.title,
-			meta: [
-				{ hid: 'description', name: 'description', content: 'Ma description personnalisée' }
-			],
-			link: [
-				{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css' }
-			]
-		}
-	},
-	mounted () {
-		// #202026
-		this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
-		this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
-		this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
-		this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
-		this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
-		this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
-		if (!this.profilePicture) {
-			this.column = 12
-		}
-		// console.log('Fullpage height: ' + this.$refs.fullpage2.clientHeight)
-		// console.log('Fullpage scrollHeight: ' + this.$refs.fullpage2.scrollHeight)
-		// console.log('Subpage height: ' + this.$refs.subpage.clientHeight)
-		// console.log('Subpage scrollHeight: ' + this.$refs.subpage.scrollHeight)
-		// console.log('page clientHeight: ' + this.$refs.subpage.clientHeight)
-		// console.log('window.scrollY: ', document.body.scrollHeight)
-		// this.fullPageHeight = this.$refs.fullpage2.clientHeight
-		// this.subPageHeight = this.$refs.subpage.clientHeight
-	},
-	data() {
-		// var that = this
-		return {
-			index: 0,
-			pageNum: 0,
-			opts: {
-				start: 0,
-				dir: 'v',
-				loop: false,
-				duration: 300,
-				beforeChange (ele, current, next) {
+	export default {
+		inject: ['$validator'], // Inject vee-validate validator
+		props: ['resume'],
+		head () {
+			return {
+				title: this.title,
+				meta: [
+					{ hid: 'description', name: 'description', content: 'Ma description personnalisée' }
+				],
+				link: [
+					{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css' }
+				]
+			}
+		},
+		mounted () {
+			// #202026
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
+			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
+			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
+			if (!this.profilePicture) {
+				this.column = 12
+			}
+			// console.log('Fullpage height: ' + this.$refs.fullpage2.clientHeight)
+			// console.log('Fullpage scrollHeight: ' + this.$refs.fullpage2.scrollHeight)
+			// console.log('Subpage height: ' + this.$refs.subpage.clientHeight)
+			// console.log('Subpage scrollHeight: ' + this.$refs.subpage.scrollHeight)
+			// console.log('page clientHeight: ' + this.$refs.subpage.clientHeight)
+			// console.log('window.scrollY: ', document.body.scrollHeight)
+			// this.fullPageHeight = this.$refs.fullpage2.clientHeight
+			// this.subPageHeight = this.$refs.subpage.clientHeight
+		},
+		data() {
+			// var that = this
+			return {
+				index: 0,
+				pageNum: 0,
+				opts: {
+					start: 0,
+					dir: 'v',
+					loop: false,
+					duration: 300,
+					beforeChange (ele, current, next) {
+					},
+					afterChange (ele, current) {
+						console.log('ele.dataset.index: ', ele.dataset.index)
+						this.vm.setIndex(ele.dataset.index)
+					}
 				},
-				afterChange (ele, current) {
-					console.log('ele.dataset.index: ', ele.dataset.index)
-					this.vm.setIndex(ele.dataset.index)
+				contactForm: {
+					firstname: 'John',
+					lastname: 'Doe',
+					email: 'john.doe@example.com',
+					message: 'This is my message.'
+				},
+				image: 'https://picsum.photos/id/975/1024/900',
+				primaryColor: '',
+				secondaryColor: '',
+				tertiaryColor: '',
+				backgroundColor: '',
+				textColor: '',
+				profilePicture: {},
+				column: 6,
+				animationEffect: 'zoomIn',
+				// snackbar: false
+			}
+		},
+		computed: {
+			cssProps() { 
+				return {
+					'--primary-color': this.primaryColor,
+					'--secondary-color': this.secondaryColor,
+					'--tertiary-color': this.tertiaryColor,
+					'--background-color': this.backgroundColor,
+					'--text-color': this.textColor
 				}
 			},
-			image: 'https://picsum.photos/id/975/1024/900',
-			primaryColor: '',
-			secondaryColor: '',
-			tertiaryColor: '',
-			backgroundColor: '',
-			textColor: '',
-			profilePicture: {},
-			column: 6,
-			animationEffect: 'zoomIn'
-		}
-	},
-	computed: {
-		cssProps() { 
-			return {
-				'--primary-color': this.primaryColor,
-				'--secondary-color': this.secondaryColor,
-				'--tertiary-color': this.tertiaryColor,
-				'--background-color': this.backgroundColor,
-				'--text-color': this.textColor
+			loading () {
+				return this.$store.getters['loading']
+			},
+			errors () {
+	            return this.$store.getters['errors']
+	        },
+	        snackbar () {
+	        	return this.$store.getters['snackbar']
+	        },
+			clearSnackbar () {
+	        	return this.$store.commit('clearSnackbar', false ,{ root: true })
+	        },
+			skills () {
+				if (this.resume.skills) {
+					const res = this.resume.skills.reduce((acc, curr) => {
+						if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
+						acc[curr.category].push(curr)
+						return acc
+					},{})
+					return res
+				}
+			},
+			nationalities () {
+				if (this.resume.personal_data.nationalities) {
+					return this.resume.personal_data.nationalities.slice(0).sort((a, b) => a.priority - b.priority)
+				}
+			},
+			languages () {
+				if (this.resume.languages) {
+					return this.resume.languages.slice(0).sort((a, b) => b.level - a.level)
+				}
+			},
+			files () {
+				if (this.resume.uploads) {
+					return this.resume.uploads.filter(file => file.type === 'downloadable_file')
+				}
+			},
+			presentationColumns () {
+				if (this.files && this.files.length > 0) {
+					return 6
+				}
+				return 12
 			}
-		},
-		skills () {
-			if (this.resume.skills) {
-				const res = this.resume.skills.reduce((acc, curr) => {
-					if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
-					acc[curr.category].push(curr)
-					return acc
-				},{})
-				return res
-			}
-		},
-		nationalities () {
-			if (this.resume.personal_data.nationalities) {
-				return this.resume.personal_data.nationalities.slice(0).sort((a, b) => a.priority - b.priority)
-			}
-		},
-		languages () {
-			if (this.resume.languages) {
-				return this.resume.languages.slice(0).sort((a, b) => b.level - a.level)
-			}
-		},
-		files () {
-			if (this.resume.uploads) {
-				return this.resume.uploads.filter(file => file.type === 'downloadable_file')
-			}
-		},
-		presentationColumns () {
-			if (this.files && this.files.length > 0) {
-				return 6
-			}
-			return 12
-		}
 
-	},
-	methods: {
-		setIndex (newIndex) {
-			console.log('newIndex: ', newIndex)
-			this.index = newIndex
-		}, 
- 		moveTo (index) {
-			this.$refs.fullpage.$fullpage.moveTo(index, true);
 		},
-		calculateAge (birthday) {
-			return moment().diff(birthday, 'years')
-		},
-		getLanguageLevelColor (level) {
-			if (level < 25) {
-				return 'error'
-			} else if (level <= 50) {
-				return 'warning'
-			} else if (level <= 75) {
-				return 'info'
-			} else {
-				return 'success'
+		methods: {
+			setIndex (newIndex) {
+				console.log('newIndex: ', newIndex)
+				this.index = newIndex
+			}, 
+	 		moveTo (index) {
+				this.$refs.fullpage.$fullpage.moveTo(index, true);
+			},
+			calculateAge (birthday) {
+				return moment().diff(birthday, 'years')
+			},
+			getLanguageLevelColor (level) {
+				if (level < 25) {
+					return 'error'
+				} else if (level <= 50) {
+					return 'warning'
+				} else if (level <= 75) {
+					return 'info'
+				} else {
+					return 'success'
+				}
+			},
+			getLanguageQualitativeLevel (level) {
+				console.log('level: ', level)
+				if (level < 20) {
+					return 'Beginner'
+				} else
+				if (level < 40) {
+					return 'Low intermediate'
+				} else
+				if (level < 60) {
+					return 'Intermediate'
+				} else
+				if (level < 80) {
+					return 'High intermediate'
+				} else
+				if (level < 100) {
+					return 'Advanced'
+				} else
+				if (level = 100) {
+					return 'Mother tongue'
+				}
+			},
+			async sendMessage () {
+				try {
+					// this.snackbar = true
+					// this.$store.commit('setSnackbar', {
+					// 	show: true,
+					// 	type: 'success',
+					// 	message: 'Your message was sent successfully.'
+					// })
+					// return this.$snackbar.show("You pressed the button")
+					// this.$toast('Custom options', {
+    	// 				color: 'green',
+    	// 				dismissable: true,
+    	// 				queueable: true
+					// })
+new Noty({
+							type: 'success',
+							text: 'Your message was sent successfully.',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
+					return
+					this.$store.commit('setLoading', true)
+					await this.$validator.validateAll()
+					if (this.errors && this.errors.items && this.errors.items.length > 0) {
+						this.$store.commit('setLoading', false)
+						new Noty({
+							type: 'error',
+							text: 'Please check validation errors.',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
+					} else {
+						console.log('sendMessage: ', this.form)
+						await axios.post('/send-contact-form-message', { 
+							data: this.contactForm,
+							receiverAddress: this.resume.personal_data.email,
+							resumeSlug: this.resume.slug
+						})
+						this.$store.commit('setLoading', false)
+						new Noty({
+							type: 'success',
+							text: 'Your message was sent successfully.',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
+						this.$store
+					}
+				} catch (error) {
+					console.log('error: ', error)
+					this.$store.commit('setLoading', false)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error ocurred and your message could not be sent.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
+			},
+			redirectTo (link) {
+				window.open(link, '_blank')
 			}
-		},
-		getLanguageQualitativeLevel (level) {
-			console.log('level: ', level)
-			if (level < 20) {
-				return 'Beginner'
-			} else
-			if (level < 40) {
-				return 'Low intermediate'
-			} else
-			if (level < 60) {
-				return 'Intermediate'
-			} else
-			if (level < 80) {
-				return 'High intermediate'
-			} else
-			if (level < 100) {
-				return 'Advanced'
-			} else
-			if (level = 100) {
-				return 'Mother tongue'
-			}
-		},
-		redirectTo (link) {
-			window.open(link, '_blank')
 		}
 	}
-}
 </script>
 
 <style scoped>
@@ -447,6 +586,10 @@ export default {
 		padding-top: 50px;
 		background-image: linear-gradient(120deg, var(--primary-color), #fff);
 	}
+	.page-5 {
+		padding-top: 50px;
+		background-image: linear-gradient(120deg, var(--background-color), #fff);
+	}
 
 	
 
@@ -481,6 +624,12 @@ export default {
 		border-radius: 10px;
 		margin: 0px 0px;
 	}
+	/*>>.theme--dark.v-label {
+		color: yellow;
+	}
+	.theme--dark.v-input:not(.v-input--is-disabled) input, .theme--dark.v-input:not(.v-input--is-disabled) textarea {
+		color: #000;
+	}*/
 
 	.social-link {
 		color: var(--text-color);

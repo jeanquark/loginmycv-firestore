@@ -250,14 +250,14 @@
 			</v-card>
 		</v-dialog>
 
-		<v-snackbar
+		<!-- <v-snackbar
       		v-model="snackbar"
       		top
       		right
       		:timeout="5000"
     	>
       		<span class="subheading"><v-icon color="warning">warning</v-icon> You need to be authenticated to select a package.</span>
-    	</v-snackbar>
+    	</v-snackbar> -->
   	</v-layout>
 </template>
 
@@ -355,7 +355,13 @@
 				console.log('cost: ', cost)
 				// return
 				if (!this.loadedUser) {
-					this.snackbar = true
+					new Noty({
+						type: 'info',
+						text: 'You need to be authenticated to select a package.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					// this.snackbar = true
 					this.$store.commit('setRedirect', '/packages')
 					this.$store.commit('openLoginModal')
 					return

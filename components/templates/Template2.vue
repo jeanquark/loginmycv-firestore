@@ -418,9 +418,9 @@
 										outline
 										name="firstname_template2"
 										label="First name"
-										v-model="form.firstname"
+										v-model="contactForm.firstname"
 										v-validate="'required|max:40'"
-                                    	:error-messages="errors ? errors.collect('firstname_template2') : null"
+										:error-messages="errors ? errors.collect('firstname_template2') : null"
 										data-vv-as="First name"
 										:color="primaryColor"
 										:background-color="primaryColor"
@@ -432,9 +432,9 @@
 										outline
 										name="lastname_template2"
 										label="Last name"
-										v-model="form.lastname"
+										v-model="contactForm.lastname"
 										v-validate="'required|max:40'"
-                                    	:error-messages="errors ? errors.collect('lastname_template2') : null"
+										:error-messages="errors ? errors.collect('lastname_template2') : null"
 										data-vv-as="Last name"
 										:color="primaryColor"
 										:background-color="primaryColor"
@@ -446,9 +446,9 @@
 										outline
 										name="email_template2"
 										label="Your Email"
-										v-model="form.email"
+										v-model="contactForm.email"
 										v-validate="'required|email'"
-                                    	:error-messages="errors ? errors.collect('email_template2') : null"
+										:error-messages="errors ? errors.collect('email_template2') : null"
 										data-vv-as="Email"
 										:color="primaryColor"
 										:background-color="primaryColor"
@@ -460,9 +460,9 @@
 										outline
 										name="message_template2"
 										label="Your message"
-										v-model="form.message"
+										v-model="contactForm.message"
 										v-validate="'required|max:2056'"
-                                    	:error-messages="errors ? errors.collect('message_template2') : null"
+										:error-messages="errors ? errors.collect('message_template2') : null"
 										data-vv-as="Message"
 										:color="primaryColor"
 										:background-color="primaryColor"
@@ -541,7 +541,7 @@
 				tertiaryColor: '',
 				backgroundColor: '',
 				textColor: '',
-				form: {
+				contactForm: {
 					firstname: '',
 					lastname: '',
 					email: '',
@@ -596,7 +596,7 @@
 			},
 			errors () {
                 return this.$store.getters['errors']
-            },		
+            },
 			skills () {
 				// return this.resume.skills
 				if (this.resume.skills) {
@@ -654,11 +654,10 @@
 							theme: 'metroui'
 						}).show()
 					} else {
-						console.log('sendMessage: ', this.form)
-						await axios.post('/send-contact-form-message', { data: this.form, receiverAddress: 'me@example.com', slug: 'ivan' }, {
-							headers: {
-								'app-key': process.env.APP_KEY
-							}
+						console.log('sendMessage: ', this.contactForm)
+						await axios.post('/send-contact-form-message', { 
+							data: this.contactForm,
+							receiverAddress: 'me@example.com'
 						})
 						new Noty({
 							type: 'success',

@@ -11,7 +11,7 @@
             <!-- error: {{ error }}<br /><br /> -->
             <!-- resumeSlug: {{ this.resumeSlug }}<br /><br /> -->
             <!-- personalData: {{ this.personalData }}<br /><br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- getCurrentPicture: {{ getCurrentPicture }}<br /><br /> -->
             <!-- userResume.uploads: {{ this.userResume.uploads }}<br /><br /> -->
