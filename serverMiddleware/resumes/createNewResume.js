@@ -34,24 +34,32 @@ module.exports = app.use(async function (req, res, next) {
                 'slug': 'Slug already exists. Please provide another identifier for the resume.',
             }
         }
-        // const snapshot = await admin.firestore().collection('resumes_long').doc(newResume.slug).get();
-        // const querySnapshot = await admin.firestore().collection('resumes_long').where('slug', '==', newResume.slug).get();
-        // const resumesLongArray = []
-        // querySnapshot.forEach(doc => {
-        //     console.log('doc.data().user_id: ', doc.data().user_id)
-        //     console.log('newResume.user_id: ', newResume.user_id)
-        //     if (doc.data().user_id !== newResume.user_id) {
-        //         resumesLongArray.push(doc.data().slug);
-        //     }
-        // });
-        // console.log('resumesLongArray: ', resumesLongArray);
-        // console.log('resumesLongArray.length: ', resumesLongArray.length);
 
-        // if (resumesLongArray.length > 0) {
-        //     throw {
-        //         'slug': 'Slug already exists. Please provide another identifier for the resume.',
-        //     }
-        // }
+
+        // 3) Check again total uploads size (but this time serverside)
+        const user = await admin.firestore().collection('users').doc(newResume.user_id).get();
+        const totalSpaceInBytes = user.data().private.total_space_in_bytes;
+
+        let totalUploadSize = 0;
+        const userResumes = await admin.firestore().collection('resumes_long').where('user_id', '==', newResume.user_id).get();
+        userResumes.forEach(doc => {
+            const uploads = doc.data().uploads;
+            doc.data().uploads.forEach(upload => {
+                totalUploadSize += parseInt(upload.size_in_bytes)
+            });
+        });
+
+        newResume.uploads.forEach(upload => {
+            totalUploadSize += parseInt(upload.size_in_bytes)
+        });
+
+        if (totalUploadSize > totalSpaceInBytes) {
+            throw {
+                'not_enough_space': 'Not enough space. Please remove some files.'
+            }
+        }
+
+
 
         
         newResume._created_at = moment().unix();
@@ -65,7 +73,7 @@ module.exports = app.use(async function (req, res, next) {
 
 
 
-        // 3) Create visitor auth account 
+        // 4) Create visitor auth account 
         if (password) {
             try {
                 console.log('Update visitor\'s password: ', password);
@@ -93,8 +101,7 @@ module.exports = app.use(async function (req, res, next) {
         }
 
 
-
-        // 4) Save long & short resumes in DB
+        // 5) Save long & short resumes in DB
         let batch = admin.firestore().batch();
         const newShortResume = admin.firestore().collection('resumes_short').doc();
         newResume['resume_short_id'] = newShortResume.id;

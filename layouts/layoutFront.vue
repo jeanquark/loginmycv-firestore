@@ -132,6 +132,7 @@
                 { name: "robots", content: "noindex" }
             ]
         },
+        // middleware: [''],
         mounted () {
             window.addEventListener('scroll', this.onScroll)
         },

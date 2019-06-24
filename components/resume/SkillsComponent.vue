@@ -42,18 +42,18 @@
                 
 
                     <v-card-text>
-                        userSkillsCategories: {{ userSkillsCategories }}<br />
-                        userSkillsSubCategories: {{ userSkillsSubCategories }}<br />
+                        <!-- userSkillsCategories: {{ userSkillsCategories }}<br /> -->
+                        <!-- userSkillsSubCategories: {{ userSkillsSubCategories }}<br /> -->
                         <v-layout row wrap>
                             <v-flex xs12>
                                 <v-text-field
                                     label="Skill name"
                                     name="skill_name"
-                                    v-validate="{ required: true, max: 2 }"
+                                    v-validate="{ required: true, max: 50 }"
                                     :error-messages="errors ? errors.collect('skill_name') : null"
                                     data-vv-as="Skill name"
                                     v-model="newSkill.name"
-                                    :counter="2"
+                                    :counter="50"
                                 ></v-text-field>
                             </v-flex>
 
@@ -75,7 +75,7 @@
                                     color="secondary"
                                 ></v-slider>
                                 <div class="text-xs-center">
-                                    {{ newSkill.value }}/10
+                                    {{ newSkill.value }}/100
                                 </div>
                             </v-flex>
 
@@ -202,7 +202,7 @@
                 <!-- skills[parentIndex]: {{ skills[parentIndex] }}<br /><br /> -->
                 <!-- candidateSkills[parentIndex]['children']: {{ candidateSkills[parentIndex]['children'] }}<br /><br /> -->
                 <!-- skills[parentIndex]['children'][0]: {{ skills[parentIndex]['children'][0] }}<br /><br /> -->
-                candidateSkills: {{ candidateSkills }}<br /><br />
+                <!-- candidateSkills: {{ candidateSkills }}<br /><br /> -->
                 <!-- skillCategory: {{ skillCategory }}<br /><br /> -->
                 <!-- parentIndex: {{ parentIndex }}<br /><br /> -->
                 <v-card>
@@ -227,11 +227,11 @@
                                 <v-text-field
                                     label="Skill name"
                                     :name="`skill_name_${index}`"
-                                    v-validate="{ required: true, max: 2 }"
+                                    v-validate="{ required: true, max: 50 }"
                                     :error-messages="errors ? errors.collect(`skill_name_${index}`) : null"
                                     data-vv-as="Skill name"
                                     v-model="candidateSkills[index].name"
-                                    :counter="2"
+                                    :counter="50"
                                 ></v-text-field>
                             </v-flex>
 
@@ -505,7 +505,7 @@
                 }
             },
             addNewSkill () {
-                if (this.userResume.skills.length < 10) {
+                if (this.userResume.skills.length > 10) {
 					new Noty({
 						type: 'warning',
 						text: 'No more than 10 items allowed!',
@@ -519,10 +519,10 @@
                 // this.candidateSkills[parentIndex].items.push({
                 this.modalNewSkill = false
                 this.userResume.skills.push({
-                    name: newSkill.name,
-                    category: newSkill.category,
-                    type: newSkill.type,
-                    value: newSkill.value
+                    name: this.newSkill.name,
+                    category: this.newSkill.category,
+                    type: this.newSkill.type,
+                    value: this.newSkill.value
                 })
                 this.newEducation = {}
                 new Noty({

@@ -41,18 +41,6 @@
                             <v-layout row wrap>
                                 <v-flex xs12>
                                     <v-text-field
-                                        label="Company"
-                                        name="work_experience_company_name"
-                                        placeholder="Google Inc."
-                                        v-model="newWorkExperience.company"
-                                        v-validate="{ max: 50 }"
-                                        :error-messages="errors ? errors.collect('work_experience_company_name') : null"
-                                        data-vv-as="Company"
-                                        :counter="50"
-                                    ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field
                                         label="Job title"
                                         name="work_experience_job_title"
                                         placeholder="Sofware engineer"
@@ -60,6 +48,18 @@
                                         v-validate="{ max: 50 }"
                                         :error-messages="errors ? errors.collect('work_experience_job_title') : null"
                                         data-vv-as="Job title"
+                                        :counter="50"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-text-field
+                                        label="Company"
+                                        name="work_experience_company_name"
+                                        placeholder="Google Inc."
+                                        v-model="newWorkExperience.company"
+                                        v-validate="{ max: 50 }"
+                                        :error-messages="errors ? errors.collect('work_experience_company_name') : null"
+                                        data-vv-as="Company"
                                         :counter="50"
                                     ></v-text-field>
                                 </v-flex>
@@ -142,7 +142,7 @@
                                 <v-btn style="cursor: move;" icon class="handle ml-0"><v-icon>drag_indicator</v-icon></v-btn>
                                 <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
                                 <!-- <v-icon style="color: #ff5252;" v-if="error && error.education_1_name">error</v-icon> -->
-                                <span style="font-size: 1.5em;" :class="{ 'errorTitle': workExperienceErrors[index] }">{{ workExperience.company }}</span>
+                                <span style="font-size: 1.5em;" :class="{ 'errorTitle': workExperienceErrors[index] }">{{ workExperience.job_title }} at {{ workExperience.company }}</span>
 
                                 <!-- <v-btn small color="secondary">Order</v-btn> -->
                             </v-layout>         

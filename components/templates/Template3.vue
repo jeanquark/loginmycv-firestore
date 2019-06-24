@@ -423,12 +423,12 @@
     	// 				dismissable: true,
     	// 				queueable: true
 					// })
-new Noty({
-							type: 'success',
-							text: 'Your message was sent successfully.',
-							timeout: 5000,
-							theme: 'metroui'
-						}).show()
+					new Noty({
+						type: 'success',
+						text: 'Your message was sent successfully.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
 					return
 					this.$store.commit('setLoading', true)
 					await this.$validator.validateAll()

@@ -103,7 +103,7 @@
 			return {
 				headers: [
 					{ text: 'N°', value: 'index' },
-					{ text: 'Slug', value: 'slug' },
+					{ text: 'Identifier', value: 'slug' },
 					{ text: 'Language', value: 'language'},
 		          	{ text: 'Job title', value: 'job_title' },
 		          	// { text: 'Job description', value: 'job_description' },

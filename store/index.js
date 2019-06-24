@@ -108,6 +108,9 @@ export const actions = {
 
     async nuxtServerInit ({ commit, dispatch }, { req }) {
         console.log('Entering nuxtServerInit', moment().format('DD-MM-YYYY HH:mm:ss'))
+        // Check for subdomain:
+        console.log('req.headers.host: ', req.headers.host)
+        // context.redirect('http://google.ch')
         if (req.user) {
             console.log('User is logged in from nuxtServerInit')
             console.log('req.user: ', req.user)
@@ -115,7 +118,7 @@ export const actions = {
             // await dispatch('users/fetchAuthenticatedUser', req.user)
             // const userId = req.user.uid
             // console.log("userId: ", userId)
-            // // dispatch('users/loadedUser', userId, { root: true})
+            // // dispatch('users/loadedUser', userId, { roost: true})
             // commit("users/setLoadedUser", req.user, { root: true })
             // this.$router.push({ path: "home" })
 

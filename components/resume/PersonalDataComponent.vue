@@ -26,7 +26,11 @@
                         <h2 class="headline mb-0">General Info</h2><br />
                         <!-- <h4>(entries with an asterisk (*) are public)</h4> -->
                     </v-card-title>
-                    <div class="text-xs-center"><small>(entries with an <v-icon small>remove_red_eye</v-icon> are public</small>)</div>
+                    <div class="text-xs-center">
+                        <small v-if="userResume.visibility !== 'private'">(entries with an <v-icon small>remove_red_eye</v-icon> are public)</small>
+                        <small v-else>(all entries are private)</small>
+                    </div>
+
 
                     <v-card-text>
                         <v-layout row wrap>
@@ -41,9 +45,9 @@
                                     color="secondary"
                                     v-model="userResume.language"
                                 >
-                                    <template v-slot:label>
-                                        Language of the resume <v-icon small class="valign-top">visibility</v-icon>
-                                    </template>
+                                <template v-slot:label>
+                                    Resume language
+                                </template>
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                 </v-autocomplete>
                             </v-flex>
@@ -199,7 +203,7 @@
                                 <v-text-field
                                     label="Phone number"
                                     name="phone"
-                                    v-validate="{ regex: /^([0-9+()-]+)$/ }"
+                                    v-validate="{ regex: /^([ 0-9+()-]+)$/ }"
                                     :error-messages="errors ? errors.collect('phone') : null"
                                     v-model="userResume.personal_data.phone"
                                 ><font-awesome-icon :icon="['fas', 'phone']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
@@ -229,6 +233,7 @@
                                 <v-text-field
                                     :label="`${social_network.name} link`"
                                     :name="social_network.slug"
+                                    hint="Don't forget protocol (https://) for url"
                                     v-validate="{ required: true }"
                                     :error-messages="errors ? errors.collect(`${social_network.slug}`) : null"
                                     :data-vv-as="social_network.name"
@@ -416,7 +421,7 @@
                             </v-flex>
                         </v-layout>
 
-                        <v-layout class="mb-4">
+                        <!--<v-layout class="mb-4">
                             <v-flex xs12 class="px-3">
                                 <v-autocomplete
                                     :items="loadedCompetences"
@@ -435,7 +440,7 @@
                                     <font-awesome-icon :icon="['fas', 'tools']" slot="prepend" style="margin-top: 4px;" />
                                 </v-autocomplete>
                             </v-flex>
-                        </v-layout>             
+                        </v-layout>-->       
 
                         <v-layout class="mb-4">
                             <v-flex xs12 sm6 class="px-3">

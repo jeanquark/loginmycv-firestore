@@ -148,7 +148,10 @@
 			// Get user total upload size
 			// if (!this.$store.getters['resumes/loadedUserResumes']) {
 				// await this.$store.dispatch('resumes/fetchUserResumes')
-				await this.$store.dispatch('app-parameters/fetchAppParameters')
+
+
+				// await this.$store.dispatch('app-parameters/fetchAppParameters')
+
 
 			// }
 			// this.userTotalUsedSpace()

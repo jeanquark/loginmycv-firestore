@@ -1892,7 +1892,6 @@
   "united_kingdom" : {
     "alpha2" : "GB",
     "alpha3" : "GBR",
-    "competitions" : false,
     "continent" : "Europa",
     "flag" : "united_kingdom.png",
     "name" : "United Kingdom",

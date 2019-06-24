@@ -46,6 +46,8 @@ export const mutations = {
 			visibility: '',
 			colors: {},
 			parameters: {},
+			menus: [],
+			labels: [],
 			others: []
 		}
 	},

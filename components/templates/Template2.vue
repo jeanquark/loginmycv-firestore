@@ -24,43 +24,43 @@
 							container: '',
 							duration: '1000',
 							offset: -100
-						}">Home</nuxt-link>
-						<nuxt-link class="nav-item" to="#about" v-scroll-to="{
+						}">{{ resume.menus.presentation ? resume.menus.presentation : 'Presentation' }}</nuxt-link>
+						<!-- <nuxt-link class="nav-item" to="#about" v-scroll-to="{
 							el: '#about',
 							container: '',
 							duration: '1000',
 							offset: -100
-						}">About</nuxt-link>
-						<nuxt-link class="nav-item" to="#whatIdo" v-scroll-to="{
+						}">About</nuxt-link> -->
+						<!-- <nuxt-link class="nav-item" to="#whatIdo" v-scroll-to="{
 							el: '#whatIdo',
 							container: '',
 							duration: '1000',
 							offset: -100
-						}">What I do</nuxt-link>
+						}">What I do</nuxt-link> -->
 						<nuxt-link class="nav-item" to="#education" v-scroll-to="{
 							el: '#education',
 							container: '',
 							duration: '1000',
 							offset: -100
-						}">Education & Work experience</nuxt-link>
+						}">{{ resume.menus.education ? resume.menus.education : 'Education & Work Experience' }}</nuxt-link>
 						<nuxt-link class="nav-item" to="#skills" v-scroll-to="{
 							el: '#skills',
 							container: '',
 							duration: '1000',
 							offset: -100
-						}" v-if="resume.skills && resume.skills.length > 0">Skills</nuxt-link>
+						}" v-if="resume.skills && resume.skills.length > 0">{{ resume.menus.skills ? resume.menus.skills : 'Skills' }}</nuxt-link>
 						<nuxt-link class="nav-item" to="#files" v-scroll-to="{
 							el: '#files',
 							container: '',
 							duration: '1000',
 							offset: -100
-						}" v-if="files && files.length > 0">Files</nuxt-link>
+						}" v-if="files && files.length > 0">{{ resume.menus.files ? resume.menus.files : 'Files' }}</nuxt-link>
 						<nuxt-link class="nav-item" to="#contact" v-scroll-to="{
 							el: '#contact',
 							container: '',						
 							duration: '1000',
 							offset: -100
-						}">Contact</nuxt-link>
+						}">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</nuxt-link>
 		            </div>
 	            </v-flex>
 	        </v-layout>
@@ -81,13 +81,13 @@
 					}"
 				>
 					<v-list-tile-action>
-						<v-icon>home</v-icon>
+						<v-icon :color="primaryColor">home</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Home</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">{{ resume.menus.presentation ? resume.menus.presentation : 'Presentation' }}</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile 
+				<!-- <v-list-tile 
 					to="#about" 
 					v-scroll-to="{
 						el: '#about',
@@ -102,8 +102,8 @@
 					<v-list-tile-content>
 						<v-list-tile-title>About</v-list-tile-title>
 					</v-list-tile-content>
-				</v-list-tile>
-				<v-list-tile 
+				</v-list-tile> -->
+				<!-- <v-list-tile 
 					to="#whatIdo"
 					v-scroll-to="{
 						el: '#whatIdo',
@@ -118,7 +118,7 @@
 					<v-list-tile-content>
 						<v-list-tile-title>What I do</v-list-tile-title>
 					</v-list-tile-content>
-				</v-list-tile>
+				</v-list-tile> -->
 				<v-list-tile 
 					to="#education"
 					v-scroll-to="{
@@ -129,10 +129,10 @@
 					}"
 				>
 					<v-list-tile-action>
-						<v-icon>business_center</v-icon>
+						<v-icon :color="primaryColor">business_center</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Education & Work experience</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">{{ resume.menus.education ? resume.menus.education : 'Education & Work Experience' }}</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile 
@@ -146,10 +146,10 @@
 					v-if="resume.skills && resume.skills.length > 0"
 				>
 					<v-list-tile-action>
-						<v-icon>build</v-icon>
+						<v-icon :color="primaryColor">build</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Skills</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">{{ resume.menus.skills ? resume.menus.skills : 'Skills' }}</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile 
@@ -163,10 +163,10 @@
 					v-if="files && files.length > 0"
 				>
 					<v-list-tile-action>
-						<v-icon>picture_as_pdf</v-icon>
+						<v-icon :color="primaryColor">picture_as_pdf</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Files</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">{{ resume.menus.files ? resume.menus.files : 'Files' }}</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile 
@@ -179,18 +179,18 @@
 					}"
 				>
 					<v-list-tile-action>
-						<v-icon>contact_mail</v-icon>
+						<v-icon :color="primaryColor">contact_mail</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Contact</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile @click.stop="sidemenu = !sidemenu">
 					<v-list-tile-action>
-						<v-icon>exit_to_app</v-icon>
+						<v-icon :color="primaryColor">exit_to_app</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>Close sidemenu</v-list-tile-title>
+						<v-list-tile-title><span class="primary-color">Close sidemenu</span></v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list>
@@ -215,7 +215,7 @@
 					<v-flex xs12 sm8 offset-sm2>
 						<v-layout>
 							<v-flex xs12 sm6 style="">
-								<v-chip class="primary-color-background text-color rounded-border py-2 px-3"
+								<v-chip class="primary-color-background text-color rounded-border py-2 px-3" v-if="resume.personal_data.greeting_phrase"
 									><b>{{ resume.personal_data.greeting_phrase }}</b>
 								</v-chip><br /><br />
 								<h1 id="fullName" class="">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename ? resume.personal_data.middlename : '' }} {{ resume.personal_data.lastname }}</h1>
@@ -228,7 +228,7 @@
 									<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
 								</div>
 								<div class="mb-1">
-									<font-awesome-icon :icon="['fas', 'map-marker']" class="icon" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country }}
+									<font-awesome-icon :icon="['fas', 'map-marker']" class="icon" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country ? resume.personal_data.country.name : null }}
 								</div>
 								<div class="mb-1" v-if="resume.personal_data.nationalities">
 									<font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
@@ -244,7 +244,7 @@
 								</div>								
 								<br />
 								<v-layout class="justify-center">
-									<v-chip label class="social-link" @click="redirectTo(social.link)" v-for="(social_network, index) in resume.social_networks" :key="index"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" /></v-chip>
+									<v-chip label class="social-link" @click="redirectTo(social_network.link)" v-for="(social_network, index) in resume.social_networks" :key="index"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" :color="textColor" /></v-chip>
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'linkedin-in']" size="2x" /></v-chip> -->
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip> -->
 								</v-layout>
@@ -265,7 +265,7 @@
 
 
 				<!-- Section About -->
-				<v-layout row wrap style="" id="about" class="my-5 section">
+				<v-layout row wrap style="" id="about" class="my-5 section" v-if="resume.personal_data.short_description">
 					<v-flex xs12 sm8 offset-sm2>
 						<v-layout align-center>
 							<v-flex xs12 sm6 pr-5 class="hidden-xs-only">
@@ -281,33 +281,11 @@
 				</v-layout>
 
 
-				<!-- Section What I do -->
-				<v-layout row wrap style="" id="whatIdo" class="my-5 section">
-					<v-flex xs12 sm8 offset-sm2>
-						<h2 class="text-xs-center">What I do</h2><br /><br />
-						<v-layout>
-							<v-flex xs12 sm6 v-for="index in 3" :key="index" class="">
-								<v-card color="#202026">
-									<v-card-title primary-title>
-										<div>
-											<h3 class="headline mb-0 white--text">UI Design</h3>
-										</div>
-									</v-card-title>
-
-									<v-card-text class="white--text">
-										Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-									</v-card-text>
-								</v-card>
-							</v-flex>
-						</v-layout>
-					</v-flex>
-				</v-layout>
-
 
 				<!-- Section Education & Work experience -->
 				<v-layout row wrap class="my-5 section" id="education">
 					<v-flex xs12 sm4 offset-sm2 class="pr-4">
-						<h2 class="text-xs-center">Education</h2><br />
+						<h1 class="text-xs-center">Education</h1><br />
 						<v-card class="card" v-for="education in resume.education" :key="education.title">
 							<v-card-title class="card-title">
 								{{ education.title }} from&nbsp;<span class="primary-color accentuate italic">{{ education.school }}</span>
@@ -320,7 +298,7 @@
 						</v-card>
 					</v-flex>
 					<v-flex xs12 sm4 class="pl-4">
-						<h2 class="text-xs-center">Work experience</h2><br />
+						<h1 class="text-xs-center">Work experience</h1><br />
 						<v-card class="card" v-for="(work_experience, index) in resume.work_experience" :key="index">
 							<v-card-title class="card-title">
 								{{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span>
@@ -343,7 +321,7 @@
 							<v-flex xs12 sm6 v-for="(skill, index) in skills" :key="index" class="pa-3 text-xs-center">
 								<div>
 									<!-- index: {{ index }} -->
-									<h2 class="text-xs-center mb-2">{{ skill[0].category }}</h2>
+									<h1 class="text-xs-center mb-3">{{ skill[0].category }}</h1>
 									<div class="mx-0" v-for="s in skill" :key="s.name">
 										<div v-if="s.type === 'pie'">
 											<v-progress-circular
@@ -358,8 +336,8 @@
 											</v-progress-circular><br /><br />
 											{{ s.name }}
 										</div>
-										<div v-else>
-											<v-layout>
+										<div class="mb-4" v-else>
+											<v-layout class="pb-0">
 												<v-flex class="text-xs-left">
 													<span>{{ s.name }}</span>
 												</v-flex>
@@ -369,12 +347,12 @@
 											</v-layout>
 											<v-progress-linear
 												:color="primaryColor"
-												height="10"
+												height="15"
 												:value="s.value"
-												style="border-radius: 10px; margin: 0px 0px;"
+												style="border-radius: 10px;"
+												class="mb-0"
 											></v-progress-linear>
 										</div>
-										
 									</div>
 								</div>
 							</v-flex>
@@ -384,9 +362,9 @@
 
 
 				<!-- Section Files -->
-				<v-layout row wrap id="files" class="my-5 section" v-if="files">
+				<v-layout row wrap id="files" class="my-5 section" v-if="files && files.length > 0">
 					<v-flex xs12 sm8 offset-sm2>
-						<h2 class="text-xs-center">Files</h2>
+						<h1 class="text-xs-center">Files</h1>
 						<br /><br />
 						<v-layout row wrap justify-center>
 							<v-flex xs6 md4 lg3 v-for="(file, index) in files" :key="index" class="pa-2" style="">
@@ -409,7 +387,7 @@
 				<!-- Section Contact -->
 				<v-layout row wrap id="contact" class="my-5 section">
 					<v-flex xs12 sm8 offset-sm2>
-						<h2 class="text-xs-center">Contact Me</h2>
+						<h1 class="text-xs-center">Contact Me</h1>
 						<br /><br />
 						<v-form>
 							<v-layout row wrap>
@@ -478,7 +456,7 @@
 			<br />
 		</v-content>
 
-		<v-footer :color="backgroundColor" class="white--text justify-center pa-4">
+		<v-footer :color="primaryColor" class="white--text justify-center py-4">
 			<!-- <span class="ml-2">{{ new Date() | moment('Y') }} - </span> -->
 			<nuxt-link to="/" class="link">
 				<v-layout align-center justify-center>
@@ -507,11 +485,11 @@
 		    }
 		},
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
-			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : 'green'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : 'orange'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : 'pink'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : 'yellow'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : 'red'
 			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
 			// this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
 			// this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#202026'
@@ -701,7 +679,8 @@
 				}
 			},
 			redirectTo (link) {
-				window.open(link, '_blank');
+				console.log('link: ', link)
+				window.open(link, '_blank')
 			}
 		}
 	}

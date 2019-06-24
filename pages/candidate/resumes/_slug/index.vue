@@ -396,6 +396,13 @@
                                 })
                             }
 
+                            if (key === 'slug') {
+                                this.stepPersonalDataErrors = true
+                            }
+                            if (key === 'not_enough_space') {
+                                this.stepFileUploadErrorsArray.push(true)
+                            }
+
                             new Noty({
                                 type: 'warning',
                                 text: value,
