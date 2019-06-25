@@ -101,6 +101,9 @@
 								>
 									<img :src="`${resume.picture}`" alt="Candidate picture">
 								</v-avatar>
+								<v-layout justify-center v-else>
+									<avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-xs-center mb-2"></avatar>
+								</v-layout>
 							</v-flex>
 						</v-layout>
 
@@ -162,9 +165,10 @@
 	import Noty from 'noty'
 	import axios from 'axios'
 	import RequestAuthorization from '~/components/RequestAuthorization'
+	import Avatar from 'vue-avatar'
 	export default {
 		// inject: ['$validator'], // inject vee-validate validator
-		components: { RequestAuthorization },
+		components: { RequestAuthorization, Avatar },
 		layout: 'layoutFront',
 		// async asyncData ({ $axios, store }) {
 			// const shortResumes = await $axios.$get('/fetch-short-resumes')

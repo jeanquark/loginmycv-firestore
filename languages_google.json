@@ -3,415 +3,483 @@
     "code": "af",
     "name": "Afrikaans",
     "slug": "afrikaans",
+    "flag": "south_africa.png",
     "nativeName": "Afrikaans"
   },
   "albanian": {
     "code": "sq",
     "name": "Albanian",
     "slug": "albanian",
+    "flag": "albani.png",
     "nativeName": "Shqip"
   },
   "amharic": {
     "code": "am",
     "name": "Amharic",
     "slug": "amharic",
+    "flag": "ethiopia.png",
     "nativeName": "አማርኛ"
   },
   "arabic": {
     "code": "ar",
     "name": "Arabic",
     "slug": "arabic",
+    "flag": "arabic.png",
     "nativeName": "العربية"
   },
   "armenian": {
     "code": "hy",
     "name": "Armenian",
     "slug": "armenian",
+    "flag": "armenia.png",
     "nativeName": "Հայերեն"
   },
   "azerbaijani": {
     "code": "az",
     "name": "Azerbaijani",
     "slug": "azerbaijani",
+    "flag": "azerbaijan.png",
     "nativeName": "azərbaycan dili"
   },
   "bangla": {
     "code": "bn",
     "name": "Bangla, Bengali",
     "slug": "bangla",
+    "flag": "banglasesh.png", // India
     "nativeName": "বাংলা"
   },
   "bulgarian": {
     "code": "bg",
     "name": "Bulgarian",
     "slug": "bulgarian",
+    "flag": "bulgaria.png",
     "nativeName": "български език"
   },
   "burmese": {
     "code": "my",
     "name": "Burmese",
     "slug": "burmese",
+    "flag": "myanmar.png",
     "nativeName": "ဗမာစာ"
   },
   "catalan": {
     "code": "ca",
     "name": "Catalan; Valencian",
     "slug": "catalan",
+    "flag": "catalonia.png",
     "nativeName": "Català"
   },
   "chinese": {
     "code": "zh",
     "name": "Chinese",
     "slug": "chinese",
+    "flag": "china.png",
     "nativeName": "中文 (Zhōngwén), 汉语, 漢語"
   },
   "croatian": {
     "code": "hr",
     "name": "Croatian",
     "slug": "croatian",
+    "flag": "croatia.png",
     "nativeName": "hrvatski"
   },
   "czech": {
     "code": "cs",
     "name": "Czech",
     "slug": "czech",
+    "flag": "czech_republic.png",
     "nativeName": "česky, čeština"
   },
   "danish": {
     "code": "da",
     "name": "Danish",
     "slug": "danish",
+    "flag": "denmark.png",
     "nativeName": "dansk"
   },
   "dutch": {
     "code": "nl",
     "name": "Dutch",
     "slug": "dutch",
+    "flag": "netherlands.png",
     "nativeName": "Nederlands, Vlaams"
   },
   "english": {
     "code": "en",
     "name": "English",
     "slug": "english",
+    "flag": "united_kingdom.png", // USA
     "nativeName": "English"
   },
   "estonian": {
     "code": "et",
     "name": "Estonian",
     "slug": "estonian",
+    "flag": "estonia.png",
     "nativeName": "eesti, eesti keel"
   },
   "filipino": {
     "code": "",
     "name": "Filipino",
     "slug": "filipino",
+    "flag": "philippines.png",
     "nativeName": ""
   },
   "finnish": {
     "code": "fi",
     "name": "Finnish",
     "slug": "finnish",
+    "flag": "finland.png",
     "nativeName": "suomi, suomen kieli"
   },
   "french": {
     "code": "fr",
     "name": "French",
     "slug": "french",
+    "flag": "france.png",
     "nativeName": "français, langue française"
   },
   "german": {
     "code": "de",
     "name": "German",
     "slug": "german",
+    "flag": "germany.png",
     "nativeName": "Deutsch"
   },
   "georgian": {
     "code": "ka",
     "name": "Georgian",
     "slug": "georgian",
+    "flag": "georgia.png",
     "nativeName": "ქართული"
   },
   "greek": {
     "code": "el",
     "name": "Greek, Modern",
     "slug": "greek",
+    "flag": "greece.png",
     "nativeName": "Ελληνικά"
   },
   "gujarati": {
     "code": "gu",
     "name": "Gujarati",
     "slug": "gujarati",
+    "flag": "gujarati.png",
     "nativeName": "ગુજરાતી"
   },
   "hebrew": {
     "code": "he",
     "name": "Hebrew (modern)",
     "slug": "hebrew",
+    "flag": "israel.png",
     "nativeName": "עברית"
   },
   "hindi": {
     "code": "hi",
     "name": "Hindi",
     "slug": "hindi",
+    "flag": "india.png",
     "nativeName": "हिन्दी, हिंदी"
   },
   "hungarian": {
     "code": "hu",
     "name": "Hungarian",
     "slug": "hungarian",
+    "flag": "hungary.png",
     "nativeName": "Magyar"
   },
-  
   "icelandic": {
     "code": "is",
     "name": "Icelandic",
     "slug": "icelandic",
+    "flag": "iceland.png",
     "nativeName": "Íslenska"
   },
   "indonesian": {
     "code": "id",
     "name": "Indonesian",
     "slug": "indonesian",
+    "flag": "indonesia.png",
     "nativeName": "Bahasa Indonesia"
   },
   "italian": {
     "code": "it",
     "name": "Italian",
     "slug": "italian",
+    "flag": "italy.png",
     "nativeName": "Italiano"
   },
   "japanese": {
     "code": "ja",
     "name": "Japanese",
     "slug": "japanese",
+    "flag": "japan.png",
     "nativeName": "日本語 (にほんご／にっぽんご)"
   },
   "kannada": {
     "code": "kn",
     "name": "Kannada",
     "slug": "kannada",
+    "flag": "kannada.png",
     "nativeName": "ಕನ್ನಡ"
   },
   "kazakh": {
     "code": "kk",
     "name": "Kazakh",
     "slug": "kazakh",
+    "flag": "kazakhstan.png",
     "nativeName": "Қазақ тілі"
   },
   "khmer": {
     "code": "km",
     "name": "Khmer",
     "slug": "khmer",
+    "flag": "cambodia.png",
     "nativeName": "ភាសាខ្មែរ"
   },
   "kikuyu": {
     "code": "ki",
     "name": "Kikuyu, Gikuyu",
     "slug": "kikuyu",
+    "flag": "kenya.png",
     "nativeName": "Gĩkũyũ"
   },
   "korean": {
     "code": "ko",
     "name": "Korean",
     "slug": "korean",
+    "flag": "korean.png",
     "nativeName": "한국어 (韓國語), 조선말 (朝鮮語)"
   },
   "lao": {
     "code": "lo",
     "name": "Lao",
     "slug": "lao",
+    "flag": "lao_people_democratic_republic.png",
     "nativeName": "ພາສາລາວ"
   },
   "latvian": {
     "code": "lv",
     "name": "Latvian",
     "slug": "latvian",
+    "flag": "latvia.png",
     "nativeName": "latviešu valoda"
   },
   "lithuanian": {
     "code": "lt",
     "name": "Lithuanian",
     "slug": "lithuanian",
+    "flag": "lithuania.png",
     "nativeName": "lietuvių kalba"
   },
   "macedonian": {
     "code": "mk",
     "name": "Macedonian",
     "slug": "macedonian",
+    "flag": "macedonia.png",
     "nativeName": "македонски јазик"
   },
   "malay": {
     "code": "ms",
     "name": "Malay",
     "slug": "malay",
+    "flag": "malaysia.png",
     "nativeName": "bahasa Melayu, بهاس ملايو‎"
   },
   "malayalam": {
     "code": "ml",
     "name": "Malayalam",
     "slug": "malayalam",
+    "flag": "malayalam.png",
     "nativeName": "മലയാളം"
   },
   "marathi": {
     "code": "mr",
     "name": "Marathi (Marāṭhī)",
     "slug": "marathi",
+    "flag": "marathi.png",
     "nativeName": "मराठी"
   },
   "mongolian": {
     "code": "mn",
     "name": "Mongolian",
     "slug": "mongolian",
+    "flag": "mongolia.png",
     "nativeName": "монгол"
   },
   "nepali": {
     "code": "ne",
     "name": "Nepali",
     "slug": "nepali",
+    "flag": "nepal.png",
     "nativeName": "नेपाली"
   },
   "norwegian": {
     "code": "no",
     "name": "Norwegian",
     "slug": "norwegian",
+    "flag": "norwegia.png",
     "nativeName": "Norsk"
   },
   "persian": {
     "code": "fa",
     "name": "Persian",
     "slug": "persian",
+    "flag": "iran.png",
     "nativeName": "فارسی"
   },
   "polish": {
     "code": "pl",
     "name": "Polish",
     "slug": "polish",
+    "flag": "poland.png",
     "nativeName": "polski"
   },
   "portuguese": {
     "code": "pt",
     "name": "Portuguese",
     "slug": "portuguese",
+    "flag": "portugal.png",
     "nativeName": "Português"
   },
   "punjabi": {
     "code": "pa",
     "name": "Punjabi, Panjabi",
     "slug": "panjabi",
+    "flag": "pakistan.png",
     "nativeName": "ਪੰਜਾਬੀ, پنجابی‎"
   },
   "romansh": {
     "code": "rm",
     "name": "Romansh",
     "slug": "romansh",
+    "flag": "switzerland.png",
     "nativeName": "rumantsch grischun"
   },
   "romanian": {
     "code": "ro",
     "name": "Romanian, Moldavian, Moldovan",
     "slug": "romanian",
+    "flag": "romania.png",
     "nativeName": "română"
   },
   "russian": {
     "code": "ru",
     "name": "Russian",
     "slug": "russian",
+    "flag": "russia.png",
     "nativeName": "русский язык"
   },
   "serbian": {
     "code": "sr",
     "name": "Serbian",
     "slug": "serbian",
+    "flag": "serbia.png",
     "nativeName": "српски језик"
   },
   "sinhala": {
     "code": "si",
     "name": "Sinhala, Sinhalese",
     "slug": "sinhala",
+    "flag": "sri_lanka.png",
     "nativeName": "සිංහල"
   },
   "slovak": {
     "code": "sk",
     "name": "Slovak",
     "slug": "slovak",
+    "flag": "slovakia.png",
     "nativeName": "slovenčina"
   },
   "slovenian": {
     "code": "sl",
     "name": "Slovenian",
     "slug": "slovenian",
+    "flag": "slovenia.png",
     "nativeName": "slovenščina"
   },
   "spanish": {
     "code": "es",
     "name": "Spanish; Castilian",
     "slug": "spanish",
+    "flag": "spain.png",
     "nativeName": "español, castellano"
   },
   "swahili": {
     "code": "sw",
     "name": "Swahili",
     "slug": "swahili",
+    "flag": "tanzania.png",
     "nativeName": "Kiswahili"
   },
   "swedish": {
     "code": "sv",
     "name": "Swedish",
     "slug": "swedish",
+    "flag": "sweden.png",
     "nativeName": "svenska"
   },
   "tamil": {
     "code": "ta",
     "name": "Tamil",
     "slug": "tamil",
+    "flag": "tamil.png",
     "nativeName": "தமிழ்"
   },
   "telugu": {
     "code": "te",
     "name": "Telugu",
     "slug": "telugu",
+    "flag": "telugu.png",
     "nativeName": "తెలుగు"
   },
   "thai": {
     "code": "th",
     "name": "Thai",
     "slug": "thai",
+    "flag": "thailand.png",
     "nativeName": "ไทย"
   },
   "turkish": {
     "code": "tr",
     "name": "Turkish",
     "slug": "turkish",
+    "flag": "turkey.png",
     "nativeName": "Türkçe"
   },
   "ukrainian": {
     "code": "uk",
     "name": "Ukrainian",
     "slug": "ukrainian",
+    "flag": "ukraine.png",
     "nativeName": "українська"
   },
   "urdu": {
     "code": "ur",
     "name": "Urdu",
     "slug": "urdu",
+    "flag": "pakistan.png",
     "nativeName": "اردو"
   },
   "uzbek": {
     "code": "uz",
     "name": "Uzbek",
     "slug": "uzbek",
+    "flag": "uzbekistan.png",
     "nativeName": "zbek, Ўзбек, أۇزبېك‎"
   },
   "vietnamese": {
     "code": "vi",
     "name": "Vietnamese",
     "slug": "vietnamese",
+    "flag": "vietnam.png",
     "nativeName": "Tiếng Việt"
   },
   "welsh": {
     "code": "cy",
     "name": "Welsh",
     "slug": "welsh",
+    "flag": "wales.png",
     "nativeName": "Cymraeg"
   }
 }

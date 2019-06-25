@@ -77,7 +77,7 @@ export const actions = {
 	//         console.log('Error getting documents', error);
 	//     }
 	// },
-	async fetchLongResume ({ commit, rootGetters }, payload) {
+	async fetchLongResume ({ commit, dispatch, rootGetters }, payload) {
 		// 1) Fetch resume if its visibility is set to public
 		try {
 			console.log('Call to fetchLongResume action: ', payload)
@@ -87,6 +87,12 @@ export const actions = {
 			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
 			const resume = snapshot.data()
 			console.log('resume from store: ', resume)
+
+			// Increment view counter
+			// if (rootGetters['loadedUser'].id !== resume.user_id) {
+				console.log('rootGetters[loadedUser]: ', rootGetters['users/loadedUser'])
+				await dispatch('incrementViewCounter', resume.user_id)
+			// }
 
 			return resume
 			// const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
@@ -720,6 +726,32 @@ export const actions = {
 			console.log('error: ', error)
 			throw error
 		}
+	},
+	async incrementViewCounter ({ commit }, payload) {
+		try {
+			console.log('incrementViewCounter: ', payload)
+			// const abc = await firestore.collection('resumes_long').doc(payload.id).updateData(['views': FieldValue.increment(1)])
+
+			// const db = firebase.firestore();
+			// const increment = firebase.firestore.FieldValue.increment(1);
+			// const increment = firebase.firestore.FieldValue.increment(50)
+			// console.log('increment: ', increment)
+			// const increment = FieldValue.increment(1);
+
+			// const increment = firestore.FieldValue.increment(1)
+
+			// // Document reference
+			// const resumeRef = firestore.collection('resumes_long').doc(payload)
+
+			// // Update read count
+			// resumeRef.update({ views: increment })
+
+
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+
 	}
 }
 
