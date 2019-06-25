@@ -1,5 +1,6 @@
 export const strict = false
 import { firestore, storage, auth } from '~/plugins/firebase-client-init.js'
+import firebase from 'firebase/app'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -85,16 +86,21 @@ export const actions = {
 			// console.log('resumes2: ', resumes2)
 			// return 
 			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-			const resume = snapshot.data()
+			const resume = {
+				...snapshot.data(),
+				id: snapshot.id
+			}
 			console.log('resume from store: ', resume)
 
 			// Increment view counter
-			// if (rootGetters['loadedUser'].id !== resume.user_id) {
+			if (rootGetters['loadedUser'] && rootGetters['loadedUser'].id === resume.user_id) {
+				return resume
+			} else {
 				console.log('rootGetters[loadedUser]: ', rootGetters['users/loadedUser'])
-				await dispatch('incrementViewCounter', resume.user_id)
-			// }
+				dispatch('incrementViewCounter', { resumeId: resume.id, lastVisits: resume.statistics_last_visits })
+				return resume
+			}
 
-			return resume
 			// const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
 			// const resumesArray = []
 			// querySnapshot.forEach(doc => {
@@ -727,31 +733,23 @@ export const actions = {
 			throw error
 		}
 	},
-	async incrementViewCounter ({ commit }, payload) {
+	async incrementViewCounter ({ }, payload) {
 		try {
-			console.log('incrementViewCounter: ', payload)
-			// const abc = await firestore.collection('resumes_long').doc(payload.id).updateData(['views': FieldValue.increment(1)])
-
-			// const db = firebase.firestore();
-			// const increment = firebase.firestore.FieldValue.increment(1);
-			// const increment = firebase.firestore.FieldValue.increment(50)
-			// console.log('increment: ', increment)
-			// const increment = FieldValue.increment(1);
-
-			// const increment = firestore.FieldValue.increment(1)
-
-			// // Document reference
-			// const resumeRef = firestore.collection('resumes_long').doc(payload)
-
-			// // Update read count
-			// resumeRef.update({ views: increment })
-
-
+			const incrementViews = firebase.firestore.FieldValue.increment(1)
+			const lastVisits = payload.lastVisits
+			
+			if (lastVisits && lastVisits.length >= 10) {
+				lastVisits.shift()
+				lastVisits.push(moment().unix())
+			} else {
+				lastVisits.push(moment().unix())
+			}
+			const resumeRef = firestore.collection('resumes_long').doc(`${payload.resumeId}`)
+			resumeRef.update({ statitsics_views_count: incrementViews, statistics_last_visits: lastVisits })
 		} catch (error) {
 			console.log('error: ', error)
 			throw error
 		}
-
 	}
 }
 
