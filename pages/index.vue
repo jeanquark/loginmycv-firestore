@@ -12,13 +12,6 @@
 			</v-flex>
 		</v-layout>
 
-		<!-- <v-layout row wrap justify-center class="">
-			<v-flex xs12>
-				<h2 class="subtitle display-1">What we offer</h2>
-			</v-flex>
-		</v-layout> -->
-
-		
 		<v-layout row wrap class="mb-5">
 			<v-flex xs12 sm4>
 				<v-card flat class="transparent ma-2">
