@@ -1,6 +1,7 @@
 <template>
 	<!-- <div id="app" v-cloak v-if="loadedUser && loadedUser.private"> -->
-        <v-app id="app" :dark="dark === true" v-cloak>
+        <!-- <v-app id="app" :dark="dark === true" v-cloak> -->
+        <v-app id="app" :dark="loadedDarkTheme" v-cloak>
             <v-navigation-drawer
                 v-model="drawer"
                 clipped
@@ -96,7 +97,8 @@
                         <v-list>
                             <v-list-tile>
                                 <v-list-tile-action>
-                                    <v-switch v-model="dark" :label="dark ? 'Dark' : 'Light'" hide-details></v-switch>
+                                    <!-- <v-switch v-model="dark" :label="dark ? 'Dark' : 'Light'" hide-details></v-switch> -->
+                                    <v-switch v-model="loadedDarkTheme" :label="loadedDarkTheme ? 'Dark' : 'Light'" hide-details></v-switch>
                                 </v-list-tile-action>
                             </v-list-tile>
                         </v-list>
@@ -114,6 +116,7 @@
             </v-content>
             <v-footer app fixed class="justify-center">
                 <span>LoginMyCV &copy; 2019</span>
+                loadedDarkTheme: {{ loadedDarkTheme }}
             </v-footer>
         </v-app>
     <!-- </div> -->
@@ -157,6 +160,23 @@
                     return this.loadedUser.notifications.filter(notification => notification.type === 'authorization').length
                 } catch (error) {
                     return null
+                }
+            },
+            // loadedTheme () {
+            //     return this.$store.getters['loadedTheme']
+            // },
+            // toggleTheme () {
+            //     return this.$store.commit('toggleTheme')
+            // },
+            loadedDarkTheme: {
+                // return this.$store.getters['loadedTheme']
+                get () {
+                    // return true
+                    return this.$store.getters['loadedDarkTheme']
+                },
+                // setter
+                set (payload) {
+                    this.$store.commit('toggleTheme')
                 }
             }
 		},

@@ -15,7 +15,8 @@ export const state = () => ({
     // message: '',
     redirect: '',
     // snackbar: {}
-    openComponent: null
+    openComponent: null,
+    darkTheme: true
 })
 
 export const mutations = {
@@ -94,6 +95,16 @@ export const mutations = {
     //         show: false
     //     }
     // }
+    toggleTheme (state) {
+        state.darkTheme = !state.darkTheme
+        // console.log('toggleTheme commit')
+        // if (state.theme === 'dark') {
+        //     state.theme = 'light'
+        // } else {
+        //     state.theme = 'dark'
+        // }
+        // state.theme = payload
+    }
 }
 
 export const actions = {
@@ -151,7 +162,7 @@ export const actions = {
         } catch (error) {
             console.log('nuxtClientInit error: ', error)
         }
-      }
+    }
 }
 
 export const getters = {
@@ -190,5 +201,8 @@ export const getters = {
     // }
     loadedOpenComponent (state) {
         return state.openComponent
+    },
+    loadedDarkTheme (state) {
+        return state.darkTheme
     }
 }
