@@ -76,7 +76,8 @@
                         <v-list>
                             <v-list-tile avatar>
                                 <v-list-tile-avatar>
-                                    <img src="/images/resumes/jeanmarc.jpg" />
+                                    <!-- <img src="/images/resumes/jeanmarc.jpg" /> -->
+                                    <img :src="loadedUser.picture" />
                                 </v-list-tile-avatar>
 
                                 <v-list-tile-content v-if="loadedUser">

@@ -3,6 +3,7 @@
     	<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
     	<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /> -->
 		<!-- getStatistics: {{ getStatistics }}<br /><br /> -->
+		<!-- dark: {{ dark }}<br /><br /> -->
         <v-layout justify-center>
             <h2>My resumes</h2><br /><br />
         </v-layout>
@@ -48,6 +49,7 @@
 	                    right
 	                    color="pink"
 	                    slot="activator"
+						style="z-index: 0"
 	                    @click="addResume"
 	                >
 	                    <v-icon>add</v-icon>
@@ -63,10 +65,22 @@
             <!-- <create-resume-component></create-resume-component> -->
 			<h2>Statistics</h2>
 			<small>(# clicks on resumes)</small><br /><br />
-			<GChart
+			<!-- <GChart
 			 	type="ColumnChart"
 			 	:data="chartData"
 			 	:options="chartOptions"
+				class="ma-2"
+			 	@ready="onChartReady"
+			/> -->
+			<!-- <GChart
+			 	type="ColumnChart"
+			 	:data="chartData"
+			 	:options="chartOptions"
+				class="ma-2"
+			/> -->
+			<GChart
+			 	type="ColumnChart"
+				:resizeDebounce="500"
 				class="ma-2"
 			 	@ready="onChartReady"
 			/>
@@ -78,6 +92,9 @@
 					{{ resume.statistics_last_visits.length }}
 				</p>
 			</div>
+
+			<v-date-picker v-model="picker" :landscape="false" :reactive="false"></v-date-picker>
+			picker: {{ picker }}
         </v-flex>
 
 
@@ -144,6 +161,13 @@
 				// minDate: moment().subtract(2, 'months'),
 				minDate: new Date(),
 				maxDate: new Date(),
+				picker: new Date().toISOString().substr(0, 10),
+
+				primaryColor: 'red',
+				width: 800,
+				chartBackgroundColor: this.dark ? '#424242' : '#424242',
+				chartTextColor: this.dark ? '#FFF' : '#FFF',
+
 				chartOptions: {
 					chart: {
 						title: "Clicks",
@@ -151,29 +175,49 @@
 					},
 					width: "100%",
 					height: 400,
+					// backgroundColor: '#424242',
+					backgroundColor: this.chartBackgroundColor,
 					bar: { groupWidth: "95%" },
 					isStacked: true,
-					colors: ["#7A528F", "#FFC107", "#E11566"],
-					// colors: ["#7A528F"],
+					colors: ["#7A528F", "#FFC107", "#E11566", "#AF97BB", "#FFE083", "#F08AB2", "#D7CBDD", "#FFEFC1", "#F7C4D8"],
 					hAxis: {
 						viewWindowMode: "explicit",
 						viewWindow: {
 							// min: new Date("2019-06-01"),
 							min: this.minDate,
+							// min: new Date(this.picker),
 							// max: new Date("2019-06-31"),
 							max: this.maxDate
 						},
 						// slantedText:false, slantedTextAngle:45
+						gridlines: {
+        					color: 'transparent'
+						},
+						baselineColor: '#FFF',
+						textStyle: {
+							color: '#FFF'
+						}
 					},
 					vAxis: {
 						viewWindow: {
 							// max: 10
 							// max: 
+						},
+						gridlines: {
+        					// color: 'transparent'
+						},
+						baselineColor: '#FFF',
+						textStyle:{
+							color: '#FFF'
 						}
 					},
 					legend: {
 						position: 'top',
-						alignment: 'center'
+						alignment: 'center',
+						textStyle: {
+							color: '#FFF'
+							// color: this.primaryColor 
+						}
 					},
 					chartArea: { width: '85%', height: '70%'},
 				}
@@ -260,12 +304,125 @@
 				this.resume = resume
 				this.snackbar = true
 			},
-			onChartReady (chart, google) {
-      			// now we have google lib loaded. Let's create data table based using it.
-      			this.createDataTable(google)
-			},
-			createDataTable(google) {
-				const data = new google.visualization.DataTable();
+			// onChartReady (chart, google) {
+      		// 	// now we have google lib loaded. Let's create data table based using it.
+      		// 	this.createDataTable(google)
+			// },
+			// createDataTable(google) {
+			// 	const data = new google.visualization.DataTable()
+			// },
+			async onChartReady (chart, google) {
+				const data = await new google.visualization.DataTable()
+				// const data = await new google.visualization.arrayToDataTable()
+				// await new google.visualization.BarChart
+				
+				// data.addColumn('date', 'Topping');
+				// data.addColumn('number', 'Slices');
+				// data.addColumn('number', '#views 2');
+				data.addColumn('date', 'Date');
+				this.loadedUserResumes.forEach(resume => {
+					data.addColumn('number', `#views resume ${resume.slug}`)
+				})
+				// data.addColumn('number', '#views resume 1');
+				// data.addColumn('number', '#views resume 2');
+				// data.addRows([
+				// 	['Mushrooms', 3],
+				// 	['Onions', 1],
+				// 	['Olives', 1],
+				// 	['Zucchini', 1],
+				// 	['Pepperoni', 2]
+				// ]);
+				// console.log('data: ', data)
+				// const columns = (
+				// 	['string', 'Topping'], 
+				// 	['number', 'Slices']
+				// )
+				let array = []
+				this.getStatistics.forEach((resume, index) => {
+					console.log('resume: ', resume)
+					
+					resume.forEach((click, index2) => {
+						console.log('click: ', click.getTime())
+						// console.log('filter: ', newArray.filter(value => value[0] === '2019-06-27'))
+						const existingValue = array.find(value => value[0].getTime() === click.getTime())
+						console.log('existingValue1: ', existingValue)
+						if (existingValue) {
+							console.log('existing value!')
+							existingValue[index + 1] += 1 || 1
+						} else {
+							const newEntry = new Array(this.getStatistics.length + 1).fill(0)
+							newEntry[0] = click
+							newEntry[index + 1] = 1
+							array.push(newEntry)
+							console.log('newEntry: ', newEntry)
+						}
+					})
+				})
+				console.log('array: ', array)
+
+
+				const rows = [
+					// ['Mushrooms', 3],
+					// ['Onions', 1],
+					// ['Olives', 1],
+					// ['Zucchini', 1],
+					// ['Pepperoni', 2]
+					[new Date(1555773737000), 1, 1],
+					[moment(1558797737000).toDate(), 1, 1],
+					[new Date("2019-06-27"), 2, 0],
+					[new Date("2019-05-20"), 1, 0],
+					[new Date("2019-01-20"), 0, 2]
+				]
+				// data.addColumn(columns)
+				data.addRows(array)
+
+				// Set chart options
+				var options = {
+					// title:'How Much Pizza I Ate Last Night',
+					width: '100%',
+					height:300,
+					backgroundColor: this.chartBackgroundColor,
+					// bar: { groupWidth: "10%" },
+					isStacked: true,
+					chartArea: { width: '85%', height: '70%'},
+					colors: ["#7A528F", "#FFC107", "#E11566", "#AF97BB", "#FFE083", "#F08AB2", "#D7CBDD", "#FFEFC1", "#F7C4D8"],
+					hAxis: {
+						// viewWindowMode: "explicit",
+						viewWindow: {
+							// min: new Date("2019-06-01"),
+							// min: this.minDate,
+							// min: new Date(this.picker),
+							// max: new Date("2019-06-31"),
+							// max: this.maxDate
+						},
+						baselineColor: '#FFF',
+						gridlines: {
+							color: 'transparent'
+						},
+						textStyle: {
+							color: this.chartTextColor
+						}
+					},
+					vAxis: {
+						textStyle: {
+							color: this.chartTextColor
+						},
+						baselineColor: '#FFF'
+					},
+					legend: {
+						position: 'top',
+						alignment: 'center',
+						textStyle: {
+							color: this.chartTextColor
+						}
+					}
+				};
+
+				// Instantiate and draw our chart, passing in some options.
+				// var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+				chart.draw(data, options);
+				// chart.draw(abc, options);
+		
 			},
 			async deleteResume () {
 				try {
@@ -289,7 +446,6 @@
 						theme: 'metroui'
 					}).show()
 				}
-
 			}
 		}
 	}
