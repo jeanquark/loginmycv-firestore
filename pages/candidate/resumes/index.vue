@@ -82,17 +82,17 @@
 			 	:options="chartOptions"
 				class="ma-2"
 			/>-->
-			<!--<GChart
+			<GChart
 			 	type="ColumnChart"
 				:resizeDebounce="500"
 				class="ma-2"
 			 	@ready="onChartReady"
-			/>-->
-			<GChart
+			/>
+			<!--<GChart
       			type="ColumnChart"
       			:data="chartData"
       			:options="chartOptions"
-    		/>    
+    		/>-->
 			<br /><br />
 			Total number of clicks:<br /><br />
 			<div v-for="resume in loadedUserResumes" :key="resume.id">
@@ -196,16 +196,32 @@
 				],
 				chartOptions: {
 					chart: {
-					title: "Company Performance",
-					subtitle: "Sales, Expenses, and Profit: 2014-2017"
+						title: "Company Performance",
+						subtitle: "Sales, Expenses, and Profit: 2014-2017"
 					},
+					width: '100%',
+					height: 400,
+					chartArea: { width: '85%', height: '70%'},
+					colors: ["#7A528F", "#FFC107", "#E11566", "#AF97BB", "#FFE083", "#F08AB2", "#D7CBDD", "#FFEFC1", "#F7C4D8"],
 					backgroundColor: '#FFF',
 					hAxis: {
+						baselineColor: '#FFF',
+						gridlines: {
+							color: 'transparent'
+						},
 						textStyle: {
 							color: '#FFF'
 						}
 					},
 					vAxis: {
+						baselineColor: '#FFF',
+						textStyle: {
+							color: '#FFF'
+						}
+					},
+					legend: {
+						position: 'top',
+						alignment: 'center',
 						textStyle: {
 							color: '#FFF'
 						}
@@ -346,7 +362,7 @@
 					// title:'How Much Pizza I Ate Last Night',
 					width: '100%',
 					height:300,
-					backgroundColor: this.chartBackgroundColor,
+					backgroundColor: '#FFF',
 					// backgroundColor: this.darkTheme === true ? '#424242' : '#FFF',
 					// bar: { groupWidth: "10%" },
 					isStacked: true,
@@ -361,7 +377,7 @@
 
 
 
-							min: new Date(this.minDate2),
+							// min: new Date(this.minDate2),
 							// min: moment().subtract(1, 'months').format('YYYY-MM-DD')
 							
 							
@@ -377,27 +393,28 @@
 							color: 'transparent'
 						},
 						textStyle: {
-							color: this.chartTextColor
+							color: '#FFF'
 						}
 					},
 					vAxis: {
+						baselineColor: '#FFF',
 						textStyle: {
-							color: this.chartTextColor
+							color: '#FFF'
 						},
-						baselineColor: '#FFF'
+						
 					},
 					legend: {
 						position: 'top',
 						alignment: 'center',
 						textStyle: {
-							color: this.chartTextColor
+							color: '#FFF'
 						}
 					}
 				};
 
 				// Instantiate and draw our chart, passing in some options.
 				// var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-				chart.draw(data, options);
+				chart.draw(data, this.chartOptions);
 				// chart.draw(abc, options);
 		
 			},
