@@ -31,7 +31,7 @@ export const mutations = {
 	setEmptyResume (state) {
 		state.newResume = {
 			template_id: '',
-			slug: 'jeanquark',
+			slug: 'johndoe',
 			job_title: 'Web developer',
 			job_description: 'Develops websites & web apps',
 			personal_data: {
@@ -45,6 +45,7 @@ export const mutations = {
 			uploads: [],
 			social_networks: [],
 			visibility: '',
+			active: true,
 			colors: {},
 			parameters: {},
 			menus: [],
@@ -55,7 +56,7 @@ export const mutations = {
 	setNewResume (state, payload) {
 		// console.log('setNewResume: ', payload)
 		state.newResume = payload
-	},
+	}
 	// setResumeUploads (state, payload) {
 	// }
 }
@@ -85,14 +86,33 @@ export const actions = {
 			// const resumes2 = await axios.post('/fetch-long-resumes', { data: payload })
 			// console.log('resumes2: ', resumes2)
 			// return 
-			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-			const resume = {
-				...snapshot.data(),
-				id: snapshot.id
-			}
-			console.log('resume from store: ', resume)
 
-			// Increment view counter
+			// 1) Fetch resume if it exists
+			let resume = {}
+			try {
+				const snapshot = await firestore.collection('resumes_long').doc(payload).get()
+				resume = {
+					...snapshot.data(),
+					id: snapshot.id
+				}
+				console.log('resume from store: ', resume)
+			} catch {
+				console.log('Resume not found')
+				throw 'Resume not found'
+			}
+
+			// if (!resume) {
+			// 	console.log('Resume does not exist')
+			// 	throw 'Resume does not exist'
+			// }
+
+			// 2) Check resume is active
+			// if (!resume.active) {
+			// 	console.log('Resume is not active')
+			// 	throw 'Resume is not active.'
+			// }
+
+			// 3) Increment view counter
 			if (rootGetters['loadedUser'] && rootGetters['loadedUser'].id === resume.user_id) {
 				return resume
 			} else {
@@ -117,7 +137,7 @@ export const actions = {
 			// 	timeout: 5000,
 			// 	theme: 'metroui'
 			// }).show()
-			// throw error
+			throw error
 		}
 		console.log('next...')
 
@@ -169,7 +189,7 @@ export const actions = {
 	},
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
-		firestore.collection('resumes_short').where('visibility', '>=', 'public').onSnapshot(snapshot => {
+		firestore.collection('resumes_short').where('active', '==', true).where('visibility', '>=', 'public').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
 				// if (resume.data().visibility !== 'private') {
