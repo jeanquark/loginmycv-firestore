@@ -11,23 +11,29 @@
 				<button type="button" :class="{active:index == 4}" @click="moveTo(4)" v-if="resume.parameters && resume.parameters.show_contact_form">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</button>
 			</div>
 			<div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
-				<div class="page page-1" data-index="0" tyle="border: 3px solid green;" ref="page">
-					<v-layout row wrap class="subpage" style="border: 2px dashed brown;" v-animate="{value: animationEffect}">
-						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4" style="border: 2px solid red;">
+
+				<!-- Section Personal Data -->
+				<div class="page page-1" data-index="0" tyle="border: 0px solid green;" ref="page">
+					<v-layout row wrap class="subpage" style="border: 0px dashed brown;" v-animate="{value: animationEffect}">
+						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4" style="border: 0px solid red;">
 							<v-layout row wrap>
 								<!-- files: {{ files }}<br /> -->
 								<v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture">
 									<v-avatar
 										:tile="false"
-										:size="250"
+										:size="300"
 										color="grey lighten-4"
 									>
-										<img :src="profilePicture" alt="profile picture">
+										<v-img 
+											:src="profilePicture.downloadUrl"
+											:lazy-src="profilePicture.downloadUrl"
+											alt="profile picture"
+										/>
 									</v-avatar>
 								</v-flex>
-								<v-flex v-bind="{[`xs12 sm${column}`]: true}" class="text-xs-center">
-									<h1>{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename }} {{ resume.personal_data.lastname }}</h1><br />
-									<h2>{{ resume.job_title }}</h2>
+								<v-flex v-bind="{[`xs12 sm${column}`]: true}" class="text-xs-center secondary-color-background pa-3 rounded-border">
+									<h1 class="primary-color">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename }} {{ resume.personal_data.lastname }}</h1><br />
+									<h2>{{ resume.job_title }}</h2><br />
 									<h4>{{ resume.job_description }}</h4>
 									<br /><br />
 									<v-layout row wrap class="text-big text-xs-left">
@@ -64,35 +70,32 @@
 													v-if="language.value"
 												></v-progress-linear>
 											</v-chip>
-												<!-- style="transform: rotate(-90deg);" -->
 										</v-flex>
 									</v-layout>
-									<v-layout row wrap>
+									<v-layout row wrap class="mt-3">
 										<v-flex xs12 class="text-xs-center">
-											<!-- <v-chip label class="social-link" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)"><font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" style="cursor: pointer;" /></v-chip> -->
-											<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link" />
+											<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link mx-3" />
 										</v-flex>
 									</v-layout>
-									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-flex>
 							</v-layout>
 						</v-flex>
-						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4 centered" style="border: 1px solid orangered;">
+						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4 centered" style="border: 0px solid orangered;">
 							<div class="text-xs-center" v-for="(file, index) in files" :key="index">
 								<font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" class="social-link" @click="redirectTo(file.downloadUrl)" />
 								<br />
 								<p>{{ file.name }}</p>
 								opts.start: {{ opts.start }}
-								<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 							</div>
 						</v-flex>
 					</v-layout>
 				</div>
 
-				<div class="page page-2" data-index="1" style="border: 2px solid orangered;">
-					<v-layout row wrap justify-center class="subpage" style="border: 2px dashed brown;" v-if="resume.education && resume.education.length > 0">
-						<v-flex xs12 sm6 md4 style="height: 100%;">
-							<v-card :color="secondaryColor" class="card" v-for="education in resume.education" :key="education.title" v-animate="{value: animationEffect}" style="">
+				<!-- Section Education -->
+				<div class="page page-2" data-index="1" style="border: 0px solid orangered;">
+					<v-layout row wrap justify-center class="subpage" style="border: 0px dashed brown;" v-if="resume.education && resume.education.length > 0">
+						<v-flex xs12 sm6 md4 v-for="education in resume.education" :key="education.title" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;">
+							<v-card :color="secondaryColor" class="card"  style="">
 								<v-card-title class="card-title">
 									{{ education.title }} from&nbsp;<span class="primary-color accentuate italic">{{ education.school }}</span><br />
 								</v-card-title>
@@ -101,17 +104,17 @@
 									<p class="primary-color accentuate" v-if="!education.end_date">{{ education.start_date }}</p>
 									<p class="primary-color accentuate" v-else>{{ education.start_date }} - {{ education.end_date }}</p>
 									<p>{{ education.description }}</p>
-									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-card-text>
 							</v-card>
 						</v-flex>
 					</v-layout>
 				</div>
 
+				<!-- Section Work experience -->
 				<div class="page page-3" data-index="2">
-					<v-layout row wrap justify-center class="subpage" style="border: 2px dashed brown;" v-if="resume.work_experience && resume.work_experience.length > 0">
-						<v-flex xs12 sm6 md4 style="height: 100%;">
-							<v-card :color="secondaryColor" class="card" v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" style="">
+					<v-layout row wrap justify-center class="subpage" style="border: 0px dashed brown;" v-if="resume.work_experience && resume.work_experience.length > 0">
+						<v-flex xs12 sm6 md4 v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;">
+							<v-card :color="secondaryColor" class="card"  style="">
 								<v-card-title class="card-title">
 									{{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span><br />
 								</v-card-title>
@@ -119,22 +122,20 @@
 									<p class="primary-color accentuate" v-if="!work_experience.end_date">{{ work_experience.start_date }}</p>
 									<p class="primary-color accentuate" v-else>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
 									<p>{{ work_experience.job_description }}</p>
-									<!-- <p style="font-size: 1.5em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 								</v-card-text>
 							</v-card>
 						</v-flex>
 					</v-layout>
 				</div>
-
+				
+				<!-- Section Skills -->
 				<div class="page page-4" data-index="3">
-					<v-layout row wrap align-center class="subpage" style="border: 2px dashed brown;" v-if="resume.skills && resume.skills.length > 0" v-animate="{value: animationEffect}">
+					<v-layout row wrap align-center class="subpage" style="border: 0px dashed brown;" v-if="resume.skills && resume.skills.length > 0" v-animate="{value: animationEffect}">
 						<!-- <p class="part-4" v-animate="{value: 'bounceInLeft'}">Skills</p> -->
-
-
-						<v-flex xs12 sm6 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center" style="height: 100%; border: 1px solid red;">
+						<v-flex xs12 sm6 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center" style="height: 100%; border: 0px solid red;">
 							<h2 class="text-xs-center mb-2">{{ skill[0].category }}</h2>
 							<v-layout row wrap justify-center>
-								<v-flex xs12 sm6 class="my-4 mx-0 px-3" style="border: 1px dashed orange;" v-for="s in skill" :key="s.name">
+								<v-flex xs12 sm6 class="my-4 mx-0 px-3" style="border: 0px dashed orange;" v-for="s in skill" :key="s.name">
 									<div v-if="s.type === 'pie'" class="">
 										<v-progress-circular
 											:rotate="270"
@@ -171,7 +172,7 @@
 					</v-layout>
 				</div>
 				<div class="page page-5" data-index="4">
-					<v-layout row wrap class="subpage" style="border: 2px dashed brown;" v-animate="{value: animationEffect}" v-if="resume.parameters.show_contact_form">
+					<v-layout row wrap class="subpage" style="border: 0px dashed brown;" v-animate="{value: animationEffect}" v-if="resume.parameters && resume.parameters.show_contact_form">
 						<v-flex xs12 sm8 offset-sm2 class="pa-4" style="height: 100%;">
 							<v-form>
 								<v-layout row wrap>
@@ -257,27 +258,14 @@
 			}
 		},
 		mounted () {
-			// #202026
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
-			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#424242'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#7A528F'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#FFF'
 			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
-			if (!this.profilePicture) {
-				this.column = 12
-			}
-			// console.log('Fullpage height: ' + this.$refs.fullpage2.clientHeight)
-			// console.log('Fullpage scrollHeight: ' + this.$refs.fullpage2.scrollHeight)
-			// console.log('Subpage height: ' + this.$refs.subpage.clientHeight)
-			// console.log('Subpage scrollHeight: ' + this.$refs.subpage.scrollHeight)
-			// console.log('page clientHeight: ' + this.$refs.subpage.clientHeight)
-			// console.log('window.scrollY: ', document.body.scrollHeight)
-			// this.fullPageHeight = this.$refs.fullpage2.clientHeight
-			// this.subPageHeight = this.$refs.subpage.clientHeight
 		},
 		data() {
-			// var that = this
 			return {
 				index: 0,
 				pageNum: 0,
@@ -289,17 +277,16 @@
 					beforeChange (ele, current, next) {
 					},
 					afterChange (ele, current) {
-						console.log('ele.dataset.index: ', ele.dataset.index)
+						// console.log('ele.dataset.index: ', ele.dataset.index)
 						this.vm.setIndex(ele.dataset.index)
 					}
 				},
 				contactForm: {
-					firstname: 'John',
-					lastname: 'Doe',
-					email: 'john.doe@example.com',
-					message: 'This is my message.'
+					firstname: '',
+					lastname: '',
+					email: '',
+					message: ''
 				},
-				image: 'https://picsum.photos/id/975/1024/900',
 				primaryColor: '',
 				secondaryColor: '',
 				tertiaryColor: '',
@@ -308,7 +295,6 @@
 				profilePicture: {},
 				column: 6,
 				animationEffect: 'zoomIn',
-				// snackbar: false
 			}
 		},
 		computed: {
@@ -336,7 +322,7 @@
 			skills () {
 				if (this.resume.skills) {
 					const res = this.resume.skills.reduce((acc, curr) => {
-						if(!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
+						if(!acc[curr.category]) acc[curr.category] = [] // If this type wasn't previously stored
 						acc[curr.category].push(curr)
 						return acc
 					},{})
@@ -364,11 +350,10 @@
 				}
 				return 12
 			}
-
 		},
 		methods: {
 			setIndex (newIndex) {
-				console.log('newIndex: ', newIndex)
+				// console.log('newIndex: ', newIndex)
 				this.index = newIndex
 			}, 
 	 		moveTo (index) {
@@ -411,25 +396,6 @@
 			},
 			async sendMessage () {
 				try {
-					// this.snackbar = true
-					// this.$store.commit('setSnackbar', {
-					// 	show: true,
-					// 	type: 'success',
-					// 	message: 'Your message was sent successfully.'
-					// })
-					// return this.$snackbar.show("You pressed the button")
-					// this.$toast('Custom options', {
-    	// 				color: 'green',
-    	// 				dismissable: true,
-    	// 				queueable: true
-					// })
-					new Noty({
-						type: 'success',
-						text: 'Your message was sent successfully.',
-						timeout: 5000,
-						theme: 'metroui'
-					}).show()
-					return
 					this.$store.commit('setLoading', true)
 					await this.$validator.validateAll()
 					if (this.errors && this.errors.items && this.errors.items.length > 0) {
@@ -591,18 +557,15 @@
 		background-image: linear-gradient(120deg, var(--background-color), #fff);
 	}
 
-	
-
-	.background-color {
-		/* background-color: var(--background-color); */
-		background-color: orange;
-	}
 	.text-color {
 		color: var(--text-color);
 	}
 	.primary-color {
 		/* color: yellow; */
 		color: var(--primary-color);
+	}
+	.secondary-color-background {
+		background: var(--secondary-color);
 	}
 	
 	.text-big {
@@ -623,6 +586,9 @@
 	.bar {
 		border-radius: 10px;
 		margin: 0px 0px;
+	}
+	.rounded-border {
+		border-radius: 10px;
 	}
 	/*>>.theme--dark.v-label {
 		color: yellow;

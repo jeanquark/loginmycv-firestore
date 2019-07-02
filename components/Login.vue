@@ -209,12 +209,15 @@
                     if (this.$store.getters['loadedOpenComponent']) {
                         this.$store.commit(this.$store.getters['loadedOpenComponent'])
                         this.$store.commit('clearOpenComponent')
+			            this.$store.commit('closeLoginModal')
                     }
                     if (this.$store.getters['loadedRedirect']) {
                         this.$router.replace(this.$store.getters['loadedRedirect'])
                         this.$store.commit('clearRedirect')
+			            this.$store.commit('closeLoginModal')
                     } else {
                         this.$router.replace('/candidate/resumes')
+			            this.$store.commit('closeLoginModal')                        
                     }
                 } catch (error) {
                     console.log('error: ', error)

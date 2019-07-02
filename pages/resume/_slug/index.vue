@@ -39,84 +39,40 @@
 			console.log('Entering created lifecycle hook')
 		},
 		async mounted () {
-    		// await this.$store.commit('resumes/setResume', {firstname: 'Jean-Marc'})
-			// setTimeout(() => {
-			// 	console.log('OK!')
-			// }, 3000)
 			console.log('Entering mounted lifecycle hook resume/_user_id/index.vue')
-			// const template = await this.$store.getters['resumes/loadedResume'].template
-            // console.log('template: ', template)
-            // const type = `Template${template}`
-            // await axios.post('/check-user-authorization', { user_id: 'OlxfESwPtlgzz4vcjiL4YKsIDZI2' })
-            // console.log('abc: ', abc)
-            // this.resume = 'abc'
 
-
-            // 1) Fetch resume if resume is public or it is user's resume or user has registered as a visitor		      
+            // 1) Fetch resume if resume is active & public, it is user's resume or user has been registered as a visitor		      
 			const slug = this.$route.params.slug
-			console.log('this.$route.params: ', this.$route.params)
-			console.log('slug2: ', slug)
+			// console.log('this.$route.params: ', this.$route.params)
+			// console.log('slug2: ', slug)
 			try {
 				this.resume = await this.$store.dispatch('resumes/fetchLongResume', slug)
-				console.log('resume from index.vue: ', this.resume)
-				// return
+				// console.log('resume from index.vue: ', this.resume)
 
 				if (this.resume) {
-					// this.resume = resume
-					console.log('resume.template_id: ', this.resume.template_id)
+					// console.log('resume.template_id: ', this.resume.template_id)
 					await this.$store.dispatch('templates/fetchTemplates')
 		            const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-		            console.log('template: ', template)
+		            // console.log('template: ', template)
 		            return this.component = () => import(`~/components/templates/${template.file}`)
 				}
 			} catch (error) {
 				console.log('error2: ', error)
 				console.log('No firebase authorization')
+				if (error = 'resume_is_not_active') {
+					new Noty ({
+						type: 'warning',
+						text: 'The resume you are looking for is not currently active. Please contact author.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					return this.$router.replace('/')
+				}
 			}
 
 			console.log('load component')
 
-			
-
-
-			// 2) Fetch resume if user has authorization
-			// const authUser = this.$store.getters['users/loadedUser']
-			// console.log('authUser: ', authUser)
-        	// if (authUser) { // User is connected
-	  		// 	const authUserId = authUser.id ? authUser.id : authUser.uid
-	  		// 	console.log('authUserId: ', authUserId)
-			// 	try {
-			// 		console.log('Check user authorization')
-			// 		const resume = await axios.post('/check-user-authorization', { authUserId, slug })
-			// 		console.log('resume received from check user authorization: ', resume)
-			// 		console.log('resume.data: ', resume.data)
-			// 		console.log('resume.data.status: ', resume.data.status)
-			// 		// return resume.data.status;
-			// 		this.resume = resume.data.resume
-			// 		if (this.resume) {
-			// 			await this.$store.dispatch('templates/fetchTemplates')
-			// 			const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-			// 			console.log('template: ', template)
-			// 			return this.component = () => import(`~/components/templates/${template.file}`)  
-			// 			// return { resume }
-			// 		}
-			// 	} catch (error) {
-			// 		console.log('error check-user-authorization: ', error)
-			// 		// new Noty({
-			// 		// 	type: 'error',
-			// 		// 	text: 'Sorry, an error occured during the authorization checking process.',
-			// 		// 	timeout: 5000,
-			// 		// 	theme: 'metroui'
-			// 		// }).show()
-			// 	}
-        	// }
-
-			// 3) Redirect to password page for visitors
 			return this.$router.replace(`/resume/${slug}/login`)
-
-   //      	console.log('redirect to visitor login if resume exists')
-        	
-
 		},
 		data() {
 			return {

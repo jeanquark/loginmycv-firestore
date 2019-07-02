@@ -115,8 +115,7 @@
                 </v-container>
             </v-content>
             <v-footer app fixed class="justify-center">
-                <span>LoginMyCV &copy; 2019</span>
-                loadedDarkTheme: {{ loadedDarkTheme }}
+                <span>LoginMyCV &copy; {{ new Date().getFullYear() }}</span>
             </v-footer>
         </v-app>
     <!-- </div> -->

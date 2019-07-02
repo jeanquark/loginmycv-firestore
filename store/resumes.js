@@ -79,114 +79,7 @@ export const actions = {
 	//         console.log('Error getting documents', error);
 	//     }
 	// },
-	async fetchLongResume ({ commit, dispatch, rootGetters }, payload) {
-		// 1) Fetch resume if its visibility is set to public
-		try {
-			console.log('Call to fetchLongResume action: ', payload)
-			// const resumes2 = await axios.post('/fetch-long-resumes', { data: payload })
-			// console.log('resumes2: ', resumes2)
-			// return 
 
-			// 1) Fetch resume if it exists
-			let resume = {}
-			try {
-				const snapshot = await firestore.collection('resumes_long').doc(payload).get()
-				resume = {
-					...snapshot.data(),
-					id: snapshot.id
-				}
-				console.log('resume from store: ', resume)
-			} catch {
-				console.log('Resume not found')
-				throw 'Resume not found'
-			}
-
-			// if (!resume) {
-			// 	console.log('Resume does not exist')
-			// 	throw 'Resume does not exist'
-			// }
-
-			// 2) Check resume is active
-			// if (!resume.active) {
-			// 	console.log('Resume is not active')
-			// 	throw 'Resume is not active.'
-			// }
-
-			// 3) Increment view counter
-			if (rootGetters['loadedUser'] && rootGetters['loadedUser'].id === resume.user_id) {
-				return resume
-			} else {
-				console.log('rootGetters[loadedUser]: ', rootGetters['users/loadedUser'])
-				dispatch('incrementViewCounter', { resumeId: resume.id, lastVisits: resume.statistics_last_visits })
-				return resume
-			}
-
-			// const querySnapshot = await firestore.collection('resumes_long').where('slug', '==', payload).get()
-			// const resumesArray = []
-			// querySnapshot.forEach(doc => {
-			// 	console.log('doc.data(): ', doc.data())
-			// 	resumesArray.push(doc.data())
-			// })
-			// return resumesArray
-
-		} catch (error) {
-			console.log('error from fetchLongResume action: ', error)
-			// new Noty({
-			// 	type: 'error',
-			// 	text: 'Sorry, an error occured and the resume could not be retrieved.',
-			// 	timeout: 5000,
-			// 	theme: 'metroui'
-			// }).show()
-			throw error
-		}
-		console.log('next...')
-
-		// 2) Fetch resume if user has authorization
-		const slug = payload
-		const authUser = rootGetters['users/loadedUser']
-		console.log('authUser: ', authUser)
-    	if (authUser && authUser.status != 'visitor') { // User is connected
-  			const authUserId = authUser.id ? authUser.id : authUser.uid
-  			console.log('authUserId: ', authUserId)
-			try {
-				console.log('Check user authorization')
-				const resume = await axios.post('/check-user-authorization', { authUserId, slug })
-				console.log('resume received from check user authorization: ', resume)
-				console.log('resume.data: ', resume.data)
-				console.log('resume.data.status: ', resume.data.status)
-				const status = resume.data ? resume.data.status : ''
-				if (status === 'allowed') {
-					return resume.data.resume
-				}
-				// this.resume = resume.data
-				// await this.$store.dispatch('templates/fetchTemplates')
-	   //          const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-	   //          console.log('template: ', template)
-	   //          return this.component = () => import(`~/components/templates/${template.file}`)  
-				// return { resume }
-			} catch (error) {
-				console.log('error check-user-authorization: ', error)
-				// new Noty({
-				// 	type: 'error',
-				// 	text: 'Sorry, an error occured during the authorization checking process.',
-				// 	timeout: 5000,
-				// 	theme: 'metroui'
-				// }).show()
-			}
-    	}
-
-    	console.log('redirect to visitor login if resume exists')
-		// const snapshot = await firestore.collection('resumes_long').where('visibility', '==', 'public').get()
-		// const resumesArray = []
-		// snapshot.forEach(doc => {
-		// 	if (doc.data().slug === 'jeanquark2') {
-		// 		resumesArray.push({ ...doc.data(), id: doc.id })
-		// 	}
-		// })
-		// console.log('resumesArray: ', resumesArray)
-		// // commit('setLongResumes', resumesArray)
-		// return resumesArray[0]
-	},
 	async fetchShortResumes ({ commit }) {
 		console.log('Call to fetchShortResumes actions')
 		firestore.collection('resumes_short').where('active', '==', true).where('visibility', '>=', 'public').onSnapshot(snapshot => {
@@ -199,6 +92,58 @@ export const actions = {
 			console.log('shortResumesArray: ', shortResumesArray)
 			commit('setShortResumes', shortResumesArray)
 		})
+	},
+	async fetchLongResume ({ commit, dispatch, rootGetters }, payload) {
+		try {
+			console.log('Call to fetchLongResume action: ', payload)
+			// 1) Fetch resume if its visibility is set to public or you are logged in as a visitor or it is your resume (see database rules) 
+			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
+			const resume = {
+				...snapshot.data(),
+				id: snapshot.id
+			}
+			if (!resume.active) {
+				throw 'resume_is_not_active'
+			}
+			console.log('resume from store: ', resume)
+
+			// 2) Increment views counter if you are not accessing your own resume
+			if (rootGetters['loadedUser'] && rootGetters['loadedUser'].id === resume.user_id) {
+				return resume
+			} else {
+				console.log('rootGetters[loadedUser]: ', rootGetters['users/loadedUser'])
+				dispatch('incrementViewCounter', { resumeId: resume.id, lastVisits: resume.statistics_last_visits })
+				return resume
+			}
+		} catch (error) {
+			console.log('error from fetchLongResume action: ', error)
+			if (error === 'resume_is_not_active') {
+				throw 'resume_is_not_active'
+			}
+		}
+		console.log('next...')
+
+		// 3) Try to fetch resume if user has authorization
+		try {
+			const slug = payload
+			const authUser = rootGetters['users/loadedUser']
+    		if (authUser && authUser.status != 'visitor') { // User is authenticated and is not a visitor
+				const authUserId = authUser.id ? authUser.id : authUser.uid
+				const resume = await axios.post('/check-user-authorization', { authUserId, slug })
+				const status = resume.data ? resume.data.status : ''
+				if (status === 'allowed') {
+					// Increment views counter if authenticated user is not accessing his own resume
+					if (resume.data.resume.user_id === authUserId) {
+						return resume.data.resume
+					} else {
+						dispatch('incrementViewCounter', { resumeId: resume.data.resume.id, lastVisits: resume.data.resume.statistics_last_visits })
+						return resume.data.resume
+					}
+				}
+			}
+		} catch (error) {
+			console.log('error check-user-authorization: ', error)
+		}
 	},
 	async fetchUserResumes ({ commit, rootGetters }) {
 		try {

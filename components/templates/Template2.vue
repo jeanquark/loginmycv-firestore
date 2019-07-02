@@ -60,7 +60,7 @@
 							container: '',						
 							duration: '1000',
 							offset: -100
-						}">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</nuxt-link>
+						}" v-if="resume.parameters && resume.parameters.show_contact_form">{{ resume.menus.contact ? resume.menus.contact : 'Contact' }}</nuxt-link>
 		            </div>
 	            </v-flex>
 	        </v-layout>
@@ -177,6 +177,7 @@
 						duration: '1000',
 						offset: -100
 					}"
+					v-if="resume.parameters && resume.parameters.show_contact_form"
 				>
 					<v-list-tile-action>
 						<v-icon :color="primaryColor">contact_mail</v-icon>
@@ -255,7 +256,12 @@
 										size="350"
 										color="grey lighten-4"
 									>
-										<img src="/images/hero.png" alt="avatar">
+										<!-- <img src="/images/hero.png" alt="avatar"> -->
+										<v-img 
+											:src="profilePicture.downloadUrl"
+											:lazy-src="profilePicture.downloadUrl" 
+											alt="profile picture"
+										/>
 									</v-avatar>
 								</v-layout>
 							</v-flex>
@@ -385,7 +391,7 @@
 
 
 				<!-- Section Contact -->
-				<v-layout row wrap id="contact" class="my-5 section">
+				<v-layout row wrap id="contact" class="my-5 section" v-if="resume.parameters && resume.parameters.show_contact_form">
 					<v-flex xs12 sm8 offset-sm2>
 						<h1 class="text-xs-center">Contact Me</h1>
 						<br /><br />
@@ -485,30 +491,27 @@
 		    }
 		},
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : 'green'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : 'orange'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : 'pink'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : 'yellow'
-			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : 'red'
-			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#a97afd'
-			// this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
-			// this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#202026'
-			// this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#000'
-			// this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#fff'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#424242'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#FFF'
+
+			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
 		},
 		data () {
 		    return {
 		      	title: `${this.resume.personal_data.firstname}'s resume`,
-		      	links: [
-		      		{
-		      			name: 'ABC',
-		      			slug: 'abc'
-		      		},
-		      		{
-		      			name: 'DEF',
-		      			slug: 'def'
-		      		}
-		      	],
+		      	// links: [
+		      	// 	{
+		      	// 		name: 'ABC',
+		      	// 		slug: 'abc'
+		      	// 	},
+		      	// 	{
+		      	// 		name: 'DEF',
+		      	// 		slug: 'def'
+		      	// 	}
+		      	// ],
 				//   drawer: false,
 				sidemenu: false,
       			// drawerRight: null,
@@ -525,7 +528,7 @@
 					email: '',
 					message: ''
 				},
-				skills2: {
+				skills3: {
 					technical_skills: {
 						name: 'Technical skills',
 						slug: 'technical_skills',

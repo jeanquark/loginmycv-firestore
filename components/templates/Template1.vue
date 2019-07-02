@@ -9,7 +9,7 @@
 				backgroundColor: {{ this.backgroundColor }}<br />
 				textColor: {{ this.textColor }}<br />
 			</p><br /><br /> -->
-			<p class="primary-color">Some random text</p>
+			<!-- <p class="primary-color">Some random text</p> -->
 
 			<!-- Section Personal data -->
 			<v-layout row wrap class="margin-top margin-bottom">
@@ -17,12 +17,12 @@
 			      	<v-card elevation-10 v-if="resume.personal_data" class="secondary-color-background">
 			    		<v-card-text>
 							<v-layout row wrap>
-								<v-flex xs12 class="mb-2">
+								<v-flex xs12 class="mb-4">
 									<h1 class="text-xs-center mb-2 text-color">{{ resume.job_title }}</h1>
 									<h3 class="text-xs-center mb-2">{{ resume.job_description }}</h3>
 								</v-flex>
 								<v-flex v-bind="{[`xs12 sm${column}`]: true}">									
-									<v-layout row wrap class="text-big">
+									<v-layout row wrap align-center class="text-big">
 										<v-flex xs12 sm6 class="pa-2">
 											<span>Firstname: <b>{{ resume.personal_data.firstname }}</b></span>
 										</v-flex>
@@ -95,7 +95,11 @@
 
 								</v-flex>
 								<v-flex xs12 sm4 v-if="profilePicture">
-									<v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" />
+									<v-img 
+										:src="profilePicture.downloadUrl"
+										:lazy-src="profilePicture.downloadUrl"
+										alt="profile picture" 
+									/>
 								</v-flex>
 							</v-layout>
 			    		</v-card-text>
@@ -107,7 +111,7 @@
 			<!-- Section Education -->
 			<v-layout row wrap class="margin-bottom" v-if="resume.education && resume.education.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
-			      	<h2 class="text-xs-center display-1 text-color">Education</h2>
+			      	<h2 class="text-xs-center display-1 primary-color">Education</h2>
 			      	<br />
 			      	<v-card class="secondary-color-background">
 						<v-expansion-panel expand :value="[1]">
@@ -139,7 +143,7 @@
 			<!-- Section Work experience -->
 			<v-layout row wrap class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
-			      	<h2 class="text-xs-center display-1 text-color">Work experience</h2>
+			      	<h2 class="text-xs-center display-1 primary-color">Work experience</h2>
 			      	<br />
 			      	<v-card class="secondary-color-background">
 						<v-expansion-panel expand :value="[1]">
@@ -171,7 +175,7 @@
 			<!-- Section Skills -->
 			<v-layout row wrap class="margin-bottom" v-if="resume.skills && resume.skills.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
-			      	<h2 class="text-xs-center display-1 text-color">Skills</h2>
+			      	<h2 class="text-xs-center display-1 primary-color">Skills</h2>
 			      	<br />
 			      	<v-card class="secondary-color-background">
 						<v-layout row wrap justify-center>
@@ -179,12 +183,12 @@
 								<!-- skill: {{ skill }}<br /> -->
 								<h3 class="text-xs-center mb-2">{{ skill[0].category }}</h3>
 								<v-layout align-center justify-center>
-									<v-flex xs12 sm6 md4 lg3 class="mx-0" v-for="s in skill" :key="s.name">
+									<v-flex xs12 sm6 md4 lg3 class="mx-3" v-for="s in skill" :key="s.name">
 										<div v-if="s.type === 'pie'">
 											<v-progress-circular
 												:rotate="270"
 												:size="100"
-												:width="10"
+												:width="15"
 												:value="s.value"
 												:color="primaryColor"
 												style=""
@@ -204,10 +208,10 @@
 											</v-layout>
 											<!-- {{ s.name }} {{ s.value }}% -->
 											<v-progress-linear
-												height="10"
+												height="15"
 												:value="s.value"
 												:color="primaryColor"
-												class="mb-4"
+												class="my-2"
 												style="border-radius: 10px; margin: 0px 0px;"
 											></v-progress-linear>
 										</div>
@@ -223,7 +227,7 @@
 			<!-- Section Files -->
 			<v-layout row wrap class="margin-bottom" v-if="files && files.length > 0">
 				<v-flex xs12 sm8 offset-sm2>
-				    <h2 class="text-xs-center display-1 text-color">Files</h2>
+				    <h2 class="text-xs-center display-1 primary-color">Files</h2>
 				    <br />
 		      		<v-layout row wrap justify-center>
 		      			<v-flex xs6 md4 lg3 v-for="(file, index) in files" :key="index" class="pa-2" style="">
@@ -244,12 +248,12 @@
 
 
 			<!-- Section Contact -->
-			<v-layout row wrap id="contact" class="my-5 section">
+			<v-layout row wrap id="contact" class="my-5 section" v-if="resume.parameters && resume.parameters.show_contact_form">
 				<v-flex xs12 sm8 offset-sm2>
-					<h2 class="text-xs-center">Contact Me</h2>
+					<h2 class="text-xs-center display-1 primary-color">Contact Me</h2>
 					<br /><br />
 					<v-form>
-						<v-layout row wrap>
+						<v-layout row wrap class="secondary-color-background pa-5">
 							<v-flex xs6 class="pr-3">
 								<v-text-field
 									outline
@@ -313,7 +317,7 @@
 			</v-layout>
 		</v-content>
 
-		<v-footer :color="backgroundColor" class="white--text justify-center pa-4">
+		<v-footer :color="primaryColor" class="white--text justify-center pa-4">
 			<nuxt-link to="/" class="link">
 				<v-layout align-center justify-center>
 					<img src="/images/logo_small.png" width="30" />&nbsp;
@@ -328,6 +332,8 @@
 <script>
 	import moment from 'moment'
 	export default {
+		inject: ['$validator'], // Inject vee-validate validator
+		props: ['resume'],
 		head () {
 		    return {
 		      	title: this.title,
@@ -337,18 +343,12 @@
 				link: []
 		    }
 		},
-		props: ['resume'],
 		mounted () {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor2 ? this.resume.colors.primaryColor : 'green'
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor2 ? this.resume.colors.secondaryColor : 'orange'
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor2 ? this.resume.colors.tertiaryColor : 'pink'
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor2 ? this.resume.colors.backgroundColor : 'yellow'
-			this.textColor = this.resume.colors && this.resume.colors.textColor2 ? this.resume.colors.textColor : 'red'
-			// this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
-			// this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#FFF'
-			// this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#EFEFEF'
-			// this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#FFF'
-			// this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : '#000'
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#FFF'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#7A528F'
+			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : '#202026'
+			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : '#424242'
+			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : 'FFF'
 
 			this.profilePicture = this.resume.uploads.find(upload => upload.type === 'profile_picture')
 			if (!this.profilePicture) {
@@ -384,6 +384,9 @@
 					'--text-color': this.textColor
 				}
 			},
+			errors () {
+	            return this.$store.getters['errors']
+	        },
 			skills () {
 				if (this.resume.skills) {
 					const res = this.resume.skills.reduce((acc, curr) => {

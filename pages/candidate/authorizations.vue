@@ -6,7 +6,7 @@
 
 		<v-flex xs12 class="text-xs-center">
 
-			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
+			<b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br />
 			<!-- new_authorizations_received: {{ new_authorizations_received }}<br /><br /> -->
 			<!-- new_authorizations_sent: {{ new_authorizations_sent }}<br /><br /> -->
 			<!-- new_authorizations_status: {{ new_authorizations_status }}<br /><br /> -->
@@ -105,7 +105,7 @@
 					    :expand="true"
 					>
 					    <template v-slot:items="props">
-							<tr v-bind:class="[ new_authorizations_sent.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
+							<tr v-bind:class="[ new_authorizations_sent.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index" v-if="props.item.authorizations">
 								<td class="text-xs-left">{{ props.item.resume.firstname }}</td>
 								<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
 								<!-- <td class="text-xs-left">{{ props.item.resume.email }}</td> -->
