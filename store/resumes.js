@@ -32,12 +32,18 @@ export const mutations = {
 		state.newResume = {
 			template_id: '',
 			slug: 'johndoe',
+			// slug: '',
 			job_title: 'Web developer',
+			// job_title: '',
 			job_description: 'Develops websites & web apps',
+			// job_description: '',
 			personal_data: {
 				firstname: 'John',
+				// firstname: '',
 				lastname: 'Doe',
+				// lastname: '',
 				email: 'john.doe@example.com'
+				// email: ''
 			},
 			education: [],
 			work_experience: [],
@@ -192,14 +198,16 @@ export const actions = {
 	// 	})
 	// 	commit('setResumeUploads', resumeUploads)
 	// },
-	async storeResume ({ commit, dispatch, getters, rootGetters }, payload) {
+	async storeResume ({ commit, getters, rootGetters }, payload) {
 		try {
+			console.log('payload: ', payload)
 			const newResume = payload
+			const userPackageValidity = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.package_valid_until : null
 			console.log('newResume: ', newResume)
-			console.log('newResume.slug: ', newResume.slug)
-
+            console.log('userPackageValidity: ', userPackageValidity)
+			
 			// 1) Create resume server-side
-			const createdResume = await axios.post('/create-new-resume', newResume, {
+			const createdResume = await axios.post('/create-new-resume', { newResume, userPackageValidity}, {
 				headers: {
 					'app-key': process.env.APP_KEY
 				}
@@ -212,7 +220,7 @@ export const actions = {
 	        commit('setLoadingFiles', true, { root: true })
 
 	        // 2) Get all user existing uploads
-			await dispatch('fetchUserResumes')
+			// await dispatch('fetchUserResumes')
 			// const userExistingUploads = rootGetters['resumes/loadedUserResumes']
 			const userExistingResumes = getters['loadedUserResumes']
             console.log('userExistingResumes: ', userExistingResumes)

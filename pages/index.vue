@@ -4,7 +4,6 @@
 		<v-layout row wrap justify-center class="mb-5">
 			<v-flex xs12>
 				<h1>Welcome to LoginMyCV</h1>
-				<h2>Hi Ivan!</h2>
 				<h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
 				<v-layout justify-center>
 					<v-img src="/images/logo3.png" :lazy-src="'/images/logo3.png'" max-width="220" />

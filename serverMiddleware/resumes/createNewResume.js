@@ -9,13 +9,14 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 const app_key = process.env.APP_KEY;
 
-module.exports = app.use(async function (req, res, next) {
+module.exports = app.use(async function (req, res) {
     try {
-        let newResume = req.body;
-        console.log('newResume: ', newResume);
+        let newResume = req.body.newResume;
+        const userPackageValidity = req.body.userPackageValidity;
+        // console.log('newResume: ', newResume);
 
-        console.log('app-key: ', req.get('app-key'));
-        console.log('app_key: ', app_key);
+        // console.log('app-key: ', req.get('app-key'));
+        // console.log('app_key: ', app_key);
         // 1) Check API KEY (so that we know request is sent from server)
         // if (req.get('app-key') !== app_key) {
         //     throw {
@@ -43,7 +44,7 @@ module.exports = app.use(async function (req, res, next) {
         let totalUploadSize = 0;
         const userResumes = await admin.firestore().collection('resumes_long').where('user_id', '==', newResume.user_id).get();
         userResumes.forEach(doc => {
-            const uploads = doc.data().uploads;
+            // const uploads = doc.data().uploads;
             doc.data().uploads.forEach(upload => {
                 totalUploadSize += parseInt(upload.size_in_bytes)
             });
@@ -59,7 +60,7 @@ module.exports = app.use(async function (req, res, next) {
             }
         }
 
-
+        console.log('newResume.package_valid_until: ', newResume.package_valid_until)
 
         
         newResume._created_at = moment().unix();
@@ -69,8 +70,12 @@ module.exports = app.use(async function (req, res, next) {
         delete newResume['id'];
         delete newResume['password'];
         delete newResume['password_confirmation'];
-        console.log('password: ', password);
-
+        // console.log('password: ', password);
+        if (userPackageValidity < moment().unix()) {
+            newResume['active'] = false;
+        } else {
+            newResume['active'] = true;
+        }
 
 
         // 4) Create visitor auth account 

@@ -38,6 +38,16 @@
 									 	flat
 									 	icon
 									 	nuxt
+									 	:to="`/resume/${props.item.slug}`"
+									>
+										<v-icon small color="secondary">
+											input
+										</v-icon>
+									</v-btn>
+									<v-btn
+									 	flat
+									 	icon
+									 	nuxt
 									 	:to="`/candidate/resumes/${props.item.slug}`"
 									>
 										<v-icon small color="success">
@@ -215,16 +225,16 @@
 		async created() {
 			this.$store.getters['users/loadedUser']
 			this.$store.dispatch('resumes/fetchUserResumes')
-			if (this.$store.getters["loadedDarkTheme"]) {
-				this.chartOptions.backgroundColor = "#424242"
-				this.chartOptions.hAxis.textStyle.color = "#FFF"
-				this.chartOptions.vAxis.textStyle.color = "#FFF"
-				this.chartOptions.legend.textStyle.color = "#FFF"
+			if (this.$store.getters['loadedDarkTheme']) {
+				this.chartOptions.backgroundColor = '#424242'
+				this.chartOptions.hAxis.textStyle.color = '#FFF'
+				this.chartOptions.vAxis.textStyle.color = '#FFF'
+				this.chartOptions.legend.textStyle.color = '#FFF'
 			} else {
-				this.chartOptions.backgroundColor = "#FFF"
-				this.chartOptions.hAxis.textStyle.color = "#424242"
-				this.chartOptions.vAxis.textStyle.color = "#424242"
-				this.chartOptions.legend.textStyle.color = "#424242"
+				this.chartOptions.backgroundColor = '#FFF'
+				this.chartOptions.hAxis.textStyle.color = '#424242'
+				this.chartOptions.vAxis.textStyle.color = '#424242'
+				this.chartOptions.legend.textStyle.color = '#424242'
 			}
 		},
 		data() {
@@ -326,14 +336,14 @@
 				let newArray = []
 				this.getStatistics.forEach((resume, index) => {
 					resume.forEach((click, index2) => {
-						console.log("click: ", click.getTime());
+						console.log('click: ', click.getTime());
 						// console.log('filter: ', newArray.filter(value => value[0] === '2019-06-27'))
 						const existingValue = newArray.find(
 							value => value[0].getTime() === click.getTime()
 						)
-						console.log("existingValue1: ", existingValue)
+						console.log('existingValue1: ', existingValue)
 						if (existingValue) {
-							console.log("existing value!")
+							console.log('existing value!')
 							existingValue[index + 1] += 1 || 1
 						} else {
 							const newEntry = new Array(
@@ -345,43 +355,45 @@
 						}
 					})
 				})
-				const headerArray = [{ label: "Date", type: "date" }]
+				const headerArray = [{ label: 'Date', type: 'date' }]
 				this.loadedUserResumes.forEach(resume => {
-					headerArray.push(`#clicks on resume ${resume.slug}`)
+					if (resume.statistics_last_visits) {
+						headerArray.push(`#clicks on resume ${resume.slug}`)
+					}
 				})
 				newArray.unshift(headerArray)
-				console.log("newArray: ", newArray)
+				console.log('newArray: ', newArray)
 				return newArray
 			},
 			loadedDarkTheme() {
-				return this.$store.getters["loadedDarkTheme"]
+				return this.$store.getters['loadedDarkTheme']
 			}
 		},
 		methods: {
 			addResume() {
-				console.log("addResume");
+				console.log('addResume');
 				const currentNumberResumes = this.loadedUserResumes.length;
 				const maxNumberResumes = this.loadedUser.private
 					? this.loadedUser.private.maximum_number_of_resumes
 					: 1;
-				console.log("currentNumberResumes: ", currentNumberResumes);
-				console.log("maxNumberResumes: ", maxNumberResumes);
+				console.log('currentNumberResumes: ', currentNumberResumes);
+				console.log('maxNumberResumes: ', maxNumberResumes);
 				if (currentNumberResumes < maxNumberResumes) {
-					this.$router.replace("/candidate/resumes/create");
+					this.$router.replace('/candidate/resumes/create');
 				} else {
 					new Noty({
-						type: "warning",
+						type: 'warning',
 						text: `Sorry, but you are currently limited to ${maxNumberResumes} ${
-							maxNumberResumes > 1 ? "resumes" : "resume"
+							maxNumberResumes > 1 ? 'resumes' : 'resume'
 						}.`,
 						timeout: 5000,
-						theme: "metroui",
-						closeWith: ["button"]
+						theme: 'metroui',
+						closeWith: ['button']
 					}).show();
 				}
 			},
 			editResume() {
-				this.$router.replace("/candidate/resumes/edit");
+				this.$router.replace('/candidate/resumes/edit');
 			},
 			requestConfirmation(resume) {
 				this.resume = resume;
@@ -401,22 +413,22 @@
 				try {
 					this.snackbar = false;
 
-					console.log("deleteResume: ", this.resume)
-					await this.$store.dispatch("resumes/deleteResume", this.resume)
-					this.resumeId = ""
+					console.log('deleteResume: ', this.resume)
+					await this.$store.dispatch('resumes/deleteResume', this.resume)
+					this.resumeId = ''
 					new Noty({
-						type: "success",
-						text: "Successfully deleted resume",
+						type: 'success',
+						text: 'Successfully deleted resume',
 						timeout: 5000,
-						theme: "metroui"
+						theme: 'metroui'
 					}).show()
 				} catch (error) {
 					new Noty({
-						type: "error",
+						type: 'error',
 						text:
-							"Sorry, an error occured and your resume could not be deleted.",
+							'Sorry, an error occured and your resume could not be deleted.',
 						timeout: 5000,
-						theme: "metroui"
+						theme: 'metroui'
 					}).show()
 				}
 			}
@@ -424,15 +436,15 @@
 		watch: {
 			loadedDarkTheme() {
 				if (this.loadedDarkTheme) {
-					this.chartOptions.backgroundColor = "#424242"
-					this.chartOptions.hAxis.textStyle.color = "#FFF"
-					this.chartOptions.vAxis.textStyle.color = "#FFF"
-					this.chartOptions.legend.textStyle.color = "#FFF"
+					this.chartOptions.backgroundColor = '#424242'
+					this.chartOptions.hAxis.textStyle.color = '#FFF'
+					this.chartOptions.vAxis.textStyle.color = '#FFF'
+					this.chartOptions.legend.textStyle.color = '#FFF'
 				} else {
-					this.chartOptions.backgroundColor = "#FFF"
-					this.chartOptions.hAxis.textStyle.color = "#424242"
-					this.chartOptions.vAxis.textStyle.color = "#424242"
-					this.chartOptions.legend.textStyle.color = "#424242"
+					this.chartOptions.backgroundColor = '#FFF'
+					this.chartOptions.hAxis.textStyle.color = '#424242'
+					this.chartOptions.vAxis.textStyle.color = '#424242'
+					this.chartOptions.legend.textStyle.color = '#424242'
 				}
 			}
 		}

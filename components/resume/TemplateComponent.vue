@@ -187,7 +187,7 @@
         },
         methods: {
             selectTemplate (template) {
-                console.log('template', template)
+                // console.log('template', template)
                 if (!this.resumeSlug) {
                     this.userResume.colors = template.colors
                 }

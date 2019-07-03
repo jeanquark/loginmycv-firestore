@@ -7,9 +7,9 @@
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
-            loadedNewResume: {{ loadedNewResume }}<br /><br />
+            <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- this.$validator: {{ this.$validator }}<br /><br /> -->
-            errors: {{ errors }}<br /><br />
+            <!-- errors: {{ errors }}<br /><br /> -->
             <!-- loadedNewResume.uploads: {{ loadedNewResume.uploads }}<br /><br /> -->
             <!-- loadedNewResume.personal_data.picture: {{ loadedNewResume.personal_data.picture ? loadedNewResume.personal_data.picture.size : null }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
@@ -277,12 +277,12 @@
 		data () {
 			return {
                 step: 1,
-                uploadedFiles: [],
+                // uploadedFiles: [],
                 creatingResumeDialog: false,
                 importResume: {},
-                stepError2: {
-                    educationArray: [true, false]
-                },
+                // stepError2: {
+                //     educationArray: [true, false]
+                // },
                 // hasError: true
                 // stepEducationErrors: false,
                 stepPersonalDataErrors: false,
@@ -370,6 +370,7 @@
                 try {
                     console.log('saveResume')
                     this.loadedNewResume['user_id'] = this.loadedUser.id
+                    
                     // console.log('this.loadedNewResume: ', this.loadedNewResume)
 
                     // const userExistingUploads = this.$store.getters['resumes/loadedUserResumes']
