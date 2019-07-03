@@ -9,12 +9,14 @@
 		minDate2: {{ minDate2 }}<br /><br /> -->
 		<!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
 		<!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
+		<!-- loadingArray: {{ loadingArray }}<br /><br /> -->
+		<!-- errors: {{ errors }}<br /><br /> -->
+
 		<v-layout justify-center>
 			<h2>My resumes</h2><br /><br />
 		</v-layout>
 		<v-flex
-		 	xs10
-		 	offset-xs1
+		 	xs12
 		 	class="text-xs-center"
 		>
 			<v-card flat class="ma-2">
@@ -27,13 +29,29 @@
 					>
 						<template v-slot:items="props">
 							<td class="text-xs-left">{{ props.index + 1 }}</td>
+							<td class="text-xs-left">
+								<v-layout align-center fill-height>	
+									<v-text-field
+										:name="`name${props.index}`" 
+										v-validate="{ max: 50 }"
+										:error-messages="errors ? errors.collect(`name${props.index}`) : null"
+										data-vv-as="Name"
+										v-model="props.item.name"	
+									></v-text-field>
+									
+									<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="loadingArray.length < 1 && errors && errors.items.length < 1" />
+									<font-awesome-icon :icon="['fas', 'save']" size="lg" class="disabled" v-if="loadingArray.length > 0 && !loadingArray[props.index] || (errors && errors.items.length > 0)" />
+									<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[props.index]" />
+								</v-layout>
+							</td>
 							<td class="text-xs-left">{{ props.item.slug }}</td>
 							<td class="text-xs-left">{{ props.item.language ? props.item.language.name : '' }}</td>
 							<td class="text-xs-left">{{ props.item.job_title }}</td>
 							<td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>
 							<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-							<td class="fill-height layout px-0">
-								<v-layout class="justify-center">
+							<td class="px-0">
+								<!-- <v-layout class="justify-center fill-height align-center"> -->
+								<v-layout align-center justify-center fill-height>
 									<v-btn
 									 	flat
 									 	icon
@@ -220,11 +238,15 @@
 	import { GChart } from 'vue-google-charts'
 	import moment from 'moment'
 	export default {
+		inject: ['$validator'], // Inject vee-validate validator
 		components: { GChart },
 		layout: 'layoutBack',
 		async created() {
+			this.$store.commit('setLoading', false)
 			this.$store.getters['users/loadedUser']
-			this.$store.dispatch('resumes/fetchUserResumes')
+			const userResume = this.$store.dispatch('resumes/fetchUserResumes')
+			// this.loadedArray.length
+
 			if (this.$store.getters['loadedDarkTheme']) {
 				this.chartOptions.backgroundColor = '#424242'
 				this.chartOptions.hAxis.textStyle.color = '#FFF'
@@ -240,14 +262,16 @@
 		data() {
 			return {
 				headers: [
-					{ text: "N°", value: "index" },
-					{ text: "Identifier", value: "slug" },
-					{ text: "Language", value: "language" },
-					{ text: "Job title", value: "job_title" },
-					{ text: "Created at", value: "created_at" },
-					{ text: "Last update", value: "updated_at" },
-					{ text: "Actions", align: "center", sortable: false }
+					{ text: 'N°', value: 'index' },
+					{ text: 'Name (not public)', value: 'name' },
+					{ text: 'Identifier', value: 'slug' },
+					{ text: 'Language', value: 'language' },
+					{ text: 'Job title', value: 'job_title' },
+					{ text: 'Created at', value: 'created_at' },
+					{ text: 'Last update', value: 'updated_at' },
+					{ text: 'Actions', align: 'center', sortable: false }
 				],
+				// resumeNames: [],
 				snackbar: false,
 				confirm: false,
 				resume: {},
@@ -307,10 +331,17 @@
 				minDate: moment().subtract('1', 'months').format('YYYY-MM-DD'),
 				maxDate: moment().format('YYYY-MM-DD'),
 				modalMinDate: false,
-				modalMaxDate: false
+				modalMaxDate: false,
+				loadingArray: []
 			}
 		},
 		computed: {
+			errors () {
+				return this.$store.getters['errors']
+			},
+			// loadingArray () {
+			// 	return new Array(3)
+			// },
 			loadedUser() {
 				return this.$store.getters["users/loadedUser"];
 			},
@@ -370,6 +401,33 @@
 			}
 		},
 		methods: {
+			async updateResumeName (payload) {
+				try {
+					console.log('payload: ', payload)
+					this.loadingArray = new Array(payload.index + 1)
+					this.loadingArray.splice(payload.index, 1, true)
+					await this.$store.dispatch('resumes/updateResumeName', payload)
+					// setTimeout(() => {
+					this.loadingArray = []
+					// this.loadingArray.splice(payload.index, 1, false)
+					new Noty({
+						type: 'success',
+						text: 'Updated resume name successfully!',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					// }, 3000)
+				} catch (error) {
+					this.loadingArray = []
+					console.log('error: ', error)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error occured and the name of the resume could not be updated.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
+			},
 			addResume() {
 				console.log('addResume');
 				const currentNumberResumes = this.loadedUserResumes.length;
@@ -452,5 +510,19 @@
 </script>
 
 <style scoped>
-
+	.icon {
+		color: var(--v-primary-base)
+	}
+	.icon:hover {
+		color: var(--v-success-base);
+		cursor: pointer;
+	}
+	.disabled {
+		color: #ccc;
+		cursor: default;
+	}
+	.disabled:hover {
+		color: '#ccc';
+		cursor: default;
+	}
 </style>

@@ -43,7 +43,7 @@
         </v-toolbar>
 
         <v-content>
-            <v-container fluid>
+            <v-container fluid style="padding: 0px;">
                 <nuxt />
                 <v-layout row wrap>
                     <!-- Login Candidate Modal -->

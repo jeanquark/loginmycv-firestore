@@ -556,6 +556,17 @@ export const actions = {
 			throw error
 		}
 	},
+	async updateResumeName ({ }, payload) {
+		try {
+			console.log('updatedResumeName: ', payload)
+			await firestore.collection('resumes_long').doc(payload.resumeId).update({
+				name: payload.newName
+			})
+		} catch (error) {
+			console.log('error')
+			throw error
+		}
+	},
 	async updateResume2 ({ commit, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)

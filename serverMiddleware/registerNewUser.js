@@ -54,7 +54,7 @@ module.exports = app.use(async function (req, res) {
             package_slug: 'basic',
             maximum_number_of_resumes: 1,
             total_space_in_bytes: 5242880, // 5MB
-            available_templates: 1
+            available_templates: 3
         };
         const basicPackage = await admin.firestore().collection('packages').doc('basic').get();
         if (basicPackage.exists) {

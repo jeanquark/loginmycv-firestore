@@ -6,7 +6,6 @@
         <v-card-text>
             <form @submit.prevent="signUserUp('register')" data-vv-scope="register">
                 <v-layout row wrap>
-                    <!-- errors: {{ errors }} -->
                     <v-alert
                         :value="error"
                         type="error"
@@ -53,17 +52,6 @@
                     </v-flex>
 
                     <v-flex xs6>
-                        <!-- <v-text-field
-                            label="Username"
-                            id="username"
-                            name="username"
-                            prepend-icon="person"
-                            v-validate="'required|max:30'"
-                            :counter="30"
-                            :error-messages="errors.collect('username')"
-                            v-model="form.username"
-                        ></v-text-field> -->
-
                         <v-text-field
                             label="Password"
                             name="password"
@@ -113,11 +101,6 @@
                 </v-layout>
             </form>
         </v-card-text>
-        <!-- <v-card-actions class="justify-center">
-            <v-btn flat color="primary" @click="switchToLogin">
-                Switch to login
-            </v-btn>
-        </v-card-actions> -->
     </v-card>
 </template>
 
@@ -129,7 +112,6 @@
         created () {
             this.$store.commit('clearError')
             this.$store.commit('setLoading', false)
-            // this.errors = null
         },
 		data () {
 			return {
@@ -173,7 +155,6 @@
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()
-                        // this.$router.push('/candidate/resumes')
                         this.switchToLogin()
                     } catch (error) {
                         console.log('error2: ', error)
@@ -212,7 +193,6 @@
                             theme: 'metroui'
                         }).show()
                         this.$router.push('/candidate/resumes')
-                        // redirect('/candidate/resumes')
                     } catch (error) {
                         console.log('error2: ', error)
                         this.$store.commit('setError', error)
@@ -285,7 +265,6 @@
             }
 		}
 	}
-
 </script>
 
 <style scoped>
