@@ -31,6 +31,14 @@
                             <v-list-tile-title>Authorizations</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                    <v-list-tile to="/candidate/account" v-ripple>
+                        <v-list-tile-action>
+                            <v-icon>account_circle</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>My Account</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
                     <v-list-tile to="/" v-ripple>
                         <v-list-tile-action>
                             <v-icon>arrow_back</v-icon>
@@ -104,9 +112,8 @@
                         </v-list>
                     </v-card>
                 </v-menu>
-
-
             </v-toolbar>
+            
             <v-content v-if="loadedUser && loadedUser.id">
                 <!-- <v-container fluid fill-height> -->
                 <v-container>

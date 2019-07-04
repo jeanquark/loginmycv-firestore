@@ -16,6 +16,7 @@
             <!-- getCurrentPicture: {{ getCurrentPicture }}<br /><br /> -->
             <!-- userResume.uploads: {{ this.userResume.uploads }}<br /><br /> -->
             <!-- <v-btn color="primary" @click="addUpload">Add upload</v-btn> -->
+            <!-- loadedCountries: {{ loadedCountries }}<br /><br /> -->
             
         </div>
         <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
@@ -190,7 +191,7 @@
                                 <v-text-field
                                     label="Personal Website"
                                     name="website"
-                                    hint="www.example.com"
+                                    hint="https://www.example.com"
                                     persistent-hint
                                     v-validate="{url: {require_protocol: true }}"
                                     :error-messages="errors ? errors.collect('website') : null"
@@ -258,18 +259,6 @@
 
                     <v-card-text>
                         <v-layout row wrap class="mb-4">
-                            <!-- <v-flex xs12 sm4 class="px-3">
-                                <v-select
-                                    v-model="userResume.personal_data.gender"
-                                    :items="['female', 'male']"
-                                    prepend-icon="person"
-                                    attach
-                                    chips
-                                    label="Gender"
-                                    :deletable-chips="true"
-                                ></v-select>
-                            </v-flex> -->
-
                             <v-flex xs12 sm4 class="px-3">
                                 <v-autocomplete
                                     :items="loadedCountries"
@@ -304,30 +293,33 @@
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-dialog
-                                    ref="dialog"
+                                    ref="menu"
+                                    v-model="menu"
                                     :return-value.sync="userResume.personal_data.birthday"
-                                    persistent
+                                    :persistent="false"
                                     lazy
                                     full-width
-                                    width="300px"
-                                    v-model="modalDate"
+                                    width="290px"
                                 >
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
-                                            label="Birth date"
+                                            label="Birthday date"
                                             readonly
                                             v-on="on"
                                             v-model="userResume.personal_data.birthday"
-                                        ><font-awesome-icon :icon="['fas', 'birthday-cake']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                        >
+                                            <font-awesome-icon :icon="['fas', 'birthday-cake']" slot="prepend" style="margin-top: 4px;" />
+                                        </v-text-field>
                                     </template>
-                                    <v-date-picker v-model="userResume.personal_data.birthday">
-                                        <v-spacer></v-spacer>
-                                        <v-btn flat color="secondary" @click="modalDate = false">Cancel</v-btn>
-                                        <v-btn flat color="secondary" @click="$refs.dialog.save(userResume.personal_data.birthday)">OK</v-btn>
-                                    </v-date-picker>
+                                    <v-date-picker
+                                        ref="picker"
+                                        :max="new Date().toISOString().substr(0, 10)"
+                                        min="1900-01-01"
+                                        v-model="userResume.personal_data.birthday"
+                                        @change="saveBirthdayDate"
+                                    ></v-date-picker>
                                 </v-dialog>
                             </v-flex>
-                            <!-- userResume.languages: {{ userResume.languages }}<br /> -->
 
                         </v-layout>
 
@@ -348,6 +340,29 @@
                                     v-model="userResume.personal_data.nationalities"
                                 >
                                     <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:selection="data">
+                                        <v-chip
+                                            :selected="data.selected"
+                                            close
+                                            class="chip--select-multi"
+                                            @input="removeNationality(data.item)"
+                                        >
+                                        <v-avatar>
+                                            <img :src="`/images/countries/${data.item.flag}`">
+                                        </v-avatar>
+                                            {{ data.item.name }}
+                                        </v-chip>
+                                    </template>
+                                    <template v-slot:item="data">
+                                        <template>
+                                            <v-list-tile-avatar>
+                                                <img :src="`/images/countries/${data.item.flag}`">
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </template>
                                 </v-autocomplete>
                             </v-flex>
 
@@ -366,11 +381,10 @@
                             </v-flex> -->
 
                             <v-flex xs8 sm5 class="px-3">
-                                <!-- item-value="name" -->
                                 <v-autocomplete
+                                    label="Languages"
                                     :items="loadedLanguages"
                                     item-text="name"
-                                    item-value="name"
                                     :return-object="true"
                                     multiple
                                     chips
@@ -381,10 +395,30 @@
                                     color="secondary"
                                     v-model="userResume.languages"
                                 >
-                                    <template v-slot:label>
-                                        Language(s) <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:selection="data">
+                                        <v-chip
+                                            :selected="data.selected"
+                                            close
+                                            class="chip--select-multi"
+                                            @input="removeLanguage(data.item)"
+                                        >
+                                        <v-avatar>
+                                            <img :src="`/images/languages/${data.item.flag}`">
+                                        </v-avatar>
+                                            {{ data.item.name }}
+                                        </v-chip>
                                     </template>
-                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:item="data">
+                                        <template>
+                                            <v-list-tile-avatar>
+                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </template>
                                 </v-autocomplete>
                             </v-flex>
 
@@ -643,10 +677,6 @@
             
         },
         async mounted () {   
-            // if (!this.resumeSlug) {
-            //     console.log('NEW RESUME')
-            //     this.userResume.visibility = 'public'
-            // }
             this.originalVisibility = JSON.parse(JSON.stringify(this.userResume.visibility))
             if (this.userResume.uploads) {
                 const picture = this.userResume.uploads.find(upload => upload.type === 'profile_picture' && upload.new)
@@ -685,44 +715,46 @@
                 color: '#fff',
                 row: '',
                 originalVisibility: '', // Do not erase
-                social_links: [
-                    {
-                        name: 'Facebook',
-                        slug: 'facebook',
-                        link: '',
-                        fontawesome: 'facebook-f'
-                    },
-                    {
-                        name: 'LinkedIn',
-                        slug: 'linkedin',
-                        link: '',
-                        fontawesome: 'linkedin-in'
-                    },
-                    {
-                        name: 'Github',
-                        slug: 'github',
-                        link: '',
-                        fontawesome: 'github'
-                    },
-                    {
-                        name: 'Pinterest',
-                        slug: 'pinterest',
-                        link: '',
-                        fontawesome: 'pinterest'
-                    },
-                    {
-                        name: 'Quora',
-                        slug: 'quora',
-                        link: '',
-                        fontawesome: 'quora'
-                    },
-                    {
-                        name: 'Skype',
-                        slug: 'skype',
-                        link: '',
-                        fontawesome: 'skype'
-                    },
-                ]
+                // social_links: [
+                //     {
+                //         name: 'Facebook',
+                //         slug: 'facebook',
+                //         link: '',
+                //         fontawesome: 'facebook-f'
+                //     },
+                //     {
+                //         name: 'LinkedIn',
+                //         slug: 'linkedin',
+                //         link: '',
+                //         fontawesome: 'linkedin-in'
+                //     },
+                //     {
+                //         name: 'Github',
+                //         slug: 'github',
+                //         link: '',
+                //         fontawesome: 'github'
+                //     },
+                //     {
+                //         name: 'Pinterest',
+                //         slug: 'pinterest',
+                //         link: '',
+                //         fontawesome: 'pinterest'
+                //     },
+                //     {
+                //         name: 'Quora',
+                //         slug: 'quora',
+                //         link: '',
+                //         fontawesome: 'quora'
+                //     },
+                //     {
+                //         name: 'Skype',
+                //         slug: 'skype',
+                //         link: '',
+                //         fontawesome: 'skype'
+                //     }
+                // ],
+                date: null,
+                menu: false
             }
         },
         computed: {
@@ -763,11 +795,26 @@
                 console.log('validate')
                 this.$validator.validateAll()
             },
+            saveBirthdayDate (date) {
+                this.$refs.menu.save(date)
+            },
             saveDate () {
                 console.log('saveDate')
                 // console.log('date: ', date)
                 // this.userResume.personal_data.birthday = date
                 this.modalDate = false
+            },
+            removeNationality (item) {
+                const index = this.userResume.personal_data.nationalities.indexOf(item)
+                if (index >= 0) {
+                    this.userResume.personal_data.nationalities.splice(index, 1)
+                }
+            },
+            removeLanguage (item) {
+                const index = this.userResume.languages.indexOf(item)
+                if (index >= 0) {
+                    this.userResume.languages.splice(index, 1)
+                }
             },
             pickFile () {
                 this.$refs.image.click()
@@ -805,6 +852,11 @@
                 this.userResume.uploads = this.userResume.uploads.filter(upload => upload.type !== 'profile_picture')
                 this.imageUrl = ''
                 this.imageName = ''
+            }
+        },
+        watch: {
+            menu (val) {
+                val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
             }
         }
     }

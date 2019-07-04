@@ -1,16 +1,20 @@
 <template>
 	<v-layout row wrap>
-		<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
-		<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /> -->
-		<!-- getStatistics: {{ getStatistics }}<br /><br /> -->
-		<!-- dark: {{ dark }}<br /><br /> -->
-		<!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
-		minDate: {{ minDate }}<br /><br />
-		minDate2: {{ minDate2 }}<br /><br /> -->
-		<!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
-		<!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
-		<!-- loadingArray: {{ loadingArray }}<br /><br /> -->
-		<!-- errors: {{ errors }}<br /><br /> -->
+		<v-flex xs12>
+			<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
+			<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
+			<!-- getStatistics: {{ getStatistics }}<br /><br /> -->
+			<!-- dark: {{ dark }}<br /><br /> -->
+			<!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
+			minDate: {{ minDate }}<br /><br />
+			minDate2: {{ minDate2 }}<br /><br /> -->
+			<!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
+			<!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
+			<!-- loadingArray: {{ loadingArray }}<br /><br /> -->
+			<!-- errors: {{ errors }}<br /><br /> -->
+			<!-- resumesNames: {{ resumesNames }}<br /><br /> -->
+			<!-- newResumeNameMap: {{ newResumeNameMap }}<br /><br /> -->
+		</v-flex>
 
 		<v-layout justify-center>
 			<h2>My resumes</h2><br /><br />
@@ -31,18 +35,25 @@
 							<td class="text-xs-left">{{ props.index + 1 }}</td>
 							<td class="text-xs-left">
 								<v-layout align-center fill-height>	
+									<!-- :value="props.item.name" -->
 									<v-text-field
 										:name="`name${props.index}`" 
-										v-validate="{ max: 50 }"
+										v-validate="{ max: 5 }"
 										:error-messages="errors ? errors.collect(`name${props.index}`) : null"
 										data-vv-as="Name"
-										v-model="props.item.name"	
+										:value="props.item.name"
+ 										@input="updateName($event, props.item.id)"
+										class="mr-2"
 									></v-text-field>
 									
-									<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="loadingArray.length < 1 && errors && errors.items.length < 1" />
-									<font-awesome-icon :icon="['fas', 'save']" size="lg" class="disabled" v-if="loadingArray.length > 0 && !loadingArray[props.index] || (errors && errors.items.length > 0)" />
+									<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newValue: newResumeNameMap.get(props.item.id), index: props.index })" class="icon" v-if="newResumeNameMap.get(props.item.id) !== props.item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
+
+									<!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="resumesNames[props.index] !== props.item.name && !loadingArray.length > 0 && props.item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
 									<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[props.index]" />
 								</v-layout>
+							</td>
+							<td>
+								<v-checkbox v-model="props.item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: props.item.id, newValue: !props.item.active })"></v-checkbox>
 							</td>
 							<td class="text-xs-left">{{ props.item.slug }}</td>
 							<td class="text-xs-left">{{ props.item.language ? props.item.language.name : '' }}</td>
@@ -244,8 +255,9 @@
 		async created() {
 			this.$store.commit('setLoading', false)
 			this.$store.getters['users/loadedUser']
-			const userResume = this.$store.dispatch('resumes/fetchUserResumes')
-			// this.loadedArray.length
+			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+				this.$store.dispatch('resumes/fetchUserResumes')
+			// }
 
 			if (this.$store.getters['loadedDarkTheme']) {
 				this.chartOptions.backgroundColor = '#424242'
@@ -259,11 +271,18 @@
 				this.chartOptions.legend.textStyle.color = '#424242'
 			}
 		},
+		async mounted () {
+			this.$store.getters['resumes/loadedUserResumes'].forEach(resume => {
+				console.log('resume.name: ', resume.name)
+				this.newResumeNameMap.set(resume.id, resume.name)
+			})
+		},
 		data() {
 			return {
 				headers: [
 					{ text: 'N°', value: 'index' },
-					{ text: 'Name (not public)', value: 'name' },
+					{ text: 'Name (not public)', value: 'name', sortable: true },
+					{ text: 'Active?', value: 'active' },
 					{ text: 'Identifier', value: 'slug' },
 					{ text: 'Language', value: 'language' },
 					{ text: 'Job title', value: 'job_title' },
@@ -332,7 +351,10 @@
 				maxDate: moment().format('YYYY-MM-DD'),
 				modalMinDate: false,
 				modalMaxDate: false,
-				loadingArray: []
+				loadingArray: [],
+				resumesNames: [],
+				newResumeName: '',
+				newResumeNameMap: new Map()
 			}
 		},
 		computed: {
@@ -342,13 +364,13 @@
 			// loadingArray () {
 			// 	return new Array(3)
 			// },
-			loadedUser() {
+			loadedUser () {
 				return this.$store.getters["users/loadedUser"];
 			},
-			loadedUserResumes() {
+			loadedUserResumes () {
 				return this.$store.getters["resumes/loadedUserResumes"];
 			},
-			getStatistics() {
+			getStatistics () {
 				const statistics = []
 				this.loadedUserResumes.forEach(resume => {
 					if (resume.statistics_last_visits) {
@@ -364,17 +386,18 @@
 				return statistics
 			},
 			chartData () {
+				console.log('chartData computed method called')
 				let newArray = []
 				this.getStatistics.forEach((resume, index) => {
 					resume.forEach((click, index2) => {
-						console.log('click: ', click.getTime());
+						// console.log('click: ', click.getTime());
 						// console.log('filter: ', newArray.filter(value => value[0] === '2019-06-27'))
 						const existingValue = newArray.find(
 							value => value[0].getTime() === click.getTime()
 						)
-						console.log('existingValue1: ', existingValue)
+						// console.log('existingValue1: ', existingValue)
 						if (existingValue) {
-							console.log('existing value!')
+							// console.log('existing value!')
 							existingValue[index + 1] += 1 || 1
 						} else {
 							const newEntry = new Array(
@@ -393,29 +416,57 @@
 					}
 				})
 				newArray.unshift(headerArray)
-				console.log('newArray: ', newArray)
+				// console.log('newArray: ', newArray)
 				return newArray
 			},
-			loadedDarkTheme() {
+			loadedDarkTheme () {
 				return this.$store.getters['loadedDarkTheme']
-			}
+			},
+			// resumesNames () {
+			// 	const resumesNames = []
+			// 	this.loadedUserResumes.forEach(resume => {
+			// 	// if (resume) {
+			// 		console.log('resume.name: ', resume.name)
+			// 		if (resume.name) {
+			// 			// resumesNames.push(resume.name)
+			// 			resumesNames.push(JSON.parse(JSON.stringify(resume.name)))
+			// 		} else {
+			// 			// resumesNames.push('')
+			// 		}
+			// 		// const resumeName = JSON.parse(JSON.stringify(resume.name))
+			// 	// }
+			// 	})
+			// 	return resumesNames
+			// }
 		},
 		methods: {
+			updateName ($event, resumeId) {
+				console.log('updateName: ', $event, resumeId)
+				this.newResumeNameMap.set(resumeId, $event)
+				console.log(this.newResumeNameMap)
+			},
 			async updateResumeName (payload) {
 				try {
 					console.log('payload: ', payload)
 					this.loadingArray = new Array(payload.index + 1)
 					this.loadingArray.splice(payload.index, 1, true)
+
+					// const oldName = this.resumesNames[payload.index]
+					// console.log('oldName: ', oldName)
 					await this.$store.dispatch('resumes/updateResumeName', payload)
 					// setTimeout(() => {
-					this.loadingArray = []
-					// this.loadingArray.splice(payload.index, 1, false)
-					new Noty({
-						type: 'success',
-						text: 'Updated resume name successfully!',
-						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						// this.resumesNames[0] = 'abc'
+						// this.resumesNames.splice(payload.index, 1, payload.newName)
+						// this.resumesNames = this.resumesNames.filter(name => name != oldName)
+						// this.resumesNames.push(payload.newName)
+						// this.resumesNames[payload.newName] = false
+						this.loadingArray = []
+						new Noty({
+							type: 'success',
+							text: 'Updated resume name successfully!',
+							timeout: 5000,
+							theme: 'metroui'
+						}).show()
 					// }, 3000)
 				} catch (error) {
 					this.loadingArray = []
@@ -423,6 +474,25 @@
 					new Noty({
 						type: 'error',
 						text: 'Sorry, an error occured and the name of the resume could not be updated.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				}
+			},
+			async updateResumeActiveStatus (payload) {
+				try {
+					await this.$store.dispatch('resumes/updateResumeActiveStatus', payload)
+					new Noty({
+						type: 'success',
+						text: 'Updated resume status successfully!',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+				} catch (error) {
+					console.log('error: ', error)
+					new Noty({
+						type: 'error',
+						text: 'Sorry, an error occured and the status of the resume could not be updated.',
 						timeout: 5000,
 						theme: 'metroui'
 					}).show()
@@ -511,7 +581,7 @@
 
 <style scoped>
 	.icon {
-		color: var(--v-primary-base)
+		color: var(--v-secondary-base);
 	}
 	.icon:hover {
 		color: var(--v-success-base);
@@ -524,5 +594,8 @@
 	.disabled:hover {
 		color: '#ccc';
 		cursor: default;
+	}
+	.v-input--selection-controls {
+		padding-top: 10px;
 	}
 </style>

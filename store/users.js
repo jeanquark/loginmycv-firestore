@@ -1,5 +1,5 @@
 export const strict = false
-import { firestore } from '~/plugins/firebase-client-init.js'
+import { firestore, storage } from '~/plugins/firebase-client-init.js'
 import firebase from 'firebase/app'
 import axios from 'axios'
 import moment from 'moment'
@@ -116,7 +116,72 @@ export const actions = {
 		await firestore.collection('users').doc(userId).update({
 			notifications: notifications.filter(notification => notification.type !== 'authorization')
 		})
-	}
+    },
+    async deleteUser ({ rootGetters }) {
+        try {
+            console.log('deleteUser')
+            const user = firebase.auth().currentUser
+            console.log('user: ', user)
+            const userId = user.uid
+            console.log('userId: ', userId)
+
+            // 1) Delete all user files in Firebase storage
+            const filesToDelete = []
+            const longResumes = await firestore.collection('resumes_long').where('user_id', '==', userId).get()
+            longResumes.forEach(longResume => {
+                console.log('longResume.data(): ', longResume.data())
+                if (longResume.data().uploads) {
+                    longResume.data().uploads.forEach(upload => {
+                        filesToDelete.push(upload.name)
+                    })
+                }
+            })
+            console.log('filesToDelete: ', filesToDelete)
+
+            try {
+                for (let fileToDelete of filesToDelete) {
+                    console.log('fileToDelete: ', fileToDelete)
+                    await storage.ref('resumes').child(`${userId}/${fileToDelete}`).delete()
+                }
+            } catch (error) {
+            
+            }
+
+
+            // 2) Delete user shortResumes in Firestore
+            const batch = firestore.batch()
+            const shortResumes = await firestore.collection('resumes_short').where('user_id', '==', userId).get()
+            shortResumes.forEach(shortResume => {
+                console.log('shortResume: ', shortResume)
+                const shortResumeRef = firestore.collection('resumes_short').doc(shortResume.id)
+                batch.delete(shortResumeRef)
+            })
+
+
+            // 3) Delete user longResumes in Firestore
+            longResumes.forEach(longResume => {
+                console.log('longResume: ', longResume)
+                const longResumeRef = firestore.collection('resumes_long').doc(longResume.id)
+                batch.delete(longResumeRef)
+            })
+            
+            throw 'new error'
+            // 4) Delete user in Firestore auth
+            const userRef = await firestore.collection('users').doc(userId)
+            batch.delete(userRef)
+
+
+            // await batch.commit()
+
+
+            // 4) Delete user profile in Firebase Auth
+            // batch.delete(user)
+            // await user.delete()
+
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export const getters = {

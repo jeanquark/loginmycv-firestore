@@ -560,7 +560,21 @@ export const actions = {
 		try {
 			console.log('updatedResumeName: ', payload)
 			await firestore.collection('resumes_long').doc(payload.resumeId).update({
-				name: payload.newName
+				name: payload.newValue,
+				_updated_at: moment().unix()
+			})
+		} catch (error) {
+			console.log('error')
+			throw error
+		}
+	},
+	async updateResumeActiveStatus ({}, payload) {
+		try {
+			console.log('updateResumeActiveStatus: ', payload)
+			// Perform check to see if user is allowed to have an extra active resume
+			await firestore.collection('resumes_long').doc(payload.resumeId).update({
+				active: payload.newValue,
+				_updated_at: moment().unix()
 			})
 		} catch (error) {
 			console.log('error')
