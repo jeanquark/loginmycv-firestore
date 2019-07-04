@@ -191,17 +191,20 @@
 			    candidateResume: {},
 				carouselItems: [
 					{
-						src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+						src: '/images/carousel1.png'
+						// src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
 					},
 					{
-						src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+						src: '/images/carousel2.png'
+						// src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
 					},
 					{
-						src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+						src: '/images/carousel3.png'
+						// src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
 					},
-					{
-						src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
-					}
+					// {
+					// 	src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+					// }
         		]
 			}
 		},
