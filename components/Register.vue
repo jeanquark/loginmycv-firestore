@@ -44,7 +44,7 @@
                             label="Email"
                             id="email"
                             name="email"
-                            prepend-icon="person"
+                            prepend-icon="email"
                             v-validate="'required|email'"
                             :error-messages="errors ? errors.collect('register.email') : null"
                             v-model="form.email"
@@ -82,7 +82,7 @@
                     <v-btn color="primary" type="submit" :loading="loading">Register</v-btn>
                 </v-layout>
 
-                <v-layout row wrap class="mb-2">
+                <v-layout row wrap class="mt-3 mb-2">
                     <v-flex xs6 class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Register with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
                     </v-flex>

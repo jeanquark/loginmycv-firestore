@@ -93,7 +93,15 @@ module.exports = {
         // },
         {
             path: '/register-new-user', // POST request
-            handler: '~/serverMiddleware/registerNewUser'
+            handler: '~/serverMiddleware/users/registerNewUser'
+        },
+        {
+            path: '/set-custom-claims', // POST request
+            handler: '~/serverMiddleware/users/setCustomClaims'
+        },
+        {
+            path: '/delete-user', // POST request
+            handler: '~/serverMiddleware/users/deleteUser'
         },
         // {
         //     path: '/resume',
@@ -108,13 +116,13 @@ module.exports = {
             handler: '~/serverMiddleware/resumes/fetchShortResumes'
         },
         // {
-        //     path: '/create-resume-authorization', // POST request
-        //     handler: '/serverMiddleware/createResumeAuthorization'
-        // },
-        // {
-        //     path: '/update-resume-authorization', // POST request
-        //     handler: '~/serverMiddleware/updateResumeAuthorization'
-        // }
+            //     path: '/create-resume-authorization', // POST request
+            //     handler: '/serverMiddleware/createResumeAuthorization'
+            // },
+            // {
+                //     path: '/update-resume-authorization', // POST request
+                //     handler: '~/serverMiddleware/updateResumeAuthorization'
+                // }
         {
             path: '/create-new-resume', // POST request
             handler: '~/serverMiddleware/resumes/createNewResume'
@@ -123,7 +131,7 @@ module.exports = {
             path: '/update-resume', // POST request
             handler: '~/serverMiddleware/resumes/updateResume'
         },
-        // {
+                // {
         //     path: '/delete-resume-upload', // POST request
         //     handler: '~/serverMiddleware/deleteResumeUpload'
         // }
@@ -150,10 +158,6 @@ module.exports = {
         {
             path: '/fetch-long-resumes',
             handler: '~/serverMiddleware/resumes/fetchLongResumes'
-        },
-        {
-            path: 'set-custom-claims',
-            handler: '~/serverMiddleware/setCustomClaims'
         },
         {
             path: 'update-user-tokens',

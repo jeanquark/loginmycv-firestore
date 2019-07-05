@@ -191,9 +191,10 @@
             this.$store.commit('setLoadingFiles', false)
             this.$store.commit('setLoadingResume', false)
 
-            // if (this.$store.getters['countries/loadedCountries'].length < 1) {
+            if (this.$store.getters['countries/loadedCountries'].length < 1) {
+                console.log('Fetching countries...')
                 await this.$store.dispatch('countries/fetchCountries')
-            // }
+            }
             // if (this.$store.getters['languages/loadedLanguages'].length < 1) {
                 await this.$store.dispatch('languages/fetchLanguages')
             // }

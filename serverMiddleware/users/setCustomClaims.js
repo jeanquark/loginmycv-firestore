@@ -22,7 +22,7 @@ module.exports = app.use(async function (req, res, next) {
                 // Update database
                 admin.firestore().collection('users').doc(user.uid).update(
                     {
-                        'private.status': {
+                        'status': {
                             slug: 'admin',
                             name: 'Administrator'
                         }
@@ -49,7 +49,7 @@ module.exports = app.use(async function (req, res, next) {
                 // Update database
                 admin.firestore().collection('users').doc(user.uid).update(
                     {
-                        'private.status': null
+                        'status': null
                     }
                 )
             }).then(() => {

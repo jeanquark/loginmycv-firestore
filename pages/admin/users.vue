@@ -44,11 +44,11 @@
 						<td>{{ props.item.private ? props.item.private.maximum_number_of_resumes : '' }}</td>
 						<td>{{ props.item._created_at | moment('DD MMM YYYY') }}</td>
 						<td style="white-space: nowrap;">
-							<v-btn color="info" small class="" v-if="!props.item.private.status || props.item.private.status.slug !== 'admin'" @click="updateUserAccount(props.item, 'userToAdmin')">
+							<v-btn color="info" small class="" v-if="!props.item.private.status || props.item.private.status.slug !== 'admin'" @click="updateUserClaims(props.item, 'userToAdmin')">
 								Grant Admin privileges&nbsp;&nbsp;
-								<font-awesome-icon :icon="['fas', 'user']" />
+								<font-awesome-icon :icon="['fas', 'user-tie']" />
 							</v-btn>
-							<v-btn color="warning" small @click="updateUserAccount(props.item, 'adminToUser')" v-if="props.item.private && props.item.private.status && props.item.private.status.slug === 'admin'">
+							<v-btn color="warning" small @click="updateUserClaims(props.item, 'adminToUser')" v-if="props.item.private && props.item.private.status && props.item.private.status.slug === 'admin'">
 								Revoke Admin privileges&nbsp;&nbsp;
 								<font-awesome-icon :icon="['fas', 'user-slash']" class="icon" />
 							</v-btn>
@@ -146,12 +146,12 @@
 			}
 		},
 		methods: {
-			async updateUserAccount(user, action) {
+			async updateUserClaims(user, action) {
 				try {
 					console.log('user: ', user)
 					console.log('action: ', action)
 					// this.selectedRow = user.email
-					await this.$store.dispatch('users/updateUserAccount', { user, action })
+					await this.$store.dispatch('users/updateUserClaims', { user, action })
 					new Noty({
 						type: 'success',
 						text: 'Successfully updated user status.',

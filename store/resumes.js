@@ -31,19 +31,19 @@ export const mutations = {
 	setEmptyResume (state) {
 		state.newResume = {
 			template_id: '',
-			slug: 'johndoe',
-			// slug: '',
-			job_title: 'Web developer',
-			// job_title: '',
-			job_description: 'Develops websites & web apps',
-			// job_description: '',
+			// slug: 'johndoe',
+			slug: '',
+			// job_title: 'Web developer',
+			job_title: '',
+			// job_description: 'Develops websites & web apps',
+			job_description: '',
 			personal_data: {
-				firstname: 'John',
-				// firstname: '',
-				lastname: 'Doe',
-				// lastname: '',
-				email: 'john.doe@example.com'
-				// email: ''
+				// firstname: 'John',
+				firstname: '',
+				// lastname: 'Doe',
+				lastname: '',
+				// email: 'john.doe@example.com'
+				email: ''
 			},
 			education: [],
 			work_experience: [],

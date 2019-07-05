@@ -38,7 +38,7 @@
 									<!-- :value="props.item.name" -->
 									<v-text-field
 										:name="`name${props.index}`" 
-										v-validate="{ max: 5 }"
+										v-validate="{ max: 50 }"
 										:error-messages="errors ? errors.collect(`name${props.index}`) : null"
 										data-vv-as="Name"
 										:value="props.item.name"
@@ -117,6 +117,7 @@
 		 	xs10
 		 	offset-xs1
 		 	class="text-xs-center my-5"
+			v-if="loadedUserResumes.length > 0"
 		>
 			<h2>Statistics</h2>
 			<small>(Number of clicks on your resume(s))</small><br /><br />

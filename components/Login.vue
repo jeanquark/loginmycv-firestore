@@ -59,7 +59,7 @@
                     <v-btn color="primary" type="submit" :loading="loading">Login</v-btn>
                 </v-layout>
 
-                <v-layout row wrap class="mb-2">
+                <v-layout row wrap class="mt-3 mb-2">
                     <v-flex xs6 class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Login with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
                     </v-flex>
@@ -162,8 +162,8 @@
                 }
             },
 			async signUserIn () {
-                console.log('signUserIn')
                 try {
+                    console.log('signUserIn')
                     await this.$store.dispatch('firebase-auth/signUserIn', this.form)
                     console.log('Success!')
                     // new Noty({
@@ -186,6 +186,7 @@
                     this.$store.commit('setLoading', false, { root: true })
                 } catch (error) {
                     console.log('error from client: ', error)
+                    this.$store.commit('setLoading', false, { root: true })
                     new Noty({
                         type: "error",
                         text: "Sorry, an error occured and you could not log in.",

@@ -51,59 +51,46 @@ export const actions = {
             console.log('users: ', users)
             commit('setAllUsers', users)
         })
-	},
-	async updateUserAccount({ commit, state, dispatch }, payload) {
-        // We have to update user custom claims in token and user status in database
-        console.log('async updateUserAccount')
+    },
+    async updateUserAccount ({ }, payload) {
         try {
-            const userId = payload.user.id
+            console.log('payload: ', payload)
+            const userId = firebase.auth().currentUser.uid
+            console.log('userId: ', userId)
+            await firestore.collection('users').doc(userId).update({
+                firstname: payload.firstname,
+                lastname: payload.lastname,
+            })
+        } catch (error) {
+            throw error
+        }
+    },
+	async updateUserClaims ({ commit, state, dispatch }, payload) {
+        try {
+            // We have to update user custom claims in token and user status in database
+            console.log('async updateUserClaims')
+            // const userId = payload.user.id
+            const userId = firebase.auth().currentUser.uid
             const userEmail = payload.user.email
             const action = payload.action
-            let status = {}
-            if (action == 'userToAdmin') {
-                status = {
-                    value: 'admin',
-                    _updated_at: moment().unix()
-                }
-            } else if (action == 'adminToUser') {
-                status = {
-                    value: 'user',
-                    _updated_at: moment().unix()
-                }
-            }
+            // let status = {}
+            // if (action == 'userToAdmin') {
+            //     status = {
+            //         value: 'admin',
+            //         _updated_at: moment().unix()
+            //     }
+            // } else if (action == 'adminToUser') {
+            //     status = {
+            //         value: 'user',
+            //         _updated_at: moment().unix()
+            //     }
+            // }
             console.log('status: ', status)
-
+            console.log('userEmail: ', userEmail)
+            console.log('action: ', action)
             const customClaims = await axios.post('/set-custom-claims', { userEmail, action })
             console.log('customClaims: ', customClaims)
             return
-
-            let promises = []
-            promises.push(axios.post('/set-custom-claims', { userEmail, action }))
-            promises.push(axios.post('/update-user-status', { userId, status }))
-
-            axios
-                .all(promises)
-                .then(
-                    axios.spread(function(claims, status) {
-                        console.log('claims: ', claims)
-                        console.log('status: ', status)
-                        new Noty({
-                            type: 'success',
-                            text: 'Successfully updated user status.',
-                            timeout: 5000,
-                            theme: 'metroui'
-                        }).show()
-                    })
-                )
-                .catch(error => {
-                    console.log('error: ', error)
-                    new Noty({
-                        type: 'error',
-                        text: 'Could not update user status.' + error,
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
-                })
         } catch (error) {
             console.log(error)
             throw new Error(error)
@@ -127,9 +114,11 @@ export const actions = {
 
             // 1) Delete all user files in Firebase storage
             const filesToDelete = []
+            const visitorsToDelete = []
             const longResumes = await firestore.collection('resumes_long').where('user_id', '==', userId).get()
             longResumes.forEach(longResume => {
                 console.log('longResume.data(): ', longResume.data())
+                visitorsToDelete.push(longResume.data().visitor_id)
                 if (longResume.data().uploads) {
                     longResume.data().uploads.forEach(upload => {
                         filesToDelete.push(upload.name)
@@ -137,6 +126,7 @@ export const actions = {
                 }
             })
             console.log('filesToDelete: ', filesToDelete)
+            console.log('visitorsToDelete: ', visitorsToDelete)
 
             try {
                 for (let fileToDelete of filesToDelete) {
@@ -144,12 +134,20 @@ export const actions = {
                     await storage.ref('resumes').child(`${userId}/${fileToDelete}`).delete()
                 }
             } catch (error) {
-            
+                // NO ERROR PROCESSING
             }
 
+            // 2) Delete user profile & visitor access in Firebase Auth
+            await axios.post('/delete-user', { userId, visitorsToDelete })
 
-            // 2) Delete user shortResumes in Firestore
+            
+            // 3) Delete user in Firestore 
             const batch = firestore.batch()
+            const userRef = await firestore.collection('users').doc(userId)
+            batch.delete(userRef)
+
+
+            // 4) Delete user shortResumes in Firestore
             const shortResumes = await firestore.collection('resumes_short').where('user_id', '==', userId).get()
             shortResumes.forEach(shortResume => {
                 console.log('shortResume: ', shortResume)
@@ -158,26 +156,14 @@ export const actions = {
             })
 
 
-            // 3) Delete user longResumes in Firestore
+            // 5) Delete user longResumes in Firestore
             longResumes.forEach(longResume => {
                 console.log('longResume: ', longResume)
                 const longResumeRef = firestore.collection('resumes_long').doc(longResume.id)
                 batch.delete(longResumeRef)
             })
             
-            throw 'new error'
-            // 4) Delete user in Firestore auth
-            const userRef = await firestore.collection('users').doc(userId)
-            batch.delete(userRef)
-
-
-            // await batch.commit()
-
-
-            // 4) Delete user profile in Firebase Auth
-            // batch.delete(user)
-            // await user.delete()
-
+            await batch.commit()
         } catch (error) {
             throw error
         }

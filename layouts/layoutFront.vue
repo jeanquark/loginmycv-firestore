@@ -24,8 +24,8 @@
             
             <!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
+            <v-btn color="info" nuxt to="/admin" v-if="loadedUser && loadedUser.status && loadedUser.status.slug === 'admin'">Admin</v-btn>
             <div v-if="loadedUser && loadedUser.private">
-                <v-btn color="info" nuxt to="/admin">Admin</v-btn>
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
                 <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-avatar

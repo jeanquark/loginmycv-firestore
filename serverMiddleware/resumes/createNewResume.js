@@ -70,8 +70,9 @@ module.exports = app.use(async function (req, res) {
         delete newResume['id'];
         delete newResume['password'];
         delete newResume['password_confirmation'];
-        // console.log('password: ', password);
-        if (userPackageValidity < moment().unix()) {
+
+        // Activate package to make it visible
+        if (userPackageValidity && userPackageValidity < moment().unix()) {
             newResume['active'] = false;
         } else {
             newResume['active'] = true;
@@ -117,9 +118,10 @@ module.exports = app.use(async function (req, res) {
         batch.set(newLongResume, newResume);
 
         batch.set(newShortResume, {
-            user_id: newResume.user_id, 
+            user_id: newResume.user_id,
             resume_long_id: newResume.slug,
             visibility: newResume.visibility,
+            active: newResume.active,
             job_title: newResume.job_title,
             job_description: newResume.job_description,
             firstname: newResume.personal_data.firstname ? newResume.personal_data.firstname : '',

@@ -461,7 +461,7 @@
                         this.creatingResumeDialog = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was created successfully!',
+                            text: 'Your resume was created successfully &#128515;',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()

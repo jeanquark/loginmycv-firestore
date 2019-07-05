@@ -10,12 +10,12 @@ export default function({ store, redirect, error }) {
                 .auth()
                 .currentUser.getIdTokenResult()
                 .then(idTokenResult => {
-                    // console.log(idTokenResult)
+                    console.log(idTokenResult)
                     if (!!idTokenResult.claims.admin) {
                         console.log('Authenticated as admin')
                     } else {
                         console.log(
-                            'Authenticated but no admin priviledges, redirect to homepage'
+                            'Authenticated but no admin priviledges, redirect to candidate pages'
                         )
                         return redirect('/candidate/resumes')
                     }
@@ -27,5 +27,7 @@ export default function({ store, redirect, error }) {
             console.log('Unauthenticated, redirect to index')
             return redirect('/')
         }
+    } else {
+        console.log('process server')
     }
 }
