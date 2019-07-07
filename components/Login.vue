@@ -60,10 +60,10 @@
                 </v-layout>
 
                 <v-layout row wrap class="mt-3 mb-2">
-                    <v-flex xs6 class="px-2">
+                    <v-flex xs12 sm6 class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Login with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
                     </v-flex>
-                    <v-flex xs6 class="px-2">
+                    <v-flex xs12 sm6 class="px-2">
                         <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Login with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
                     </v-flex>
                 </v-layout>
