@@ -200,12 +200,6 @@
                     console.log('signInWithGoogle')
                     this.loadingGoogle = true
                     await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
-                    new Noty({
-                        type: 'success',
-                        text: 'Login went successfully!',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
                     this.loadingGoogle = false
                     if (this.$store.getters['loadedOpenComponent']) {
                         this.$store.commit(this.$store.getters['loadedOpenComponent'])

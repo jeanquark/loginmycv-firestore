@@ -45,18 +45,30 @@
 									></v-img>
 									<!-- <div class="text-xs-center">{{ template.name }}</div> -->
 									<!-- <div class="text-xs-center">{{ template.description }}</div> -->
-									<div class="text-xs-center">
-										<!-- <a
-										    :href="`/templates/${template.slug}`"
-										    target="_blank"
-										>See example</a> -->
-										<v-btn
-										    color="secondary"
-										    small
-										    @click.stop="openDialog(template.slug)"
-										>Open</v-btn>
-									</div>
 								</v-card>
+								<v-layout
+								    align-center
+								    justify-center
+									class="transparent-background"
+								>
+									<font-awesome-icon
+									    :icon="['fas', 'users' ]"
+									    class=""
+									/>&nbsp;<span class="mr-3">12</span>
+									<font-awesome-icon
+									    :icon="['fas', 'cubes' ]"
+									    class=""
+									/>&nbsp;<span class="mr-3">Basic</span>
+																	
+									<v-btn
+									    flat
+									    icon
+									    color="secondary"
+										@click.stop="openDialog(template.slug)"
+									>
+										<v-icon>remove_red_eye</v-icon>
+									</v-btn>
+								</v-layout>
 							</v-flex>
 						</v-layout>
 					</v-card-text>
@@ -132,7 +144,7 @@
 					<!-- <v-img :src="`/images/templates/${loadedTemplate.image}`" width="100%" /> -->
 					<!-- userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br /> -->
 					<!-- userResume.colors.backgroundColor: {{ userResume.colors.backgroundColor }}<br /> -->
-					<image-template1
+					<!-- <image-template1
 					    :colors="userResume.colors"
 					    v-if="userResume.template_id === loadedTemplates[0].id"
 					    class="my-3"
@@ -146,7 +158,7 @@
 					    :colors="userResume.colors"
 					    v-if="userResume.template_id === loadedTemplates[2].id"
 					    class="my-3"
-					/>
+					/> -->
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -281,28 +293,39 @@
 						<v-icon>close</v-icon>
 					</v-btn>
 					<v-toolbar-title>Settings</v-toolbar-title>
-					<!-- <v-spacer></v-spacer>
-					<v-toolbar-items>
-						<v-btn
-						    dark
-						    flat
-						    @click="dialog = false"
-						>Save</v-btn>
-					</v-toolbar-items> -->
 				</v-toolbar>
 				<v-layout
 				    row
 				    align-center
-				    style="border: 2px solid orange;"
+					justify-center
+					pa-2
+					style="border-bottom: 2px solid var(--v-primary-base);"
 				>
-					<!-- <v-layout class="mr-2"> -->
-						Primary color
-						<vue-colorpicker v-model="userResume.colors.primaryColor" class="ml-2 mr-3"></vue-colorpicker>
-					<!-- </v-layout>
-					<v-layout> -->
-						Background color
-						<vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-3"></vue-colorpicker>
-					<!-- </v-layout> -->
+					Primary color
+					<vue-colorpicker
+					    v-model="userResume.colors.primaryColor"
+					    class="ml-2 mr-3"
+					></vue-colorpicker>
+					Secondary color
+					<vue-colorpicker
+					    v-model="userResume.colors.secondaryColor"
+					    class="ml-2 mr-3"
+					></vue-colorpicker>
+					Tertiary color
+					<vue-colorpicker
+					    v-model="userResume.colors.tertiaryColor"
+					    class="ml-2 mr-3"
+					></vue-colorpicker>
+					Background color
+					<vue-colorpicker
+					    v-model="userResume.colors.backgroundColor"
+					    class="ml-2 mr-3"
+					></vue-colorpicker>
+					Text color
+					<vue-colorpicker
+					    v-model="userResume.colors.textColor"
+					    class="ml-2 mr-3"
+					></vue-colorpicker>
 				</v-layout>
 
 				<component
@@ -318,18 +341,18 @@
 <script>
 	import axios from "axios"
 	import { VueColorpicker } from "vue-pop-colorpicker"
-	import imageTemplate1 from "~/components/templatesSVG/Template1_svg"
-	import imageTemplate2 from "~/components/templatesSVG/Template2_svg"
-	import imageTemplate3 from "~/components/templatesSVG/Template3_svg"
+	// import imageTemplate1 from "~/components/templatesSVG/Template1_svg"
+	// import imageTemplate2 from "~/components/templatesSVG/Template2_svg"
+	// import imageTemplate3 from "~/components/templatesSVG/Template3_svg"
 	// import { imageTemplate1 } from '~/components/Login'
 	export default {
 		// props: ['edit'],
 		inject: ["$validator"], // Inject parent validator
 		components: {
 			VueColorpicker,
-			imageTemplate1,
-			imageTemplate2,
-			imageTemplate3
+			// imageTemplate1,
+			// imageTemplate2,
+			// imageTemplate3
 		},
 		async created() {
 			const resumeSlug = this.$route.params.slug
@@ -411,5 +434,8 @@
 		background-position: center center;
 		border: 1px solid #ebebeb;
 		margin: 5px;
+	}
+	.transparent-background {
+		background: rgba(122,82,143, 0.6);
 	}
 </style>

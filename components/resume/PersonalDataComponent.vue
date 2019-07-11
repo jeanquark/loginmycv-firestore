@@ -221,10 +221,22 @@
                                     dense
                                     small-chips
                                     deletable-chips
+                                    color="secondary"
                                     item-text="name"
                                     return-object
                                     v-model="userResume.social_networks"
                                 >
+                                    <template v-slot:selection="data">
+                                        <v-chip
+                                            :selected="data.selected"
+                                            :color="data.item.color"
+                                            class="chip--select-multi"
+                                            @input="removeSocialLink(data.item)"
+                                        >
+                                            {{ data.item.name }}
+                                        </v-chip>
+                                    </template>
+
                                     <font-awesome-icon :icon="['fas', 'hashtag']" slot="prepend" style="margin-top: 4px;" />
                                 </v-select>
                             </v-flex>
