@@ -19,18 +19,18 @@ export const actions = {
                 console.log('authData.user.uid: ', authData.user.uid)
                 let userId = authData.user.uid
 
-                if (!authData.user.emailVerified) {
-                    auth.signOut()
-                    .then(() => {
-                        console.log('You were immediately signed out because your email is not verified.')
-                        throw { code: 'email_not_verified', message: 'Your email address is not verified.', authData }
-                    })
-                    .catch(error => {
-                        console.log('error2: ', error)
-                        commit('setError', error, { root: true })
-                        reject(error)
-                    })
-                } else {
+                // if (!authData.user.emailVerified) {
+                //     auth.signOut()
+                //     .then(() => {
+                //         console.log('You were immediately signed out because your email is not verified.')
+                //         throw { code: 'email_not_verified', message: 'Your email address is not verified.', authData }
+                //     })
+                //     .catch(error => {
+                //         console.log('error2: ', error)
+                //         commit('setError', error, { root: true })
+                //         reject(error)
+                //     })
+                // } else {
                     console.log('Email is verified, continue sign in.')
                     firestore.collection('users').doc(userId).onSnapshot(function(doc) {
                         const user = {
@@ -42,7 +42,7 @@ export const actions = {
                         commit('setLoading', false, { root: true })
                         resolve()
                     })
-                }
+                // }
             }).catch(error => {
                 console.log('error: ', error)
                 commit('setError', error, { root: true })
@@ -217,12 +217,11 @@ export const actions = {
         return new Promise((resolve, reject) => {
             // commit('setLoading', true, { root: true })
             // 1) First sign in with Google
-            let userId = ''
             // let authData = ''
             auth.signInWithPopup(GoogleAuthProvider).then(authData => {
                 console.log('authData: ', authData)
                 console.log('authData.user: ', authData.user)
-                userId = authData.user.uid
+                const userId = authData.user ? authData.user.uid : null
                 console.log('userId: ', userId)
                 // 2) Then update users state
                 firestore.collection('users').doc(userId).onSnapshot(function(doc) {
@@ -256,6 +255,7 @@ export const actions = {
                 })
             }).catch(error => {
                 // commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log(error)
                 reject(error)
             }) 
@@ -307,12 +307,11 @@ export const actions = {
         return new Promise((resolve, reject) => {
             // commit('setLoading', true, { root: true })
             // 1) First sign in with Google
-            let userId = ''
             // let authData = ''
             auth.signInWithPopup(FacebookAuthProvider).then(authData => {
                 console.log('authData: ', authData)
                 console.log('authData.user: ', authData.user)
-                userId = authData.user.uid
+                const userId = authData.user ? authData.user.uid : null
                 console.log('userId: ', userId)
                 // 2) Then update users state
                 firestore.collection('users').doc(userId).onSnapshot(function(doc) {
@@ -347,6 +346,7 @@ export const actions = {
             }).catch(error => {
                 // commit('setLoading', false, { root: true })
                 console.log(error)
+                commit('setError', error, { root: true })
                 reject(error)
             }) 
         })

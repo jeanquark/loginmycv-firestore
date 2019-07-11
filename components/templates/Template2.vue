@@ -250,17 +250,17 @@
 									<!-- <v-chip label class="social-link"><font-awesome-icon :icon="['fab', 'github']" size="2x" /></v-chip> -->
 								</v-layout>
 							</v-flex>
-							<v-flex xs12 sm6 style="">
+							<v-flex xs12 sm6 v-if="profilePicture">
 								<v-layout justify-center>
 									<v-avatar
 										size="350"
 										color="grey lighten-4"
+										v-
 									>
-										<!-- <img src="/images/hero.png" alt="avatar"> -->
 										<v-img 
 											:src="profilePicture.downloadUrl"
 											:lazy-src="profilePicture.downloadUrl" 
-											alt="profile picture"
+											alt="Profile picture"
 										/>
 									</v-avatar>
 								</v-layout>
@@ -522,6 +522,7 @@
 				tertiaryColor: '',
 				backgroundColor: '',
 				textColor: '',
+				profilePicture: {},
 				contactForm: {
 					firstname: '',
 					lastname: '',
