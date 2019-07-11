@@ -1,11 +1,80 @@
 <template>
     <v-app id="app" v-cloak>
+
+
+        <v-navigation-drawer
+            fixed
+            v-model="sideBar"
+            left
+            app
+            class="sidebar"
+        >
+            <v-list dense v-if="loadedUser && loadedUser.private">
+                <v-list-tile avatar class="my-2">
+                    <v-list-tile-avatar
+                        size="40"
+                        v-if="loadedUser.picture"
+                    >
+                        <img :src="loadedUser.picture" alt="user picture">
+                    </v-list-tile-avatar>
+                    <v-list-tile-content class="white--text">
+                        <v-list-tile-title>
+                            {{ loadedUser.firstname }} {{ loadedUser.lastname }}
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider color="white"></v-divider>
+                <v-list-tile class="white--text mt-2" to="/admin" v-ripple v-if="loadedUser.status && loadedUser.status.slug === 'admin'">
+                    <v-list-tile-action>
+                        <v-icon color="white">account_circle</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>Admin</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile class="white--text" :class="{'mt-2': !loadedUser.status}" to="/candidate/resumes" v-ripple>
+                    <v-list-tile-action>
+                        <v-icon color="white">folder_shared</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>My resumes</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile class="white--text" @click.stop="logout" v-ripple>
+                    <v-list-tile-action>
+                        <v-icon color="white">exit_to_app</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>Logout</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+            <v-list dense v-else>
+                <v-list-tile class="white--text mt-2" v-ripple>
+                    <v-list-tile-action>
+                        <v-icon color="white">person</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content @click.stop="openLoginModal">
+                        <v-list-tile-title>Login</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile class="white--text mt-2" v-ripple>
+                    <v-list-tile-action>
+                        <v-icon color="white">person_add</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content @click.stop="openRegisterModal">
+                        <v-list-tile-title>Register</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+
         <v-toolbar app dark color="primary">
             <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
             <nuxt-link to="/">
                 <v-layout align-center>
 				    <img src="/images/logo_small.png" width="40" />&nbsp;
-                    <v-toolbar-title class="white--text">LoginMyCV</v-toolbar-title>
+                    <v-toolbar-title class="hidden-xs-only white--text">LoginMyCV</v-toolbar-title>
                 </v-layout>
             </nuxt-link>
             
@@ -24,8 +93,8 @@
             
             <!-- <v-btn nuxt to="/register" color="success">Register</v-btn> -->
             <!-- <v-btn nuxt to="/login" color="success">Login</v-btn> -->
-            <v-btn color="info" nuxt to="/admin" v-if="loadedUser && loadedUser.status && loadedUser.status.slug === 'admin'">Admin</v-btn>
-            <div v-if="loadedUser && loadedUser.private">
+            <v-btn color="info" nuxt to="/admin" class="hidden-xs-only" v-if="loadedUser && loadedUser.status && loadedUser.status.slug === 'admin'">Admin</v-btn>
+            <div class="hidden-xs-only" v-if="loadedUser && loadedUser.private">
                 <v-btn color="success" nuxt to="/candidate/resumes">My resumes</v-btn>
                 <v-btn color="warning" @click="logout">Logout</v-btn>
                 <v-avatar
@@ -36,10 +105,11 @@
                     <img :src="loadedUser.picture" alt="user picture">
                 </v-avatar>
             </div>
-            <div v-else>
+            <div class="hidden-xs-only" v-else>
                 <v-btn color="success" @click="openLoginModal">Login</v-btn>
                 <v-btn color="success" @click="openRegisterModal">Register</v-btn>
             </div>
+            <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="sideBar = !sideBar"></v-toolbar-side-icon>
         </v-toolbar>
 
         <v-content>
@@ -143,6 +213,7 @@
             return {
                 // message: '',
                 // loginModal: false,
+                sideBar: false,
                 registerModal: false,
                 forgotPasswordModal: false,
                 links: [
@@ -266,4 +337,8 @@
 		text-decoration: none;
 		color: #fff;
 	}
+    .sidebar {
+        color: #FFF;
+        background: var(--v-primary-lighten1);
+    }
 </style>
