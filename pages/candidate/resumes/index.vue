@@ -1,295 +1,194 @@
 <template>
-	<v-layout row wrap>
-		<v-flex xs12>
-			<!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
-			<!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
-			<!-- getStatistics: {{ getStatistics }}<br /><br /> -->
-			<!-- dark: {{ dark }}<br /><br /> -->
-			<!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
+    <v-layout row wrap>
+        <v-flex xs12>
+            <!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
+            <!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
+            <!-- getStatistics: {{ getStatistics }}<br /><br /> -->
+            <!-- dark: {{ dark }}<br /><br /> -->
+            <!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
 			minDate: {{ minDate }}<br /><br />
-			minDate2: {{ minDate2 }}<br /><br /> -->
-			<!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
-			<!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
-			<!-- loadingArray: {{ loadingArray }}<br /><br /> -->
-			<!-- errors: {{ errors }}<br /><br /> -->
-			<!-- resumesNames: {{ resumesNames }}<br /><br /> -->
-			<!-- newResumeNameMap: {{ newResumeNameMap }}<br /><br /> -->
-		</v-flex>
+      minDate2: {{ minDate2 }}<br /><br />-->
+            <!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
+            <!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
+            <!-- loadingArray: {{ loadingArray }}<br /><br /> -->
+            <!-- errors: {{ errors }}<br /><br /> -->
+            <!-- resumesNames: {{ resumesNames }}<br /><br /> -->
+            <!-- newResumeNameMap: {{ newResumeNameMap }}<br /><br /> -->
+        </v-flex>
 
-		<v-layout justify-center>
-			<h2>My resumes</h2><br /><br />
-		</v-layout>
-		<v-flex
-		 	xs12
-		 	class="text-xs-center"
-		>
-			<v-card flat class="ma-2">
-				<v-card-text>
-					<v-data-table
-					 	:headers="headers"
-					 	:items="loadedUserResumes"
-					 	class="elevation-1"
-					 	:expand="true"
-					>
-						<template v-slot:items="props">
-							<td class="text-xs-left">{{ props.index + 1 }}</td>
-							<td class="text-xs-left">
-								<v-layout align-center fill-height>	
-									<!-- :value="props.item.name" -->
-									<v-text-field
-										:name="`name${props.index}`" 
-										v-validate="{ max: 50 }"
-										:error-messages="errors ? errors.collect(`name${props.index}`) : null"
-										data-vv-as="Name"
-										:value="props.item.name"
- 										@input="updateName($event, props.item.id)"
-										class="mr-2"
-									></v-text-field>
-									
-									<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newValue: newResumeNameMap.get(props.item.id), index: props.index })" class="icon" v-if="newResumeNameMap.get(props.item.id) !== props.item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
+        <v-layout justify-center>
+            <h2>My resumes</h2>
+            <br />
+            <br />
+        </v-layout>
+        <v-flex xs12 class="text-xs-center">
+            <v-card flat class="ma-2">
+                <v-card-text>
+                    <v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1" :expand="true">
+                        <template v-slot:items="props">
+                            <td class="text-xs-left">{{ props.index + 1 }}</td>
+                            <td class="text-xs-left">
+                                <v-layout align-center fill-height>
+                                    <!-- :value="props.item.name" -->
+                                    <v-text-field :name="`name${props.index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${props.index}`) : null" data-vv-as="Name" :value="props.item.name" @input="updateName($event, props.item.id)" class="mr-2"></v-text-field>
 
-									<!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="resumesNames[props.index] !== props.item.name && !loadingArray.length > 0 && props.item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
-									<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[props.index]" />
-								</v-layout>
-							</td>
-							<td>
-								<v-checkbox v-model="props.item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: props.item.id, newValue: !props.item.active })"></v-checkbox>
-							</td>
-							<td class="text-xs-left">{{ props.item.slug }}</td>
-							<td class="text-xs-left">{{ props.item.language ? props.item.language.name : '' }}</td>
-							<td class="text-xs-left">{{ props.item.job_title }}</td>
-							<td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>
-							<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-							<td class="px-0">
-								<!-- <v-layout class="justify-center fill-height align-center"> -->
-								<v-layout align-center justify-center fill-height>
-									<v-btn
-									 	flat
-									 	icon
-									 	nuxt
-									 	:to="`/resume/${props.item.slug}`"
-									>
-										<v-icon small color="secondary">
-											input
-										</v-icon>
-									</v-btn>
-									<v-btn
-									 	flat
-									 	icon
-									 	nuxt
-									 	:to="`/candidate/resumes/${props.item.slug}`"
-									>
-										<v-icon small color="success">
-											edit
-										</v-icon>
-									</v-btn>
-									<v-btn
-									 	flat
-									 	icon
-									 	@click="requestConfirmation(props.item)"
-									>
-										<v-icon small color="error">
-											delete
-										</v-icon>
-									</v-btn>
-								</v-layout>
-							</td>
-						</template>
-					</v-data-table>
-					<v-btn
-					 	fab
-					 	absolute
-					 	small
-					 	bottom
-					 	right
-					 	color="pink"
-					 	slot="activator"
-					 	style="z-index: 0"
-					 	@click="addResume"
-					>
-						<v-icon>add</v-icon>
-					</v-btn>
-				</v-card-text>
-			</v-card>
-		</v-flex>
+                                    <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newValue: newResumeNameMap.get(props.item.id), index: props.index })" class="icon" v-if="newResumeNameMap.get(props.item.id) !== props.item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
 
-		<v-flex
-		 	xs10
-		 	offset-xs1
-		 	class="text-xs-center my-5"
-			v-if="loadedUserResumes.length > 0"
-		>
-			<h2>Statistics</h2>
-			<small>(Number of clicks on your resume(s))</small><br /><br />
-			<GChart
-			 	type="ColumnChart"
-			 	:data="chartData"
-			 	:options="chartOptions"
-			 	:resizeDebounce="500"
-			 	class="ma-2"
-			/>
-			<br /><br />
+                                    <!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="resumesNames[props.index] !== props.item.name && !loadingArray.length > 0 && props.item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
+                                    <font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[props.index]" />
+                                </v-layout>
+                            </td>
+                            <td>
+                                <v-checkbox v-model="props.item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: props.item.id, newValue: !props.item.active })"></v-checkbox>
+                            </td>
+                            <td class="text-xs-left">{{ props.item.slug }}</td>
+                            <td class="text-xs-left">{{ props.item.language ? props.item.language.name : '' }}</td>
+                            <td class="text-xs-left">{{ props.item.job_title }}</td>
+                            <td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>
+                            <td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
+                            <td class="px-0">
+                                <!-- <v-layout class="justify-center fill-height align-center"> -->
+                                <v-layout align-center justify-center fill-height>
+                                    <v-btn flat icon nuxt :to="`/resume/${props.item.slug}`">
+                                        <v-icon small color="secondary">input</v-icon>
+                                    </v-btn>
+                                    <v-btn flat icon nuxt :to="`/candidate/resumes/${props.item.slug}`">
+                                        <v-icon small color="success">edit</v-icon>
+                                    </v-btn>
+                                    <v-btn flat icon @click="requestConfirmation(props.item)">
+                                        <v-icon small color="error">delete</v-icon>
+                                    </v-btn>
+                                </v-layout>
+                            </td>
+                        </template>
+                    </v-data-table>
+                    <v-btn fab absolute small bottom right color="pink" slot="activator" style="z-index: 0" @click="addResume">
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                </v-card-text>
+            </v-card>
+        </v-flex>
 
-			<v-layout row wrap>
-				<v-flex xs12 sm6 class="pa-2">
-					<v-dialog
-						ref="dialog"
-						v-model="modalMinDate"
-						:return-value.sync="date"
-						persistent
-						lazy
-						full-width
-						width="290px"
-					>
-						<template v-slot:activator="{ on }">
-							<v-text-field
-								v-model="minDate"
-								label="Min date"
-								prepend-icon="event"
-								readonly
-								v-on="on"
-							></v-text-field>
-						</template>
-						<v-date-picker v-model="minDate" scrollable>
-							<v-spacer></v-spacer>
-							<v-btn flat color="secondary" @click="modalMinDate = false">Cancel</v-btn>
-							<v-btn flat color="secondary" @click="updateMinDate">OK</v-btn>
-						</v-date-picker>
-					</v-dialog>
-				</v-flex>
+        <v-flex xs10 offset-xs1 class="text-xs-center my-5" v-if="loadedUserResumes.length > 0">
+            <h2>Statistics</h2>
+            <small>(Number of clicks on your resume(s))</small>
+            <br />
+            <br />
+            <GChart type="ColumnChart" :data="chartData" :options="chartOptions" :resizeDebounce="500" class="ma-2" />
+            <br />
+            <br />
 
-				<v-flex xs12 sm6 class="pa-2">
-					<v-dialog
-						ref="dialog"
-						v-model="modalMaxDate"
-						:return-value.sync="date"
-						persistent
-						lazy
-						full-width
-						width="290px"
-					>
-						<template v-slot:activator="{ on }">
-							<v-text-field
-								v-model="maxDate"
-								label="Max date"
-								prepend-icon="event"
-								readonly
-								v-on="on"
-							></v-text-field>
-						</template>
-						<v-date-picker v-model="maxDate" scrollable>
-							<v-spacer></v-spacer>
-							<v-btn flat color="secondary" @click="modalMaxDate = false">Cancel</v-btn>
-							<v-btn flat color="secondary" @click="updateMaxDate">OK</v-btn>
-						</v-date-picker>
-					</v-dialog>
-				</v-flex>
-			</v-layout>
+            <v-layout row wrap>
+                <v-flex xs12 sm6 class="pa-2">
+                    <v-dialog ref="dialog" v-model="modalMinDate" :return-value.sync="date" persistent lazy full-width width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field v-model="minDate" label="Min date" prepend-icon="event" readonly v-on="on"></v-text-field>
+                        </template>
+                        <v-date-picker v-model="minDate" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn flat color="secondary" @click="modalMinDate = false">Cancel</v-btn>
+                            <v-btn flat color="secondary" @click="updateMinDate">OK</v-btn>
+                        </v-date-picker>
+                    </v-dialog>
+                </v-flex>
 
-			<br /><br />
+                <v-flex xs12 sm6 class="pa-2">
+                    <v-dialog ref="dialog" v-model="modalMaxDate" :return-value.sync="date" persistent lazy full-width width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field v-model="maxDate" label="Max date" prepend-icon="event" readonly v-on="on"></v-text-field>
+                        </template>
+                        <v-date-picker v-model="maxDate" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn flat color="secondary" @click="modalMaxDate = false">Cancel</v-btn>
+                            <v-btn flat color="secondary" @click="updateMaxDate">OK</v-btn>
+                        </v-date-picker>
+                    </v-dialog>
+                </v-flex>
+            </v-layout>
 
-			<v-list class="ma-2">
-				<template v-for="(resume, index) in loadedUserResumes">
-					<v-list-tile
-					 avatar
-					 :key="resume.id"
-					 v-if="resume.statistics_last_visits"
-					>
-						<v-list-tile-content class="text-xs-center justify-center">
-							<v-list-tile-sub-title class="">Total number of views for resume "{{ resume.id }}": <v-chip :color="chartOptions.colors[index]">{{ resume.statistics_last_visits.length }}</v-chip>
-							</v-list-tile-sub-title>
-						</v-list-tile-content>
-					</v-list-tile>
-					<v-divider :key="index"></v-divider>
-				</template>
-			</v-list>
+            <br />
+            <br />
 
+            <v-list class="ma-2">
+                <template v-for="(resume, index) in loadedUserResumes">
+                    <v-list-tile avatar :key="resume.id" v-if="resume.statistics_last_visits">
+                        <v-list-tile-content class="text-xs-center justify-center">
+                            <v-list-tile-sub-title class>
+                                Total number of views for resume "{{ resume.id }}":
+                                <v-chip :color="chartOptions.colors[index]">{{ resume.statistics_last_visits.length }}</v-chip>
+                            </v-list-tile-sub-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-divider :key="index"></v-divider>
+                </template>
+            </v-list>
 
+            <!-- minDate: {{ minDate }}<br />
+      minDate2: {{ minDate2 }}<br />-->
+            <!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /> -->
+            <!-- minDate: {{ minDate }}<br /> -->
+            <!-- maxDate: {{ maxDate }}<br /> -->
+            <!--chartBackgroundColor: {{ chartBackgroundColor }}<br /> -->
+        </v-flex>
 
-
-
-			<!-- minDate: {{ minDate }}<br />
-			minDate2: {{ minDate2 }}<br />-->
-			<!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /> -->
-			<!-- minDate: {{ minDate }}<br /> -->
-			<!-- maxDate: {{ maxDate }}<br /> -->
-			<!--chartBackgroundColor: {{ chartBackgroundColor }}<br /> -->
-		</v-flex>
-
-		<v-snackbar
-		 	v-model="snackbar"
-			:timeout="0"
-		 	:bottom="true"
-		 	:auto-height="true"
-		>
-			<span
-			 	class="pa-2"
-			 	style="font-size: 1.3em;"
-			>Are you sure you want to delete this resume?</span>
-			<v-btn
-			 	color="pink"
-			 	flat
-			 	@click="deleteResume"
-			>
-				<span style="font-size: 1.3em;">Yes</span>
-			</v-btn>
-			<v-btn
-			 	color="secondary"
-			 	flat
-			 	@click="snackbar = false"
-			>
-				<span style="font-size: 1.3em;">No</span>
-			</v-btn>
-		</v-snackbar>
-	</v-layout>
+        <v-snackbar v-model="snackbar" :timeout="0" :bottom="true" :auto-height="true">
+            <span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete this resume?</span>
+            <v-btn color="pink" flat @click="deleteResume">
+                <span style="font-size: 1.3em;">Yes</span>
+            </v-btn>
+            <v-btn color="secondary" flat @click="snackbar = false">
+                <span style="font-size: 1.3em;">No</span>
+            </v-btn>
+        </v-snackbar>
+    </v-layout>
 </template>
 
 <script>
-	import { auth } from '~/plugins/firebase-client-init'
-	import Noty from 'noty'
-	import { GChart } from 'vue-google-charts'
-	import moment from 'moment'
+	import { auth } from "~/plugins/firebase-client-init";
+	import Noty from "noty";
+	import { GChart } from "vue-google-charts";
+	import moment from "moment";
 	export default {
-		inject: ['$validator'], // Inject vee-validate validator
+		inject: ["$validator"], // Inject vee-validate validator
 		components: { GChart },
-		layout: 'layoutBack',
+		layout: "layoutBack",
 		async created() {
-			this.$store.commit('setLoading', false)
-			this.$store.getters['users/loadedUser']
+			this.$store.commit("setLoading", false);
+			this.$store.getters["users/loadedUser"];
 			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
-				this.$store.dispatch('resumes/fetchUserResumes')
+			this.$store.dispatch("resumes/fetchUserResumes");
 			// }
 
-			if (this.$store.getters['loadedDarkTheme']) {
-				this.chartOptions.backgroundColor = '#424242'
-				this.chartOptions.hAxis.textStyle.color = '#FFF'
-				this.chartOptions.vAxis.textStyle.color = '#FFF'
-				this.chartOptions.legend.textStyle.color = '#FFF'
+			if (this.$store.getters["loadedDarkTheme"]) {
+				this.chartOptions.backgroundColor = "#424242";
+				this.chartOptions.hAxis.textStyle.color = "#FFF";
+				this.chartOptions.vAxis.textStyle.color = "#FFF";
+				this.chartOptions.legend.textStyle.color = "#FFF";
 			} else {
-				this.chartOptions.backgroundColor = '#FFF'
-				this.chartOptions.hAxis.textStyle.color = '#424242'
-				this.chartOptions.vAxis.textStyle.color = '#424242'
-				this.chartOptions.legend.textStyle.color = '#424242'
+				this.chartOptions.backgroundColor = "#FFF";
+				this.chartOptions.hAxis.textStyle.color = "#424242";
+				this.chartOptions.vAxis.textStyle.color = "#424242";
+				this.chartOptions.legend.textStyle.color = "#424242";
 			}
 		},
-		async mounted () {
-			this.$store.getters['resumes/loadedUserResumes'].forEach(resume => {
-				console.log('resume.name: ', resume.name)
-				this.newResumeNameMap.set(resume.id, resume.name)
-			})
+		async mounted() {
+			this.$store.getters["resumes/loadedUserResumes"].forEach(resume => {
+				console.log("resume.name: ", resume.name);
+				this.newResumeNameMap.set(resume.id, resume.name);
+			});
 		},
 		data() {
 			return {
 				headers: [
-					{ text: 'N°', value: 'index' },
-					{ text: 'Name (not public)', value: 'name', sortable: true },
-					{ text: 'Active?', value: 'active' },
-					{ text: 'Identifier', value: 'slug' },
-					{ text: 'Language', value: 'language' },
-					{ text: 'Job title', value: 'job_title' },
-					{ text: 'Created at', value: 'created_at' },
-					{ text: 'Last update', value: 'updated_at' },
-					{ text: 'Actions', align: 'center', sortable: false }
+					{ text: "N°", value: "index" },
+					{ text: "Name (not public)", value: "name", sortable: true },
+					{ text: "Active?", value: "active" },
+					{ text: "Identifier", value: "slug" },
+					{ text: "Language", value: "language" },
+					{ text: "Job title", value: "job_title" },
+					{ text: "Created at", value: "created_at" },
+					{ text: "Last update", value: "updated_at" },
+					{ text: "Actions", align: "center", sortable: false }
 				],
 				// resumeNames: [],
 				snackbar: false,
@@ -304,7 +203,7 @@
 					height: 400,
 					chartArea: { width: "85%", height: "70%" },
 					// bar: { groupWidth: "95%" },
-					backgroundColor: '#424242',
+					backgroundColor: "#424242",
 					colors: [
 						"#7A528F",
 						"#FFC107",
@@ -325,7 +224,9 @@
 							color: "#FFF"
 						},
 						viewWindow: {
-							min: moment().subtract('1', 'months').toDate(),
+							min: moment()
+								.subtract("1", "months")
+								.toDate(),
 							max: moment().toDate()
 						}
 					},
@@ -348,81 +249,83 @@
 					}
 				},
 				date: new Date().toISOString().substr(0, 10),
-				minDate: moment().subtract('1', 'months').format('YYYY-MM-DD'),
-				maxDate: moment().format('YYYY-MM-DD'),
+				minDate: moment()
+					.subtract("1", "months")
+					.format("YYYY-MM-DD"),
+				maxDate: moment().format("YYYY-MM-DD"),
 				modalMinDate: false,
 				modalMaxDate: false,
 				loadingArray: [],
 				resumesNames: [],
-				newResumeName: '',
+				newResumeName: "",
 				newResumeNameMap: new Map()
-			}
+			};
 		},
 		computed: {
-			errors () {
-				return this.$store.getters['errors']
+			errors() {
+				return this.$store.getters["errors"];
 			},
 			// loadingArray () {
 			// 	return new Array(3)
 			// },
-			loadedUser () {
+			loadedUser() {
 				return this.$store.getters["users/loadedUser"];
 			},
-			loadedUserResumes () {
+			loadedUserResumes() {
 				return this.$store.getters["resumes/loadedUserResumes"];
 			},
-			getStatistics () {
-				const statistics = []
+			getStatistics() {
+				const statistics = [];
 				this.loadedUserResumes.forEach(resume => {
 					if (resume.statistics_last_visits) {
 						statistics.push(
 							resume.statistics_last_visits.map(visit => {
 								return new Date(
-									moment(visit * 1000).format('YYYY-MM-DD')
-								)
+									moment(visit * 1000).format("YYYY-MM-DD")
+								);
 							})
-						)
+						);
 					}
-				})
-				return statistics
+				});
+				return statistics;
 			},
-			chartData () {
-				console.log('chartData computed method called')
-				let newArray = []
+			chartData() {
+				console.log("chartData computed method called");
+				let newArray = [];
 				this.getStatistics.forEach((resume, index) => {
 					resume.forEach((click, index2) => {
 						// console.log('click: ', click.getTime());
 						// console.log('filter: ', newArray.filter(value => value[0] === '2019-06-27'))
 						const existingValue = newArray.find(
 							value => value[0].getTime() === click.getTime()
-						)
+						);
 						// console.log('existingValue1: ', existingValue)
 						if (existingValue) {
 							// console.log('existing value!')
-							existingValue[index + 1] += 1 || 1
+							existingValue[index + 1] += 1 || 1;
 						} else {
 							const newEntry = new Array(
 								this.getStatistics.length + 1
-							).fill(0)
-							newEntry[0] = click
-							newEntry[index + 1] = 1
-							newArray.push(newEntry)
+							).fill(0);
+							newEntry[0] = click;
+							newEntry[index + 1] = 1;
+							newArray.push(newEntry);
 						}
-					})
-				})
-				const headerArray = [{ label: 'Date', type: 'date' }]
+					});
+				});
+				const headerArray = [{ label: "Date", type: "date" }];
 				this.loadedUserResumes.forEach(resume => {
 					if (resume.statistics_last_visits) {
-						headerArray.push(`#clicks on resume ${resume.slug}`)
+						headerArray.push(`#clicks on resume ${resume.slug}`);
 					}
-				})
-				newArray.unshift(headerArray)
+				});
+				newArray.unshift(headerArray);
 				// console.log('newArray: ', newArray)
-				return newArray
+				return newArray;
 			},
-			loadedDarkTheme () {
-				return this.$store.getters['loadedDarkTheme']
-			},
+			loadedDarkTheme() {
+				return this.$store.getters["loadedDarkTheme"];
+			}
 			// resumesNames () {
 			// 	const resumesNames = []
 			// 	this.loadedUserResumes.forEach(resume => {
@@ -441,143 +344,148 @@
 			// }
 		},
 		methods: {
-			updateName ($event, resumeId) {
-				console.log('updateName: ', $event, resumeId)
-				this.newResumeNameMap.set(resumeId, $event)
-				console.log(this.newResumeNameMap)
+			updateName($event, resumeId) {
+				console.log("updateName: ", $event, resumeId);
+				this.newResumeNameMap.set(resumeId, $event);
+				console.log(this.newResumeNameMap);
 			},
-			async updateResumeName (payload) {
+			async updateResumeName(payload) {
 				try {
-					console.log('payload: ', payload)
-					this.loadingArray = new Array(payload.index + 1)
-					this.loadingArray.splice(payload.index, 1, true)
+					console.log("payload: ", payload);
+					this.loadingArray = new Array(payload.index + 1);
+					this.loadingArray.splice(payload.index, 1, true);
 
 					// const oldName = this.resumesNames[payload.index]
 					// console.log('oldName: ', oldName)
-					await this.$store.dispatch('resumes/updateResumeName', payload)
+					await this.$store.dispatch("resumes/updateResumeName", payload);
 					// setTimeout(() => {
-						// this.resumesNames[0] = 'abc'
-						// this.resumesNames.splice(payload.index, 1, payload.newName)
-						// this.resumesNames = this.resumesNames.filter(name => name != oldName)
-						// this.resumesNames.push(payload.newName)
-						// this.resumesNames[payload.newName] = false
-						this.loadingArray = []
-						new Noty({
-							type: 'success',
-							text: 'Updated resume name successfully!',
-							timeout: 5000,
-							theme: 'metroui'
-						}).show()
+					// this.resumesNames[0] = 'abc'
+					// this.resumesNames.splice(payload.index, 1, payload.newName)
+					// this.resumesNames = this.resumesNames.filter(name => name != oldName)
+					// this.resumesNames.push(payload.newName)
+					// this.resumesNames[payload.newName] = false
+					this.loadingArray = [];
+					new Noty({
+						type: "success",
+						text: "Updated resume name successfully!",
+						timeout: 5000,
+						theme: "metroui"
+					}).show();
 					// }, 3000)
 				} catch (error) {
-					this.loadingArray = []
-					console.log('error: ', error)
+					this.loadingArray = [];
+					console.log("error: ", error);
 					new Noty({
-						type: 'error',
-						text: 'Sorry, an error occured and the name of the resume could not be updated.',
+						type: "error",
+						text:
+							"Sorry, an error occured and the name of the resume could not be updated.",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						theme: "metroui"
+					}).show();
 				}
 			},
-			async updateResumeActiveStatus (payload) {
+			async updateResumeActiveStatus(payload) {
 				try {
-					await this.$store.dispatch('resumes/updateResumeActiveStatus', payload)
+					await this.$store.dispatch(
+						"resumes/updateResumeActiveStatus",
+						payload
+					);
 					new Noty({
-						type: 'success',
-						text: 'Updated resume status successfully!',
+						type: "success",
+						text: "Updated resume status successfully!",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						theme: "metroui"
+					}).show();
 				} catch (error) {
-					console.log('error: ', error)
+					console.log("error: ", error);
 					new Noty({
-						type: 'error',
-						text: 'Sorry, an error occured and the status of the resume could not be updated.',
+						type: "error",
+						text:
+							"Sorry, an error occured and the status of the resume could not be updated.",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						theme: "metroui"
+					}).show();
 				}
 			},
 			addResume() {
-				console.log('addResume');
+				console.log("addResume");
 				const currentNumberResumes = this.loadedUserResumes.length;
 				const maxNumberResumes = this.loadedUser.private
 					? this.loadedUser.private.maximum_number_of_resumes
 					: 1;
-				console.log('currentNumberResumes: ', currentNumberResumes);
-				console.log('maxNumberResumes: ', maxNumberResumes);
+				console.log("currentNumberResumes: ", currentNumberResumes);
+				console.log("maxNumberResumes: ", maxNumberResumes);
 				if (currentNumberResumes < maxNumberResumes) {
-					this.$router.replace('/candidate/resumes/create');
+					this.$router.replace("/candidate/resumes/create");
 				} else {
 					new Noty({
-						type: 'warning',
+						type: "warning",
 						text: `Sorry, but you are currently limited to ${maxNumberResumes} ${
-							maxNumberResumes > 1 ? 'resumes' : 'resume'
+							maxNumberResumes > 1 ? "resumes" : "resume"
 						}.`,
 						timeout: 5000,
-						theme: 'metroui',
-						closeWith: ['button']
+						theme: "metroui",
+						closeWith: ["button"]
 					}).show();
 				}
 			},
 			editResume() {
-				this.$router.replace('/candidate/resumes/edit');
+				this.$router.replace("/candidate/resumes/edit");
 			},
 			requestConfirmation(resume) {
 				this.resume = resume;
 				this.snackbar = true;
 			},
-			updateMinDate () {
-				console.log('minDate: ', this.minDate)
-				this.chartOptions.hAxis.viewWindow.min = new Date(this.minDate)
-				this.modalMinDate = false
+			updateMinDate() {
+				console.log("minDate: ", this.minDate);
+				this.chartOptions.hAxis.viewWindow.min = new Date(this.minDate);
+				this.modalMinDate = false;
 			},
-			updateMaxDate () {
-				console.log('maxDate: ', this.maxDate)
-				this.chartOptions.hAxis.viewWindow.max = new Date(this.maxDate)
-				this.modalMaxDate = false
+			updateMaxDate() {
+				console.log("maxDate: ", this.maxDate);
+				this.chartOptions.hAxis.viewWindow.max = new Date(this.maxDate);
+				this.modalMaxDate = false;
 			},
 			async deleteResume() {
 				try {
 					this.snackbar = false;
 
-					console.log('deleteResume: ', this.resume)
-					await this.$store.dispatch('resumes/deleteResume', this.resume)
-					this.resumeId = ''
+					console.log("deleteResume: ", this.resume);
+					await this.$store.dispatch("resumes/deleteResume", this.resume);
+					this.resumeId = "";
 					new Noty({
-						type: 'success',
-						text: 'Successfully deleted resume',
+						type: "success",
+						text: "Successfully deleted resume",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						theme: "metroui"
+					}).show();
 				} catch (error) {
 					new Noty({
-						type: 'error',
+						type: "error",
 						text:
-							'Sorry, an error occured and your resume could not be deleted.',
+							"Sorry, an error occured and your resume could not be deleted.",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
+						theme: "metroui"
+					}).show();
 				}
 			}
 		},
 		watch: {
 			loadedDarkTheme() {
 				if (this.loadedDarkTheme) {
-					this.chartOptions.backgroundColor = '#424242'
-					this.chartOptions.hAxis.textStyle.color = '#FFF'
-					this.chartOptions.vAxis.textStyle.color = '#FFF'
-					this.chartOptions.legend.textStyle.color = '#FFF'
+					this.chartOptions.backgroundColor = "#424242";
+					this.chartOptions.hAxis.textStyle.color = "#FFF";
+					this.chartOptions.vAxis.textStyle.color = "#FFF";
+					this.chartOptions.legend.textStyle.color = "#FFF";
 				} else {
-					this.chartOptions.backgroundColor = '#FFF'
-					this.chartOptions.hAxis.textStyle.color = '#424242'
-					this.chartOptions.vAxis.textStyle.color = '#424242'
-					this.chartOptions.legend.textStyle.color = '#424242'
+					this.chartOptions.backgroundColor = "#FFF";
+					this.chartOptions.hAxis.textStyle.color = "#424242";
+					this.chartOptions.vAxis.textStyle.color = "#424242";
+					this.chartOptions.legend.textStyle.color = "#424242";
 				}
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>
@@ -593,7 +501,7 @@
 		cursor: default;
 	}
 	.disabled:hover {
-		color: '#ccc';
+		color: "#ccc";
 		cursor: default;
 	}
 	.v-input--selection-controls {

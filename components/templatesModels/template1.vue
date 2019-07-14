@@ -1,124 +1,49 @@
 <template>
-	<v-app
-	    v-cloak
-	    :style="cssProps"
-	>
+	<v-app v-cloak :style="cssProps">
 		<!-- <v-content class="background-color"> -->
 		<div class="background-color">
-			<v-layout
-			    row
-			    wrap
-			    class="margin-top margin-bottom"
-			>
-				<v-flex
-				    xs12
-				    sm8
-				    offset-sm2
-				>
-					<v-card
-					    elevation-10
-					    class="secondary-color-background"
-					>
+			<v-layout row wrap class="margin-top margin-bottom">
+				<v-flex xs12 sm8 offset-sm2>
+					<v-card elevation-10 class="secondary-color-background">
 						<v-card-text>
-							<v-layout
-							    row
-							    wrap
-							>
-								<v-flex
-								    xs12
-								    class="mb-4"
-								>
+							<v-layout row wrap>
+								<v-flex xs12 class="mb-4">
 									<h1 class="text-xs-center mb-2 text-color">{{ resume.job_title }}</h1>
 									<h3 class="text-xs-center mb-2">{{ resume.job_description }}</h3>
 								</v-flex>
-								<v-flex
-								    xs12
-								    sm8
-								>
-									<v-layout
-									    row
-									    wrap
-									    align-center
-									    class="text-big"
-									>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+								<v-flex xs12 sm8>
+									<v-layout row wrap align-center class="text-big">
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Firstname: <b>{{ resume.personal_data.firstname }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										    v-if="resume.personal_data.middlename"
-										>
+										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.middlename">
 											<span>Middle name: <b>{{ resume.personal_data.middlename }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Lastname: <b>{{ resume.personal_data.lastname }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Age: <b>{{ calculateAge(resume.personal_data.birthday) }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>City: <b>{{ resume.personal_data.city }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Country: <b>{{ resume.personal_data.country.name }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Email: <b>{{ resume.personal_data.email }}</b></span>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="pa-2"
-										>
+										<v-flex xs12 sm6 class="pa-2">
 											<span>Phone number: <b>{{ resume.personal_data.phone_number }}</b></span>
 										</v-flex>
 									</v-layout>
-									<v-layout
-									    row
-									    wrap
-									    class="px-2 text-big"
-									    v-if="resume.personal_data.nationalities || resume.languages"
-									>
-										<v-flex
-										    xs12
-										    sm6
-										    v-if="resume.personal_data.nationalities"
-										>
-											<div
-											    v-if="resume.personal_data.nationalities.length > 1"
-											    class="text-xs-left"
-											>
+									<v-layout row wrap class="px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
+										<v-flex xs12 sm6 v-if="resume.personal_data.nationalities">
+											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
 												<span>Nationalities:</span>
 												<ul class="list-horizontal">
-													<li
-													    v-for="(nationality, index) in nationalities"
-													    :key="index"
+													<li v-for="(nationality, index) in nationalities" :key="index"
 													><b>{{ nationality.name }}</b></li>
 												</ul>
 											</div>
@@ -126,21 +51,11 @@
 												<span>Nationality: <b>{{ resume.personal_data.nationalities[0].name }}</b></span>
 											</div>
 										</v-flex>
-										<v-flex
-										    xs12
-										    sm6
-										    class="text-xs-center pa-2"
-										    v-if="resume.languages"
-										>
-											<div
-											    v-if="resume.languages.length > 1"
-											    class="text-xs-left"
-											>
+										<v-flex xs12 sm6 class="text-xs-center pa-2" v-if="resume.languages">
+											<div v-if="resume.languages.length > 1" class="text-xs-left">
 												<span>Languages:</span>
 												<ul class="list-horizontal">
-													<li
-													    v-for="(language, index) in languages"
-													    :key="index"
+													<li v-for="(language, index) in languages" :key="index"
 													>
 														<b>{{ language.name }}</b>
 														<span v-if="resume.parameters.show_language_level"> - {{ getLanguageQualitativeLevel(language.level) }}</span>
@@ -153,61 +68,28 @@
 										</v-flex>
 									</v-layout>
 									<v-layout class="my-3 px-2">
-										<v-flex
-										    xs12
-										    v-if="resume.personal_data.short_description"
-										>
+										<v-flex xs12 v-if="resume.personal_data.short_description">
 											<span>{{ resume.personal_data.short_description }}</span>
 										</v-flex>
 									</v-layout>
-									<v-layout
-									    class="my-3 px-2"
-									    v-if="resume.social_links"
-									>
-										<v-flex
-										    xs12
-										    class="text-xs-center"
-										>
-											<v-chip
-											    label
-											    v-for="(social_network, index) in resume.social_networks"
-											    :key="index"
-											    class="social-link"
-											>
-												<font-awesome-icon
-												    :icon="['fab', social_network.fontawesome]"
-												    size="2x"
-												/>
+									<v-layout class="my-3 px-2" v-if="resume.social_links">
+										<v-flex xs12 class="text-xs-center">
+											<v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link">
+												<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />
 											</v-chip>
 										</v-flex>
 									</v-layout>
 
 									<v-layout class="my-3 px-2">
-										<v-flex
-										    xs12
-										    class="text-xs-center"
-										>
-											<v-chip
-											    label
-											    class="social-link"
-											>
-												<font-awesome-icon
-												    :icon="['fab', 'facebook-f']"
-												    size="2x"
-												/>
+										<v-flex xs12 class="text-xs-center">
+											<v-chip label class="social-link">
+												<font-awesome-icon :icon="['fab', 'facebook-f']" size="2x" />
 											</v-chip>
 										</v-flex>
 									</v-layout>
 								</v-flex>
-								<v-flex
-								    xs12
-								    sm4
-								>
-									<v-img
-									    :src="resume.picture"
-									    :lazy-src="resume.picture"
-									    alt="profile picture"
-									/>
+								<v-flex xs12 sm4>
+									<v-img :src="resume.picture" :lazy-src="resume.picture" alt="profile picture" />
 								</v-flex>
 							</v-layout>
 						</v-card-text>
@@ -719,6 +601,13 @@
 							type: "downloadable_file"
 						}
 					],
+					menus: {
+						presentation: 'Presentation',
+						education: 'Education',
+						skills: 'Skills',
+						files: 'Files',
+						contact: 'Contact'
+					},
 					parameters: {
 						show_contact_form: true,
 						show_language_level: true
@@ -787,13 +676,7 @@
 </script>
 
 <style scoped>
-	p,
-	span,
-	h1,
-	h2,
-	h3,
-	h4,
-	li {
+	p, span, h1, h2, h3, h4, li {
 		color: var(--text-color);
 	}
 	.text-big {
