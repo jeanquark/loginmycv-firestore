@@ -198,7 +198,7 @@ export const actions = {
 	// 	})
 	// 	commit('setResumeUploads', resumeUploads)
 	// },
-	async storeResume ({ commit, getters, rootGetters }, payload) {
+	async storeResume ({ commit, getters, dispatch, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
 			const newResume = payload
@@ -299,6 +299,13 @@ export const actions = {
 						picture: picture.downloadUrl
 					})
 				}
+			}
+
+			// 7) Update template user counter
+			try {
+				dispatch('incrementTemplateUsersCounter', newResume.template_id)
+			} catch (error) {
+				console.log('error: ', error)
 			}
 		} catch (error) {
 			console.log('error from storeResume action: ', error)
@@ -468,11 +475,12 @@ export const actions = {
 			throw error
 		}
 	},
-	async updateResume ({ commit, rootGetters }, payload) {
+	async updateResume ({ commit, dispatch, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
 			commit('setLoadingFiles', true, { root: true })
 			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
+
 
 			// 1) Retrieve & delete all files to delete
 			const filesToDelete = []
@@ -548,6 +556,20 @@ export const actions = {
 					'app-key': process.env.APP_KEY
 				}
 			})
+
+			// 4) Check if template has changed, if it has, update template users number
+			try {
+				const oldTemplate = oldResume.data().template_id
+				const newTemplate = payload.template_id
+				
+				if (oldTemplate !== newTemplate) {
+					dispatch('incrementTemplateUsersCounter', newTemplate)
+					dispatch('decrementTemplateUsersCounter', oldTemplate)
+				}
+			} catch (error) {
+				console.log('error: ', error)
+			}
+
 			commit('setLoadingResume', false, { root: true })
 		} catch (error) {
 			// console.log('error2: ', error)
@@ -743,7 +765,29 @@ export const actions = {
 				lastVisits.push(moment().unix())
 			}
 			const resumeRef = firestore.collection('resumes_long').doc(`${payload.resumeId}`)
-			resumeRef.update({ statitsics_views_count: incrementViews, statistics_last_visits: lastVisits })
+			resumeRef.update({ statistics_views_count: incrementViews, statistics_last_visits: lastVisits })
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+	async decrementTemplateUsersCounter ({ }, payload) {
+		try {
+			console.log('decrementTemplateUsersCounter')
+			const decrementUsers = firebase.firestore.FieldValue.increment(-1)
+			const templateRef = firestore.collection('templates').doc(`${payload}`)
+			templateRef.update({ count_users: decrementUsers })
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+	async incrementTemplateUsersCounter ({ }, payload) {
+		try {
+			console.log('incerementTemplateUsersCounter')
+			const incrementUsers = firebase.firestore.FieldValue.increment(1)
+			const templateRef = firestore.collection('templates').doc(`${payload}`)
+			templateRef.update({ count_users: incrementUsers })
 		} catch (error) {
 			console.log('error: ', error)
 			throw error

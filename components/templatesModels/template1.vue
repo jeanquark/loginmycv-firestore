@@ -89,7 +89,7 @@
 									</v-layout>
 								</v-flex>
 								<v-flex xs12 sm4>
-									<v-img :src="resume.picture" :lazy-src="resume.picture" alt="profile picture" />
+									<v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="profile picture" />
 								</v-flex>
 							</v-layout>
 						</v-card-text>
@@ -435,26 +435,11 @@
 	export default {
 		props: ["colors"],
 		mounted() {
-			this.primaryColor =
-				this.resume.colors && this.resume.colors.primaryColor
-					? this.resume.colors.primaryColor
-					: ""
-			this.secondaryColor =
-				this.resume.colors && this.resume.colors.secondaryColor
-					? this.resume.colors.secondaryColor
-					: ""
-			this.tertiaryColor =
-				this.resume.colors && this.resume.colors.tertiaryColor
-					? this.resume.colors.tertiaryColor
-					: ""
-			this.backgroundColor =
-				this.resume.colors && this.resume.colors.backgroundColor
-					? this.resume.colors.backgroundColor
-					: ""
-			this.textColor =
-				this.resume.colors && this.resume.colors.textColor
-					? this.resume.colors.textColor
-					: ""
+			this.primaryColor =this.colors.primaryColor		
+			this.secondaryColor = this.colors.secondaryColor
+			this.tertiaryColor =this.colors.tertiaryColor
+			this.backgroundColor = this.colors.backgroundColor
+			this.textColor = this.colors.textColor
 		},
 		data() {
 			return {
@@ -599,6 +584,12 @@
 							name: "work_sample.pdf",
 							title: "Work Samples",
 							type: "downloadable_file"
+						},
+						{
+							name: "hero.png",
+							title: "Profile picture",
+							type: "profile_picture",
+							downloadUrl: "/images/hero.png"
 						}
 					],
 					menus: {
@@ -649,6 +640,11 @@
 				if (this.resume.uploads) {
 					return this.resume.uploads.filter(file => file.type === 'downloadable_file')
 				}
+			},
+			profilePicture() {
+				return this.resume.uploads.find(
+					upload => upload.type === "profile_picture"
+				)
 			}
 		},
 		methods: {

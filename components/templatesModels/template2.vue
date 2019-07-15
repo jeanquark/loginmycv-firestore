@@ -43,8 +43,8 @@
         </v-toolbar>
         
 
-        <v-content style="background: black;">
-            <div v-scroll-spy="{offset: 150}">
+        <v-content class="pa-0" style="background: pink;">
+            <div>
 
                 <!-- Section Intro -->
                 <v-layout class="my-5 section" id="top">
@@ -240,16 +240,15 @@
 	export default {
 		props: ["colors"],
 		mounted() {
-			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : ""
-			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : ""
-			this.tertiaryColor = this.resume.colors && this.resume.colors.tertiaryColor ? this.resume.colors.tertiaryColor : ""
-			this.backgroundColor = this.resume.colors && this.resume.colors.backgroundColor ? this.resume.colors.backgroundColor : ""
-			this.textColor = this.resume.colors && this.resume.colors.textColor ? this.resume.colors.textColor : ""
+			this.primaryColor = this.colors.primaryColor
+			this.secondaryColor = this.colors.secondaryColor
+			this.tertiaryColor = this.colors.tertiaryColor
+			this.backgroundColor = this.colors.backgroundColor
+			this.textColor = this.colors.textColor
 		},
 		data() {
 			return {
 				sidemenu: false,
-				profilePicture: {},
 				primaryColor: "",
 				secondaryColor: "",
 				tertiaryColor: "",
@@ -273,7 +272,6 @@
 						city: "London",
 						birthday: "1984-02-28"
 					},
-					picture: "/images/hero.png",
 					languages: [
 						{
 							name: "English",
@@ -391,6 +389,12 @@
 							name: "work_sample.pdf",
 							title: "Work Samples",
 							type: "downloadable_file"
+						},
+						{
+							name: "hero.png",
+							title: "Profile picture",
+							type: "profile_picture",
+							downloadUrl: "/images/hero.png"
 						}
 					],
 					menus: {
@@ -441,6 +445,11 @@
 				if (this.resume.uploads) {
 					return this.resume.uploads.filter(file => file.type === 'downloadable_file')
 				}
+			},
+			profilePicture() {
+				return this.resume.uploads.find(
+					upload => upload.type === "profile_picture"
+				)
 			}
 		},
 		methods: {
@@ -484,7 +493,6 @@
 		color: var(--primary-color);
 	}
 	.custom-active {
-		/* color: red; */
 		padding-bottom: 10px;
 		border-bottom: white solid 1px;
 	}
@@ -501,24 +509,12 @@
 
 	.icon {
 		margin-right: 10px;
-		/* background-color: #000; */
 	}
 	.icon:hover {
 		color: var(--primary-color);
 	}
-	/* .chip {
-					background-color: #000;
-					padding: 3px;
-					border-radius: 8px;
-				}
-				.chip:hover {
-					background-color: var(--primary-color);
-					cursor: pointer;
-				} */
 	.social-link {
 		background-color: var(--background-color);
-		/* background-color: var(--primary-color); */
-		/* color: var(--primary-color); */
 		cursor: pointer;
 	}
 	.social-link:hover {
@@ -535,15 +531,6 @@
 	.skill:hover {
 		background-color: var(--primary-color);
 	}
-	/* .chip {
-					color: var(--primary-color);
-					background-color: #fff;
-					border-radius: 2px;
-				}
-				.chip:hover {
-					color: #fff;
-					background-color: var(--primary-color);
-				} */
 	.link {
 		color: #fff;
 		text-decoration: none;
@@ -558,7 +545,6 @@
 		margin: 20px 0px;
 	}
 	.card-title {
-		/* text-align: center; */
 		padding: 20px 20px;
 		font-size: 1.3em;
 	}
@@ -592,7 +578,7 @@
 	.italic {
 		font-style: italic;
 	}
-	/* >>>.v-chip__content { */
+
 	>>> .v-chip__content.pointer {
 		cursor: pointer !important;
 	}

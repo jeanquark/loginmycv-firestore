@@ -54,7 +54,7 @@
 									<font-awesome-icon
 									    :icon="['fas', 'users' ]"
 									    class=""
-									/>&nbsp;<span class="mr-3">12</span>
+									/>&nbsp;<span class="mr-3">{{ template.count_users }}</span>
 									<font-awesome-icon
 									    :icon="['fas', 'cubes' ]"
 									    class=""
