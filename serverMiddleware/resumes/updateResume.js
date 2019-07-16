@@ -2,8 +2,8 @@ const express = require('express'),
 	  admin = require('firebase-admin'),
 	  bodyParser = require('body-parser'),
       validate = require('validate.js'),
-      moment = require('moment');
-
+	  moment = require('moment');
+	  
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
@@ -24,6 +24,8 @@ module.exports = app.use(async function (req, res, next) {
 		// 	}
 		// }
 
+		
+
 
 		if (updatedResume.updateResumeSlug) { // Updating the resume slug
 			console.log('You changed the resume slug!');
@@ -38,6 +40,7 @@ module.exports = app.use(async function (req, res, next) {
 				}
 			}
 
+	
 
 			// 3) Update visitor account
 			const oldSlug = updatedResume.slug;
@@ -82,7 +85,22 @@ module.exports = app.use(async function (req, res, next) {
 
 
 
-			// 4) Retrieve all relevant authorizations
+			// 4) Check if template has changed, in that case update counter
+			if (updatedResume['updateTemplateUsersCounter']) {
+				const incrementUsers = admin.firestore.FieldValue.increment(1);
+				const templateToIncrementRef = admin.firestore().collection('templates').doc(updatedResume.updateTemplateUsersCounter.increment);
+				templateToIncrementRef.update({ count_users: incrementUsers });
+	
+				const decrementUsers = admin.firestore.FieldValue.increment(-1);
+				const templateToDecrement = admin.firestore().collection('templates').doc(updatedResume.updateTemplateUsersCounter.decrement);
+				templateToDecrement.update({ count_users: decrementUsers });
+
+				delete updatedResume['updateTemplateUsersCounter'];
+			}
+
+
+
+			// 5) Retrieve all relevant authorizations
 			const authorizations = [];
 			const snapshot3 = await admin.firestore().collection('authorizations').where('resume.id', '==', updatedResume.slug).get();
 			snapshot3.forEach(doc => {
@@ -91,7 +109,8 @@ module.exports = app.use(async function (req, res, next) {
 			console.log('authorizations: ', authorizations);
 
 
-			// 5) Update both resumes (short & long), as well as all concerned authorizations
+
+			// 6) Update both resumes (short & long), as well as all concerned authorizations
 			let batch = admin.firestore().batch();
 
 			authorizations.forEach(authorization => {
@@ -121,12 +140,12 @@ module.exports = app.use(async function (req, res, next) {
 			});
 
 			await batch.commit();
+
+			
 				
 			res.send({
 				message: 'POST request to update resume went successfully.',
 			});
-
-
 
 
 
@@ -162,7 +181,22 @@ module.exports = app.use(async function (req, res, next) {
 			}
 
 
-			// 2) Update both resumes (short & long)
+
+			// 2) Check if template has changed, in that case update counter
+			if (updatedResume['updateTemplateUsersCounter']) {
+				const incrementUsers = admin.firestore.FieldValue.increment(1);
+				const templateToIncrementRef = admin.firestore().collection('templates').doc(updatedResume.updateTemplateUsersCounter.increment);
+				templateToIncrementRef.update({ count_users: incrementUsers });
+	
+				const decrementUsers = admin.firestore.FieldValue.increment(-1);
+				const templateToDecrement = admin.firestore().collection('templates').doc(updatedResume.updateTemplateUsersCounter.decrement);
+				templateToDecrement.update({ count_users: decrementUsers });
+
+				delete updatedResume['updateTemplateUsersCounter'];
+			}
+
+
+			// 3) Update both resumes (short & long)
 			const batch = admin.firestore().batch();
 			
 			const newLongResume = admin.firestore().collection('resumes_long').doc(updatedResume.slug);

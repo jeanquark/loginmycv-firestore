@@ -107,7 +107,14 @@ module.exports = app.use(async function (req, res) {
         }
 
 
-        // 5) Save long & short resumes in DB
+        // 5) Update template counter
+        const incrementUsers = admin.firestore.FieldValue.increment(1);
+        const templateToIncrementRef = admin.firestore().collection('templates').doc(newResume.template_id);
+        templateToIncrementRef.update({ count_users: incrementUsers });
+
+
+
+        // 6) Save long & short resumes in DB
         let batch = admin.firestore().batch();
         const newShortResume = admin.firestore().collection('resumes_short').doc();
         newResume['resume_short_id'] = newShortResume.id;
@@ -143,18 +150,6 @@ module.exports = app.use(async function (req, res) {
         });
     } catch (error) {
         console.log('error from server: ', error)
-        // res.status(500).send(`POST request to update resume failed: ${error}`);
-        // res.send({
-        //     message: 'Update resume failed.',
-        //     error: error
-        // });
-        
-        // Remove uploaded files
-        // console.log('newResume: ', newResume)
-        // res.status(500).send({ error });
 		res.status(500).send({ message: 'Create resume failed.', error });
-
-        // res.status(500).send({ message: 'Create resume failed.', error });      
     }
-
 });

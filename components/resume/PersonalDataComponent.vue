@@ -34,26 +34,6 @@
 
 
                     <v-card-text>
-                        <v-layout row wrap>
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-autocomplete
-                                    :items="loadedLanguages"
-                                    item-text="name"
-                                    :return-object="true"
-                                    chips
-                                    small-chips
-                                    :deletable-chips="true"
-                                    color="secondary"
-                                    v-model="userResume.language"
-                                >
-                                <template v-slot:label>
-                                    Resume language
-                                </template>
-                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
-                                </v-autocomplete>
-                            </v-flex>
-                        </v-layout>
-
                         <v-layout v-if="!this.resumeSlug">
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
@@ -83,6 +63,24 @@
 
                         <v-layout row wrap>
                             <v-flex xs12 sm4 class="px-3">
+                                <v-autocomplete
+                                    :items="loadedLanguages"
+                                    item-text="name"
+                                    :return-object="true"
+                                    chips
+                                    small-chips
+                                    :deletable-chips="true"
+                                    color="secondary"
+                                    v-model="userResume.language"
+                                >
+                                <template v-slot:label>
+                                    Resume language
+                                </template>
+                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                </v-autocomplete>
+                            </v-flex>
+
+                            <v-flex d-flex xs12 sm8 class="px-3">
                                 <v-text-field
                                     id="job_title"
                                     name="job_title"
@@ -98,20 +96,20 @@
                                 <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm8 class="px-3">
-                                <v-text-field
+                            <v-flex d-flex xs12 class="px-3">
+                                <v-textarea
                                     id="job_description"
                                     name="job_description"
-                                    v-validate="'required|max:100'"
+                                    v-validate="'required|max:250'"
                                     :error-messages="errors ? errors.collect('job_description') : null"
                                     data-vv-as="Job description"
-                                    :counter="100"
+                                    :counter="250"
                                     v-model="userResume.job_description"
                                 >
                                 <template v-slot:label>
                                     Job description <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
-                                <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                                <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-textarea>
                             </v-flex>
                         </v-layout>
 
@@ -213,7 +211,7 @@
                             <!-- userResume.social_links: {{ userResume.social_links }} -->
                             <v-flex xs12 sm8 class="px-3">
                                 <v-select
-                                    label="Social links"
+                                    label="Social networks"
                                     :items="loadedSocialNetworks"
                                     attach
                                     chips
@@ -727,6 +725,7 @@
                 color: '#fff',
                 row: '',
                 originalVisibility: '', // Do not erase
+                lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
                 // social_links: [
                 //     {
                 //         name: 'Facebook',

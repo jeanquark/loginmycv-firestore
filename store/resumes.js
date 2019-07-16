@@ -300,13 +300,6 @@ export const actions = {
 					})
 				}
 			}
-
-			// 7) Update template user counter
-			try {
-				dispatch('incrementTemplateUsersCounter', newResume.template_id)
-			} catch (error) {
-				console.log('error: ', error)
-			}
 		} catch (error) {
 			console.log('error from storeResume action: ', error)
 			if (error.response && error.response.data && error.response.data.error) {
@@ -315,166 +308,166 @@ export const actions = {
 			throw error
 		}
 	},
-	async storeResume2 ({ commit, rootGetters }, payload) {
-		try {
-			console.log('payload: ', payload)
-			commit('setLoadingFiles', true, { root: true })
+	// async storeResume2 ({ commit, rootGetters }, payload) {
+	// 	try {
+	// 		console.log('payload: ', payload)
+	// 		commit('setLoadingFiles', true, { root: true })
 
-			// 1) Get all user existing uploads
-			const userExistingUploads = rootGetters['resumes/loadedUserResumes']
-            console.log('userExistingUploads: ', userExistingUploads)
-            let totalUploadSize = 0
-            userExistingUploads.forEach(resume => {
-                resume.uploads.forEach(upload => {
-                    totalUploadSize += parseInt(upload.size_in_bytes)
-                })
-            })
+	// 		// 1) Get all user existing uploads
+	// 		const userExistingUploads = rootGetters['resumes/loadedUserResumes']
+    //         console.log('userExistingUploads: ', userExistingUploads)
+    //         let totalUploadSize = 0
+    //         userExistingUploads.forEach(resume => {
+    //             resume.uploads.forEach(upload => {
+    //                 totalUploadSize += parseInt(upload.size_in_bytes)
+    //             })
+    //         })
 
-			// 2) Get all new uploads file size
-			const filesToAdd = []
-			payload.uploads.forEach(upload => {
-				totalUploadSize += parseInt(upload.size_in_bytes)				
-				filesToAdd.push(upload)
-			})
-			console.log('totalUploadSize: ', totalUploadSize)
+	// 		// 2) Get all new uploads file size
+	// 		const filesToAdd = []
+	// 		payload.uploads.forEach(upload => {
+	// 			totalUploadSize += parseInt(upload.size_in_bytes)				
+	// 			filesToAdd.push(upload)
+	// 		})
+	// 		console.log('totalUploadSize: ', totalUploadSize)
 
-			// 3) Check that total uploads size is not greater than available space
-			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
-			if (totalUploadSize > userTotalSpace) {
-				throw 'Files could not be uploaded because your do not have enough space.'
-			}
-			console.log('filesToAdd: ', filesToAdd)
-			console.log('totalUploadSize: ', totalUploadSize)
-			console.log('userTotalSpace: ', userTotalSpace)
+	// 		// 3) Check that total uploads size is not greater than available space
+	// 		const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+	// 		if (totalUploadSize > userTotalSpace) {
+	// 			throw 'Files could not be uploaded because your do not have enough space.'
+	// 		}
+	// 		console.log('filesToAdd: ', filesToAdd)
+	// 		console.log('totalUploadSize: ', totalUploadSize)
+	// 		console.log('userTotalSpace: ', userTotalSpace)
 
-			// 4) Effectively upload files to storage
-			payload.newUploads = [];
-			for (let file of filesToAdd) {
-				console.log('file: ', file)
-				if (file.name && file.file) {
-					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
-					const downloadUrl = await uploadedFile.ref.getDownloadURL()
-					const newUpload = {
-						name: uploadedFile.metadata.name,
-						size_in_bytes: uploadedFile.metadata.size,
-						downloadUrl: downloadUrl,
-						title: file.title,
-						type: file.type,
-						_created_at: moment().unix(),
-						_updated_at: moment().unix()
-					}
-					console.log('newUpload: ', newUpload)
-					const index = payload.uploads.findIndex(upload => upload.name === file.name)
-					payload.uploads[index] = newUpload
-					payload.newUploads.push(newUpload)
-				}
-			}
-			console.log('payload2: ', payload)
-			commit('setLoadingFiles', false, { root: true })
-			commit('setLoadingResume', true, { root: true })
+	// 		// 4) Effectively upload files to storage
+	// 		payload.newUploads = [];
+	// 		for (let file of filesToAdd) {
+	// 			console.log('file: ', file)
+	// 			if (file.name && file.file) {
+	// 				const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+	// 				const downloadUrl = await uploadedFile.ref.getDownloadURL()
+	// 				const newUpload = {
+	// 					name: uploadedFile.metadata.name,
+	// 					size_in_bytes: uploadedFile.metadata.size,
+	// 					downloadUrl: downloadUrl,
+	// 					title: file.title,
+	// 					type: file.type,
+	// 					_created_at: moment().unix(),
+	// 					_updated_at: moment().unix()
+	// 				}
+	// 				console.log('newUpload: ', newUpload)
+	// 				const index = payload.uploads.findIndex(upload => upload.name === file.name)
+	// 				payload.uploads[index] = newUpload
+	// 				payload.newUploads.push(newUpload)
+	// 			}
+	// 		}
+	// 		console.log('payload2: ', payload)
+	// 		commit('setLoadingFiles', false, { root: true })
+	// 		commit('setLoadingResume', true, { root: true })
 
-			// 5) Store resume on the server
-			const updatedResume = await axios.post('/create-new-resume', payload, {
-				headers: {
-					'app-key': process.env.APP_KEY
-				}
-			})
-			commit('setLoadingResume', false, { root: true })
-		} catch (error) {
-			console.log('error from storeResume: ', error)
-			// console.log('error: ', error.response.data.error)
-			if (error.response && error.response.data && error.response.data.error) {
-				if (error.response.data.error.filesToDelete) {
-					const filesToDelete = error.response.data.error.filesToDelete
-					console.log('Delete these files: ', filesToDelete)
-					const userId = rootGetters['users/loadedUser'].id
-					// console.log('userId: ', userId)
+	// 		// 5) Store resume on the server
+	// 		const updatedResume = await axios.post('/create-new-resume', payload, {
+	// 			headers: {
+	// 				'app-key': process.env.APP_KEY
+	// 			}
+	// 		})
+	// 		commit('setLoadingResume', false, { root: true })
+	// 	} catch (error) {
+	// 		console.log('error from storeResume: ', error)
+	// 		// console.log('error: ', error.response.data.error)
+	// 		if (error.response && error.response.data && error.response.data.error) {
+	// 			if (error.response.data.error.filesToDelete) {
+	// 				const filesToDelete = error.response.data.error.filesToDelete
+	// 				console.log('Delete these files: ', filesToDelete)
+	// 				const userId = rootGetters['users/loadedUser'].id
+	// 				// console.log('userId: ', userId)
 
-					for (let file of filesToDelete) {
-						console.log('file: ', file)
-						await storage.ref('resumes').child(`${userId}/${file.name}`).delete()
-					}
-				}
-				throw error
-			}
-			throw new error()
-		}
-	},
-	async storeResume3 ({ commit, rootState }, payload) {
-		try {
-			console.log('payload: ', payload)
-			return
+	// 				for (let file of filesToDelete) {
+	// 					console.log('file: ', file)
+	// 					await storage.ref('resumes').child(`${userId}/${file.name}`).delete()
+	// 				}
+	// 			}
+	// 			throw error
+	// 		}
+	// 		throw new error()
+	// 	}
+	// },
+	// async storeResume3 ({ commit, rootState }, payload) {
+	// 	try {
+	// 		console.log('payload: ', payload)
+	// 		return
 
-			// 1) Send resume to server to save
-			// const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-			let formData = new FormData();
-			formData.append('data', JSON.stringify(payload))
-			for (let fileUpload of payload.uploads) {
-				formData.append('file', fileUpload)
-			}
-			// Also add candidate picture
-			formData.append('file', payload.personal_data.picture)
+	// 		// 1) Send resume to server to save
+	// 		// const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+	// 		let formData = new FormData();
+	// 		formData.append('data', JSON.stringify(payload))
+	// 		for (let fileUpload of payload.uploads) {
+	// 			formData.append('file', fileUpload)
+	// 		}
+	// 		// Also add candidate picture
+	// 		formData.append('file', payload.personal_data.picture)
 
-			const createNewResume = await axios.post('/create-new-resume', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					'app-key': process.env.APP_KEY
-				}
-			})
-			console.log('createNewResume: ', createNewResume)
-			const newResumeId = createNewResume.data.resume_long_id
+	// 		const createNewResume = await axios.post('/create-new-resume', formData, {
+	// 			headers: {
+	// 				'Content-Type': 'multipart/form-data',
+	// 				'app-key': process.env.APP_KEY
+	// 			}
+	// 		})
+	// 		console.log('createNewResume: ', createNewResume)
+	// 		const newResumeId = createNewResume.data.resume_long_id
 
-			if (newResumeId) {
-				// 2) Upload & save picture
-				if (payload.personal_data.picture) {
-					console.log('Save picture')
-					const picture = payload.personal_data.picture
-					const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${picture.name}`)
-					const uploadedPicture = await storageFileRef.put(picture)
-					const downloadUrl = await uploadedPicture.ref.getDownloadURL()
-					const newPicture = {
-						name: uploadedPicture.metadata.name,
-						size_in_bytes: uploadedPicture.metadata.size,
-						downloadUrl: downloadUrl,
-						_created_at: moment().unix(),
-						_updated_at: moment().unix()
-					}
-					console.log('newPicture', newPicture)
-					// firestore.collection('resumes_long').doc(newResumeId).update({
-					// 	'personal_data.picture': newPicture
-					// })
-				}
+	// 		if (newResumeId) {
+	// 			// 2) Upload & save picture
+	// 			if (payload.personal_data.picture) {
+	// 				console.log('Save picture')
+	// 				const picture = payload.personal_data.picture
+	// 				const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${picture.name}`)
+	// 				const uploadedPicture = await storageFileRef.put(picture)
+	// 				const downloadUrl = await uploadedPicture.ref.getDownloadURL()
+	// 				const newPicture = {
+	// 					name: uploadedPicture.metadata.name,
+	// 					size_in_bytes: uploadedPicture.metadata.size,
+	// 					downloadUrl: downloadUrl,
+	// 					_created_at: moment().unix(),
+	// 					_updated_at: moment().unix()
+	// 				}
+	// 				console.log('newPicture', newPicture)
+	// 				// firestore.collection('resumes_long').doc(newResumeId).update({
+	// 				// 	'personal_data.picture': newPicture
+	// 				// })
+	// 			}
 
-				// 3) Upload & save files
-				if (payload.uploads.length > 0) {
-					let uploadedFiles = []
-					for (const [index, upload] of payload.uploads.entries()) {
-						console.log('Save files: ', upload)
-						const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${upload.name}`)
-						const uploadedFile = await storageFileRef.put(upload.file)
-						const downloadUrl = await uploadedFile.ref.getDownloadURL()
-						const newFile = {
-							name: uploadedFile.metadata.name,
-							size_in_bytes: uploadedFile.metadata.size,
-							downloadUrl: downloadUrl,
-							_created_at: moment().unix(),
-							_updated_at: moment().unix()
-						}
-						uploadedFiles.push(newFile)	
-					}
-					console.log('uploadedFiles: ', uploadedFiles)
-					// firestore.collection('resumes_long').doc(newResumeId).update({
-					// 	uploads: uploadedFiles						
-					// })
-				}
-			} else {
-				// An error occured on the server, send it back to the frontend
-				throw createNewResume.data.error
-			}
-		} catch (error) {
-			throw error
-		}
-	},
+	// 			// 3) Upload & save files
+	// 			if (payload.uploads.length > 0) {
+	// 				let uploadedFiles = []
+	// 				for (const [index, upload] of payload.uploads.entries()) {
+	// 					console.log('Save files: ', upload)
+	// 					const storageFileRef = storage.ref('resumes').child(`${payload.user_id}/${upload.name}`)
+	// 					const uploadedFile = await storageFileRef.put(upload.file)
+	// 					const downloadUrl = await uploadedFile.ref.getDownloadURL()
+	// 					const newFile = {
+	// 						name: uploadedFile.metadata.name,
+	// 						size_in_bytes: uploadedFile.metadata.size,
+	// 						downloadUrl: downloadUrl,
+	// 						_created_at: moment().unix(),
+	// 						_updated_at: moment().unix()
+	// 					}
+	// 					uploadedFiles.push(newFile)	
+	// 				}
+	// 				console.log('uploadedFiles: ', uploadedFiles)
+	// 				// firestore.collection('resumes_long').doc(newResumeId).update({
+	// 				// 	uploads: uploadedFiles						
+	// 				// })
+	// 			}
+	// 		} else {
+	// 			// An error occured on the server, send it back to the frontend
+	// 			throw createNewResume.data.error
+	// 		}
+	// 	} catch (error) {
+	// 		throw error
+	// 	}
+	// },
 	async updateResume ({ commit, dispatch, rootGetters }, payload) {
 		try {
 			console.log('payload: ', payload)
@@ -550,25 +543,26 @@ export const actions = {
 			commit('setLoadingFiles', false, { root: true })
 			commit('setLoadingResume', true, { root: true })
 
-			// 3) Update resume on the server
+			// 3) Check if template has changed, if it has, update template users number on the server
+			const oldTemplate = oldResume.data().template_id
+			const newTemplate = payload.template_id
+			console.log('oldTemplate: ', oldTemplate)
+			console.log('newTemplate: ', newTemplate)
+			if (oldTemplate !== newTemplate) {
+				payload.updateTemplateUsersCounter = {
+					increment: newTemplate,
+					decrement: oldTemplate
+				}
+			}
+
+			// 4) Update resume on the server
 			await axios.post('/update-resume', payload, {
 				headers: {
 					'app-key': process.env.APP_KEY
 				}
 			})
 
-			// 4) Check if template has changed, if it has, update template users number
-			try {
-				const oldTemplate = oldResume.data().template_id
-				const newTemplate = payload.template_id
-				
-				if (oldTemplate !== newTemplate) {
-					dispatch('incrementTemplateUsersCounter', newTemplate)
-					dispatch('decrementTemplateUsersCounter', oldTemplate)
-				}
-			} catch (error) {
-				console.log('error: ', error)
-			}
+			
 
 			commit('setLoadingResume', false, { root: true })
 		} catch (error) {
@@ -603,86 +597,86 @@ export const actions = {
 			throw error
 		}
 	},
-	async updateResume2 ({ commit, rootGetters }, payload) {
-		try {
-			console.log('payload: ', payload)
-			commit('setLoadingFiles', true, { root: true })
-			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
+	// async updateResume2 ({ commit, rootGetters }, payload) {
+	// 	try {
+	// 		console.log('payload: ', payload)
+	// 		commit('setLoadingFiles', true, { root: true })
+	// 		const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
 
-			// 1) Get all files to delete
-			const filesToDelete = []
-			oldResume.data().uploads.forEach(file => {
-				if (!payload.uploads.find(upload => upload.name === file.name && upload._updated_at === file._updated_at)) {
-					filesToDelete.push(file)
-				}
-			})
-			console.log('filesToDelete: ', filesToDelete)
-			for (let file of filesToDelete) {
-				const uploadRef = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
-				if (uploadRef) {
-					uploadRef.delete()
-				}
-			}
+	// 		// 1) Get all files to delete
+	// 		const filesToDelete = []
+	// 		oldResume.data().uploads.forEach(file => {
+	// 			if (!payload.uploads.find(upload => upload.name === file.name && upload._updated_at === file._updated_at)) {
+	// 				filesToDelete.push(file)
+	// 			}
+	// 		})
+	// 		console.log('filesToDelete: ', filesToDelete)
+	// 		for (let file of filesToDelete) {
+	// 			const uploadRef = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`)
+	// 			if (uploadRef) {
+	// 				uploadRef.delete()
+	// 			}
+	// 		}
 
-			// 2) Get all files to upload
-			const filesToAdd = []
-			let totalUploadSize = 0
-			payload.uploads.forEach(upload => {
-				totalUploadSize += parseInt(upload.size_in_bytes)
-				if (!oldResume.data().uploads.find(file => file.name === upload.name && file._updated_at === upload._updated_at)) {
-					filesToAdd.push(upload)
-				}
-			})
-			// if (!oldResume.data().uploads.find(file => file.type === 'picture' && file.name === upload.name && file._updated_at === upload._updated_at)) {
-				// filesToAdd.push(payload.personal_data.picture)
-			// }
-			const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
-			if (totalUploadSize > userTotalSpace) {
-				throw {
-					'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
-				}
-			}
-			console.log('filesToAdd: ', filesToAdd)
-			console.log('totalUploadSize: ', totalUploadSize)
-			console.log('userTotalSpace: ', userTotalSpace)
+	// 		// 2) Get all files to upload
+	// 		const filesToAdd = []
+	// 		let totalUploadSize = 0
+	// 		payload.uploads.forEach(upload => {
+	// 			totalUploadSize += parseInt(upload.size_in_bytes)
+	// 			if (!oldResume.data().uploads.find(file => file.name === upload.name && file._updated_at === upload._updated_at)) {
+	// 				filesToAdd.push(upload)
+	// 			}
+	// 		})
+	// 		// if (!oldResume.data().uploads.find(file => file.type === 'picture' && file.name === upload.name && file._updated_at === upload._updated_at)) {
+	// 			// filesToAdd.push(payload.personal_data.picture)
+	// 		// }
+	// 		const userTotalSpace = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.total_space_in_bytes : 0
+	// 		if (totalUploadSize > userTotalSpace) {
+	// 			throw {
+	// 				'not_enough_space': 'Files could not be uploaded because your do not have enough space.'
+	// 			}
+	// 		}
+	// 		console.log('filesToAdd: ', filesToAdd)
+	// 		console.log('totalUploadSize: ', totalUploadSize)
+	// 		console.log('userTotalSpace: ', userTotalSpace)
 
-			for (let file of filesToAdd) {
-				console.log('file: ', file)
-				if (file.name && file.file) {
-					const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
-					const downloadUrl = await uploadedFile.ref.getDownloadURL()
-					const newUpload = {
-						name: uploadedFile.metadata.name,
-						size_in_bytes: uploadedFile.metadata.size,
-						downloadUrl: downloadUrl,
-						title: file.title,
-						type: file.type,
-						_created_at: moment().unix(),
-						_updated_at: moment().unix()
-					}
-					console.log('newUpload: ', newUpload)
-					const index = payload.uploads.findIndex(upload => upload.name === file.name)
-					payload.uploads[index] = newUpload
-				}
-			}
-			console.log('payload: ', payload)
-			commit('setLoadingFiles', false, { root: true })
-			commit('setLoadingResume', true, { root: true })
+	// 		for (let file of filesToAdd) {
+	// 			console.log('file: ', file)
+	// 			if (file.name && file.file) {
+	// 				const uploadedFile = await storage.ref('resumes').child(`${payload.user_id}/${file.name}`).put(file.file)
+	// 				const downloadUrl = await uploadedFile.ref.getDownloadURL()
+	// 				const newUpload = {
+	// 					name: uploadedFile.metadata.name,
+	// 					size_in_bytes: uploadedFile.metadata.size,
+	// 					downloadUrl: downloadUrl,
+	// 					title: file.title,
+	// 					type: file.type,
+	// 					_created_at: moment().unix(),
+	// 					_updated_at: moment().unix()
+	// 				}
+	// 				console.log('newUpload: ', newUpload)
+	// 				const index = payload.uploads.findIndex(upload => upload.name === file.name)
+	// 				payload.uploads[index] = newUpload
+	// 			}
+	// 		}
+	// 		console.log('payload: ', payload)
+	// 		commit('setLoadingFiles', false, { root: true })
+	// 		commit('setLoadingResume', true, { root: true })
 
-			// 3) Update resume on the server
-			const updatedResume = await axios.post('/update-resume', payload, {
-				headers: {
-					'app-key': process.env.APP_KEY
-				}
-			})
-			commit('setLoadingResume', false, { root: true })
-		} catch (error) {
-			// console.log('error2: ', error)
-			commit('setLoadingFiles', false, { root: true })
-			commit('setLoadingResume', false, { root: true })
-			throw error
-		}
-	},
+	// 		// 3) Update resume on the server
+	// 		const updatedResume = await axios.post('/update-resume', payload, {
+	// 			headers: {
+	// 				'app-key': process.env.APP_KEY
+	// 			}
+	// 		})
+	// 		commit('setLoadingResume', false, { root: true })
+	// 	} catch (error) {
+	// 		// console.log('error2: ', error)
+	// 		commit('setLoadingFiles', false, { root: true })
+	// 		commit('setLoadingResume', false, { root: true })
+	// 		throw error
+	// 	}
+	// },
 	async deleteResume ({ commit, getters }, payload) {
 		try {
 			console.log('payload: ', payload)
@@ -766,28 +760,6 @@ export const actions = {
 			}
 			const resumeRef = firestore.collection('resumes_long').doc(`${payload.resumeId}`)
 			resumeRef.update({ statistics_views_count: incrementViews, statistics_last_visits: lastVisits })
-		} catch (error) {
-			console.log('error: ', error)
-			throw error
-		}
-	},
-	async decrementTemplateUsersCounter ({ }, payload) {
-		try {
-			console.log('decrementTemplateUsersCounter')
-			const decrementUsers = firebase.firestore.FieldValue.increment(-1)
-			const templateRef = firestore.collection('templates').doc(`${payload}`)
-			templateRef.update({ count_users: decrementUsers })
-		} catch (error) {
-			console.log('error: ', error)
-			throw error
-		}
-	},
-	async incrementTemplateUsersCounter ({ }, payload) {
-		try {
-			console.log('incerementTemplateUsersCounter')
-			const incrementUsers = firebase.firestore.FieldValue.increment(1)
-			const templateRef = firestore.collection('templates').doc(`${payload}`)
-			templateRef.update({ count_users: incrementUsers })
 		} catch (error) {
 			console.log('error: ', error)
 			throw error

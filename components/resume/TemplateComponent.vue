@@ -58,7 +58,7 @@
 									<font-awesome-icon
 									    :icon="['fas', 'cubes' ]"
 									    class=""
-									/>&nbsp;<span class="mr-3">Basic</span>
+									/>&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
 																	
 									<v-btn
 									    flat

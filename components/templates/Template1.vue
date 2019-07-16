@@ -18,8 +18,8 @@
 			    		<v-card-text>
 							<v-layout row wrap>
 								<v-flex xs12 class="mb-4">
-									<h1 class="text-xs-center mb-2 text-color">{{ resume.job_title }}</h1>
-									<h3 class="text-xs-center mb-2">{{ resume.job_description }}</h3>
+									<h1 class="text-xs-center mb-4 text-color">{{ resume.job_title }}</h1>
+									<h3 class="text-xs-center mb-4 px-3">{{ resume.job_description }}</h3>
 								</v-flex>
 								<v-flex v-bind="{[`xs12 sm${column}`]: true}">									
 									<v-layout row wrap align-center class="text-big">
@@ -48,7 +48,7 @@
 											<span>Phone number: <b>{{ resume.personal_data.phone_number }}</b></span>
 										</v-flex>
 									</v-layout>
-									<v-layout row wrap class="px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
+									<v-layout row wrap class="pa-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
 										<v-flex xs12 sm6 v-if="resume.personal_data.nationalities">
 											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
 												<span>Nationalities:</span>
@@ -80,7 +80,7 @@
 											<span>{{ resume.personal_data.short_description }}</span>
 										</v-flex>
 									</v-layout>
-									<v-layout class="my-3 px-2" v-if="resume.social_links">
+									<v-layout class="my-3 px-2" v-if="resume.social_networks">
 										<v-flex xs12 class="text-xs-center">
 											<v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link" @click="redirectTo(social_network.link)">
 												<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />

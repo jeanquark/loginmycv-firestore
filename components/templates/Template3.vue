@@ -16,7 +16,7 @@
 				<div class="page page-1" data-index="0" tyle="border: 0px solid green;" ref="page">
 					<v-layout row wrap class="subpage" style="border: 0px dashed brown;" v-animate="{value: animationEffect}">
 						<v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4" style="border: 0px solid red;">
-							<v-layout row wrap>
+							<v-layout row wrap align-center>
 								<!-- files: {{ files }}<br /> -->
 								<v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture">
 									<v-avatar
@@ -38,12 +38,12 @@
 									<br /><br />
 									<v-layout row wrap class="text-big text-xs-left">
 										<v-flex xs6 class="mb-3" v-if="resume.personal_data.city || resume.personal_data.country">
-											<div v-if="resume.personal_data.city">
-												<font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.city }} {{ resume.personal_data.country.name }}
-											</div>
-											<div v-else>
+											<span v-if="resume.personal_data.city">
+												<font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country.name }}
+											</span>
+											<span v-else>
 												<font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.country.name }}
-											</div>
+											</span>
 										</v-flex>
 										<v-flex xs6 class="mb-3" v-if="resume.personal_data.email">
 											<font-awesome-icon :icon="['fas', 'envelope']" class="icon" /> {{ resume.personal_data.email }}
@@ -51,7 +51,7 @@
 										<v-flex xs6 class="mb-3" v-if="resume.personal_data.phone_number">
 											<font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
 										</v-flex>
-										<v-flex class="mb-3" v-if="resume.personal_data.nationalities">
+										<v-flex xs6 class="mb-3" v-if="resume.personal_data.nationalities">
 											<font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
 											<span v-for="(nationality, index) in resume.personal_data.nationalities" :key="index">
 												{{ nationality.name }}<span v-if="index + 1 < resume.personal_data.nationalities.length">, </span>
