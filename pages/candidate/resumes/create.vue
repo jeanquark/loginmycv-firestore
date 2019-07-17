@@ -27,7 +27,6 @@
                 </div>
             </v-flex>
             <v-flex xs6 sm4>
-                <!-- importResume: {{ importResume }}<br /> -->
                 <v-select
                     label="Select resume"
                     :items="loadedUserResumes"
@@ -40,15 +39,12 @@
             </v-flex>
             <v-flex xs6 sm4>
                 <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
-            <!-- </div> -->
             </v-flex>
         </v-layout>
 
         <v-layout row>
             <v-flex xs12>
 
-            <!-- <v-btn color="primary" @click="validate">Validate</v-btn> -->
-            <!-- <v-btn color="primary" @click="$validator.validateAll()">Validate</v-btn> -->
 
                 <v-stepper v-model="step">
                     <v-stepper-header>
@@ -61,8 +57,6 @@
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :rules="[stepEducationValidate2]" :step="3" editable>Education</v-stepper-step> -->
-                        <!-- <v-stepper-step :step="3"><span :class="{ 'error2': hasError('education') }">Education</span></v-stepper-step> -->
                         <v-stepper-step :step="3" editable v-if="stepEducationErrorsArray.length < 1">Education</v-stepper-step>
                         <v-stepper-step :step="3" editable :rules="[() => false]" v-else>Education</v-stepper-step>
 
@@ -81,10 +75,6 @@
                         <v-stepper-step :step="6" editable v-if="stepFileUploadErrorsArray.length < 1">Files upload</v-stepper-step>
                         <v-stepper-step :step="6" editable :rules="[() => false]" v-else>Files upload</v-stepper-step>
 
-                        <!-- <v-divider></v-divider> -->
-
-                        <!-- <v-stepper-step :step="7" editable>Other</v-stepper-step> -->
-
                     </v-stepper-header>
 
                     <v-stepper-items>
@@ -102,8 +92,6 @@
 
                         <v-stepper-content :step="3">
                             <v-card class="mb-5">
-                                <!-- <education-component :educationErrors="[ true, false ]" /> -->
-                                <!-- <education-component :educationErrors="stepError2.educationArray" /> -->
                                 <education-component :educationErrors="stepEducationErrorsArray" v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
@@ -148,43 +136,8 @@
                         </v-btn>
                     </v-card-actions>
                     <v-layout justify-center>
-                        <!-- <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="saveResume">Save</v-btn> -->
                         <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click="saveResume">Save</v-btn>
                     </v-layout>
-                    <!--<v-layout justify-center>
-                        <v-alert
-                            :value="loadingCreateResume"
-                            color="info"
-                            outline
-                        >
-                            <v-progress-circular indeterminate color="info"></v-progress-circular> Create resume...
-                        </v-alert>
-
-                        <v-alert
-                            :value="loadingUploadFiles"
-                            color="secondary"
-                            outline
-                        >
-                            <div class="text-xs-center">
-                                <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files
-                            </div>
-                            <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
-                                {{ uploadedFile.name }} - {{ uploadedFile.progress }}%
-                            </div>
-                        </v-alert>
-
-                        <v-alert
-                            :value="uploadedFiles.length > 0 && !loadingCreateResume && !loadingUploadFiles"
-                            color="success"
-                            outline
-                        >
-                            <h3 class="text-xs-center">New resume created!</h3>
-                            <p class="text-xs-center">{{ uploadedFiles.length }} file(s) uploaded.</p>
-                            <div v-for="(uploadedFile, index) of uploadedFiles" :key="index">
-                                <a :href="uploadedFile.downloadUrl" target="_blank">{{ uploadedFile.name }}</a><br /><br />
-                            </div>
-                        </v-alert>
-                    </v-layout>-->
                 </v-stepper>
             </v-flex>
         </v-layout>
@@ -244,18 +197,11 @@
         components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
         layout: 'layoutBack',
         async created () {
-            // console.log('System: ', Navigator.appversion)
-            // this.$store.dispatch('index/fetchCandidateLongResume', this.candidateId = null)
             this.$store.commit('setLoading', false)
             this.$store.commit('clearError')
             await this.$store.commit('resumes/setEmptyResume')
-            // const snapshot2 = await firestore.collection('users').doc('OlxfESwPtlgzz4vcjiL4YKsIDZI2').collection('private').doc('OlxfESwPtlgzz4vcjiL4YKsIDZI2').get()
-            // const snapshot2 = await firestore.collection('users').doc('OlxfESwPtlgzz4vcjiL4YKsIDZI2').collection('private').getDocuments()
-            // console.log('snapshot2: ', snapshot2)
-            // console.log('snapshot2.data(): ', snapshot2.data())
-            // this.errors.items = []
+
             if (this.$store.getters['countries/loadedCountries'].length < 1) {
-                // console.log('Fetching countries...')
                 await this.$store.dispatch('countries/fetchCountries')
             }
             if (this.$store.getters['languages/loadedLanguages'].length < 1) {
@@ -269,22 +215,15 @@
             }
         },
         mounted () {
-            // this.$validator.reset()
-            this.errors.clear();
+            this.errors.clear()
             this.$store.commit('setLoadingFiles', false, { root: true })
             this.$store.commit('setLoadingResume', false, { root: true })
         },
 		data () {
 			return {
                 step: 1,
-                // uploadedFiles: [],
                 creatingResumeDialog: false,
                 importResume: {},
-                // stepError2: {
-                //     educationArray: [true, false]
-                // },
-                // hasError: true
-                // stepEducationErrors: false,
                 stepPersonalDataErrors: false,
                 stepEducationErrorsArray: [],
                 stepWorkExperienceErrorsArray: [],
@@ -296,18 +235,12 @@
             loading () {
                 return this.$store.getters['loading']
             },
-            // error () {
-            //     return this.$store.getters['error']
-            // },
             errors () {
                 return this.$store.getters['errors']
             },
             loadedUser () {
                 return this.$store.getters['users/loadedUser']
             },
-            // loadedUserResume () {
-            //     return this.$store.getters['resumes/loadedUserResume']
-            // },
             loadedUserResumes () {
                 return this.$store.getters['resumes/loadedUserResumes'] 
             },
@@ -319,32 +252,9 @@
             },
             loadingUploadFiles () {
                 return this.$store.getters['loadingFiles']
-            },
-            // hasError () {
-            //     return true
-            // },
-            // stepPersonalDataErrors () {
-            //     console.log('stepPersonalDataErrors')
-            //     const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
-            //     if (this.errors.items.some(e => inputs.includes(e.field))) {
-            //         return true
-            //     }
-            //     return false
-            // }
+            }
 		},
 		methods: {
-            hasError (step) {
-                console.log('Call to hasError: ', step)
-                // if (this.errors.items && this.errors.items.length > 0) {
-                //     console.log('There are some errors!')
-                //     if (this.errors.items.filter(item => item.field.includes(step))) {
-                //         console.log('There is an error in education step!')
-                //         return true
-                //     }
-                //     return false
-                // }
-                // return false
-            },
             moveOneStepForward () {
                 if (this.step < 7) {
                     this.step += 1
@@ -374,26 +284,10 @@
             },
             async saveResume () {
                 try {
-                    console.log('saveResume')
+                    // console.log('saveResume')
                     this.loadedNewResume['user_id'] = this.loadedUser.id
-                    
-                    // console.log('this.loadedNewResume: ', this.loadedNewResume)
-
-                    // const userExistingUploads = this.$store.getters['resumes/loadedUserResumes']
-                    // const userExistingUploads = [{ slug: 'jeanquark', uploads: [{ name: 'abc', size_in_bytes: 100}, {name: 'def', size_in_bytes: 200}]}, { slug: 'jeanquark2', uploads: [{ name: 'ghi', size_in_bytes: 300}, { name: 'jkl', size_in_bytes: 400}]}]
-                    // console.log('userExistingUploads: ', userExistingUploads)
-                    // let sum = 0
-                    // userExistingUploads.forEach(resume => {
-                    //     resume.uploads.forEach(upload => {
-                    //         sum += upload.size_in_bytes
-                    //     })
-                    // })
-                    // console.log('sum: ', sum)
-                    // return
-
                     this.creatingResumeDialog = true
-                    // this.loadingCreateResume = true
-                    // this.$store.commit('setLoadingFiles', true, { root: true })
+
                     await this.$validator.validateAll()
                     if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
                         console.log('Validation error!')
@@ -452,7 +346,6 @@
                         }
 
                         this.creatingResumeDialog = false
-                        // this.loadingCreateResume = false
                         new Noty({
                             type: 'error',
                             text: 'Please check validation errors.',
@@ -511,45 +404,7 @@
                                 theme: 'metroui'
                             }).show()
                         }
-                        // } else {
-
-                        // }
                     })
-                    // if (error.response && error.response.data && error.response.data.error) {
-                    //     new Noty({
-                    //         type: 'error',
-                    //         text: 'Your resume could not be updated.',
-                    //         timeout: 5000,
-                    //         theme: 'metroui'
-                    //     }).show()
-
-                    //     Object.entries(error.response.data.error).forEach(([key, value]) => {
-                    //         if (key !== 'filesToDelete') {
-                    //             console.log('key: ', key)
-                    //             console.log('value: ', value)
-                    //             const field = key.substr(key.indexOf('.') + 1)
-
-                    //             this.$validator.errors.add({
-                    //                 field: field,
-                    //                 msg: value,
-                    //             })
-
-                    //             new Noty({
-                    //                 type: 'warning',
-                    //                 text: value,
-                    //                 timeout: 8000,
-                    //                 theme: 'metroui'
-                    //             }).show()
-                    //         }
-                    //     })
-                    // } else {
-                    //     new Noty({
-                    //         type: 'error',
-                    //         text: 'Sorry, an error occured and your resume could not be updated.',
-                    //         timeout: 8000,
-                    //         theme: 'metroui'
-                    //     }).show()
-                    // }
                 }
             }
 		}
@@ -562,15 +417,7 @@
     }
     .theme--dark.v-stepper .v-stepper__step--active .v-stepper__label {
         text-shadow: none;
-        /* color: green; */
     }
-    /* .theme--dark.v-stepper .v-stepper__step__step {
-        color: green !important;
-    } */
-
-    /* .abc > .v-stepper__label {
-        color: red;
-    } */
     .error2 {
         color: var(--v-error-base);
         text-shadow: none;

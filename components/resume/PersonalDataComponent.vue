@@ -17,18 +17,20 @@
             <!-- userResume.uploads: {{ this.userResume.uploads }}<br /><br /> -->
             <!-- <v-btn color="primary" @click="addUpload">Add upload</v-btn> -->
             <!-- loadedCountries: {{ loadedCountries }}<br /><br /> -->
+			<!-- this.userResume.visibility: {{ userResume.visibility }}<br /> -->
+			<!-- originalVisibility: {{ originalVisibility }}<br /> -->
+            <!-- this.userResume.updateResumeSlug: {{ userResume.updateResumeSlug }}<br /> -->
             
         </div>
-        <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center pb-0">
                         <h2 class="headline mb-0">General Info</h2><br />
-                        <!-- <h4>(entries with an asterisk (*) are public)</h4> -->
                     </v-card-title>
                     <div class="text-xs-center">
-                        <small v-if="userResume.visibility !== 'private'">(entries with an <v-icon small>remove_red_eye</v-icon> are public)</small>
+                        <small>(entries with an * are compulsory)</small><br />
+                        <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>remove_red_eye</v-icon> are public since your resume is not private)</small>
                         <small v-else>(all entries are private)</small>
                     </div>
 
@@ -47,7 +49,7 @@
                                     v-model="userResume.slug"
                                 >
                                 <template v-slot:label>
-                                    Resume identifier <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    Resume identifier* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -62,8 +64,9 @@
                         </v-layout>
 
                         <v-layout row wrap>
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-autocomplete
+							<v-flex xs12 sm4 class="px-3">
+								<v-autocomplete
+									label="Resume language"
                                     :items="loadedLanguages"
                                     item-text="name"
                                     :return-object="true"
@@ -71,14 +74,32 @@
                                     small-chips
                                     :deletable-chips="true"
                                     color="secondary"
-                                    v-model="userResume.language"
+                                    v-model="userResume.languages"
                                 >
-                                <template v-slot:label>
-                                    Resume language
-                                </template>
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:selection="data">
+                                        <v-chip
+                                            :selected="data.selected"
+                                            class="chip--select-multi"
+                                        >
+											<v-avatar>
+												<img :src="`/images/languages/${data.item.flag}`">
+											</v-avatar>
+                                            {{ data.item.name }}
+                                        </v-chip>
+                                    </template>
+                                    <template v-slot:item="data">
+                                        <template>
+                                            <v-list-tile-avatar>
+                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </template>
                                 </v-autocomplete>
-                            </v-flex>
+							</v-flex>
 
                             <v-flex d-flex xs12 sm8 class="px-3">
                                 <v-text-field
@@ -91,7 +112,7 @@
                                     v-model="userResume.job_title"
                                 >
                                 <template v-slot:label>
-                                    Job title <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -107,7 +128,7 @@
                                     v-model="userResume.job_description"
                                 >
                                 <template v-slot:label>
-                                    Job description <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    Job description* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-textarea>
                             </v-flex>
@@ -124,7 +145,7 @@
                                     v-model="userResume.personal_data.firstname"
                                 >
                                 <template v-slot:label>
-                                    First name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    First name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -154,7 +175,7 @@
                                     v-model="userResume.personal_data.lastname"
                                 >
                                 <template v-slot:label>
-                                    Last name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                    Last name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
                                 </template>
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
@@ -176,7 +197,7 @@
                         <v-layout row wrap>
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
-                                    label="Email"
+                                    label="Email*"
                                     name="email"
                                     type="email"
                                     v-validate="'required|email|max:50'"
@@ -197,7 +218,6 @@
                                 ><font-awesome-icon :icon="['fab', 'chrome']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
-                            <!-- :mask="'(+####)-###-###-####'" -->
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
                                     label="Phone number"
@@ -208,7 +228,6 @@
                                 ><font-awesome-icon :icon="['fas', 'phone']" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
-                            <!-- userResume.social_links: {{ userResume.social_links }} -->
                             <v-flex xs12 sm8 class="px-3">
                                 <v-select
                                     label="Social networks"
@@ -239,7 +258,6 @@
                                 </v-select>
                             </v-flex>
 
-                            <!-- url: { require_protocol: true }} -->
                             <v-flex xs12 sm4 class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index">
                                 <v-text-field
                                     :label="`${social_network.name} link`"
@@ -258,19 +276,18 @@
         </v-layout>
         <br />
 
-        <!-- <v-layout row wrap class="pa-3" style="border: 1px solid var(--v-secondary-base); border-radius: 10px;" v-if="userResume"> -->
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
                         <h2 class="headline mb-0">More about you</h2>
                     </v-card-title>
-                    <!-- <p class="text-xs-center">(can be public or private, you choose)</p> -->
 
                     <v-card-text>
                         <v-layout row wrap class="mb-4">
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-autocomplete
+							<v-flex xs12 sm4 class="px-3">
+								<v-autocomplete
+                                    label="Country of residence"
                                     :items="loadedCountries"
                                     item-text="name"
                                     :return-object="true"
@@ -280,12 +297,30 @@
                                     color="secondary"
                                     v-model="userResume.personal_data.country"
                                 >
-                                    <template v-slot:label>
-                                        Country of residence <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
-                                    </template>
                                     <font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:selection="data">
+                                        <v-chip
+                                            :selected="data.selected"
+                                            class="chip--select-multi"
+                                        >
+											<v-avatar>
+												<img :src="`/images/countries/${data.item.flag}`">
+											</v-avatar>
+                                            {{ data.item.name }}
+                                        </v-chip>
+                                    </template>
+                                    <template v-slot:item="data">
+                                        <template>
+                                            <v-list-tile-avatar>
+                                                <img :src="`/images/countries/${data.item.flag}`">
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </template>
                                 </v-autocomplete>
-                            </v-flex>
+							</v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
@@ -376,20 +411,6 @@
                                 </v-autocomplete>
                             </v-flex>
 
-                            <!-- <v-flex xs12 sm4 class="px-3">
-                                <v-select
-                                    label="Key competences"
-                                    :items="loadedCompetences"
-                                    item-text="name"
-                                    :return-object="true"
-                                    multiple
-                                    chips
-                                    small-chips
-                                    :deletable-chips="true"
-                                    v-model="userResume.key_competences"
-                                ><font-awesome-icon :icon="['fas', 'star']" slot="prepend" style="margin-top: 4px;" /></v-select>
-                            </v-flex> -->
-
                             <v-flex xs8 sm5 class="px-3">
                                 <v-autocomplete
                                     label="Languages"
@@ -434,13 +455,11 @@
 
                             <v-flex xs4 sm3 class="px-3">
                                 <v-checkbox label="Display language level" color="secondary" v-model="userResume.parameters.show_language_level"></v-checkbox>
-                                <!-- <v-checkbox label="Display info" color="secondary" v-model="userResume.parameters.show_language_level"></v-checkbox> -->
                             </v-flex>
                         </v-layout>
 
                         <v-layout row wrap v-if="userResume.parameters.show_language_level" class="mb-4">
                             <v-flex xs4 v-for="(language, index) in userResume.languages" :key="index" class="px-3">
-                                <!-- language: {{ language }}<br /> -->
                                 <v-layout class="my-0 pl-3">
                                     <v-flex class="text-xs-left">
                                         <span>{{ language.name }}</span>
@@ -463,35 +482,12 @@
                                     v-model="language.info"
                                 ><font-awesome-icon :icon="['fas', 'info']" slot="prepend" class="mt-1" /></v-text-field>
                             </v-flex>
-                        </v-layout>
-
-                        <!--<v-layout class="mb-4">
-                            <v-flex xs12 class="px-3">
-                                <v-autocomplete
-                                    :items="loadedCompetences"
-                                    item-text="name"
-                                    :return-object="true"
-                                    multiple
-                                    chips
-                                    small-chips
-                                    :deletable-chips="true"
-                                    color="secondary"
-                                    v-model="userResume.key_competences"
-                                >
-                                    <template v-slot:label>
-                                        Key competences <v-icon small style="vertical-align: top">remove_red_eye</v-icon>
-                                    </template>
-                                    <font-awesome-icon :icon="['fas', 'tools']" slot="prepend" style="margin-top: 4px;" />
-                                </v-autocomplete>
-                            </v-flex>
-                        </v-layout>-->       
+                        </v-layout>       
 
                         <v-layout class="mb-4">
                             <v-flex xs12 sm6 class="px-3">
-                                <!-- <div v-if="resumeSlug && this.userResume.personal_data && this.userResume.personal_data.picture" class="text-xs-center"> -->
                                 <div v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl" class="text-xs-center">
                                     <span>Current picture: </span><br />
-                                    <!-- <img :src="this.userResume.personal_data.picture.downloadUrl" height="150" /> -->
                                     <img :src="getCurrentPicture.downloadUrl" height="150" /><br />
                                     
                                 </div>                
@@ -540,7 +536,7 @@
 
         <v-layout row wrap pa-2 class="">
             <v-flex xs12 class="">
-                <v-card :elevation="12" class="white--text def" style="">
+                <v-card :elevation="12" class="white--text red-border" style="">
                     <v-card-title class="error lighten-1 justify-center">
                         <h2 class="headline mb-0">Privacy & Security</h2>
                     </v-card-title>
@@ -588,14 +584,14 @@
                                 <span class="subheading font-weight-medium">Your resume is hidden (visitors are not able to find you without prior knowledge of your resume identifier). To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
                             </v-alert>
                         </v-layout>
-
+		
                         <v-layout row wrap justify-center v-if="userResume.visibility != 'public'" style="margin-top: 20px;">
                             <v-flex xs12 class="text-xs-center mb-2">
                                 <div>
                                     Provide password for visitors' access:
                                 </div>
                                 <small>(You will transmit this password to your guests for access)</small>
-                                originalVisibility: {{ originalVisibility }}
+								
                             </v-flex>
                             <v-flex xs12 sm6 mx-5>
                                 <v-text-field
@@ -607,7 +603,7 @@
                                     :counter="30"
                                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                     @click:append="showPassword = !showPassword"
-                                    v-validate="{ required: this.userResume.updateResumeSlug || this.userResume.visibility !== 'public' && this.originalVisibility === 'public' ? true : false, min:4, max:30}"
+                                    v-validate="{ required: this.isPasswordRequired, min:4, max:30}"
                                     data-vv-as="Password"
                                     ref="password"
                                     v-model="userResume.password"
@@ -674,7 +670,6 @@
     import moment from 'moment'
     import { VueColorpicker } from 'vue-pop-colorpicker'
     export default {
-        // props: ['resumeSlug', 'personalData'],
         inject: ['$validator'], // inject parent validator
         components: { VueColorpicker },
         async created () {
@@ -706,72 +701,15 @@
                 imageName: '',
                 imageUrl: '',
                 imageFile: '',
-                // errors: [],
                 uploadingNewImage: false,
-                // loadedUserResume: {}
-                // personal_data: {
-                //     firstname: '',
-                //     lastname: '',
-                //     email: '',
-                //     job_title: '',
-                //     job_description: '',
-                //     birthday: '',
-                //     picture: []
-                // },
                 modalDate: false,
-                // date: moment().subtract(30, 'years').format('YYYY-MM-DD'),
                 showPassword: false,
-                // updateResumeSlug: false
-                color: '#fff',
-                row: '',
                 originalVisibility: '', // Do not erase
-                lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
-                // social_links: [
-                //     {
-                //         name: 'Facebook',
-                //         slug: 'facebook',
-                //         link: '',
-                //         fontawesome: 'facebook-f'
-                //     },
-                //     {
-                //         name: 'LinkedIn',
-                //         slug: 'linkedin',
-                //         link: '',
-                //         fontawesome: 'linkedin-in'
-                //     },
-                //     {
-                //         name: 'Github',
-                //         slug: 'github',
-                //         link: '',
-                //         fontawesome: 'github'
-                //     },
-                //     {
-                //         name: 'Pinterest',
-                //         slug: 'pinterest',
-                //         link: '',
-                //         fontawesome: 'pinterest'
-                //     },
-                //     {
-                //         name: 'Quora',
-                //         slug: 'quora',
-                //         link: '',
-                //         fontawesome: 'quora'
-                //     },
-                //     {
-                //         name: 'Skype',
-                //         slug: 'skype',
-                //         link: '',
-                //         fontawesome: 'skype'
-                //     }
-                // ],
                 date: null,
                 menu: false
             }
         },
         computed: {
-            // error () {
-            //     return this.$store.getters['error']
-            // },
             userResume () {
                 if (!this.resumeSlug) {
                     return this.$store.getters['resumes/loadedNewResume']
@@ -799,20 +737,30 @@
                     return this.userResume.uploads.find(upload => upload.type === 'profile_picture')
                 }
                 return null
-            }
+			},
+			isPasswordRequired () {
+				if (this.userResume.updateResumeSlug) {
+					if (this.userResume.visibility !== 'public') {
+						return true
+					}
+					return false
+				}
+				if (this.userResume.visibility !== this.originalVisibility && this.originalVisibility === 'public') {
+					return true
+				}
+				return false
+			}
         },
         methods: {
             validate () {
-                console.log('validate')
+                // console.log('validate')
                 this.$validator.validateAll()
             },
             saveBirthdayDate (date) {
                 this.$refs.menu.save(date)
             },
             saveDate () {
-                console.log('saveDate')
-                // console.log('date: ', date)
-                // this.userResume.personal_data.birthday = date
+                // console.log('saveDate')
                 this.modalDate = false
             },
             removeNationality (item) {
@@ -832,7 +780,7 @@
             },
             onFilePicked (e) {
                 const files = e.target.files
-                console.log('files: ', files)
+                // console.log('files: ', files)
                 if (files[0]) {
                     this.uploadingNewImage = true
                     this.userResume.uploads = this.userResume.uploads.filter(upload => upload.type !== 'profile_picture')
@@ -853,12 +801,12 @@
                     })
                 }
             },
-            onChange (color) {
-                console.log(color)
-            },
-            addUpload () {
-                this.userResume.uploads = [{ name: 'abc'}]
-            },
+            // onChange (color) {
+            //     console.log(color)
+            // },
+            // addUpload () {
+            //     this.userResume.uploads = [{ name: 'abc'}]
+            // },
             removeCurrentPicture () {
                 this.userResume.uploads = this.userResume.uploads.filter(upload => upload.type !== 'profile_picture')
                 this.imageUrl = ''
@@ -880,16 +828,10 @@
     .valign-top {
         vertical-align: top;
     }
-    .abc .v-input__control .v-input__slot {
+    /*.abc .v-input__control .v-input__slot {
         padding-top: 12px;
-    }
-    /* .border {
-        margin-bottom: 30px;
-        padding: 10px;
-        border: 1px solid var(--v-secondary-base);
-        border-radius: 10px;
-    } */
-    .def {
+    }*/
+    .red-border {
         border: 3px solid var(--v-error-lighten1)
     }
 
