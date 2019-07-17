@@ -679,36 +679,23 @@ export const actions = {
 	// },
 	async deleteResume ({ commit, getters }, payload) {
 		try {
-			console.log('payload: ', payload)
 			const resumeToDelete = payload
-
-			// Don't forget to delete all relevant authorizations
+			// Do not forget to delete visitor profile related to this resume
 			
 
-			// throw new Error()
-
-			// Delete files in storage if they are not present in another resume
-
-			// 1) Retrieve all files to delete
-
-			// 2) Retrieve all candidate files
-			// const userResumes = getters['loadedUserResumes'].map(resume => resume.uploads)
+			// 1) Retrieve all user files
 			const userFiles = []
-
 			getters['loadedUserResumes'].forEach(resume => {
 				if (resume.uploads) {
 					resume.uploads.forEach(upload => {
-						if (userFiles.filter(file => file.name === upload.name)) {
-
-						}
 						userFiles.push(upload)
 					})
 				}
 			})
-			console.log('userFiles: ', userFiles)
+			
 
+			// 2) Only delete files that are not present in another resume 
 			const filesToDelete = []
-			// 3) Count object occurences
 			if (payload.uploads.length > 0) {
 				payload.uploads.forEach(file => {
 					if (userFiles.filter(a => a.name === file.name).length < 2) {
@@ -717,30 +704,51 @@ export const actions = {
 					}
 				})
 			}
-			console.log('filesToDelete: ', filesToDelete)
 
+
+			// 3) Try delete files but do not fail if files are non-existent
+			try {
+				for (let file of filesToDelete) {
+					const fileRef = storage.ref('resumes').child(`${resumeToDelete.user_id}/${file.name}`)
+					await fileRef.delete()
+				}
+			} catch (error) {
+				// NO ERROR PROCESSING
+			}
+
+
+
+			// 4) Delete visitor access in Firebase Auth via server call
+			try {
+				const visitorsToDelete = []
+				visitorsToDelete.push(resumeToDelete.visitor_id)
+				const userId = null
+				await axios.post('/delete-user', { userId, visitorsToDelete })
+			} catch (error) {
+				// NO ERROR PROCESSING
+			}
 
 
 			const batch = firestore.batch()
 
-			console.log('resumeToDelete.slug: ', resumeToDelete.slug)
+			// 5) Delete authorizations related to this resume
+			const authorizationsToDelete = await firestore.collection('authorizations').where('resume.id', '==', resumeToDelete.id).get()
+			authorizationsToDelete.forEach(authorization => {
+				batch.delete(authorization.ref)
+			})
+			
+
+			// 6) Delete long resume
 			const resume_long = firestore.collection('resumes_long').doc(resumeToDelete.slug)
-			console.log('resume_long: ', resume_long)
 			batch.delete(resume_long)
 
 
-			// const shortResumesArray = []
-			const snapshot = await firestore.collection('resumes_short').where('slug', '==', resumeToDelete.slug).get()
-			snapshot.forEach(shortResume => {
-				// shortResume.ref.delete()
-				batch.delete(shortResume.ref)
-			})
+			// 7) Delete short resume
+			const resume_short = await firestore.collection('resumes_short').doc(resumeToDelete.resume_short_id)
+			batch.delete(resume_short)
+
 
 			await batch.commit()
-
-			// for (let file of filesToDelete) {
-			// 	await storage.ref(`/resumes/${resumeToDelete.user_id}/${file.name}`).delete()
-			// }
 
 		} catch (error) {
 			console.log('error: ', error)

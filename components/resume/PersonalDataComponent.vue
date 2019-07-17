@@ -577,7 +577,7 @@
                                 icon="info"
                                 v-if="userResume.visibility === 'semi-private'"
                                 >
-                                <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. But to gain full access, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
+                                <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. However to gain full access, visitors either need to ask for your authorization, or they will be prompted to enter the password you specify below.</span>
                             </v-alert>
                             <v-alert
                                 value="private"
@@ -585,7 +585,7 @@
                                 icon="warning"
                                 v-if="userResume.visibility === 'private'"
                                 >
-                                <span class="subheading font-weight-medium">Your resume is hidden (visitors are not able to find you without prior knowledge of your resume identifier). To gain access to your resume, visitors need to ask for your authorization, or they need to enter the password that you specify below.</span>
+                                <span class="subheading font-weight-medium">Your resume is hidden (visitors are not able to find you without prior knowledge of your resume identifier). To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
                             </v-alert>
                         </v-layout>
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-layout row wrap>
-            <v-flex xs12>
+            <v-flex xs12 class="mb-3">
                 <h2 class="text-xs-center">Create a new resume</h2>
             </v-flex>
             <!-- error: {{ error }}<br /> -->
@@ -361,7 +361,13 @@
             },
             importDataFromResume () {
                 console.log('importDataFromResume')
-                this.$store.commit('resumes/setNewResume', this.importResume)
+                const importedResume = this.importResume
+                delete importedResume['slug']
+                delete importedResume['name']
+                delete importedResume['visitor_id']
+                delete importedResume['statistics_last_visits']
+                delete importedResume['statistics_views_count']
+                this.$store.commit('resumes/setNewResume', importedResume)
             },
 			onInput (val) {
                 this.steps = parseInt(val)
@@ -461,7 +467,7 @@
                         this.creatingResumeDialog = false
                         new Noty({
                             type: 'success',
-                            text: 'Your resume was created successfully &#128515;',
+                            text: 'Your resume was successfully created &#128515;',
                             timeout: 5000,
                             theme: 'metroui'
                         }).show()

@@ -96,8 +96,8 @@
 									<v-btn
 									    flat
 									    icon
-									    nuxt
-									    :to="`/resume/${props.item.slug}`"
+									    target="_blank"
+									    :href="`/resume/${props.item.slug}`"
 									>
 										<v-icon
 										    small
@@ -107,7 +107,7 @@
 									<v-btn
 									    flat
 									    icon
-									    nuxt
+										nuxt
 									    :to="`/candidate/resumes/${props.item.slug}`"
 									>
 										<v-icon
@@ -286,14 +286,14 @@
 
 		<v-snackbar
 		    v-model="snackbar"
-		    :timeout="0"
+		    :timeout="5000"
 		    :bottom="true"
 		    :auto-height="true"
 		>
 			<span
 			    class="pa-2"
 			    style="font-size: 1.3em;"
-			>Are you sure you want to delete this resume?</span>
+			>Are you sure you want to delete resume {{ resume.slug }}?</span>
 			<v-btn
 			    color="pink"
 			    flat
@@ -624,7 +624,7 @@
 					this.resumeId = ""
 					new Noty({
 						type: "success",
-						text: "Successfully deleted resume",
+						text: "Successfully deleted resume &#128077;",
 						timeout: 5000,
 						theme: "metroui"
 					}).show()
