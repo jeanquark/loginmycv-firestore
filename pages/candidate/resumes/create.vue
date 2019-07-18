@@ -270,7 +270,7 @@
                 }
             },
             importDataFromResume () {
-                console.log('importDataFromResume')
+                // console.log('importDataFromResume')
                 const importedResume = this.importResume
                 delete importedResume['slug']
                 delete importedResume['name']
@@ -290,10 +290,10 @@
 
                     await this.$validator.validateAll()
                     if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
-                        console.log('Validation error!')
+                        // console.log('Validation error!')
                         const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email', 'visibiliy', 'password']
                         if (this.errors.items.some(e => inputs.includes(e.field))) {
-                            console.log('Personal data errors')
+                            // console.log('Personal data errors')
                             this.stepPersonalDataErrors = true
                         }
 
@@ -303,7 +303,7 @@
                             educationErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepEducationErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -315,7 +315,7 @@
                             workExperienceErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepWorkExperienceErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -327,7 +327,7 @@
                             skillErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepSkillErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -339,7 +339,7 @@
                             fileUploadErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepFileUploadErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -372,7 +372,7 @@
                     this.$store.commit('setLoadingResume', false, { root: true })
                     this.$store.commit('setLoading', false, { root: true })
 
-                    console.log('error from catch block: ', error)
+                    // console.log('error from catch block: ', error)
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and your resume could not be created.',
@@ -381,8 +381,8 @@
                     }).show()
                     Object.entries(error).forEach(([key, value]) => {
                         if (key === 'server_error' || key === 'slug' || key === 'not_enough_space') {
-                            console.log('key: ', key)
-                            console.log('value: ', value)
+                            // console.log('key: ', key)
+                            // console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
 
                             this.$validator.errors.add({
@@ -403,7 +403,9 @@
                                 timeout: 8000,
                                 theme: 'metroui'
                             }).show()
-                        }
+                        } else {
+							this.$sentry.captureException(new Error(error))
+						}
                     })
                 }
             }

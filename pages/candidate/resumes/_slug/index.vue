@@ -5,8 +5,6 @@
                 <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
                 <br />
             </v-flex>
-            <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
-            <!-- errors: {{ errors }}<br /><br /> -->
         </v-layout>
         <v-layout row>
             <v-flex xs12>
@@ -17,37 +15,28 @@
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :rules="[stepPersonalDataValidate]" :step="2" editable>General & Personal Data</v-stepper-step> -->
                         <v-stepper-step :step="2" editable v-if="stepPersonalDataErrors === false">General & Personal Data</v-stepper-step>
                         <v-stepper-step :step="2" editable :rules="[() => false]" v-else>General & Personal Data</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :rules="[stepEducationValidate]" :step="3" editable>Education</v-stepper-step> -->
                         <v-stepper-step :step="3" editable v-if="stepEducationErrorsArray.length < 1">Education</v-stepper-step>
                         <v-stepper-step :step="3" editable :rules="[() => false]" v-else>Education</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :rules="[stepWorkExperienceValidate]" :step="4" editable>Work experience</v-stepper-step> -->
                         <v-stepper-step :step="4" editable v-if="stepWorkExperienceErrorsArray.length < 1">Work experience</v-stepper-step>
                         <v-stepper-step :step="4" editable :rules="[() => false]" v-else>Work experience</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :rules="[stepSkillsValidate]" :step="5" editable>Skills</v-stepper-step> -->
                         <v-stepper-step :step="5" editable v-if="stepSkillErrorsArray.length < 1">Skills</v-stepper-step>
                         <v-stepper-step :step="5" editable :rules="[() => false]" v-else>Skills</v-stepper-step>
 
                         <v-divider></v-divider>
 
-                        <!-- <v-stepper-step :step="6" editable>Files upload</v-stepper-step> -->
                         <v-stepper-step :step="6" editable v-if="stepFileUploadErrorsArray.length < 1">Files upload</v-stepper-step>
                         <v-stepper-step :step="6" editable :rules="[() => false]" v-else>Files upload</v-stepper-step>
-
-                        <!-- <v-divider></v-divider>
-
-                        <v-stepper-step :step="7" editable>Other</v-stepper-step> -->
 
                     </v-stepper-header>
 
@@ -87,12 +76,6 @@
                                 <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
-
-                        <!-- <v-stepper-content :step="7">
-                            <v-card class="mb-5">
-                                <h2>Other</h2>
-                            </v-card>
-                        </v-stepper-content> -->
                     </v-stepper-items>
 
                     <v-card-actions class="justify-center">
@@ -110,9 +93,7 @@
                         </v-btn>
                     </v-card-actions>
                     <v-layout justify-center>
-                        <!-- <v-btn class="success" :loading="loadingUpdateResume || loadingUploadFiles" :disabled="errors && errors.items && errors.items.length > 0" @click="updateResume">Update</v-btn> -->
                         <v-btn class="success" :loading="loadingResume || loadingFiles" @click="updateResume">Update</v-btn>
-                        <!-- <v-btn class="warning" @click="validateResume">Validate resume</v-btn> -->
                     </v-layout>          
                 </v-stepper>
             </v-flex>
@@ -164,11 +145,6 @@
 </template>
 
 <script>
-	// import axios from 'axios'
-    // import Noty from 'vuejs-noty'
-    // import 'vuejs-noty/dist/vuejs-noty.css'
-    // import 'css/noty.css'
-
     import templateComponent from '~/components/resume/TemplateComponent'
     import personalDataComponent from '~/components/resume/PersonalDataComponent'
     import educationComponent from '~/components/resume/EducationComponent'
@@ -183,16 +159,16 @@
         layout: 'layoutBack',
         middleware: [],
         async created () {
-            console.log('Created from EditResumeComponent')
+            // console.log('Created from EditResumeComponent')
             const resume = this.$route.params.slug
-            console.log('resume: ', resume)
+            // console.log('resume: ', resume)
             this.resumeSlug = resume
             this.$store.commit('clearError')
             this.$store.commit('setLoadingFiles', false)
             this.$store.commit('setLoadingResume', false)
 
             if (this.$store.getters['countries/loadedCountries'].length < 1) {
-                console.log('Fetching countries...')
+                // console.log('Fetching countries...')
                 await this.$store.dispatch('countries/fetchCountries')
             }
             // if (this.$store.getters['languages/loadedLanguages'].length < 1) {
@@ -210,36 +186,7 @@
 		data () {
 			return {
                 step: 1,
-                // steps: [
-                //     {
-                //         id: 1,
-                //         name: 'Choose Template',
-                //         slug: 'template',
-                //     },
-                //     {
-                //         id: 2,
-                //         name: 'General & Personal Data',
-                //         slug: 'personal_data'
-                //     },
-                //     {
-                //         id: 3,
-                //         name: 'Education',
-                //         slug: 'education'
-                //     },
-                //     {
-                //         id: 4,
-                //         name: 'Skills',
-                //         slug: 'skills'
-                //     },
-                //     {
-                //         id: 5,
-                //         name: 'Work Experience',
-                //         slug: 'work_experience'
-                //     }  
-                // ],
                 resumeSlug: '',
-                // loadingUpdateResume: false,
-                // loadingUploadFiles: false,
                 updatingResumeDialog: false,
                 stepPersonalDataErrors: false,
                 stepEducationErrorsArray: [],
@@ -266,21 +213,6 @@
             }
 		},
         methods: {
-            // stepPersonalDataValidate () {
-            //     return true
-            // },
-            // stepEducationValidate () {
-            //     return true
-            // },
-            // stepWorkExperienceValidate () {
-            //     return true
-            // },
-            // stepSkillsValidate () {
-            //     return true
-            // },
-            // onInput (val) {
-            //     this.steps = parseInt(val)
-            // },
             moveOneStepForward () {
                 if (this.step < 7) {
                     this.step += 1
@@ -302,7 +234,7 @@
                     if (this.errors && this.errors.items && this.errors.items.length > 0) { // Display errors in red in components
                         const inputs = ['slug', 'job_title', 'job_description', 'firstname', 'lastname', 'email']
                         if (this.errors.items.some(e => inputs.includes(e.field))) {
-                            console.log('Personal data errors')
+                            // console.log('Personal data errors')
                             this.stepPersonalDataErrors = true
                         }
 
@@ -312,7 +244,7 @@
                             educationErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepEducationErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -324,7 +256,7 @@
                             workExperienceErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepWorkExperienceErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -336,7 +268,7 @@
                             skillErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepSkillErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -348,7 +280,7 @@
                             fileUploadErrors.forEach(error => {
                                 const number = error.field.match(/\d+/g)
                                 if (number && number.length > 0) {
-                                    console.log(parseInt(number[0]))
+                                    // console.log(parseInt(number[0]))
                                     this.stepFileUploadErrorsArray.splice(parseInt(number[0]), 1, true)
                                 }
                             })
@@ -377,7 +309,7 @@
                     this.$store.commit('setLoadingFiles', false, { root: true })
                     this.$store.commit('setLoadingResume', false, { root: true })
 
-                    console.log('error from catch block: ', error)
+                    // console.log('error from catch block: ', error)
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and your resume could not be updated.',
@@ -386,8 +318,8 @@
                     }).show()
                     Object.entries(error).forEach(([key, value]) => {
                         if (key === 'server_error' || key === 'new_slug' || key === 'not_enough_space') {
-                            console.log('key: ', key)
-                            console.log('value: ', value)
+                            // console.log('key: ', key)
+                            // console.log('value: ', value)
                             const field = key.substr(key.indexOf('.') + 1)
 
                             if (key !== 'server_error' && key !== 'not_enough_space') {
@@ -410,37 +342,10 @@
                                 timeout: 8000,
                                 theme: 'metroui'
                             }).show()
-                        }
+                        } else {
+							this.$sentry.captureException(new Error(error))
+						}
                     })
-                }
-            },
-            async updateResume2 () {
-                try {
-                    console.log('this.loadedUserResume: ', this.loadedUserResume)
-                    this.updatingResumeDialog = true
-                    this.loadingResume = true
-                    const updateResume = await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
-                    this.updatingResumeDialog = false
-                    this.loadingResume = false
-                    console.log('updateResume: ', updateResume)
-                    
-                    new Noty({
-                        type: 'success',
-                        text: 'Your resume was updated successfully!',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
-                    this.$router.push('/candidate/resumes')
-                } catch (error) {
-                    // console.log('error updateResume: ', error)
-                    this.updatingResumeDialog = false
-                    this.loadingResume = false
-                    new Noty({
-                        type: 'error',
-                        text: 'Sorry, an error occured and your resume could not be updated.',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
                 }
             },
             validateResume () {

@@ -137,51 +137,51 @@
 </template>
 
 <script>
-	import { auth } from "~/plugins/firebase-client-init";
-	import Noty from "noty";
-	import { GChart } from "vue-google-charts";
-	import moment from "moment";
+	import { auth } from '~/plugins/firebase-client-init'
+	import Noty from 'noty'
+	import { GChart } from 'vue-google-charts'
+	import moment from 'moment'
 	export default {
-		inject: ["$validator"], // Inject vee-validate validator
+		inject: ['$validator'], // Inject vee-validate validator
 		components: { GChart },
-		layout: "layoutBack",
+		layout: 'layoutBack',
 		async created() {
-			this.$store.commit("setLoading", false);
-			this.$store.getters["users/loadedUser"];
+			this.$store.commit('setLoading', false)
+			this.$store.getters['users/loadedUser']
 			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
-			this.$store.dispatch("resumes/fetchUserResumes");
+			this.$store.dispatch('resumes/fetchUserResumes')
 			// }
 
-			if (this.$store.getters["loadedDarkTheme"]) {
-				this.chartOptions.backgroundColor = "#424242";
-				this.chartOptions.hAxis.textStyle.color = "#FFF";
-				this.chartOptions.vAxis.textStyle.color = "#FFF";
-				this.chartOptions.legend.textStyle.color = "#FFF";
+			if (this.$store.getters['loadedDarkTheme']) {
+				this.chartOptions.backgroundColor = '#424242'
+				this.chartOptions.hAxis.textStyle.color = '#FFF'
+				this.chartOptions.vAxis.textStyle.color = '#FFF'
+				this.chartOptions.legend.textStyle.color = '#FFF'
 			} else {
-				this.chartOptions.backgroundColor = "#FFF";
-				this.chartOptions.hAxis.textStyle.color = "#424242";
-				this.chartOptions.vAxis.textStyle.color = "#424242";
-				this.chartOptions.legend.textStyle.color = "#424242";
+				this.chartOptions.backgroundColor = '#FFF'
+				this.chartOptions.hAxis.textStyle.color = '#424242'
+				this.chartOptions.vAxis.textStyle.color = '#424242'
+				this.chartOptions.legend.textStyle.color = '#424242'
 			}
 		},
 		async mounted() {
-			this.$store.getters["resumes/loadedUserResumes"].forEach(resume => {
-				console.log("resume.name: ", resume.name);
-				this.newResumeNameMap.set(resume.id, resume.name);
-			});
+			this.$store.getters['resumes/loadedUserResumes'].forEach(resume => {
+				console.log('resume.name: ', resume.name)
+				this.newResumeNameMap.set(resume.id, resume.name)
+			})
 		},
 		data() {
 			return {
 				headers: [
-					{ text: "N°", value: "index" },
-					{ text: "Name (not public)", value: "name", sortable: true },
-					{ text: "Active?", value: "active" },
-					{ text: "Identifier", value: "slug" },
-					{ text: "Language", value: "language" },
-					{ text: "Job title", value: "job_title" },
-					{ text: "Created at", value: "created_at" },
-					{ text: "Last update", value: "updated_at" },
-					{ text: "Actions", align: "center", sortable: false }
+					{ text: 'N°', value: 'index' },
+					{ text: 'Name (not public)', value: 'name', sortable: true },
+					{ text: 'Active?', value: 'active' },
+					{ text: 'Identifier', value: 'slug' },
+					{ text: 'Language', value: 'language' },
+					{ text: 'Job title', value: 'job_title' },
+					{ text: 'Created at', value: 'created_at' },
+					{ text: 'Last update', value: 'updated_at' },
+					{ text: 'Actions', align: 'center', sortable: false }
 				],
 				// resumeNames: [],
 				snackbar: false,
@@ -189,135 +189,135 @@
 				resume: {},
 				chartOptions: {
 					chart: {
-						title: "Resumes statistics",
-						subtitle: "Number of clicks on each resume"
+						title: 'Resumes statistics',
+						subtitle: 'Number of clicks on each resume'
 					},
-					width: "100%",
+					width: '100%',
 					height: 400,
-					chartArea: { width: "85%", height: "70%" },
+					chartArea: { width: '85%', height: '70%' },
 					// bar: { groupWidth: "95%" },
-					backgroundColor: "#424242",
+					backgroundColor: '#424242',
 					colors: [
-						"#7A528F",
-						"#FFC107",
-						"#E11566",
-						"#AF97BB",
-						"#FFE083",
-						"#F08AB2",
-						"#D7CBDD",
-						"#FFEFC1",
-						"#F7C4D8"
+						'#7A528F',
+						'#FFC107',
+						'#E11566',
+						'#AF97BB',
+						'#FFE083',
+						'#F08AB2',
+						'#D7CBDD',
+						'#FFEFC1',
+						'#F7C4D8'
 					],
 					hAxis: {
-						baselineColor: "#FFF",
+						baselineColor: '#FFF',
 						gridlines: {
-							color: "transparent"
+							color: 'transparent'
 						},
 						textStyle: {
-							color: "#FFF"
+							color: '#FFF'
 						},
 						viewWindow: {
 							min: moment()
-								.subtract("1", "months")
+								.subtract('1', 'months')
 								.toDate(),
 							max: moment().toDate()
 						}
 					},
 					vAxis: {
-						baselineColor: "#FFF",
+						baselineColor: '#FFF',
 						textStyle: {
-							color: "#FFF"
+							color: '#FFF'
 						}
 					},
 					legend: {
-						position: "top",
-						alignment: "center",
+						position: 'top',
+						alignment: 'center',
 						textStyle: {
-							color: "#FFF"
+							color: '#FFF'
 						}
 					},
 					animation: {
 						duration: 1000,
-						easing: "out"
+						easing: 'out'
 					}
 				},
 				date: new Date().toISOString().substr(0, 10),
 				minDate: moment()
-					.subtract("1", "months")
-					.format("YYYY-MM-DD"),
-				maxDate: moment().format("YYYY-MM-DD"),
+					.subtract('1', 'months')
+					.format('YYYY-MM-DD'),
+				maxDate: moment().format('YYYY-MM-DD'),
 				modalMinDate: false,
 				modalMaxDate: false,
 				loadingArray: [],
 				resumesNames: [],
-				newResumeName: "",
+				newResumeName: '',
 				newResumeNameMap: new Map()
-			};
+			}
 		},
 		computed: {
 			errors() {
-				return this.$store.getters["errors"];
+				return this.$store.getters['errors']
 			},
 			// loadingArray () {
 			// 	return new Array(3)
 			// },
 			loadedUser() {
-				return this.$store.getters["users/loadedUser"];
+				return this.$store.getters['users/loadedUser']
 			},
 			loadedUserResumes() {
-				return this.$store.getters["resumes/loadedUserResumes"];
+				return this.$store.getters['resumes/loadedUserResumes']
 			},
 			getStatistics() {
-				const statistics = [];
+				const statistics = []
 				this.loadedUserResumes.forEach(resume => {
 					if (resume.statistics_last_visits) {
 						statistics.push(
 							resume.statistics_last_visits.map(visit => {
 								return new Date(
-									moment(visit * 1000).format("YYYY-MM-DD")
-								);
+									moment(visit * 1000).format('YYYY-MM-DD')
+								)
 							})
-						);
+						)
 					}
-				});
-				return statistics;
+				})
+				return statistics
 			},
 			chartData() {
-				console.log("chartData computed method called");
-				let newArray = [];
+				console.log('chartData computed method called')
+				let newArray = []
 				this.getStatistics.forEach((resume, index) => {
 					resume.forEach((click, index2) => {
 						// console.log('click: ', click.getTime());
 						// console.log('filter: ', newArray.filter(value => value[0] === '2019-06-27'))
 						const existingValue = newArray.find(
 							value => value[0].getTime() === click.getTime()
-						);
+						)
 						// console.log('existingValue1: ', existingValue)
 						if (existingValue) {
 							// console.log('existing value!')
-							existingValue[index + 1] += 1 || 1;
+							existingValue[index + 1] += 1 || 1
 						} else {
 							const newEntry = new Array(
 								this.getStatistics.length + 1
-							).fill(0);
-							newEntry[0] = click;
-							newEntry[index + 1] = 1;
-							newArray.push(newEntry);
+							).fill(0)
+							newEntry[0] = click
+							newEntry[index + 1] = 1
+							newArray.push(newEntry)
 						}
-					});
-				});
-				const headerArray = [{ label: "Date", type: "date" }];
+					})
+				})
+				const headerArray = [{ label: 'Date', type: 'date' }]
 				this.loadedUserResumes.forEach(resume => {
 					if (resume.statistics_last_visits) {
-						headerArray.push(`#clicks on resume ${resume.slug}`);
+						headerArray.push(`#clicks on resume ${resume.slug}`)
 					}
-				});
-				newArray.unshift(headerArray);
+				})
+				newArray.unshift(headerArray)
 				// console.log('newArray: ', newArray)
-				return newArray;
+				return newArray
 			},
 			loadedDarkTheme() {
-				return this.$store.getters["loadedDarkTheme"];
+				return this.$store.getters['loadedDarkTheme']
 			}
 			// resumesNames () {
 			// 	const resumesNames = []
@@ -338,147 +338,136 @@
 		},
 		methods: {
 			updateName($event, resumeId) {
-				console.log("updateName: ", $event, resumeId);
-				this.newResumeNameMap.set(resumeId, $event);
-				console.log(this.newResumeNameMap);
+				// console.log('updateName: ', $event, resumeId)
+				this.newResumeNameMap.set(resumeId, $event)
+				// console.log(this.newResumeNameMap)
 			},
 			async updateResumeName(payload) {
 				try {
-					console.log("payload: ", payload);
-					this.loadingArray = new Array(payload.index + 1);
-					this.loadingArray.splice(payload.index, 1, true);
+					// console.log('payload: ', payload)
+					this.loadingArray = new Array(payload.index + 1)
+					this.loadingArray.splice(payload.index, 1, true)
 
-					// const oldName = this.resumesNames[payload.index]
-					// console.log('oldName: ', oldName)
-					await this.$store.dispatch("resumes/updateResumeName", payload);
-					// setTimeout(() => {
-					// this.resumesNames[0] = 'abc'
-					// this.resumesNames.splice(payload.index, 1, payload.newName)
-					// this.resumesNames = this.resumesNames.filter(name => name != oldName)
-					// this.resumesNames.push(payload.newName)
-					// this.resumesNames[payload.newName] = false
-					this.loadingArray = [];
+					await this.$store.dispatch('resumes/updateResumeName', payload)
+					this.loadingArray = []
 					new Noty({
-						type: "success",
-						text: "Updated resume name successfully!",
+						type: 'success',
+						text: 'Updated resume name successfully!',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
-					// }, 3000)
+						theme: 'metroui'
+					}).show()
 				} catch (error) {
-					this.loadingArray = [];
-					console.log("error: ", error);
+					this.loadingArray = []
+					console.log('error: ', error)
 					new Noty({
-						type: "error",
+						type: 'error',
 						text:
-							"Sorry, an error occured and the name of the resume could not be updated.",
+							'Sorry, an error occured and the name of the resume could not be updated.',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
+						theme: 'metroui'
+					}).show()
+					this.$sentry.captureException(new Error(error))
 				}
 			},
 			async updateResumeActiveStatus(payload) {
 				try {
-					await this.$store.dispatch(
-						"resumes/updateResumeActiveStatus",
-						payload
-					);
+					await this.$store.dispatch('resumes/updateResumeActiveStatus', payload)
 					new Noty({
-						type: "success",
-						text: "Updated resume status successfully!",
+						type: 'success',
+						text: 'Updated resume status successfully!',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
+						theme: 'metroui'
+					}).show()
 				} catch (error) {
-					console.log("error: ", error);
+					// console.log('error: ', error)
 					new Noty({
-						type: "error",
+						type: 'error',
 						text:
-							"Sorry, an error occured and the status of the resume could not be updated.",
+							'Sorry, an error occured and the status of the resume could not be updated.',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
+						theme: 'metroui'
+					}).show()
+					this.$sentry.captureException(new Error(error))
 				}
 			},
 			addResume() {
-				console.log("addResume");
-				const currentNumberResumes = this.loadedUserResumes.length;
-				const maxNumberResumes = this.loadedUser.private
-					? this.loadedUser.private.maximum_number_of_resumes
-					: 1;
-				console.log("currentNumberResumes: ", currentNumberResumes);
-				console.log("maxNumberResumes: ", maxNumberResumes);
+				// console.log('addResume')
+				const currentNumberResumes = this.loadedUserResumes.length
+				const maxNumberResumes = this.loadedUser.private ? this.loadedUser.private.maximum_number_of_resumes
+					: 1
+				// console.log('currentNumberResumes: ', currentNumberResumes)
+				// console.log('maxNumberResumes: ', maxNumberResumes)
 				if (currentNumberResumes < maxNumberResumes) {
-					this.$router.replace("/candidate/resumes/create");
+					this.$router.replace('/candidate/resumes/create')
 				} else {
 					new Noty({
-						type: "warning",
+						type: 'warning',
 						text: `Sorry, but you are currently limited to ${maxNumberResumes} ${
-							maxNumberResumes > 1 ? "resumes" : "resume"
+							maxNumberResumes > 1 ? 'resumes' : 'resume'
 						}.`,
 						timeout: 5000,
-						theme: "metroui",
-						closeWith: ["button"]
-					}).show();
+						theme: 'metroui',
+						closeWith: ['button']
+					}).show()
 				}
 			},
 			editResume() {
-				this.$router.replace("/candidate/resumes/edit");
+				this.$router.replace('/candidate/resumes/edit')
 			},
 			requestConfirmation(resume) {
-				this.resume = resume;
-				this.snackbar = true;
+				this.resume = resume
+				this.snackbar = true
 			},
 			updateMinDate() {
-				console.log("minDate: ", this.minDate);
-				this.chartOptions.hAxis.viewWindow.min = new Date(this.minDate);
-				this.modalMinDate = false;
+				// console.log('minDate: ', this.minDate)
+				this.chartOptions.hAxis.viewWindow.min = new Date(this.minDate)
+				this.modalMinDate = false
 			},
 			updateMaxDate() {
-				console.log("maxDate: ", this.maxDate);
-				this.chartOptions.hAxis.viewWindow.max = new Date(this.maxDate);
-				this.modalMaxDate = false;
+				// console.log('maxDate: ', this.maxDate)
+				this.chartOptions.hAxis.viewWindow.max = new Date(this.maxDate)
+				this.modalMaxDate = false
 			},
 			async deleteResume() {
 				try {
-					this.snackbar = false;
-
-					console.log("deleteResume: ", this.resume);
-					await this.$store.dispatch("resumes/deleteResume", this.resume);
-					this.resumeId = "";
+					this.snackbar = false
+					// console.log('deleteResume: ', this.resume)
+					await this.$store.dispatch('resumes/deleteResume', this.resume)
+					this.resumeId = ''
 					new Noty({
-						type: "success",
-						text: "Successfully deleted resume &#128077;",
+						type: 'success',
+						text: 'Successfully deleted resume &#128077;',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
+						theme: 'metroui'
+					}).show()
 				} catch (error) {
 					new Noty({
-						type: "error",
+						type: 'error',
 						text:
-							"Sorry, an error occured and your resume could not be deleted.",
+							'Sorry, an error occured and your resume could not be deleted.',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
+						theme: 'metroui'
+					}).show()
+					this.$sentry.captureException(new Error(error))
 				}
 			}
 		},
 		watch: {
 			loadedDarkTheme() {
 				if (this.loadedDarkTheme) {
-					this.chartOptions.backgroundColor = "#424242";
-					this.chartOptions.hAxis.textStyle.color = "#FFF";
-					this.chartOptions.vAxis.textStyle.color = "#FFF";
-					this.chartOptions.legend.textStyle.color = "#FFF";
+					this.chartOptions.backgroundColor = '#424242'
+					this.chartOptions.hAxis.textStyle.color = '#FFF'
+					this.chartOptions.vAxis.textStyle.color = '#FFF'
+					this.chartOptions.legend.textStyle.color = '#FFF'
 				} else {
-					this.chartOptions.backgroundColor = "#FFF";
-					this.chartOptions.hAxis.textStyle.color = "#424242";
-					this.chartOptions.vAxis.textStyle.color = "#424242";
-					this.chartOptions.legend.textStyle.color = "#424242";
+					this.chartOptions.backgroundColor = '#FFF'
+					this.chartOptions.hAxis.textStyle.color = '#424242'
+					this.chartOptions.vAxis.textStyle.color = '#424242'
+					this.chartOptions.legend.textStyle.color = '#424242'
 				}
 			}
 		}
-	};
+	}
 </script>
 
 <style scoped>
@@ -494,7 +483,7 @@
 		cursor: default;
 	}
 	.disabled:hover {
-		color: "#ccc";
+		color: '#ccc';
 		cursor: default;
 	}
 	.v-input--selection-controls {

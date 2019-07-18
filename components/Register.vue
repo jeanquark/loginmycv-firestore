@@ -18,6 +18,8 @@
                     </v-alert>
 
                     <v-flex xs6>
+							<!--  -->
+						
                         <v-text-field
                             label="Firstname"
                             id="firstname"
@@ -27,6 +29,7 @@
                             :counter="50"
                             :error-messages="errors ? errors.collect('register.firstname') : null"
                             v-model="form.firstname"
+							:success="form.firstname.length > 0 ? true : false"
                         ></v-text-field>
 
                         <v-text-field
@@ -38,6 +41,7 @@
                             :counter="50"
                             :error-messages="errors ? errors.collect('register.lastname') : null"
                             v-model="form.lastname"
+							:success="form.lastname.length > 0 ? true : false"
                         ></v-text-field>
                     
                         <v-text-field
@@ -48,6 +52,7 @@
                             v-validate="'required|email'"
                             :error-messages="errors ? errors.collect('register.email') : null"
                             v-model="form.email"
+							:success="form.email.length > 0 ? true : false"
                         ></v-text-field>
                     </v-flex>
 
@@ -63,6 +68,7 @@
                             data-vv-as="Password"
                             :counter="30"
                             v-model="form.password"
+							:success="form.password.length > 0 ? true : false"
                         ></v-text-field>
 
                         <v-text-field
@@ -74,6 +80,7 @@
                             :error-messages="errors ? errors.collect('register.password_confirmation') : null"
                             data-vv-as="Password"
                             v-model="form.password_confirmation"
+							:success="form.password_confirmation.length > 0 ? true : false"
                         ></v-text-field>        
                     </v-flex>
                 </v-layout>
@@ -144,7 +151,7 @@
             async signUserUp (scope) {
                 await this.$validator.validateAll(scope)
                 if (!this.errors.any()) {
-                    console.log('signUserUp!')
+                    // console.log('signUserUp!')
                     try {
                         this.$store.commit('setLoading', true, { root: true })
                         await this.$store.dispatch('firebase-auth/signUserUp', this.form)
@@ -157,7 +164,7 @@
                         }).show()
                         this.switchToLogin()
                     } catch (error) {
-                        console.log('error2: ', error)
+                        // console.log('error2: ', error)
                         this.$store.commit('setError', error)
                         this.$store.commit('setLoading', false, { root: true })
                         if (error.code === 'auth/email-already-in-use') {
@@ -168,56 +175,20 @@
                                 theme: 'metroui'
                             }).show()
                         } else {
-                             new Noty({
-                                type: 'error',
-                                text: 'Sorry, an error occured and the registration process was interrupted.',
-                                timeout: 5000,
-                                theme: 'metroui'
-                            }).show()
-                        }
-                    }
-                }
-            },
-            async signUserUp2 () {
-                await this.$validator.validateAll()
-                if (!this.errors.any()) {
-                    console.log('signUserUp!')
-                    try {
-                        this.$store.commit('setLoading', true, { root: true })
-                        await this.$store.dispatch('firebase-auth/signUserUp', this.form)
-                        this.$store.commit('setLoading', false, { root: true })
-                        new Noty({
-                            type: 'success',
-                            text: 'Registration went successfully. Welcome to LoginMyCV!',
-                            timeout: 5000,
-                            theme: 'metroui'
-                        }).show()
-                        this.$router.push('/candidate/resumes')
-                    } catch (error) {
-                        console.log('error2: ', error)
-                        this.$store.commit('setError', error)
-                        this.$store.commit('setLoading', false, { root: true })
-                        if (error.code === 'auth/email-already-in-use') {
                             new Noty({
                                 type: 'error',
-                                text: error.message,
-                                timeout: 5000,
-                                theme: 'metroui'
-                            }).show()
-                        } else {
-                             new Noty({
-                                type: 'error',
                                 text: 'Sorry, an error occured and the registration process was interrupted.',
                                 timeout: 5000,
                                 theme: 'metroui'
                             }).show()
-                        }
+							this.$sentry.captureException(new Error(error))
+						}
                     }
                 }
             },
             async signInWithGoogle () {
                 try {
-                    console.log('signInWithGoogle')
+                    // console.log('signInWithGoogle')
                     this.loadingGoogle = true
                     await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
                     new Noty({
@@ -229,19 +200,20 @@
                     this.loadingGoogle = false
                     this.$router.replace('/candidate/resumes')
                 } catch (error) {
-                    console.log('error: ', error)
+                    // console.log('error: ', error)
                     this.loadingGoogle = false
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and you could not log in.',
                         timeout: 5000,
                         theme: 'metroui'
-                    }).show()
+					}).show()
+					this.$sentry.captureException(new Error(error))
                 }
             },
             async signInWithFacebook () {
                 try {
-                    console.log('signInWithFacebook')
+                    // console.log('signInWithFacebook')
                     this.loadingFacebook = true
                     await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
                     new Noty({
@@ -253,14 +225,15 @@
                     this.loadingFacebook = false
                     this.$router.replace('/candidate/resumes')
                 } catch (error) {
-                    console.log('error: ', error)
+                    // console.log('error: ', error)
                     this.loadingFacebook = false
                     new Noty({
                         type: 'error',
                         text: 'Sorry, an error occured and you could not log in.',
                         timeout: 5000,
                         theme: 'metroui'
-                    }).show()
+					}).show()
+					this.$sentry.captureException(new Error(error))
                 }
             }
 		}

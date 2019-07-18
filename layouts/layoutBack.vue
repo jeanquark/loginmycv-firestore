@@ -83,13 +83,14 @@
 
                     <v-card>
                         <v-list>
-                            <v-list-tile avatar>
-                                <v-list-tile-avatar v-if="loadedUser">
-                                    <!-- <img src="/images/resumes/jeanmarc.jpg" /> -->
+                            <v-list-tile avatar v-if="loadedUser">
+                                <v-list-tile-avatar v-if="loadedUser.picture">
                                     <img :src="loadedUser.picture" />
                                 </v-list-tile-avatar>
 
-                                <v-list-tile-content v-if="loadedUser">
+                                <avatar :rounded="true" :username="`${loadedUser.firstname} ${loadedUser.lastname}`" class="mr-2" v-else></avatar>
+
+                                <v-list-tile-content>
                                     <v-list-tile-title>{{ loadedUser.firstname }} {{ loadedUser.lastname }}</v-list-tile-title>
                                     <v-list-tile-sub-title v-if="loadedUser.city">{{ loadedUser.city }}, {{ loadedUser.country }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
@@ -129,13 +130,15 @@
 </template>
 
 <script>
+	import Avatar from 'vue-avatar'
 	export default {
         head: {
             meta: [
                 { name: "robots", content: "noindex" }
             ]
-        },
-        middleware: ['auth-check'],
+		},
+		middleware: ['auth-check'],
+		components: { Avatar },
         async created () {
             // const authUserId = this.loadedUser.id
             // console.log('authUserId from layoutBack: ', authUserId)

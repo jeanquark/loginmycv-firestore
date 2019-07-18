@@ -65,8 +65,8 @@ module.exports = {
         proxyHeaders: false
 	},
 	sentry: {
-		// dsn: 'https://780a9d26d8be4b42bbb8f4e0db787266@sentry.io/1507829',
-		dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
+		// dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
+		dsn: process.env.SENTRY_DSN,
 		config: {}, // Additional config
 	},
     plugins: [
@@ -91,7 +91,8 @@ module.exports = {
         // { src: '~/plugins/fullpage-vue', ssr: false },
         // { src: '~/plugins/vue-stripe-checkout', ssr: false },
         { src: '~/plugins/ga.js', ssr: false },
-        // { src: '~/plugins/snackbarstack', ssr: false },
+		// { src: '~/plugins/snackbarstack', ssr: false },
+		{ src: '~/plugins/vue-masonry-css', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
