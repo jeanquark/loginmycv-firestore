@@ -281,6 +281,7 @@
 			this.$store.dispatch('packages/fetchPackages')
       		this.$store.commit('clearError')
 			this.$store.commit('closeLoginModal')
+			myUndefinedFunction();
 		},
 		mounted () {
 		},

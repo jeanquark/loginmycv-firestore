@@ -182,6 +182,9 @@
 			this.$store.commit('closeRequestAuthorizationModal')
             this.$store.commit('clearOpenComponent')
 			this.$store.commit('clearRedirect')
+
+			this.$sentry.captureException(new Error('oups, there is an error from the server'))
+			// myUndefinedFunction();
 		},
 		mounted () {
 		},

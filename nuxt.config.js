@@ -54,13 +54,21 @@ module.exports = {
         ],
         'nuxt-client-init-module',
         ['fullpage-nuxt'],
-        ['@nuxtjs/google-analytics', {
-            id: 'UA-71694605-8'
-        }]
+		['@nuxtjs/google-analytics', 
+			{
+            	id: 'UA-71694605-8'
+			}
+		],
+		'@nuxtjs/sentry'
     ],
     axios: {
         proxyHeaders: false
-    },
+	},
+	sentry: {
+		// dsn: 'https://780a9d26d8be4b42bbb8f4e0db787266@sentry.io/1507829',
+		dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
+		config: {}, // Additional config
+	},
     plugins: [
         { src: '~/plugins/vuetify', ssr: true },
         { src: '~/plugins/firebase-client-init', ssr: false },
