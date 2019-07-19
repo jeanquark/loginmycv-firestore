@@ -133,35 +133,10 @@
                 </v-flex>
             </v-layout> -->
 
+            <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
-
-            <masonry 
-				:cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}"
-				:gutter="{default: '30px', 1904: '30px', 600: '15px'}"
-			>
-				<div v-for="resume of loadedShortResumes" :key="resume.username">
+            <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}">
+                <div v-for="resume of loadedShortResumes" :key="resume.username">
                     <v-hover>
                         <v-card flat class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
                             <v-layout row wrap>
@@ -213,15 +188,6 @@
                     </v-hover>
                 </div>
             </masonry>
-
-
-
-
-
-
-
-
-
 
             <v-layout row wrap>
                 <!-- Request Authorization Modal -->
