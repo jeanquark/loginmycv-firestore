@@ -30,6 +30,7 @@
                             :error-messages="errors ? errors.collect('register.firstname') : null"
                             v-model="form.firstname"
 							:success="form.firstname.length > 0 ? true : false"
+							:append-icon="form.firstname.length > 0 ? 'check' : ''"
                         ></v-text-field>
 
                         <v-text-field
@@ -42,6 +43,7 @@
                             :error-messages="errors ? errors.collect('register.lastname') : null"
                             v-model="form.lastname"
 							:success="form.lastname.length > 0 ? true : false"
+							:append-icon="form.lastname.length > 0 ? 'check' : ''"
                         ></v-text-field>
                     
                         <v-text-field
@@ -53,6 +55,7 @@
                             :error-messages="errors ? errors.collect('register.email') : null"
                             v-model="form.email"
 							:success="form.email.length > 0 ? true : false"
+							:append-icon="form.email.length > 0 ? 'check' : ''"
                         ></v-text-field>
                     </v-flex>
 
@@ -69,6 +72,7 @@
                             :counter="30"
                             v-model="form.password"
 							:success="form.password.length > 0 ? true : false"
+							:append-icon="errors && errors.collect('register.password').length || !form.password.length ? '' : 'check'"
                         ></v-text-field>
 
                         <v-text-field
@@ -81,6 +85,7 @@
                             data-vv-as="Password"
                             v-model="form.password_confirmation"
 							:success="form.password_confirmation.length > 0 ? true : false"
+							:append-icon="errors && errors.collect('register.password_confirmation').length || !form.password_confirmation.length ? '' : 'check'"
                         ></v-text-field>        
                     </v-flex>
                 </v-layout>
@@ -241,5 +246,7 @@
 </script>
 
 <style scoped>
-
+	/* >>> .v-input__icon--append .v-icon { 
+    	color: yellow !important;
+	} */
 </style>

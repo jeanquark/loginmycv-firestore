@@ -30,7 +30,7 @@
                     </v-card-title>
                     <div class="text-xs-center">
                         <small>(entries with an * are compulsory)</small><br />
-                        <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>remove_red_eye</v-icon> are public since your resume is not private)</small>
+                        <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>remove_red_eye</v-icon> are public since your resume is not private. See below to change that.)</small>
                         <small v-else>(all entries are private)</small>
                     </div>
 
@@ -74,7 +74,7 @@
                                     small-chips
                                     :deletable-chips="true"
                                     color="secondary"
-                                    v-model="userResume.languages"
+                                    v-model="userResume.language"
                                 >
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
@@ -150,20 +150,6 @@
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-text-field
-                                    name="middlename"
-                                    v-validate="'max:50'"
-                                    :error-messages="errors ? errors.collect('middlename') : null"
-                                    data-vv-as="Middle name"
-                                    :counter="50"
-                                    v-model="userResume.personal_data.middlename"
-                                >
-                                <template v-slot:label>
-                                    Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
-                                </template>
-                                <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
-                            </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
                                 <v-text-field
@@ -180,6 +166,20 @@
                                 <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
                             </v-flex>
                             
+                            <v-flex xs12 sm4 class="px-3">
+                                <v-text-field
+                                    name="middlename"
+                                    v-validate="'max:50'"
+                                    :error-messages="errors ? errors.collect('middlename') : null"
+                                    data-vv-as="Middle name"
+                                    :counter="50"
+                                    v-model="userResume.personal_data.middlename"
+                                >
+                                <template v-slot:label>
+                                    Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                </template>
+                                <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" /></v-text-field>
+                            </v-flex>
                         </v-layout>
                     </v-card-text>
                 </v-card>
@@ -565,7 +565,7 @@
                                 icon="done"
                                 v-if="userResume.visibility === 'public'"
                                 >
-                                <span class="subheading font-weight-medium">An excerpt of your resume with full access to your public data appears on the frontpage (recommanded option).</span>
+                                <span class="subheading font-weight-medium">An excerpt of your resume with free access to your data appears on the frontpage (recommanded option).</span>
                             </v-alert>
                             <v-alert
                                 value="semi-private"

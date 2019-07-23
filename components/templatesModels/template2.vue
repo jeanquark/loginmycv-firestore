@@ -3,6 +3,7 @@
         <v-toolbar :color="secondaryColor" dark clipped-right height="80px" style="display: inline;">
             <v-toolbar-side-icon @click.stop="sidemenu = !sidemenu"></v-toolbar-side-icon>
             <!-- <v-toolbar-title>Toolbar</v-toolbar-title> -->
+			
             <v-layout align-center justify-center fill-height hidden-sm-and-down>
                 <v-flex xs12>
                     <div class="text-xs-center" style="vertical-align: middle;" v-scroll-spy-active="{selector: '.nav-item', class: 'custom-active'}">
@@ -43,9 +44,8 @@
         </v-toolbar>
         
 
-        <v-content class="pa-0" style="background: pink;">
+        <v-content class="pa-0 background-color">
             <div>
-
                 <!-- Section Intro -->
                 <v-layout class="my-5 section" id="top">
                     <v-flex xs12 sm8 offset-sm2>
@@ -215,7 +215,7 @@
                                 <v-flex xs12>
                                     <v-textarea outline name="message_template2" label="Your message" :color="primaryColor" :background-color="primaryColor" dark></v-textarea>
                                 </v-flex>
-                                <v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor">Send message</v-btn>
+                                <v-btn round block large :color="primaryColor" class="white--text" style="padding-top: 0px; padding-bottom: 0px;">Send message</v-btn>
                             </v-layout>
                         </v-form>
                     </v-flex>
@@ -417,7 +417,7 @@
 					"--primary-color": this.colors.primaryColor,
 					"--secondary-color": this.colors.secondaryColor,
 					"--tertiary-color": this.colors.tertiaryColor,
-					"--background-collor": this.colors.backgroundColor,
+					"--background-color": this.colors.backgroundColor,
 					"--text-color": this.colors.textColor
 				};
 			},
@@ -567,6 +567,9 @@
 	}
 	.secondary-color-background {
 		background-color: var(--secondary-color);
+	}
+	.background-color {
+		background: var(--background-color);
 	}
 	.text-color {
 		color: var(--text-color);
