@@ -5,7 +5,8 @@ import moment from 'moment'
 import axios from 'axios'
 
 export const state = () => ({
-	resumes_short: [],
+	allResumes: [],
+	shortResumes: [],
 	resumes: [],
 	userResumes: [],
 	newResume: {}
@@ -13,9 +14,12 @@ export const state = () => ({
 
 
 export const mutations = {
+	setAllResumes(state, payload) {
+		state.allResumes = payload
+	},
 	setShortResumes (state, payload) {
 		// console.log('Call to setShortResumes mutation: ', payload)
-		state.resumes_short = payload
+		state.shortResumes = payload
 	},
 	setResumes (state, payload) {
 		// console.log('Call to setResumes mutation: ', payload)
@@ -62,6 +66,41 @@ export const mutations = {
 }
 
 export const actions = {
+	async fetchAllResumes ({ commit }) {
+		console.log('fetchAllResumes')
+		// const snapshot = await firestore.collection('resumes_long').orderBy('_updated_at').limit(2).get()
+
+		// const firstBlock = firestore.collection('resumes_long').orderBy('_updated_at').limit(2)
+		const firstBlock = firestore.collection('resumes_long').limit(2)
+
+		const snapshot = await firstBlock.get()
+		const lastVisible = snapshot.docs[snapshot.docs.length - 1]
+		console.log('lastVisible: ', lastVisible)
+
+		const nextBlock = firestore.collection('resumes_long').orderBy('_updated_at').startAfter(lastVisible).limit(2)
+		const snapshot2 = await nextBlock.get()
+		console.log('snapshot2: ', snapshot2)
+
+		// .then(function (documentSnapshots) {
+		//   // Get the last visible document
+		//   var lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+		//   console.log("last", lastVisible);
+
+		//   // Construct a new query starting at this document,
+		//   // get the next 25 cities.
+		//   var next = db.collection("cities")
+		//           .orderBy("population")
+		//           .startAfter(lastVisible)
+		//           .limit(25);
+		// });
+
+		const resumesArray = []
+		snapshot.forEach(resume => {
+			resumesArray.push({ ...resume.data(), id: resume.id })
+		})
+		console.log('resumesArray: ', resumesArray)
+		commit('setAllResumes', resumesArray)
+	},
 	async fetchShortResumes ({ commit }) {
 		// console.log('Call to fetchShortResumes actions')
 		firestore.collection('resumes_short').where('active', '==', true).where('visibility', '>=', 'public').onSnapshot(snapshot => {
@@ -482,8 +521,11 @@ export const actions = {
 }
 
 export const getters = {
+	loadedAllResumes (state) {
+		return state.allResumes
+	},
 	loadedShortResumes (state) {
-		return state.resumes_short
+		return state.shortResumes
 	},
 	loadedResumes (state) {
 		return state.resumes

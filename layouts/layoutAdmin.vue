@@ -141,6 +141,8 @@
 				items: [
 					{ icon: 'th', text: 'Dashboard', to: '/admin', exact: true },
 					{ icon: 'users', text: 'Users', to: '/admin/users', exact: false },
+					{ icon: 'id-card', text: 'Resumes', to: '/admin/resumes', exact: false },
+					{ icon: 'credit-card', text: 'Payments', to: '/admin/payments', exact: false },
 				]
 			}
 		},
