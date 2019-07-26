@@ -135,13 +135,13 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-checkbox v-model="checkbox">
+                    <v-checkbox color="primary" v-model="acceptConditions">
                         <template v-slot:label>
                             <div>
                                 I agree with the
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
-                                        <nuxt-link to="/about" target="_blank" @click.stop v-on="on">
+                                        <nuxt-link to="/conditions" target="_blank" @click.stop v-on="on">
                                             Terms & Conditions
                                         </nuxt-link>
                                     </template>
@@ -150,7 +150,9 @@
                             </div>
                         </template>
                     </v-checkbox>
-                    <v-btn color="primary" class="text-xs-center" @click.stop="saveResume" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
+					<v-layout justify-center>
+                    	<v-btn color="primary" @click.stop="saveResume" :disabled="acceptConditions === false" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
+					</v-layout>
 
                     <v-alert :value="loadingUploadFiles" color="secondary" outline>
                         <div class="text-xs-center">
