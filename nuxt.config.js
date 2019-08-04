@@ -66,7 +66,6 @@ module.exports = {
 	},
 	sentry: {
 		dsn: process.env.NODE_ENV !== 'production' ? '' : process.env.SENTRY_DSN,
-		config: {}, // Additional config
 	},
     plugins: [
         { src: '~/plugins/vuetify', ssr: true },

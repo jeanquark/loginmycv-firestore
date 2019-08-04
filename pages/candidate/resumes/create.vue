@@ -129,7 +129,6 @@
                 </v-stepper>
             </v-flex>
         </v-layout>
-        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click="saveResume">Save directly (no modal)</v-btn>
 
         <!-- Modal to create resume -->
         <v-dialog v-model="creatingResumeDialog" width="500" persistent>
@@ -462,7 +461,9 @@
 							}).show()
 						} else {
 							console.log('error: ', error)
-							// this.$sentry.captureException(new Error(error))
+							// if (process.env.NODE_ENV === 'production') {
+								this.$sentry.captureException(new Error(error))
+							// }
 						}
 					})
 				}
