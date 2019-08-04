@@ -74,14 +74,14 @@
                 </v-flex>
             </v-layout>
 
-            <!-- <v-layout row wrap justify-center>
+            <!--<v-layout row wrap justify-center>
                 <v-flex xs12>
                     <h2 class="subtitle display-1">Browse candidates</h2>
                     <br />
                 </v-flex>
                 <v-flex xs12 sm6 md4 lg4 v-for="resume of loadedShortResumes" :key="resume.username">
                     <v-hover>
-                        <v-card flat class="ma-2" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
+                        <v-card flat height="300" class="ma-2 align-center" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }" style="overflow-x: hidden; overflow-y: auto;">
                             <v-layout row wrap>
                                 <v-flex xs12 style="white-space: nowrap;">
                                     <div class="country-flag" v-if="resume.country">
@@ -126,12 +126,11 @@
                                         </v-layout>
                                     </v-card-actions>
                                 </div>
-
                             </v-layout>
                         </v-card>
                     </v-hover>
                 </v-flex>
-            </v-layout> -->
+            </v-layout>-->
 
             <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
 

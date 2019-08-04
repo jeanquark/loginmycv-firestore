@@ -56,6 +56,7 @@ export const mutations = {
 			colors: {},
 			parameters: {},
 			menus: [],
+			fields: [],
 			labels: [],
 			others: []
 		}
@@ -196,6 +197,7 @@ export const actions = {
 	async storeResume ({ commit, getters, dispatch, rootGetters }, payload) {
 		try {
 			// console.log('payload: ', payload)
+			// throw 'error from vuex'
 			const newResume = payload
 			const userPackageValidity = rootGetters['users/loadedUser'].private ? rootGetters['users/loadedUser'].private.package_valid_until : null
 			// console.log('newResume: ', newResume)
@@ -203,11 +205,7 @@ export const actions = {
 			
 
 			// 1) Create resume server-side
-			const createdResume = await axios.post('/create-new-resume', { newResume, userPackageValidity}, {
-				headers: {
-					'app-key': process.env.APP_KEY
-				}
-			})
+			const createdResume = await axios.post('/create-new-resume', { newResume, userPackageValidity })
 			// console.log('createdResume: ', createdResume)
 			const newLongResumeId = createdResume.data.newLongResumeId
 			const newShortResumeId = createdResume.data.newShortResumeId
@@ -294,7 +292,8 @@ export const actions = {
 				}
 			}
 		} catch (error) {
-			// console.log('error from storeResume action: ', error)
+			console.log('error from storeResume action: ', error)
+			console.log(error)
 			if (error.response && error.response.data && error.response.data.error) {
 				throw error.response.data.error
 			}

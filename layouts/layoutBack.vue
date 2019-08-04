@@ -4,7 +4,7 @@
         <v-app id="app" :dark="loadedDarkTheme" v-cloak>
             <v-navigation-drawer
                 v-model="drawer"
-                clipped
+				clipped
                 fixed
                 app
             >

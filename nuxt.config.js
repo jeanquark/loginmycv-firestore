@@ -65,12 +65,8 @@ module.exports = {
         proxyHeaders: false
 	},
 	sentry: {
-		// dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
-		// dsn: process.env.SENTRY_DSN,
 		dsn: process.env.NODE_ENV !== 'production' ? '' : process.env.SENTRY_DSN,
-		// disabled: process.env.NODE_ENV !== 'production' ? true : false,
-		config: {
-		}, // Additional config
+		config: {}, // Additional config
 	},
     plugins: [
         { src: '~/plugins/vuetify', ssr: true },

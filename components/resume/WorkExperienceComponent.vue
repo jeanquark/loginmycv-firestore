@@ -247,7 +247,7 @@
     import Noty from 'noty'
 	import Draggable from 'vuedraggable'
     export default {
-        inject: ['$validator'],
+        inject: ['$validator'], // Inject parent validator
         components: { Draggable },
         props: ['workExperienceErrors'],
         created () {

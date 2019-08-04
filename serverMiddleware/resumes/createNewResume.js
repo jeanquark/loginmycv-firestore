@@ -13,7 +13,7 @@ module.exports = app.use(async function (req, res) {
     try {
         let newResume = req.body.newResume;
         const userPackageValidity = req.body.userPackageValidity;
-        // console.log('newResume: ', newResume);
+        console.log('newResume: ', newResume);
 
         // console.log('app-key: ', req.get('app-key'));
         // console.log('app_key: ', app_key);
@@ -23,7 +23,7 @@ module.exports = app.use(async function (req, res) {
         //         'server_error': 'You are not sending this request from an authorized server.'
         //     }
         // }
-
+		
 
 
         // 2) Check slug existence
@@ -36,11 +36,16 @@ module.exports = app.use(async function (req, res) {
             }
         }
 
+		// throw {
+		// 	'slug': 'Slug already exists. Please provide another identifier for the resume.',
+		// }
+
+		
 
         // 3) Check again total uploads size (but this time serverside)
         const user = await admin.firestore().collection('users').doc(newResume.user_id).get();
-        const totalSpaceInBytes = user.data().private.total_space_in_bytes;
-
+		const totalSpaceInBytes = user.data().private.total_space_in_bytes;
+		
         let totalUploadSize = 0;
         const userResumes = await admin.firestore().collection('resumes_long').where('user_id', '==', newResume.user_id).get();
         userResumes.forEach(doc => {

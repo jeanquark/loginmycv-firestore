@@ -40,7 +40,7 @@
 		<br /><br />
 		<!-- <v-btn color="secondary">Get more space</v-btn> -->
 
-		<v-layout row wrap v-if="userResume.uploads">
+		<v-layout row wrap v-if="userResume.uploads">			
 			<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
 			<!-- <div > -->

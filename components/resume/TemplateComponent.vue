@@ -23,12 +23,12 @@
                                     <!-- <div class="text-xs-center">{{ template.description }}</div> -->
                                 </v-card>
                                 <v-layout align-center justify-center class="transparent-background">
-                                    <font-awesome-icon :icon="['fas', 'users' ]" class="" />&nbsp;<span class="mr-3">{{ template.count_users }}</span>
+                                    <font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users }}</span>
                                     <font-awesome-icon :icon="['fas', 'cubes' ]" class="" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
 
                                     <v-btn small flat color="secondary" @click.stop="openDialog(template.slug)">
                                         <!-- <v-icon>remove_red_eye</v-icon> -->
-										View
+                                        View
                                     </v-btn>
                                 </v-layout>
                             </v-flex>
@@ -131,14 +131,35 @@
             <v-flex xs12>
                 <v-card :elevation="12" class="pa-2">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0">Menu names</h2>
+                        <h2 class="headline mb-0 text-xs-center">
+                            <font-awesome-icon :icon="['fas', 'language']" />
+                            Translation <small>(optional)</small><br />
+                            <small class="body-1">Below you can specify menu names and field names as you wish the appear on your resume</small>
+                        </h2>
                     </v-card-title>
 
                     <v-card-text>
                         <v-layout row wrap>
-                            <v-flex xs12 sm6 class="px-4" v-for="(menu, index) in loadedTemplate.menus" :key="index">
-                                <v-subheader class="px-0">{{ menu.name }}</v-subheader>
-                                <v-text-field :name="menu.slug" item-text="name" class="my-0 py-0" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(menu.slug) : null" :data-vv-as="menu.name" :counter="50" v-model="userResume.menus[menu.slug]"></v-text-field>
+                            <v-flex xs12 v-if="loadedTemplate.menus">
+                                <h4 class="text-xs-center">Menus</h4>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4 class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
+                                <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="50" v-model="userResume.menus[menu.slug]">
+                                    <template v-slot:label>
+                                        {{ menu.name }}
+                                    </template>
+                                </v-text-field>
+                            </v-flex>
+                            <v-flex xs12 class="mt-3" v-if="loadedTemplate.fields">
+                                <h4 class="text-xs-center">Fields</h4>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
+                                <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="50" v-model="userResume.fields[field.slug]">
+                                    <template v-slot:label>
+                                        {{ field.name }}
+                                    </template>
+                                </v-text-field>
+
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -152,17 +173,17 @@
                     <v-btn icon dark @click="dialog = false">
                         <v-icon>close</v-icon>
                     </v-btn>
-                    <v-toolbar-title>Settings</v-toolbar-title>
+                    <v-toolbar-title>Close</v-toolbar-title>
                 </v-toolbar>
                 <v-layout row align-center justify-center pa-2 style="border-bottom: 2px solid var(--v-primary-base);">
                     Primary color
-                    <vue-colorpicker v-model="userResume.colors.primaryColor" class="ml-2 mr-3"></vue-colorpicker>
+                    <vue-colorpicker v-model="userResume.colors.primaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Secondary color
-                    <vue-colorpicker v-model="userResume.colors.secondaryColor" class="ml-2 mr-3"></vue-colorpicker>
+                    <vue-colorpicker v-model="userResume.colors.secondaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Tertiary color
-                    <vue-colorpicker v-model="userResume.colors.tertiaryColor" class="ml-2 mr-3"></vue-colorpicker>
+                    <vue-colorpicker v-model="userResume.colors.tertiaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Background color
-                    <vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-3"></vue-colorpicker>
+                    <vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-4"></vue-colorpicker>
                     Text color
                     <vue-colorpicker v-model="userResume.colors.textColor" class="ml-2 mr-3"></vue-colorpicker>
                 </v-layout>
@@ -196,9 +217,9 @@
 			await this.$store.dispatch('templates/fetchTemplates')
 			// this.primaryColor = this.userResume.colors.primaryColor
 			if (!this.resumeSlug) {
-				const template = this.$store.getters[
-					'templates/loadedTemplates'
-				].find(template => template.slug === 'template1')
+				const template = this.$store.getters['templates/loadedTemplates'].find(
+					template => template.slug === 'template1'
+				)
 				if (template) {
 					this.userResume.template_id = template.id
 					this.userResume.colors = template.colors
@@ -246,8 +267,7 @@
 			openDialog(templateSlug) {
 				console.log('templateSlug: ', templateSlug)
 				// this.component = () => import(`~/components/templatesModels/template1`)
-				this.component = () =>
-					import(`~/components/templatesModels/${templateSlug}`)
+				this.component = () => import(`~/components/templatesModels/${templateSlug}`)
 				this.dialog = true
 			}
 		}

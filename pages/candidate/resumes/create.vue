@@ -18,6 +18,7 @@
             <!-- loadingUploadFiles: {{ loadingUploadFiles }}<br /><br /> -->
             <!-- stepEducationErrorsArray: {{ stepEducationErrorsArray }}<br /><br /> -->
             <!-- stepPersonalDataErrors: {{ stepPersonalDataErrors }}<br /><br /> -->
+            <!-- acceptConditions: {{ acceptConditions }}<br /><br /> -->
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
@@ -39,7 +40,8 @@
 
                 <v-stepper v-model="step">
                     <v-stepper-header>
-                        <v-stepper-step :step="1" editable>Choose Template</v-stepper-step>
+                        <v-stepper-step :step="1" editable v-if="stepTemplateErrors === false">Choose Template</v-stepper-step>
+                        <v-stepper-step :step="1" editable :rules="[() => false]" v-else>Choose Template</v-stepper-step>
 
                         <v-divider></v-divider>
 
@@ -77,31 +79,31 @@
 
                         <v-stepper-content :step="2">
                             <v-card class="mb-5">
-                                <personal-data-component v-if="step == 2" />
+                                <personal-data-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="3">
                             <v-card class="mb-5">
-                                <education-component :educationErrors="stepEducationErrorsArray" v-if="step == 3" />
+                                <education-component :educationErrors="stepEducationErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
                             <v-card class="mb-5">
-                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" v-if="step == 4" />
+                                <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
                             <v-card class="mb-5">
-                                <skills-component :skillErrors="stepSkillErrorsArray" v-if="step == 5" />
+                                <skills-component :skillErrors="stepSkillErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
                             <v-card class="mb-5">
-                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" v-if="step == 6" />
+                                <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
@@ -122,10 +124,12 @@
                     </v-card-actions>
                     <v-layout justify-center>
                         <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click.stop="creatingResumeDialog = true">Save</v-btn>
+
                     </v-layout>
                 </v-stepper>
             </v-flex>
         </v-layout>
+        <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click="saveResume">Save directly (no modal)</v-btn>
 
         <!-- Modal to create resume -->
         <v-dialog v-model="creatingResumeDialog" width="500" persistent>
@@ -135,22 +139,27 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-checkbox v-model="checkbox">
-                        <template v-slot:label>
-                            <div>
-                                I agree with the
-                                <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                        <nuxt-link to="/about" target="_blank" @click.stop v-on="on">
-                                            Terms & Conditions
-                                        </nuxt-link>
-                                    </template>
-                                    Opens in new window
-                                </v-tooltip>
-                            </div>
-                        </template>
-                    </v-checkbox>
-                    <v-btn color="primary" class="text-xs-center" @click.stop="saveResume" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
+                    <v-layout justify-center>
+                        <v-checkbox color="primary" v-model="acceptConditions">
+                            <template v-slot:label>
+                                <div>
+                                    I agree with the
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on }">
+                                            <nuxt-link to="/terms-conditions" target="_blank" @click.stop v-on="on">
+                                                Terms & Conditions
+                                            </nuxt-link>
+                                        </template>
+                                        Opens in new window
+                                    </v-tooltip>
+                                </div>
+                            </template>
+                        </v-checkbox>
+                    </v-layout>
+                    <v-layout justify-center>
+                        <v-btn color="primary" @click.stop="saveResume" :disabled="!acceptConditions" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
+                        <v-btn flat color="secondary" @click.stop="creatingResumeDialog = false">Cancel</v-btn>
+                    </v-layout>
 
                     <v-alert :value="loadingUploadFiles" color="secondary" outline>
                         <div class="text-xs-center">
@@ -179,8 +188,12 @@
 	import Noty from 'noty'
 	import { firestore, storage } from '~/plugins/firebase-client-init'
 	import moment from 'moment'
+	// import { Validator } from 'vee-validate';
 	export default {
-		inject: ['$validator'], // inject parent validator
+		// inject: ['$validator'], // inject parent validator
+		$_veeValidate: {
+			validator: 'new' // give me my own validator scope.
+		},
 		components: {
 			templateComponent,
 			personalDataComponent,
@@ -209,16 +222,17 @@
 			}
 		},
 		mounted() {
-			this.errors.clear()
+			// this.errors.clear()
 			this.$store.commit('setLoadingFiles', false, { root: true })
 			this.$store.commit('setLoadingResume', false, { root: true })
 		},
 		data() {
 			return {
 				step: 1,
-				creatingResumeDialog: true,
+				creatingResumeDialog: false,
 				acceptConditions: false,
 				importResume: {},
+				stepTemplateErrors: false,
 				stepPersonalDataErrors: false,
 				stepEducationErrorsArray: [],
 				stepWorkExperienceErrorsArray: [],
@@ -279,14 +293,33 @@
 			},
 			async saveResume() {
 				try {
-					// console.log('saveResume')
+					console.log('saveResume')
+					// return
 					this.loadedNewResume['user_id'] = this.loadedUser.id
-					this.creatingResumeDialog = true
+					// this.creatingResumeDialog = true
 
+					// this.$validator.validateAll().then(result => {
+					// 	console.log('result: ', result)
+					// })
+					this.loadAllComponents = true
+					// validator.validate();
 					await this.$validator.validateAll()
+					// await this.$validator.validateAll()
+					console.log('validateAll done!')
+					console.log('this.errors: ', this.errors)
+					// return
+
 					if (this.errors && this.errors.items && this.errors.items.length > 0) {
 						// Display errors in red in components
 						// console.log('Validation error!')
+
+						const templateErrors = this.errors.items.filter(item =>
+							item.field.includes('menu') || item.field.includes('field')
+						)
+						if (templateErrors.length > 0) {
+							this.stepTemplateErrors = true
+						}
+
 						const inputs = [
 							'slug',
 							'job_title',
@@ -376,6 +409,8 @@
 							theme: 'metroui'
 						}).show()
 					} else {
+						// console.log('OK, done!')
+						// return
 						this.$store.commit('setLoadingResume', true, { root: true })
 						await this.$store.dispatch('resumes/storeResume', this.loadedNewResume)
 						this.$store.commit('setLoadingFiles', false, { root: true })
@@ -395,7 +430,6 @@
 					this.$store.commit('setLoadingResume', false, { root: true })
 					this.$store.commit('setLoading', false, { root: true })
 
-					// console.log('error from catch block: ', error)
 					new Noty({
 						type: 'error',
 						text: 'Sorry, an error occured and your resume could not be created.',
@@ -427,7 +461,8 @@
 								theme: 'metroui'
 							}).show()
 						} else {
-							this.$sentry.captureException(new Error(error))
+							console.log('error: ', error)
+							// this.$sentry.captureException(new Error(error))
 						}
 					})
 				}
