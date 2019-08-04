@@ -21,7 +21,9 @@
 
 <script>
 	let L = { icon() {} }
-	if (process.browser) L = require('leaflet')
+	if (process.browser) {
+		L = require('leaflet')
+	}
 	import axios from 'axios'
 	import GeoJSON from '~/static/geoJSON/world.json'
 	export default {
