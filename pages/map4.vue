@@ -1,15 +1,18 @@
 <template>
     <v-app>
-        <h1>Leaflet map</h1>
+        <!-- <h1>Leaflet map</h1> -->
         <div id="map-wrap" style="height: 100vh">
             <no-ssr>
-                <l-map :zoom=6 :center="[51.509865, -0.118092]" style="background: #AADAFF">
+                <!-- <l-map :zoom=6 :center="[51.509865, -0.118092]" style="background: #AADAFF"> -->
+                <l-map :zoom="3" :center="[55.000000, -105.000000]" style="background: #AADAFF">
                     <!-- <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer> -->
                     <!-- <l-geo-json :geojson="geojson" :optionsStyle="polystyle()"></l-geo-json> -->
                     <!-- <l-geo-json :geojson="geojson" :options="options"></l-geo-json> -->
                     <l-geo-json :geojson="geojson" :optionsStyle="styleFunction"></l-geo-json>
-                    <l-marker :lat-lng="[51.509865, -0.118092]" :draggable="true" :icon="customIcon">
-                        <l-popup>Hello <b>Jean-Marc</b>! Lorsdfjsdfhj dfhsjkdfhdsj djfkjs<v-btn small color="success">Click me</v-btn>
+                    <!-- <l-marker :lat-lng="[51.509865, -0.118092]" :draggable="true" :icon="customIcon"> -->
+                    <l-marker :lat-lng="[45.508889, -73.561667]" :draggable="true" :icon="customIcon">
+                        <l-popup style="font-size: 1.2rem;">Hello <b>Jean-Marc</b>! Lorsdfjsdfhj dfhsjkdfhdsj djfkjs<v-btn small color="success">Click me</v-btn>
+                            <v-img src="/images/unibe.jpg" width="100"></v-img>
                         </l-popup>
                     </l-marker>
                     <!-- <l-circle-marker :lat-lng="[51.509865, -0.118092]" :radius="10" :color="'red'"></l-circle-marker> -->
@@ -25,7 +28,7 @@
 		L = require('leaflet')
 	}
 	import axios from 'axios'
-	import GeoJSON from '~/static/geoJSON/world.json'
+	import GeoJSON from '~/static/geoJSON/usa_canada_with_states.json'
 	export default {
 		async created() {
 			// await axios.get("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json")
@@ -43,13 +46,14 @@
 			return {
 				// customIcon: this.defaultIcon
 				customIcon: L.icon({
-					iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
-					shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-					iconSize: [38, 95],
-					shadowSize: [50, 64],
-					iconAnchor: [22, 94],
-					shadowAnchor: [4, 62],
-					popupAnchor: [-3, -76]
+					// iconUrl: '/images/leaflet_markers/leaf-green.png',
+					iconUrl: '/images/leaflet_markers/home.png',
+					// shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+					iconSize: [35, 30],
+					// shadowSize: [50, 64],
+					iconAnchor: [25, 25],
+					// shadowAnchor: [4, 62],
+					popupAnchor: [0, -20]
 				}),
 				geojson: GeoJSON,
 				visitedCountries: [
@@ -71,7 +75,7 @@
 						value: 3,
 						color: 'green'
 					}
-				],
+				]
 				// options: {
 				// 	style: function(feature) {
 				// 		console.log('feature: ', feature)
@@ -94,19 +98,18 @@
 				// 		}
 				// 	}
 				// }
-					
 			}
 		},
-		computed: {
-			
-		},
+		computed: {},
 		methods: {
 			styleFunction(feature) {
 				// console.log('feature: ', feature)
 				// console.log('this.countriesVisited: ', this.visitedCountries)
 				const array = ['CHE', 'SWE', 'FRA']
 				// if (array.includes(feature.properties.brk_a3)) {
-				const country = this.visitedCountries.find(country => country.name === feature.properties.name)
+				const country = this.visitedCountries.find(
+					country => country.name === feature.properties.name
+				)
 				if (country) {
 					// console.log('abc')
 					// const country = this.visitedCountries.find(country => country.brk_a3 === feature.properties.brk_a3)
@@ -127,7 +130,6 @@
 						fillOpacity: 1
 					}
 				}
-
 
 				// if (feature.properties.brk_a3 === 'CHE') {
 				// 	return {
@@ -151,7 +153,7 @@
 				return {
 					fillColor: 'yellow',
 					weight: 1,
-					opacity: .6,
+					opacity: 0.6,
 					color: 'white', //Outline color
 					fillOpacity: 0.7
 				}
@@ -162,6 +164,9 @@
 
 <style scoped>
 	>>> .leaflet-popup-content-wrapper {
+		background: yellow;
+	}
+	>>> .leaflet-popup-tip {
 		background: yellow;
 	}
 	>>> .leaflet-container a.leaflet-popup-close-button {
