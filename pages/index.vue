@@ -134,7 +134,7 @@
 
             <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
 			<video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%;">
-				<source type="video/mp4" src="/videos/video-tif.mp4">
+				<!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
 			</video>
 
             <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}">
