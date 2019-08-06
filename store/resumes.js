@@ -51,12 +51,14 @@ export const mutations = {
 			skills: [],
 			uploads: [],
 			social_networks: [],
+			languages: [],
+			language: {},
 			visibility: '',
 			active: true,
 			colors: {},
 			parameters: {},
-			menus: [],
-			fields: [],
+			menus: {},
+			fields: {},
 			labels: [],
 			others: []
 		}
@@ -303,6 +305,7 @@ export const actions = {
 	async updateResume ({ commit, dispatch, rootGetters }, payload) {
 		try {
 			// console.log('payload: ', payload)
+			// return
 			commit('setLoadingFiles', true, { root: true })
 			const oldResume = await firestore.collection('resumes_long').doc(payload.slug).get();
 

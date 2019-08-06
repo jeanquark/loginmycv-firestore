@@ -294,7 +294,8 @@
                             theme: 'metroui'
                         }).show()
                     } else {
-                        await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
+						console.log('this.loadedUserResume: ', this.loadedUserResume)
+						await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                         this.updatingResumeDialog = false
                         new Noty({
                             type: 'success',

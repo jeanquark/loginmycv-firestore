@@ -20,6 +20,7 @@
             <!-- this.userResume.visibility: {{ userResume.visibility }}<br /> -->
             <!-- originalVisibility: {{ originalVisibility }}<br /> -->
             <!-- this.userResume.updateResumeSlug: {{ userResume.updateResumeSlug }}<br /> -->
+            <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
 
         </div>
         <v-layout row wrap class="pa-2">
@@ -35,8 +36,8 @@
                     </div>
 
                     <v-card-text>
-                        <v-layout v-if="!this.resumeSlug">
-                            <v-flex xs12 sm4 class="px-3">
+                        <v-layout>
+                            <v-flex xs12 sm4 class="px-3" v-if="!this.resumeSlug">
                                 <v-text-field name="slug" hint="Must be unique." :persistent-hint="true" v-validate="{ required: true, regex: /^[a-z0-9-]+$/, max: 50 }" :error-messages="errors ? errors.collect('slug') : null" data-vv-as="Resume identifier" :counter="50" v-model="userResume.slug">
                                     <template v-slot:label>
                                         Resume identifier* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
@@ -45,7 +46,7 @@
                                 </v-text-field>
                             </v-flex>
 
-                            <v-flex xs12 sm8 class="px-3">
+                            <v-flex d-flex xs12 sm8 class="px-3" v-if="userResume.slug">
                                 <v-text-field label="Path to your resume" :value="userResume.slug ? `https://www.loginmycv.com/resume/${userResume.slug}` : ''" readonly class="no-underline">
                                     <font-awesome-icon :icon="['fas', 'link']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -53,31 +54,7 @@
                         </v-layout>
 
                         <v-layout row wrap>
-                            <v-flex xs12 sm4 class="px-3">
-                                <v-autocomplete label="Resume language" :items="loadedLanguages" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.language">
-                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
-                                    <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" class="chip--select-multi">
-                                            <v-avatar>
-                                                <img :src="`/images/languages/${data.item.flag}`">
-                                            </v-avatar>
-                                            {{ data.item.name }}
-                                        </v-chip>
-                                    </template>
-                                    <template v-slot:item="data">
-                                        <template>
-                                            <v-list-tile-avatar>
-                                                <img :src="`/images/languages/${data.item.flag}`">
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
-                                        </template>
-                                    </template>
-                                </v-autocomplete>
-                            </v-flex>
-
-                            <v-flex d-flex xs12 sm8 class="px-3">
+                            <v-flex xs12 sm8 class="px-3">
                                 <v-text-field id="job_title" name="job_title" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('job_title') : null" data-vv-as="Job title" :counter="50" v-model="userResume.job_title">
                                     <template v-slot:label>
                                         Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
@@ -305,28 +282,29 @@
                             </v-flex>
                         </v-layout>
 
-                        <v-layout class="mb-4">
-                            <v-flex xs12 sm6 class="px-3">
-                                <div v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl" class="text-xs-center">
+                        <v-layout row wrap align-center class="mb-4">
+                            <v-flex xs12 sm4 class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl">
+                                <div class="text-xs-center">
                                     <span>Current picture: </span><br />
                                     <img :src="getCurrentPicture.downloadUrl" height="150" /><br />
 
                                 </div>
-                                <v-layout row wrap align-center>
-                                    <v-flex xs10 class="px-1">
-                                        <v-text-field @click='pickFile' v-model="imageName">
-                                            <template v-slot:label>
-                                                My Picture <v-icon small style="vertical-align: top">remove_red_eye</v-icon>
-                                            </template>
-                                            <font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" />
-                                        </v-text-field>
-                                        <input type="file" style="display: none" ref="image" accept="image/jpeg" data-vv-name="Picture" v-validate="'image'" @change="onFilePicked">
-                                    </v-flex>
-                                    <v-flex xs2 class="text-xs-center">
-                                        <v-icon @click="removeCurrentPicture" v-if="imageName">delete</v-icon>
-                                    </v-flex>
-                                </v-layout>
                             </v-flex>
+                            <!-- <v-layout row wrap align-center> -->
+                            <v-flex xs4 class="px-3">
+                                <v-text-field @click='pickFile' v-model="imageName">
+                                    <template v-slot:label>
+                                        My Picture <v-icon small style="vertical-align: top">remove_red_eye</v-icon>
+                                    </template>
+                                    <font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" />
+                                </v-text-field>
+                                <input type="file" style="display: none" ref="image" accept="image/jpeg" data-vv-name="Picture" v-validate="'image'" @change="onFilePicked">
+                            </v-flex>
+                            <v-flex xs6 class="text-xs-left">
+                                <v-icon @click="removeCurrentPicture" v-if="imageName">delete</v-icon>
+                            </v-flex>
+                            <!-- </v-layout> -->
+                            <!-- </v-flex> -->
 
                             <v-flex xs12 sm6>
                                 <div class="text-xs-center">

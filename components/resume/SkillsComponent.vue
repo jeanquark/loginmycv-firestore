@@ -42,8 +42,6 @@
                 
 
                     <v-card-text>
-                        <!-- userSkillsCategories: {{ userSkillsCategories }}<br /> -->
-                        <!-- userSkillsSubCategories: {{ userSkillsSubCategories }}<br /> -->
                         <v-layout row wrap>
                             <v-flex xs12>
                                 <v-text-field
@@ -61,6 +59,7 @@
                                 <v-select
                                     label="Category"
                                     :items="userSkillsCategories"
+									no-data-text="No category available. Add one below."
                                     v-model="newSkill.category"
                                 ></v-select>
                             </v-flex>
@@ -78,20 +77,10 @@
                                     {{ newSkill.value }}/100
                                 </div>
                             </v-flex>
-
-
-
-                            <!-- <v-flex xs6 class="pl-2">
-                                <v-select
-                                    :items="userSkillsSubCategories"
-                                    label="Subcategory"
-                                ></v-select>
-                            </v-flex> -->
                         </v-layout>
 
                         <v-layout class="justify-center">
                             <v-flex xs12 class="text-xs-center">
-                                <!-- <div class="text-xs-center"> -->
                                     <v-radio-group row v-model="newSkill.type" class="justify-center">
                                         <v-radio
                                             label="Pie"
@@ -104,13 +93,8 @@
                                             color="secondary"
                                         ></v-radio>
                                     </v-radio-group>
-                                <!-- </div> -->
                             </v-flex>
                         </v-layout>
-
-                        <!-- <br />
-                        <hr>
-                        <br /> -->
 
                         <v-layout row wrap align-center>
                             <v-flex xs8>
@@ -128,57 +112,9 @@
                                 <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
                             </v-flex>
                         </v-layout>
-                        <!-- <v-layout row wrap align-center>
-                            <v-flex xs8>
-                                <v-text-field
-                                    v-model="newSkillSubCategory.name"
-                                    label="Subcategory name"
-                                    :counter="30"
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex xs4>
-                                <v-btn small color="secondary" @click="addSkillSubCategory">Add subcategory</v-btn>
-                            </v-flex>
-                        </v-layout> -->
 
                         <br /><br />
-                        <v-layout row wrap class="justify-center">
-                            <!-- <v-flex xs4 offset-xs8 class="justify-center">
-                                <v-checkbox color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
-                            </v-flex> -->
-                            <!-- <v-flex xs8 offset-xs1 class="text-xs-center" style="border: 1px solid orange; border-radius: 10px; padding: 0px 10px;">
-                                <v-checkbox class="text-xs-center" color="secondary" label="Provide measured value" v-model="newSkill.measure"></v-checkbox>
-                                <v-radio-group row v-model="newSkill.type" v-if="newSkill.measure">
-                                    <v-radio
-                                        label="Pie"
-                                        value="pie"
-                                        color="secondary"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Bar"
-                                        value="bar"
-                                        color="secondary"
-                                    ></v-radio>
-                                </v-radio-group>
-                                <v-radio-group row v-model="newSkill.maxValue" v-if="newSkill.measure">
-                                    <v-radio
-                                        label="Max 10"
-                                        :value="10"
-                                        color="secondary"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Max 100"
-                                        :value="100"
-                                        color="secondary"
-                                    ></v-radio>
-                                </v-radio-group>
-                            </v-flex> -->
-                        </v-layout>
-                        <br />
 
-                        
-
-                        
                     </v-card-text>
                     <v-card-actions class="justify-center">
                         <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('skill')).length > 0" @click="addNewSkill()">Add Skill</v-btn>&nbsp;
@@ -217,13 +153,7 @@
                             >
                                 You have no item in this category, please hit the small rounded pink button to add one
                             </v-alert>
-                            <!-- <v-flex xs12 sm4 style="padding: 10px;" v-for="(skill, childIndex) in candidateSkills" :key="childIndex"> -->
                             <v-flex xs12 sm6 class="pa-3">
-                                <!-- index: {{ index }}<br /> -->
-                                <!-- parentIndex: {{ parentIndex }}<br /> -->
-                                <!-- childIndex: {{ childIndex }}<br /> -->
-                                <!-- skill: {{ skill }}<br /> -->
-
                                 <v-text-field
                                     label="Skill name"
                                     :name="`skill_name_${index}`"
@@ -236,20 +166,13 @@
                             </v-flex>
 
                             <v-flex xs12 sm6 class="pa-3">
-                                <!-- <v-text-field
-                                    v-model="candidateSkills[index].category"
-                                    label="Skill category"
-                                    :counter="30"
-                                ></v-text-field> -->
-                                <!-- userSkillsCategories: {{ userSkillsCategories }}<br /> -->
                                 <v-select
                                     label="Skill Category"
                                     v-model="candidateSkills[index].category"
+									no-data-text="No category available. Add one below."
                                     :items="userSkillsCategories"
                                 ></v-select>
                             </v-flex>
-
-                            
 
                             <v-flex xs12 sm6 class="pa-3">
                                 <v-slider
@@ -280,22 +203,6 @@
                                     ></v-radio>
                                 </v-radio-group>
                             </v-flex>
-
-                            <!-- <v-flex xs12 sm6 style="padding: 10px;">
-                                Max value
-                                <v-radio-group row v-model="candidateSkills[index].maxValue">
-                                    <v-radio
-                                        label="10 - increment by 1"
-                                        :value="10"
-                                        color="secondary"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="100 - increment by 10"
-                                        :value="100"
-                                        color="secondary"
-                                    ></v-radio>
-                                </v-radio-group>
-                            </v-flex> -->
                         </v-layout>
 
                         <v-layout row wrap align-center class="pa-3">
@@ -313,23 +220,10 @@
                             <v-flex xs4 sm2>
                                 <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
                             </v-flex>
-                            <!-- <v-flex xs8 sm4>
-                                <v-text-field
-                                    v-model="newSkillSubCategory.name"
-                                    label="Subcategory name"
-                                    :counter="30"
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex xs4 sm2>
-                                <v-btn small color="secondary" @click="addSkillSubCategory">Add subcategory</v-btn>
-                            </v-flex> -->
                         </v-layout>
                     </v-card-text>
                 </v-card>
             </v-expansion-panel-content>
-            <!-- <v-card-actions class="justify-center">
-                <v-btn class="success" @click="saveSkills">Validate Education</v-btn>
-            </v-card-actions> -->
         </v-expansion-panel>
     </div>
 </template>
@@ -341,11 +235,10 @@
         props: ['skillErrors'],
         async created () {
             const resumeSlug = this.$route.params.slug
-            console.log('resumeSlug: ', resumeSlug)
+            // console.log('resumeSlug: ', resumeSlug)
             this.resumeSlug = resumeSlug
         },
         mounted () {
-            // this.userSkillsCategories.push(this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null))
             if (this.userResume) {
                 this.userResume.skills.forEach(skill => {
                     if (!this.userSkillsCategories.includes(skill.category)) {
@@ -364,15 +257,15 @@
                 resumeSlug: '',
                 modalCategory: false,
                 modalNewSkill: false,
-                reference: '',
-                newSkillCategory2: {
-                    name: '',
-                    // slug: '',
-                    // children: []
-                },
-                newSkillSubCategory: {
-                    name: ''
-                },
+                // reference: '',
+                // newSkillCategory2: {
+                //     name: '',
+                //     // slug: '',
+                //     // children: []
+                // },
+                // newSkillSubCategory: {
+                //     name: ''
+                // },
                 newSkillCategory: '',
                 newSkill: {
                     name: '',
@@ -380,10 +273,10 @@
                     value: 0,
                     type: 'bar',
                 },
-                items: [
-                    'abc',
-                    'def'
-                ],
+                // items: [
+                //     'abc',
+                //     'def'
+                // ],
                 userSkillsCategories: [],
                 userSkillsSubCategories: []
                 // skills: [
@@ -441,22 +334,6 @@
             errors () {
                 return this.$store.getters['errors']
             },
-            userSkills2 () {
-                return this.userResume.skills
-                // const userResume = this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
-                // if (userResume) {
-                //     return userResume.skills
-                // }
-                // return null
-            },
-            // fetchUserSkillsCategories () {
-            //     this.userSkillsCategories.push(this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null))
-            //     return
-            //     // return this.userResume.skills.map(skill => skill.category).filter((v, i, a) => a.indexOf(v) === i && v != null)
-            // },
-            // userSkillsSubCategories () {
-            //     return this.userResume.skills.map(skill => skill.subcategory).filter((v, i, a) => a.indexOf(v) === i && v != null)
-            // },
             userResume () {
                 if (this.resumeSlug) {
                     return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
@@ -475,7 +352,7 @@
         },
         methods: {
             openNewSkillModal () {
-                console.log('createNewEducation')
+                // console.log('createNewEducation')
                 if (this.userResume.skills && this.userResume.skills.length < 30) {
                     this.modalNewSkill = true
                 } else {
@@ -492,7 +369,7 @@
                 this.newSkill = {}
             },
             addSkillCategory () {
-                console.log('addSkillCategory')
+                // console.log('addSkillCategory')
                 if (this.newSkillCategory && !this.userSkillsCategories.includes(this.newSkillCategory)) {
                     this.userSkillsCategories.push(this.newSkillCategory)
                     this.newSkillCategory = ''
@@ -514,9 +391,6 @@
 					}).show()
 					return
 				}
-                // console.log('addSkill')
-                // console.log('parentIndex: ', parentIndex)
-                // this.candidateSkills[parentIndex].items.push({
                 this.modalNewSkill = false
                 this.userResume.skills.push({
                     name: this.newSkill.name,
@@ -533,35 +407,9 @@
                 }).show()
             },
             deleteItem (index) {
-                console.log('index: ', index)
+                // console.log('index: ', index)
                 this.candidateSkills.splice(index, 1)
-            },
-
-
-
-            // saveSkills () {
-            //     console.log('saveSkills')
-            //     console.log(this.skills)
-            // },
-            
-            // addSkillSubCategory () {
-            //     if (this.newSkillSubCategory && !this.userSkillsSubCategories.includes(this.newSkillSubCategory.name)) {
-            //         this.userSkillsSubCategories.push(this.newSkillSubCategory.name)
-            //         this.newSkillSubCategory = {}
-            //     }
-            // },
-            // addSkillCategory2 (newSkillCategory) {
-            //     console.log('addSkillCategory')
-            //     // this.candidateSkills.push({
-            //     this.userResume.skills.push({
-            //         name: newSkillCategory.name,
-            //         slug: newSkillCategory.slug,
-            //         items: []
-            //     })
-            //     this.modalCategory = false
-            // },
-            
-            
+            }
         }
     }
 </script>

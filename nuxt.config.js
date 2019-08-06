@@ -91,6 +91,7 @@ module.exports = {
         { src: '~/plugins/ga.js', ssr: false },
 		// { src: '~/plugins/snackbarstack', ssr: false },
 		{ src: '~/plugins/vue-masonry-css', ssr: false },
+		// { src: '~/plugins/html2pdf', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',

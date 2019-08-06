@@ -180,11 +180,11 @@
 										<v-text-field
 											outline
 											name="firstname_template3"
-											label="First name"
+											:label="resume.fields['firstname'] || 'Firstname'"
 											v-model="contactForm.firstname"
 											v-validate="'required|max:40'"
 											:error-messages="errors ? errors.collect('firstname_template3') : null"
-											data-vv-as="First name"
+											:data-vv-as="resume.fields['firstname'] || 'Firstname'"
 											:color="primaryColor"
 											:background-color="primaryColor"
 										></v-text-field>
@@ -193,11 +193,11 @@
 										<v-text-field
 											outline
 											name="lastname_template3"
-											label="Last name"
+											:label="resume.fields['lastname'] || 'Lastname'"
 											v-model="contactForm.lastname"
 											v-validate="'required|max:40'"
 											:error-messages="errors ? errors.collect('lastname_template3') : null"
-											data-vv-as="Last name"
+											:data-vv-as="resume.fields['lastname'] || 'Lastname'"
 											:color="primaryColor"
 											:background-color="primaryColor"
 										></v-text-field>
@@ -206,11 +206,11 @@
 										<v-text-field
 											outline
 											name="email_template3"
-											label="Your Email"
+											:label="resume.fields['email'] || 'Email'"
 											v-model="contactForm.email"
 											v-validate="'required|email'"
 											:error-messages="errors ? errors.collect('email_template3') : null"
-											data-vv-as="Email"
+											:data-vv-as="resume.fields['email'] || 'Email'"
 											:color="primaryColor"
 											:background-color="primaryColor"
 										></v-text-field>
@@ -219,16 +219,16 @@
 										<v-textarea
 											outline
 											name="message_template3"
-											label="Your message"
+											:label="resume.fields['message'] || 'Message'"
 											v-model="contactForm.message"
 											v-validate="'required|max:2056'"
 											:error-messages="errors ? errors.collect('message_template3') : null"
-											data-vv-as="Message"
+											:data-vv-as="resume.fields['message'] || 'Message'"
 											:color="primaryColor"
 											:background-color="primaryColor"
 										></v-textarea>
 									</v-flex>
-									<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" :loading="loading" @click.prevent="sendMessage">Send message</v-btn>
+									<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" :loading="loading" @click.prevent="sendMessage">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
 								</v-layout>
 							</v-form>
 						</v-flex>

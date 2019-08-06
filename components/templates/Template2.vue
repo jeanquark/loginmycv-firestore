@@ -278,7 +278,7 @@
 								<v-img src="/images/ab-img.png"></v-img>
 							</v-flex>
 							<v-flex xs12 sm6 style="">
-								<h2>About Me</h2>
+								<h2>{{ resume.menus['presentation'] || 'Presentation' }}</h2>
 								<p>{{ resume.personal_data.short_description }}</p>
 								<v-chip class="skill" v-for="(competence, index) in resume.key_competences" :key="index">{{ competence.name }}</v-chip>
 							</v-flex>
@@ -291,7 +291,7 @@
 				<!-- Section Education & Work experience -->
 				<v-layout row wrap class="my-5 section" id="education">
 					<v-flex xs12 sm4 offset-sm2 class="pr-4">
-						<h1 class="text-xs-center">Education</h1><br />
+						<h1 class="text-xs-center">{{ resume.menus['education'] || 'Education' }}</h1><br />
 						<v-card class="card" v-for="education in resume.education" :key="education.title">
 							<v-card-title class="card-title">
 								{{ education.title }} from&nbsp;<span class="primary-color accentuate italic">{{ education.school }}</span>
@@ -304,7 +304,7 @@
 						</v-card>
 					</v-flex>
 					<v-flex xs12 sm4 class="pl-4">
-						<h1 class="text-xs-center">Work experience</h1><br />
+						<h1 class="text-xs-center">{{ resume.menus['work_experience'] || 'Work experience' }}</h1><br />
 						<v-card class="card" v-for="(work_experience, index) in resume.work_experience" :key="index">
 							<v-card-title class="card-title">
 								{{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span>
@@ -323,6 +323,8 @@
 				<!-- Section Skills  -->
 				<v-layout row wrap id="skills" class="my-5 section">
 					<v-flex xs12 sm8 offset-sm2 style="">
+						<h1 class="text-xs-center">{{ resume.menus['skills'] || 'Skills' }}</h1>
+						<br /><br />
 						<v-layout row wrap justify-center>
 							<v-flex xs12 sm6 v-for="(skill, index) in skills" :key="index" class="pa-3 text-xs-center">
 								<div>
@@ -370,7 +372,7 @@
 				<!-- Section Files -->
 				<v-layout row wrap id="files" class="my-5 section" v-if="files && files.length > 0">
 					<v-flex xs12 sm8 offset-sm2>
-						<h1 class="text-xs-center">Files</h1>
+						<h1 class="text-xs-center">{{ resume.menus['files'] || 'Files' }}</h1>
 						<br /><br />
 						<v-layout row wrap justify-center>
 							<v-flex xs6 md4 lg3 v-for="(file, index) in files" :key="index" class="pa-2" style="">
@@ -393,7 +395,7 @@
 				<!-- Section Contact -->
 				<v-layout row wrap id="contact" class="my-5 section" v-if="resume.parameters && resume.parameters.show_contact_form">
 					<v-flex xs12 sm8 offset-sm2>
-						<h1 class="text-xs-center">Contact Me</h1>
+						<h1 class="text-xs-center">{{ resume.menus['contact'] || 'Contact' }}</h1>
 						<br /><br />
 						<v-form>
 							<v-layout row wrap>
@@ -401,11 +403,11 @@
 									<v-text-field
 										outline
 										name="firstname_template2"
-										label="First name"
+										:label="resume.fields['firstname'] || 'Firstname'"
 										v-model="contactForm.firstname"
 										v-validate="'required|max:40'"
 										:error-messages="errors ? errors.collect('firstname_template2') : null"
-										data-vv-as="First name"
+										:data-vv-as="resume.fields['firstname'] || 'Firstname'"
 										:color="primaryColor"
 										:background-color="primaryColor"
 										dark
@@ -415,11 +417,11 @@
 									<v-text-field
 										outline
 										name="lastname_template2"
-										label="Last name"
+										:label="resume.fields['lastname'] || 'Lastname'"
 										v-model="contactForm.lastname"
 										v-validate="'required|max:40'"
 										:error-messages="errors ? errors.collect('lastname_template2') : null"
-										data-vv-as="Last name"
+										:data-vv-as="resume.fields['lastname'] || 'Lastname'"
 										:color="primaryColor"
 										:background-color="primaryColor"
 										dark
@@ -429,11 +431,11 @@
 									<v-text-field
 										outline
 										name="email_template2"
-										label="Your Email"
+										:label="resume.fields['email'] || 'Email'"
 										v-model="contactForm.email"
 										v-validate="'required|email'"
 										:error-messages="errors ? errors.collect('email_template2') : null"
-										data-vv-as="Email"
+										:data-vv-as="resume.field['email'] || 'Email'"
 										:color="primaryColor"
 										:background-color="primaryColor"
 										dark
@@ -443,17 +445,17 @@
 									<v-textarea
 										outline
 										name="message_template2"
-										label="Your message"
+										:label="resume.fields['message'] || 'Message'"
 										v-model="contactForm.message"
 										v-validate="'required|max:2056'"
 										:error-messages="errors ? errors.collect('message_template2') : null"
-										data-vv-as="Message"
+										:data-vv-as="resume.fields['message'] || 'Message'"
 										:color="primaryColor"
 										:background-color="primaryColor"
 										dark
 									></v-textarea>
 								</v-flex>
-								<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" @click.prevent="sendMessage">Send message</v-btn>
+								<v-btn round block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" @click.prevent="sendMessage">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
 							</v-layout>
 						</v-form>
 					</v-flex>

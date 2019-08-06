@@ -3,9 +3,11 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            <!-- userResume: {{ userResume }}<br /> -->
+            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
+			<!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
+			<!-- userResume.language: {{ userResume.language }}<br /><br /> -->
         </div>
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
@@ -134,24 +136,53 @@
                         <h2 class="headline mb-0 text-xs-center">
                             <font-awesome-icon :icon="['fas', 'language']" />
                             Translation <small>(optional)</small><br />
-                            <small class="body-1">Below you can specify menu names and field names as you wish the appear on your resume</small>
+                            <small class="body-1">Below you can specify menu names and field names as you wish they appear on your resume</small>
                         </h2>
                     </v-card-title>
 
                     <v-card-text>
+
+                        <v-layout row wrap>
+                            <v-flex xs12 sm4 class="px-4">
+                                <v-autocomplete label="Resume language" :items="loadedLanguages" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.language">
+                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
+                                    <template v-slot:selection="data">
+                                        <v-chip :selected="data.selected" class="chip--select-multi">
+                                            <v-avatar>
+                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            </v-avatar>
+                                            {{ data.item.name }}
+                                        </v-chip>
+                                    </template>
+                                    <template v-slot:item="data">
+                                        <template>
+                                            <v-list-tile-avatar>
+                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </template>
+                                </v-autocomplete>
+                            </v-flex>
+                        </v-layout>
+
                         <v-layout row wrap>
                             <v-flex xs12 v-if="loadedTemplate.menus">
-                                <h4 class="text-xs-center">Menus</h4>
+                                <h4 class="text-xs-center">Menus:</h4>
                             </v-flex>
                             <v-flex xs12 sm6 md4 class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
+								<!-- v-model="userResume.menus[index].name -->
+								<!-- :value="userResume.menus[index]['name_' + userResume.language.code] ? userResume.menus[index]['name_' + userResume.language.code] : userResume.menus[index].name" -->
                                 <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="50" v-model="userResume.menus[menu.slug]">
                                     <template v-slot:label>
                                         {{ menu.name }}
                                     </template>
                                 </v-text-field>
                             </v-flex>
-                            <v-flex xs12 class="mt-3" v-if="loadedTemplate.fields">
-                                <h4 class="text-xs-center">Fields</h4>
+                            <v-flex xs12 class="mt-4" v-if="loadedTemplate.fields">
+                                <h4 class="text-xs-center">Fields:</h4>
                             </v-flex>
                             <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
                                 <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="50" v-model="userResume.fields[field.slug]">
@@ -159,7 +190,6 @@
                                         {{ field.name }}
                                     </template>
                                 </v-text-field>
-
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -170,10 +200,11 @@
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark color="primary">
+					<v-spacer></v-spacer>
+                    <v-toolbar-title>Close</v-toolbar-title>
                     <v-btn icon dark @click="dialog = false">
                         <v-icon>close</v-icon>
                     </v-btn>
-                    <v-toolbar-title>Close</v-toolbar-title>
                 </v-toolbar>
                 <v-layout row align-center justify-center pa-2 style="border-bottom: 2px solid var(--v-primary-base);">
                     Primary color
@@ -215,7 +246,6 @@
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
 			await this.$store.dispatch('templates/fetchTemplates')
-			// this.primaryColor = this.userResume.colors.primaryColor
 			if (!this.resumeSlug) {
 				const template = this.$store.getters['templates/loadedTemplates'].find(
 					template => template.slug === 'template1'
@@ -223,6 +253,13 @@
 				if (template) {
 					this.userResume.template_id = template.id
 					this.userResume.colors = template.colors
+					// Assign array values to object
+					template.menus.forEach(menu => {
+						this.userResume.menus[menu.slug] = menu.name
+					})
+					template.fields.forEach(field => {
+						this.userResume.fields[field.slug] = field.name
+					})
 				}
 			}
 		},
@@ -254,6 +291,9 @@
 					// return this.$store.getters['resumes/loadedUserResumes'].find(resume => resume.slug === this.resumeSlug)
 					return this.$store.getters['resumes/loadedNewResume']
 				}
+			},
+			loadedLanguages() {
+				return this.$store.getters['languages/loadedLanguages']
 			}
 		},
 		methods: {
@@ -269,6 +309,30 @@
 				// this.component = () => import(`~/components/templatesModels/template1`)
 				this.component = () => import(`~/components/templatesModels/${templateSlug}`)
 				this.dialog = true
+			}
+		},
+		watch: {
+			'userResume.language' () {
+				if (this.loadedTemplate && this.loadedTemplate.menus && this.loadedTemplate.menus.length) {
+					this.loadedTemplate.menus.forEach((menu, index) => {
+						// Check if translation exists for the particular item
+						if (this.loadedTemplate.menus[index]['name_' + this.userResume.language.code]) {
+							this.userResume.menus[menu.slug] = menu['name_' + this.userResume.language.code]
+						} else {
+							this.userResume.menus[menu.slug] = ''
+						}
+					})
+				}
+				if (this.loadedTemplate && this.loadedTemplate.fields && this.loadedTemplate.fields.length) {
+					this.loadedTemplate.fields.forEach((field, index) => {
+						// Check if translation exists for the particular item
+						if (this.loadedTemplate.fields[index]['name_' + this.userResume.language.code]) {
+							this.userResume.fields[field.slug] = field['name_' + this.userResume.language.code]
+						} else {
+							this.userResume.fields[field.slug] = ''
+						}
+					})
+				}
 			}
 		}
 	}

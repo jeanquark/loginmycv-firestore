@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!loading">
         <v-layout row wrap>
             <v-flex xs12 class="mb-3">
                 <h2 class="text-xs-center">Create a new resume</h2>
@@ -22,15 +22,10 @@
         </v-layout>
 
         <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
-            <v-flex xs12 sm4>
-                <div class="text-xs-left">
-                    Import data from existing resume:
-                </div>
+            <v-flex xs9 sm4 offset-sm6 md3 offset-md8>
+                <v-select label="Select a resume to import" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"> </v-select>
             </v-flex>
-            <v-flex xs6 sm4>
-                <v-select label="Select resume" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"></v-select>
-            </v-flex>
-            <v-flex xs6 sm4>
+            <v-flex xs3 sm2 md1 class="text-xs-right">
                 <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
             </v-flex>
         </v-layout>
@@ -107,11 +102,6 @@
                             </v-card>
                         </v-stepper-content>
 
-                        <v-stepper-content :step="7">
-                            <v-card class="mb-5">
-                                Other
-                            </v-card>
-                        </v-stepper-content>
                     </v-stepper-items>
 
                     <v-card-actions class="justify-center">
@@ -138,6 +128,28 @@
                 </v-card-title>
 
                 <v-card-text>
+
+                    <v-layout row wrap justify-center align-center>
+                        <v-flex xs2 class="text-xs-center">
+                            <v-avatar size="46" color="grey lighten-4" class="mr-3">
+                                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                            </v-avatar>
+                        </v-flex>
+
+                        <v-flex xs10>
+                            <p class="px-2 my-0">Your new online resume is about to be created.</p>
+                            <ul>
+                                <li v-if="!loadedNewResume.education.length">&#8226; You did not add any education &#128528;. That's OK, you can add some later on &#128077;
+                                </li>
+                                <li v-if="!loadedNewResume.work_experience.length">&#8226; You did not add any work experience &#128528;. That's OK, you can add some later on &#128077;
+                                </li>
+                            </ul>
+                            <!-- <p class="px-2 my-0" v-if="!loadedNewResume.education.length">&#8226; You did not add any education &#128528;. That's OK, you can add some later on &#128077;</p>
+                            <p class="px-2 my-0" v-if="!loadedNewResume.work_experience.length">&#8226; You did not add any work experience &#128528;. That's OK, you can add some later on &#128077;</p> -->
+                        </v-flex>
+
+                    </v-layout>
+
                     <v-layout justify-center>
                         <v-checkbox color="primary" v-model="acceptConditions">
                             <template v-slot:label>
@@ -155,6 +167,7 @@
                             </template>
                         </v-checkbox>
                     </v-layout>
+
                     <v-layout justify-center>
                         <v-btn color="primary" @click.stop="saveResume" :disabled="!acceptConditions" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
                         <v-btn flat color="secondary" @click.stop="creatingResumeDialog = false">Cancel</v-btn>
@@ -178,47 +191,46 @@
 
 <script>
 	import templateComponent from '~/components/resume/TemplateComponent'
-	import personalDataComponent from '~/components/resume/PersonalDataComponent'
-	import educationComponent from '~/components/resume/EducationComponent'
-	import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
-	import skillsComponent from '~/components/resume/SkillsComponent'
-	import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
+	// import personalDataComponent from '~/components/resume/PersonalDataComponent'
+	// import educationComponent from '~/components/resume/EducationComponent'
+	// import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
+	// import skillsComponent from '~/components/resume/SkillsComponent'
+	// import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
 	import axios from 'axios'
 	import Noty from 'noty'
 	import { firestore, storage } from '~/plugins/firebase-client-init'
 	import moment from 'moment'
-	// import { Validator } from 'vee-validate';
 	export default {
-		// inject: ['$validator'], // inject parent validator
 		$_veeValidate: {
-			validator: 'new' // give me my own validator scope.
+			validator: 'new' // Give me my own validator scope.
 		},
 		components: {
 			templateComponent,
-			personalDataComponent,
-			educationComponent,
-			workExperienceComponent,
-			skillsComponent,
-			fileUploadsComponent
+			personalDataComponent: () => import('~/components/resume/PersonalDataComponent'),
+			educationComponent: () => import('~/components/resume/EducationComponent'),
+			workExperienceComponent: () => import('~/components/resume/WorkExperienceComponent'),
+			skillsComponent: () => import('~/components/resume/SkillsComponent'),
+			fileUploadsComponent: () => import('~/components/resume/FileUploadsComponent')
 		},
 		layout: 'layoutBack',
 		async created() {
-			this.$store.commit('setLoading', false)
+			this.$store.commit('setLoading', true)
 			this.$store.commit('clearError')
 			await this.$store.commit('resumes/setEmptyResume')
 
-			if (this.$store.getters['countries/loadedCountries'].length < 1) {
+			if (!this.$store.getters['countries/loadedCountries'].length) {
 				await this.$store.dispatch('countries/fetchCountries')
 			}
-			if (this.$store.getters['languages/loadedLanguages'].length < 1) {
+			if (!this.$store.getters['languages/loadedLanguages'].length) {
 				await this.$store.dispatch('languages/fetchLanguages')
 			}
-			if (this.$store.getters['competences/loadedCompetences'].length < 1) {
+			if (!this.$store.getters['competences/loadedCompetences'].length) {
 				await this.$store.dispatch('competences/fetchCompetences')
 			}
-			if (this.$store.getters['socialNetworks/loadedSocialNetworks'].length < 1) {
+			if (!this.$store.getters['socialNetworks/loadedSocialNetworks'].length) {
 				await this.$store.dispatch('socialNetworks/fetchSocialNetworks')
 			}
+			this.$store.commit('setLoading', false)
 		},
 		mounted() {
 			// this.errors.clear()
@@ -264,7 +276,7 @@
 		},
 		methods: {
 			moveOneStepForward() {
-				if (this.step < 7) {
+				if (this.step < 6) {
 					this.step += 1
 				} else {
 					this.step = 1
@@ -274,7 +286,7 @@
 				if (this.step != 1) {
 					this.step -= 1
 				} else {
-					this.step = 7
+					this.step = 6
 				}
 			},
 			importDataFromResume() {
@@ -312,8 +324,8 @@
 						// Display errors in red in components
 						// console.log('Validation error!')
 
-						const templateErrors = this.errors.items.filter(item =>
-							item.field.includes('menu') || item.field.includes('field')
+						const templateErrors = this.errors.items.filter(
+							item => item.field.includes('menu') || item.field.includes('field')
 						)
 						if (templateErrors.length > 0) {
 							this.stepTemplateErrors = true
@@ -462,7 +474,7 @@
 						} else {
 							console.log('error: ', error)
 							// if (process.env.NODE_ENV === 'production') {
-								this.$sentry.captureException(new Error(error))
+							this.$sentry.captureException(new Error(error))
 							// }
 						}
 					})

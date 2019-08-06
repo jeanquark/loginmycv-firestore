@@ -14,6 +14,10 @@
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- resumesNames: {{ resumesNames }}<br /><br /> -->
             <!-- newResumeNameMap: {{ newResumeNameMap }}<br /><br /> -->
+            <!-- <div id="myDiv">
+                <h1>abc</h1>
+				<p>def</p>
+            </div> -->
         </v-flex>
 
         <v-layout justify-center>
@@ -21,7 +25,7 @@
             <br />
             <br />
         </v-layout>
-        <v-flex xs12 class="text-xs-center">
+        <v-flex xs12 class="text-xs-center" id="myDiv">
             <v-card flat class="ma-2">
                 <v-card-text>
                     <v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1" :expand="true">
@@ -49,6 +53,9 @@
                             <td class="px-0">
                                 <!-- <v-layout class="justify-center fill-height align-center"> -->
                                 <v-layout align-center justify-center fill-height>
+                                    <!-- <v-btn flat icon @click="convertToPdf(props.item.slug)">
+                                        <v-icon small color="blue">picture_as_pdf</v-icon>
+                                    </v-btn> -->
                                     <v-btn flat icon target="_blank" :href="`/resume/${props.item.slug}`">
                                         <v-icon small color="secondary">input</v-icon>
                                     </v-btn>
@@ -124,13 +131,26 @@
             </v-list>
         </v-flex>
 
-        <v-snackbar v-model="snackbar" :timeout="5000" :bottom="true" :auto-height="true">
+        <v-snackbar v-model="snackbarDeleteResume" :timeout="5000" :bottom="true" :auto-height="true">
             <span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete resume {{ resume.slug }}?</span>
             <v-btn color="pink" flat @click="deleteResume">
                 <span style="font-size: 1.3em;">Yes</span>
             </v-btn>
-            <v-btn color="secondary" flat @click="snackbar = false">
+            <v-btn color="secondary" flat @click="snackbarDeleteResume = false">
                 <span style="font-size: 1.3em;">No</span>
+            </v-btn>
+        </v-snackbar>
+
+        <v-snackbar :value="snackbarNoResume" :timeout="0" :bottom="true" :auto-height="true">
+            <v-avatar size="48" color="grey lighten-4" class="mr-3">
+                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+            </v-avatar>
+
+            <span class="pa-2" style="font-size: 1.3em;">Hem... it looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
+                    <v-icon>add</v-icon>
+                </v-btn> button</span>
+            <v-btn color="secondary" flat @click="snackbarNoResume = false">
+                <span style="font-size: 1.3em;">Close</span>
             </v-btn>
         </v-snackbar>
     </v-layout>
@@ -141,6 +161,9 @@
 	import Noty from 'noty'
 	import { GChart } from 'vue-google-charts'
 	import moment from 'moment'
+	if (process.client) {
+		window.html2pdf = require('html2pdf.js')
+	}
 	export default {
 		inject: ['$validator'], // Inject vee-validate validator
 		components: { GChart },
@@ -149,8 +172,11 @@
 			this.$store.commit('setLoading', false)
 			this.$store.getters['users/loadedUser']
 			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
-			this.$store.dispatch('resumes/fetchUserResumes')
+			await this.$store.dispatch('resumes/fetchUserResumes')
 			// }
+			if (!this.$store.getters['resumes/loadedUserResumes'].length) {
+				this.snackbarNoResume = true
+			}
 
 			if (this.$store.getters['loadedDarkTheme']) {
 				this.chartOptions.backgroundColor = '#424242'
@@ -183,8 +209,8 @@
 					{ text: 'Last update', value: 'updated_at' },
 					{ text: 'Actions', align: 'center', sortable: false }
 				],
-				// resumeNames: [],
-				snackbar: false,
+				snackbarDeleteResume: false,
+				snackbarNoResume: false,
 				confirm: false,
 				resume: {},
 				chartOptions: {
@@ -258,9 +284,6 @@
 			errors() {
 				return this.$store.getters['errors']
 			},
-			// loadingArray () {
-			// 	return new Array(3)
-			// },
 			loadedUser() {
 				return this.$store.getters['users/loadedUser']
 			},
@@ -273,9 +296,7 @@
 					if (resume.statistics_last_visits) {
 						statistics.push(
 							resume.statistics_last_visits.map(visit => {
-								return new Date(
-									moment(visit * 1000).format('YYYY-MM-DD')
-								)
+								return new Date(moment(visit * 1000).format('YYYY-MM-DD'))
 							})
 						)
 					}
@@ -297,9 +318,7 @@
 							// console.log('existing value!')
 							existingValue[index + 1] += 1 || 1
 						} else {
-							const newEntry = new Array(
-								this.getStatistics.length + 1
-							).fill(0)
+							const newEntry = new Array(this.getStatistics.length + 1).fill(0)
 							newEntry[0] = click
 							newEntry[index + 1] = 1
 							newArray.push(newEntry)
@@ -337,6 +356,32 @@
 			// }
 		},
 		methods: {
+			convertToPdf(resumeSlug) {
+				console.log('convertToPdf: ', resumeSlug)
+
+				var element = document.getElementById('myDiv')
+				console.log('element: ', element)
+				var opt = {
+					// margin: 0,
+					// filename: 'myfile.pdf',
+					// image: { type: 'jpeg', quality: 0.98 },
+					// html2canvas: { scale: 2 },
+					// jsPDF: { unit: 'cm', format: [60, 60], orientation: 'portrait' }
+					margin: 1,
+					filename: 'myFile.pdf',
+					html2canvas: { dpi: 24, letterRendering: true },
+					jsPDF: {
+						orientation: 'portrait',
+						// unit: 'mm',
+						format: 'a4'
+					}
+				}
+
+				html2pdf()
+					.set(opt)
+					.from(element)
+					.save()
+			},
 			updateName($event, resumeId) {
 				// console.log('updateName: ', $event, resumeId)
 				this.newResumeNameMap.set(resumeId, $event)
@@ -393,7 +438,8 @@
 			addResume() {
 				// console.log('addResume')
 				const currentNumberResumes = this.loadedUserResumes.length
-				const maxNumberResumes = this.loadedUser.private ? this.loadedUser.private.maximum_number_of_resumes
+				const maxNumberResumes = this.loadedUser.private
+					? this.loadedUser.private.maximum_number_of_resumes
 					: 1
 				// console.log('currentNumberResumes: ', currentNumberResumes)
 				// console.log('maxNumberResumes: ', maxNumberResumes)
@@ -416,7 +462,7 @@
 			},
 			requestConfirmation(resume) {
 				this.resume = resume
-				this.snackbar = true
+				this.snackbarDeleteResume = true
 			},
 			updateMinDate() {
 				// console.log('minDate: ', this.minDate)
@@ -428,6 +474,7 @@
 				this.chartOptions.hAxis.viewWindow.max = new Date(this.maxDate)
 				this.modalMaxDate = false
 			},
+
 			async deleteResume() {
 				try {
 					this.snackbar = false
@@ -443,8 +490,7 @@
 				} catch (error) {
 					new Noty({
 						type: 'error',
-						text:
-							'Sorry, an error occured and your resume could not be deleted.',
+						text: 'Sorry, an error occured and your resume could not be deleted.',
 						timeout: 5000,
 						theme: 'metroui'
 					}).show()
@@ -488,5 +534,8 @@
 	}
 	.v-input--selection-controls {
 		padding-top: 10px;
+	}
+	.disabled-button {
+		pointer-events: none;
 	}
 </style>

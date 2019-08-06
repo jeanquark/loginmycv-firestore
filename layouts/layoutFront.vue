@@ -152,7 +152,7 @@
 	import ForgotPassword from "~/components/ForgotPassword";
 	export default {
 		$_veeValidate: {
-			validator: "new" // give me my own validator scope.
+			validator: "new" // Give me my own validator scope.
 		},
 		// inject: ['$validator'], // inject parent validator
 		components: { Login, Register, ForgotPassword },
@@ -183,12 +183,20 @@
 						link: "/about"
 					},
 					{
-						name: "Team",
-						link: "/team"
-					},
-					{
 						name: "Packages",
 						link: "/packages"
+					},
+					// {
+					// 	name: "Team",
+					// 	link: "/team"
+					// },
+					{
+						name: "Terms & Conditions",
+						link: "/terms-conditions"
+					},
+					{
+						name: "FAQ",
+						link: "/faq"
 					},
 					{
 						name: "Contact Us",
