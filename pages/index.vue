@@ -26,7 +26,7 @@
                             <div class="headline text-xs-center">Your online CV for free</div>
                         </v-card-title>
                         <v-card-text>
-                            Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice. 
+                            Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -79,7 +79,7 @@
                     <h2 class="subtitle display-1">Browse candidates</h2>
                     <br />
                 </v-flex>
-                <v-flex xs12 sm6 md4 lg4 v-for="resume of loadedShortResumes" :key="resume.username">
+                <v-flex xs12 sm6 md4 lg12 v-for="resume of loadedShortResumes" :key="resume.username">
                     <v-hover>
                         <v-card flat height="300" class="ma-2 align-center" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }" style="overflow-x: hidden; overflow-y: auto;">
                             <v-layout row wrap>
@@ -133,11 +133,11 @@
             </v-layout>-->
 
             <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
-			<video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%;">
-				<!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
-			</video>
+            <video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%; height: 500px;">
+                <!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
+            </video>
 
-            <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}">
+            <!-- <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}">
                 <div v-for="resume of loadedShortResumes" :key="resume.username">
                     <v-hover>
                         <v-card flat class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
@@ -189,7 +189,7 @@
                         </v-card>
                     </v-hover>
                 </div>
-            </masonry>
+            </masonry> -->
 
             <v-layout row wrap>
                 <!-- Request Authorization Modal -->
@@ -197,17 +197,34 @@
                     <RequestAuthorization :resume="candidateResume" />
                 </v-dialog>
             </v-layout>
+
+            <!-- <div v-for="(item, index) in list" :key="index">
+                {{ index }}: {{ item.title }}
+            </div>
+            <infinite-loading @infinite="infiniteHandler"></infinite-loading> -->
+
+            <!-- <div v-for="(item, index) in resumes" :key="index">
+                {{ index }}: {{ item.resume_long_id }}
+            </div>
+            <v-btn small color="info" @click.stop="loadMore()">Load more</v-btn> -->
+
+            <div v-for="(item, index) in resumes" :key="index">
+                {{ index }}: {{ item.resume_long_id }}
+            </div>
+            <infinite-loading @infinite="infiniteHandler" v-if="infiniteScrollReady"></infinite-loading>
+
         </v-container>
     </div>
 </template>
 
 <script>
-	import firebase from 'firebase/app'
-	import { firestore } from '~/plugins/firebase-client-init.js'
+	import firebase from 'firebase/app' // To be removed
+	import { firestore } from '~/plugins/firebase-client-init.js' // To be removed
 	import Noty from 'noty'
 	import axios from 'axios'
 	import RequestAuthorization from '~/components/RequestAuthorization'
 	import Avatar from 'vue-avatar'
+	// import InfiniteLoading from 'vue-infinite-loading'
 	export default {
 		components: { RequestAuthorization, Avatar },
 		layout: 'layoutFront',
@@ -230,6 +247,14 @@
 			this.$store.commit('closeRequestAuthorizationModal')
 			this.$store.commit('clearOpenComponent')
 			this.$store.commit('clearRedirect')
+
+			// this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
+			// const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
+			// this.handleQuestions(firstPage)
+
+			this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
+			const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
+			this.handleResumes(firstPage)
 
 			// this.$sentry.captureException(new Error('oups, there is an error from the server'))
 			// myUndefinedFunction();
@@ -255,7 +280,22 @@
 					// {
 					// 	src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
 					// }
-				]
+				],
+				page: 1,
+				list: [],
+				lastVisible: {},
+				//
+				resumes: [],
+				paging: {
+					resumes_per_page: 1,
+					end: false,
+					loading: false
+				},
+				ref: {
+					resumes: null,
+					resumesNext: null
+				},
+				infiniteScrollReady: false
 			}
 		},
 		computed: {
@@ -269,9 +309,7 @@
 				return this.$store.getters['resumes/loadedShortResumes']
 			},
 			loadedUserReceivedAuthorizations() {
-				return this.$store.getters[
-					'authorizations/loadedUserReceivedAuthorizationsObject'
-				]
+				return this.$store.getters['authorizations/loadedUserReceivedAuthorizationsObject']
 			},
 			requestAuthorizationModal() {
 				return this.$store.getters['requestAuthorizationModal']
@@ -282,15 +320,11 @@
 				this.candidateResume = resume
 				if (!this.loadedUser) {
 					this.$store.commit('setRedirect', '/')
-					this.$store.commit(
-						'setOpenComponent',
-						'openRequestAuthorizationModal'
-					)
+					this.$store.commit('setOpenComponent', 'openRequestAuthorizationModal')
 					this.$store.commit('openLoginModal')
 					new Noty({
 						type: 'info',
-						text:
-							'You need to be authenticated to request an authorization.',
+						text: 'You need to be authenticated to request an authorization.',
 						timeout: 5000,
 						theme: 'metroui'
 					}).show()
@@ -310,6 +344,154 @@
 				} catch (error) {
 					this.$sentry.captureException(new Error(error))
 				}
+			},
+			async handleResumes(ref) {
+					// console.log('ref: ', ref)
+					console.log('this.infiniteScrollReady: ', this.infiniteScrollReady)
+					const documentSnapshots = await ref.get()
+					this.infiniteScrollReady = true
+					/* If documentSnapshots is empty, then we have loaded all of pages */
+					if (documentSnapshots.empty) {
+						this.paging.end = true
+						return documentSnapshots
+					}
+	
+					documentSnapshots.forEach(doc => {
+						let questionData = doc.data()
+						questionData.id = doc.id
+						this.resumes.push(questionData)
+					})
+	
+					/* Build reference for next page */
+					const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
+	
+					if (!lastVisible) {
+						return
+					}
+	
+					this.ref.resumesNext = this.ref.resumes
+						.startAfter(lastVisible)
+						.limit(this.paging.resumes_per_page)
+	
+					return documentSnapshots	
+			},
+			// handleResumes2(ref) {
+			// 	return new Promise((resolve, reject) => {
+			// 		// setTimeout(() => {
+			// 			// if (ref) {
+			// 			ref.get().then(documentSnapshots => {
+			// 				/* If documentSnapshots is empty, then we have loaded all of pages */
+			// 				if (documentSnapshots.empty) {
+			// 					this.paging.end = true
+			// 					resolve(documentSnapshots)
+			// 				}
+
+			// 				documentSnapshots.forEach(doc => {
+			// 					let questionData = doc.data()
+			// 					questionData.id = doc.id
+			// 					this.resumes.push(questionData)
+			// 				})
+
+			// 				/* Build reference for next page */
+			// 				const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
+
+			// 				if (!lastVisible) {
+			// 					return
+			// 				}
+
+			// 				this.ref.resumesNext = this.ref.resumes
+			// 					.startAfter(lastVisible)
+			// 					.limit(this.paging.resumes_per_page)
+
+			// 				resolve(documentSnapshots)
+			// 			})
+			// 			// }
+			// 		// }, 2000)
+			// 	})
+			// },
+			async infiniteHandler($state) {
+				if (this.paging.end) {
+					$state.complete()
+					return
+				}
+
+				this.paging.loading = true
+				// console.log('this.ref.resumesNext: ', this.ref.resumesNext)
+				// if (this.ref.resumesNext) {
+					const documentSnapshots = await this.handleResumes(this.ref.resumesNext)
+					setTimeout(() => {
+						$state.loaded()
+						this.paging.loading = false
+						if (documentSnapshots.empty) {
+							/* If there is no more questions to load, set paging.end to true */
+							this.paging.end = true
+						}
+					}, 2000)
+				// }
+			},
+			// infiniteHandler($state) {
+			// 	axios
+			// 		.get('//hn.algolia.com/api/v1/search_by_date?tags=story', {
+			// 			params: {
+			// 				page: this.page
+			// 			}
+			// 		})
+			// 		.then(({ data }) => {
+			// 			if (data.hits.length) {
+			// 				setTimeout(() => {
+			// 					this.page += 1
+			// 					this.list.push(...data.hits)
+			// 					$state.loaded()
+			// 				}, 3000)
+			// 			} else {
+			// 				$state.complete()
+			// 			}
+			// 		})
+			// },
+			loadMore() {
+				if (this.paging.end) {
+					return
+				}
+
+				this.paging.loading = true
+				this.handleQuestions(this.ref.resumesNext).then(documentSnapshots => {
+					this.paging.loading = false
+
+					if (documentSnapshots.empty) {
+						/* If there is no more questions to load, set paging.end to true */
+						this.paging.end = true
+					}
+				})
+			},
+			handleQuestions(ref) {
+				return new Promise((resolve, reject) => {
+					ref.get().then(documentSnapshots => {
+						/* If documentSnapshots is empty, then we have loaded all of pages */
+						if (documentSnapshots.empty) {
+							this.paging.end = true
+							resolve(documentSnapshots)
+						}
+
+						documentSnapshots.forEach(doc => {
+							let questionData = doc.data()
+							questionData.id = doc.id
+							this.resumes.push(questionData)
+						})
+
+						/* Build reference for next page */
+						const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
+
+						if (!lastVisible) {
+							return
+						}
+
+						this.ref.resumesNext = this.ref.resumes
+							.startAfter(lastVisible)
+							.limit(this.paging.resumes_per_page)
+
+						resolve(documentSnapshots)
+					})
+				})
 			}
 		}
 	}

@@ -3,7 +3,7 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            <!-- userResume: {{ userResume }}<br /><br /> -->
+            userResume: {{ userResume }}<br /><br />
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
 			<!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
@@ -175,7 +175,7 @@
                             <v-flex xs12 sm6 md4 class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
 								<!-- v-model="userResume.menus[index].name -->
 								<!-- :value="userResume.menus[index]['name_' + userResume.language.code] ? userResume.menus[index]['name_' + userResume.language.code] : userResume.menus[index].name" -->
-                                <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="50" v-model="userResume.menus[menu.slug]">
+                                <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 100 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="100" v-model="userResume.menus[menu.slug]">
                                     <template v-slot:label>
                                         {{ menu.name }}
                                     </template>
@@ -185,7 +185,18 @@
                                 <h4 class="text-xs-center">Fields:</h4>
                             </v-flex>
                             <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
-                                <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="50" v-model="userResume.fields[field.slug]">
+                                <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 100 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="100" v-model="userResume.fields[field.slug]">
+                                    <template v-slot:label>
+                                        {{ field.name }}
+                                    </template>
+                                </v-text-field>
+                            </v-flex>
+							<v-flex xs12 class="mt-4" v-if="loadedTemplate.contact_form_validation">
+                                <h4 class="text-xs-center">Contact form validation:</h4>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug">
+								<!-- field: {{ field }} -->
+                                <v-text-field :name="`contact_${field.slug}`" item-text="name" v-validate="{ required: true, max: 100 }" :error-messages="errors ? errors.collect(`contact_${field.slug}`) : null" :data-vv-as="field.name" :counter="100" v-model="userResume.contact_form_validation[field.slug]">
                                     <template v-slot:label>
                                         {{ field.name }}
                                     </template>
@@ -260,6 +271,9 @@
 					template.fields.forEach(field => {
 						this.userResume.fields[field.slug] = field.name
 					})
+					template.contact_form_validation.forEach(field => {
+						this.userResume.contact_form_validation[field.slug] = field.value
+					})
 				}
 			}
 		},
@@ -330,6 +344,16 @@
 							this.userResume.fields[field.slug] = field['name_' + this.userResume.language.code]
 						} else {
 							this.userResume.fields[field.slug] = ''
+						}
+					})
+				}
+				if (this.loadedTemplate && this.loadedTemplate.contact_form_validation && this.loadedTemplate.contact_form_validation.length) {
+					this.loadedTemplate.contact_form_validation.forEach((field, index) => {
+						// Check if translation exists for the particular item
+						if (this.loadedTemplate.contact_form_validation[index]['value_' + this.userResume.language.code]) {
+							this.userResume.contact_form_validation[field.slug] = field['value_' + this.userResume.language.code]
+						} else {
+							this.userResume.contact_form_validation[field.slug] = ''
 						}
 					})
 				}

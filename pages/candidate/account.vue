@@ -148,7 +148,7 @@
 							:loading="loading"
 							@click.stop="dialog = true"
 						>
-							Delete
+							Delete account
 						</v-btn>
 					</v-layout>
 				</v-card-actions>
@@ -176,11 +176,11 @@
 						<ul>
 							<li>Your user profile</li>
 							<li>All your resumes</li>
-							<li>All the files you have uploaded</li>
+							<li>All the files you uploaded</li>
 						</ul>
 						<br />
 						There is no possibly to reverse the process.
-						We hope you have appreciated the time you spend with us and wish you all good for the future. Thank you for being part of loginMyCV!
+						We hope you have appreciated your time with us and wish you all good for the future. Thank you for being part of loginMyCV!
 						<br /><br />
 						<v-text-field
 							v-model="userEmail"

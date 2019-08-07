@@ -147,7 +147,7 @@
             </v-avatar>
 
             <span class="pa-2" style="font-size: 1.3em;">Hem... it looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
-                    <v-icon>add</v-icon>
+                <v-icon>add</v-icon>
                 </v-btn> button</span>
             <v-btn color="secondary" flat @click="snackbarNoResume = false">
                 <span style="font-size: 1.3em;">Close</span>
@@ -174,7 +174,7 @@
 			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
 			await this.$store.dispatch('resumes/fetchUserResumes')
 			// }
-			if (!this.$store.getters['resumes/loadedUserResumes'].length) {
+			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
 				this.snackbarNoResume = true
 			}
 

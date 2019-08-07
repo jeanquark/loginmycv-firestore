@@ -59,6 +59,7 @@ export const mutations = {
 			parameters: {},
 			menus: {},
 			fields: {},
+			contact_form_validation: {},
 			labels: [],
 			others: []
 		}

@@ -92,6 +92,7 @@ module.exports = {
 		// { src: '~/plugins/snackbarstack', ssr: false },
 		{ src: '~/plugins/vue-masonry-css', ssr: false },
 		// { src: '~/plugins/html2pdf', ssr: false },
+		{ src: '~/plugins/vue-infinite-loading', ssr: false },
     ],
     serverMiddleware: [
         '~/serverMiddleware/validateFirebaseIdToken',
