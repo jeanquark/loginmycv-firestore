@@ -65,10 +65,10 @@
                         <v-flex xs6>
                             <h4 class="primaryColor">Create a new resume:</h4><br />
                             <!-- <v-img src="/images/frontpage-text.svg" /> -->
-                            <v-img src="/images/gifs/create_resume.gif" />
+                            <v-img src="/images/gifs/create_resume.gif"></v-img>
                         </v-flex>
                         <v-flex xs6>
-                            <v-img src="/images/frontpage-img6.png" />
+                            <v-img src="/images/frontpage-img6.png"></v-img>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -133,12 +133,23 @@
             </v-layout>-->
 
             <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
-            <video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%; height: 500px;">
-                <!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
-            </video>
+            <v-layout row wrap justify-center>
+                <v-flex xs12 sm6>
+                    <video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%; height: 500px;">
+                        <!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
+                    </video>
+                </v-flex>
+            </v-layout>
 
-            <!-- <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}">
-                <div v-for="resume of loadedShortResumes" :key="resume.username">
+            <v-layout row wrap>
+                <!-- Request Authorization Modal -->
+                <v-dialog v-model="requestAuthorizationModal" width="500" lazy persistent>
+                    <RequestAuthorization :resume="candidateResume" />
+                </v-dialog>
+            </v-layout>
+
+            <masonry :cols="{default: 1, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}" v-if="infiniteScrollReady">
+                <div v-for="resume of resumes" :key="resume.id">
                     <v-hover>
                         <v-card flat class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
                             <v-layout row wrap>
@@ -189,14 +200,8 @@
                         </v-card>
                     </v-hover>
                 </div>
-            </masonry> -->
-
-            <v-layout row wrap>
-                <!-- Request Authorization Modal -->
-                <v-dialog v-model="requestAuthorizationModal" width="500" lazy persistent>
-                    <RequestAuthorization :resume="candidateResume" />
-                </v-dialog>
-            </v-layout>
+                <infinite-loading @infinite="infiniteHandler">></infinite-loading>
+            </masonry>
 
             <!-- <div v-for="(item, index) in list" :key="index">
                 {{ index }}: {{ item.title }}
@@ -208,53 +213,57 @@
             </div>
             <v-btn small color="info" @click.stop="loadMore()">Load more</v-btn> -->
 
-            <div v-for="(item, index) in resumes" :key="index">
-                {{ index }}: {{ item.resume_long_id }}
-            </div>
-            <infinite-loading @infinite="infiniteHandler" v-if="infiniteScrollReady"></infinite-loading>
+            <!-- <v-layout row wrap justify-center>
+                <div v-for="(item, index) in resumes" :key="index">
+                    {{ index }}: {{ item.resume_long_id }}<br />
+                </div>
+				<infinite-loading @infinite="infiniteHandler" v-if="infiniteScrollReady"></infinite-loading>
+            </v-layout> -->
 
         </v-container>
     </div>
 </template>
 
 <script>
-	import firebase from 'firebase/app' // To be removed
-	import { firestore } from '~/plugins/firebase-client-init.js' // To be removed
-	import Noty from 'noty'
-	import axios from 'axios'
-	import RequestAuthorization from '~/components/RequestAuthorization'
-	import Avatar from 'vue-avatar'
+	import firebase from "firebase/app"; // To be removed
+	import { firestore } from "~/plugins/firebase-client-init.js"; // To be removed
+	import Noty from "noty";
+	import axios from "axios";
+	import RequestAuthorization from "~/components/RequestAuthorization";
+	import Avatar from "vue-avatar";
 	// import InfiniteLoading from 'vue-infinite-loading'
 	export default {
 		components: { RequestAuthorization, Avatar },
-		layout: 'layoutFront',
+		layout: "layoutFront",
 		async created() {
 			try {
-				await this.$store.dispatch('resumes/fetchShortResumes')
+				await this.$store.dispatch("resumes/fetchShortResumes");
 			} catch (error) {
-				this.$sentry.captureException(new Error(error))
+				this.$sentry.captureException(new Error(error));
 			}
-			const authUser = this.$store.getters['users/loadedUser']
+			const authUser = this.$store.getters["users/loadedUser"];
 			if (authUser) {
 				await this.$store.dispatch(
-					'authorizations/fetchUserReceivedAuthorizations',
+					"authorizations/fetchUserReceivedAuthorizations",
 					authUser.id
-				)
+				);
 			}
 
-			this.$store.commit('clearError')
-			this.$store.commit('closeLoginModal')
-			this.$store.commit('closeRequestAuthorizationModal')
-			this.$store.commit('clearOpenComponent')
-			this.$store.commit('clearRedirect')
+			this.$store.commit("clearError");
+			this.$store.commit("closeLoginModal");
+			this.$store.commit("closeRequestAuthorizationModal");
+			this.$store.commit("clearOpenComponent");
+			this.$store.commit("clearRedirect");
 
 			// this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
 			// const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
 			// this.handleQuestions(firstPage)
 
-			this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
-			const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
-			this.handleResumes(firstPage)
+			this.ref.resumes = firestore
+				.collection("resumes_short")
+				.orderBy("_created_at", "desc");
+			const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page);
+			this.handleResumes(firstPage);
 
 			// this.$sentry.captureException(new Error('oups, there is an error from the server'))
 			// myUndefinedFunction();
@@ -266,15 +275,15 @@
 				candidateResume: {},
 				carouselItems: [
 					{
-						src: '/images/carousel1.png'
+						src: "/images/carousel1.png"
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
 					},
 					{
-						src: '/images/carousel2.png'
+						src: "/images/carousel2.png"
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
 					},
 					{
-						src: '/images/carousel3.png'
+						src: "/images/carousel3.png"
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
 					}
 					// {
@@ -296,41 +305,47 @@
 					resumesNext: null
 				},
 				infiniteScrollReady: false
-			}
+			};
 		},
 		computed: {
 			auth() {
-				return firebase.auth().currentUser
+				return firebase.auth().currentUser;
 			},
 			loadedUser() {
-				return this.$store.getters['users/loadedUser']
+				return this.$store.getters["users/loadedUser"];
 			},
 			loadedShortResumes() {
-				return this.$store.getters['resumes/loadedShortResumes']
+				return this.$store.getters["resumes/loadedShortResumes"];
 			},
 			loadedUserReceivedAuthorizations() {
-				return this.$store.getters['authorizations/loadedUserReceivedAuthorizationsObject']
+				return this.$store.getters[
+					"authorizations/loadedUserReceivedAuthorizationsObject"
+				];
 			},
 			requestAuthorizationModal() {
-				return this.$store.getters['requestAuthorizationModal']
+				return this.$store.getters["requestAuthorizationModal"];
 			}
 		},
 		methods: {
 			async showAuthModal(resume) {
-				this.candidateResume = resume
+				this.candidateResume = resume;
 				if (!this.loadedUser) {
-					this.$store.commit('setRedirect', '/')
-					this.$store.commit('setOpenComponent', 'openRequestAuthorizationModal')
-					this.$store.commit('openLoginModal')
+					this.$store.commit("setRedirect", "/");
+					this.$store.commit(
+						"setOpenComponent",
+						"openRequestAuthorizationModal"
+					);
+					this.$store.commit("openLoginModal");
 					new Noty({
-						type: 'info',
-						text: 'You need to be authenticated to request an authorization.',
+						type: "info",
+						text:
+							"You need to be authenticated to request an authorization.",
 						timeout: 5000,
-						theme: 'metroui'
-					}).show()
-					return
+						theme: "metroui"
+					}).show();
+					return;
 				} else {
-					this.$store.commit('openRequestAuthorizationModal')
+					this.$store.commit("openRequestAuthorizationModal");
 				}
 			},
 			// redirectToResume (slug, id) {
@@ -339,41 +354,61 @@
 			// },
 			async logout() {
 				try {
-					await this.$store.dispatch('firebase-auth/signOut')
-					this.$router.replace('/')
+					await this.$store.dispatch("firebase-auth/signOut");
+					this.$router.replace("/");
 				} catch (error) {
-					this.$sentry.captureException(new Error(error))
+					this.$sentry.captureException(new Error(error));
 				}
 			},
 			async handleResumes(ref) {
-					// console.log('ref: ', ref)
-					console.log('this.infiniteScrollReady: ', this.infiniteScrollReady)
-					const documentSnapshots = await ref.get()
-					this.infiniteScrollReady = true
-					/* If documentSnapshots is empty, then we have loaded all of pages */
+				// console.log('ref: ', ref)
+				console.log("this.infiniteScrollReady: ", this.infiniteScrollReady);
+				const documentSnapshots = await ref.get();
+				this.infiniteScrollReady = true;
+				/* If documentSnapshots is empty, then we have loaded all of pages */
+				if (documentSnapshots.empty) {
+					this.paging.end = true;
+					return documentSnapshots;
+				}
+
+				documentSnapshots.forEach(doc => {
+					let questionData = doc.data();
+					questionData.id = doc.id;
+					this.resumes.push(questionData);
+				});
+
+				/* Build reference for next page */
+				const lastVisible =
+					documentSnapshots.docs[documentSnapshots.size - 1];
+
+				if (!lastVisible) {
+					return;
+				}
+
+				this.ref.resumesNext = this.ref.resumes
+					.startAfter(lastVisible)
+					.limit(this.paging.resumes_per_page);
+
+				return documentSnapshots;
+			},
+			async infiniteHandler($state) {
+				if (this.paging.end) {
+					$state.complete();
+					return;
+				}
+
+				this.paging.loading = true;
+				const documentSnapshots = await this.handleResumes(
+					this.ref.resumesNext
+				);
+				setTimeout(() => {
+					$state.loaded();
+					this.paging.loading = false;
 					if (documentSnapshots.empty) {
-						this.paging.end = true
-						return documentSnapshots
+						/* If there is no more questions to load, set paging.end to true */
+						this.paging.end = true;
 					}
-	
-					documentSnapshots.forEach(doc => {
-						let questionData = doc.data()
-						questionData.id = doc.id
-						this.resumes.push(questionData)
-					})
-	
-					/* Build reference for next page */
-					const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
-	
-					if (!lastVisible) {
-						return
-					}
-	
-					this.ref.resumesNext = this.ref.resumes
-						.startAfter(lastVisible)
-						.limit(this.paging.resumes_per_page)
-	
-					return documentSnapshots	
+				}, 2000);
 			},
 			// handleResumes2(ref) {
 			// 	return new Promise((resolve, reject) => {
@@ -409,26 +444,7 @@
 			// 		// }, 2000)
 			// 	})
 			// },
-			async infiniteHandler($state) {
-				if (this.paging.end) {
-					$state.complete()
-					return
-				}
 
-				this.paging.loading = true
-				// console.log('this.ref.resumesNext: ', this.ref.resumesNext)
-				// if (this.ref.resumesNext) {
-					const documentSnapshots = await this.handleResumes(this.ref.resumesNext)
-					setTimeout(() => {
-						$state.loaded()
-						this.paging.loading = false
-						if (documentSnapshots.empty) {
-							/* If there is no more questions to load, set paging.end to true */
-							this.paging.end = true
-						}
-					}, 2000)
-				// }
-			},
 			// infiniteHandler($state) {
 			// 	axios
 			// 		.get('//hn.algolia.com/api/v1/search_by_date?tags=story', {
@@ -450,51 +466,54 @@
 			// },
 			loadMore() {
 				if (this.paging.end) {
-					return
+					return;
 				}
 
-				this.paging.loading = true
-				this.handleQuestions(this.ref.resumesNext).then(documentSnapshots => {
-					this.paging.loading = false
+				this.paging.loading = true;
+				this.handleQuestions(this.ref.resumesNext).then(
+					documentSnapshots => {
+						this.paging.loading = false;
 
-					if (documentSnapshots.empty) {
-						/* If there is no more questions to load, set paging.end to true */
-						this.paging.end = true
+						if (documentSnapshots.empty) {
+							/* If there is no more questions to load, set paging.end to true */
+							this.paging.end = true;
+						}
 					}
-				})
+				);
 			},
 			handleQuestions(ref) {
 				return new Promise((resolve, reject) => {
 					ref.get().then(documentSnapshots => {
 						/* If documentSnapshots is empty, then we have loaded all of pages */
 						if (documentSnapshots.empty) {
-							this.paging.end = true
-							resolve(documentSnapshots)
+							this.paging.end = true;
+							resolve(documentSnapshots);
 						}
 
 						documentSnapshots.forEach(doc => {
-							let questionData = doc.data()
-							questionData.id = doc.id
-							this.resumes.push(questionData)
-						})
+							let questionData = doc.data();
+							questionData.id = doc.id;
+							this.resumes.push(questionData);
+						});
 
 						/* Build reference for next page */
-						const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
+						const lastVisible =
+							documentSnapshots.docs[documentSnapshots.size - 1];
 
 						if (!lastVisible) {
-							return
+							return;
 						}
 
 						this.ref.resumesNext = this.ref.resumes
 							.startAfter(lastVisible)
-							.limit(this.paging.resumes_per_page)
+							.limit(this.paging.resumes_per_page);
 
-						resolve(documentSnapshots)
-					})
-				})
+						resolve(documentSnapshots);
+					});
+				});
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped>

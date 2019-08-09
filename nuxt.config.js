@@ -59,14 +59,14 @@ module.exports = {
             	id: 'UA-71694605-8'
 			}
 		],
-		'@nuxtjs/sentry'
+		// '@nuxtjs/sentry'
     ],
     axios: {
         proxyHeaders: false
 	},
-	sentry: {
-		dsn: process.env.NODE_ENV !== 'production' ? '' : process.env.SENTRY_DSN,
-	},
+	// sentry: {
+	// 	dsn: process.env.NODE_ENV !== 'production' ? '' : process.env.SENTRY_DSN,
+	// },
     plugins: [
         { src: '~/plugins/vuetify', ssr: true },
         { src: '~/plugins/firebase-client-init', ssr: false },

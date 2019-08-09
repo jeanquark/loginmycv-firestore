@@ -13,3 +13,5 @@ dist
 # serviceAccountKey.js
 
 .env
+.accountCredentials.json
+# jsonToFirestore.js
