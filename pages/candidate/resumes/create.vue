@@ -132,7 +132,7 @@
                     <v-layout row wrap justify-center align-center>
                         <v-flex xs2 class="text-xs-center">
                             <v-avatar size="46" color="grey lighten-4" class="mr-3">
-                                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                                <img src="/images/ivan-min.png" alt="avatar">
                             </v-avatar>
                         </v-flex>
 
@@ -144,8 +144,6 @@
                                 <li v-if="!loadedNewResume.work_experience.length">&#8226; You did not add any work experience &#128528;. That's OK, you can add some later on &#128077;
                                 </li>
                             </ul>
-                            <!-- <p class="px-2 my-0" v-if="!loadedNewResume.education.length">&#8226; You did not add any education &#128528;. That's OK, you can add some later on &#128077;</p>
-                            <p class="px-2 my-0" v-if="!loadedNewResume.work_experience.length">&#8226; You did not add any work experience &#128528;. That's OK, you can add some later on &#128077;</p> -->
                         </v-flex>
 
                     </v-layout>

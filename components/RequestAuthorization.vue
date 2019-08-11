@@ -66,12 +66,12 @@
                 :disabled="errors && errors.items.length > 0"
             >
                 Send request
-            </v-btn><br /><br />
+            </v-btn>&nbsp;
             <v-btn color="secondary" flat @click="closeModal">Close</v-btn>
         </v-card-actions>
-        <v-card-actions class="justify-center">
+        <!-- <v-card-actions class="justify-center">
             <small v-if="loading && waiting" class="primaryColor">Almost there...</small>
-        </v-card-actions>
+        </v-card-actions> -->
     </v-card>
 </template>
 
@@ -95,7 +95,7 @@
                     email: '',
                     message: ''
                 },
-                waiting: false
+                // waiting: false
             }
         },
         computed: {
@@ -112,11 +112,11 @@
                 // this.$emit('closeRequestAuthorizationModal')
                 this.$store.commit('closeRequestAuthorizationModal')
             },
-            wait () {
-                setTimeout(() => {
-                    this.waiting = true
-                }, 2000)
-            },
+            // wait () {
+            //     setTimeout(() => {
+            //         this.waiting = true
+            //     }, 2000)
+            // },
             async sendRequest () {
                 this.$store.commit('setLoading', true)
                 await this.$validator.validateAll()
@@ -126,9 +126,9 @@
                         resume: {
                             id: this.resume.resume_long_id,
                             user_id: this.resume.user_id,
-                            firstname: this.resume.personal_data ? this.resume.personal_data.firstname : '',
-                            lastname: this.resume.personal_data ? this.resume.personal_data.lastname : '',
-                            email: this.resume.personal_data ? this.resume.personal_data.email : ''
+                            firstname: this.resume.firstname,
+                            lastname: this.resume.lastname,
+                            email: this.resume.email
                         },
                         user: {
                             id: this.loadedUser.id,
@@ -139,7 +139,7 @@
                         }
                     }
                     try {
-                        this.wait()
+                        // this.wait()
                         await axios.post('/create-resume-authorization', { authorization })
                         this.$store.commit('setLoading', false)
                         this.$emit('closeModal')

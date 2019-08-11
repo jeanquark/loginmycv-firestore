@@ -43,7 +43,8 @@ module.exports = app.use(async function (req, res, next) {
 			notifications: admin.firestore.FieldValue.arrayUnion({
 				authorization_id: newAuthorization.id,
 				type: 'authorization',
-				value: 'new_authorization_sent'
+				value: 'new_authorization_sent',
+				_created_at: moment().unix()
 			})
 		});
 
@@ -51,7 +52,8 @@ module.exports = app.use(async function (req, res, next) {
 			notifications: admin.firestore.FieldValue.arrayUnion({
 				authorization_id: newAuthorization.id,
 				type: 'authorization',
-				value: 'new_authorization_received'
+				value: 'new_authorization_received',
+				_created_at: moment().unix()
 			})
 		});
 

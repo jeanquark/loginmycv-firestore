@@ -106,7 +106,7 @@
             <!-- Section Education -->
             <v-layout row wrap class="margin-bottom" v-if="resume.education && resume.education.length > 0">
                 <v-flex xs12 sm8 offset-sm2>
-                    <h2 class="text-xs-center display-1 primary-color">Education</h2>
+                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['education'] || 'Education' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
                         <v-expansion-panel expand :value="[1]">
@@ -139,7 +139,7 @@
             <!-- Section Work experience -->
             <v-layout row wrap class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
                 <v-flex xs12 sm8 offset-sm2>
-                    <h2 class="text-xs-center display-1 primary-color">Work experience</h2>
+                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
                         <v-expansion-panel expand :value="[1]">
@@ -172,7 +172,7 @@
             <!-- Section Skills -->
             <v-layout row wrap class="margin-bottom" v-if="resume.skills && resume.skills.length > 0">
                 <v-flex xs12 sm8 offset-sm2>
-                    <h2 class="text-xs-center display-1 primary-color">Skills</h2>
+                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['skills'] || 'Skills' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
                         <v-layout row wrap justify-center>
@@ -211,7 +211,7 @@
             <!-- Section Files -->
             <v-layout row wrap class="margin-bottom" v-if="files && files.length > 0">
                 <v-flex xs12 sm8 offset-sm2>
-                    <h2 class="text-xs-center display-1 primary-color">Files</h2>
+                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['files'] || 'Files' }}</h2>
                     <br />
                     <v-layout row wrap justify-center>
                         <v-flex xs6 md4 lg3 v-for="(file, index) in files" :key="index" class="pa-2" style="">

@@ -132,7 +132,8 @@ module.exports = app.use(async function (req, res) {
         batch.set(newShortResume, {
             user_id: newResume.user_id,
             resume_long_id: newResume.slug,
-            visibility: newResume.visibility,
+			visibility: newResume.visibility,
+			public: newResume.visibility === 'private' ? false : true,
             active: newResume.active,
             job_title: newResume.job_title,
             job_description: newResume.job_description,

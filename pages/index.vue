@@ -144,7 +144,7 @@
             <v-layout row wrap>
                 <!-- Request Authorization Modal -->
                 <v-dialog v-model="requestAuthorizationModal" width="500" lazy persistent>
-                    <RequestAuthorization :resume="candidateResume" />
+                    <RequestAuthorization :resume="candidateResume" @closeModal="onCloseAuthModal" />
                 </v-dialog>
             </v-layout>
 
@@ -174,6 +174,8 @@
                                     <v-card-text>
                                         <h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
                                         <div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
+                                        <div class="pt-1 px-2 text-xs-center">Visibility: {{ resume.visibility }}</div>
+                                        <div class="pt-1 px-2 text-xs-center">Public: {{ resume.public }}</div>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-layout justify-center v-if="resume.visibility === 'public'">
@@ -236,11 +238,11 @@
 		components: { RequestAuthorization, Avatar },
 		layout: "layoutFront",
 		async created() {
-			try {
-				await this.$store.dispatch("resumes/fetchShortResumes");
-			} catch (error) {
-				this.$sentry.captureException(new Error(error));
-			}
+			// try {
+			// 	await this.$store.dispatch("resumes/fetchShortResumes");
+			// } catch (error) {
+			// 	this.$sentry.captureException(new Error(error));
+			// }
 			const authUser = this.$store.getters["users/loadedUser"];
 			if (authUser) {
 				await this.$store.dispatch(
@@ -261,6 +263,8 @@
 
 			this.ref.resumes = firestore
 				.collection("resumes_short")
+				.where("public", "==", true)
+				.where("active", "==", true)
 				.orderBy("_created_at", "desc");
 			const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page);
 			this.handleResumes(firstPage);
@@ -348,10 +352,9 @@
 					this.$store.commit("openRequestAuthorizationModal");
 				}
 			},
-			// redirectToResume (slug, id) {
-			// 	console.log('redirectToResume: ', slug, id)
-
-			// },
+			onCloseAuthModal() {
+				this.$store.commit("closeRequestAuthorizationModal");
+			},
 			async logout() {
 				try {
 					await this.$store.dispatch("firebase-auth/signOut");
@@ -378,8 +381,7 @@
 				});
 
 				/* Build reference for next page */
-				const lastVisible =
-					documentSnapshots.docs[documentSnapshots.size - 1];
+				const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1];
 
 				if (!lastVisible) {
 					return;

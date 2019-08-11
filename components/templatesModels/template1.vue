@@ -14,46 +14,46 @@
 								<v-flex xs12 sm8>
 									<v-layout row wrap align-center class="text-big">
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Firstname: <b>{{ resume.personal_data.firstname }}</b></span>
+											<span>{{ resume.fields['firstname'] || 'Firstname' }}: <b>{{ resume.personal_data.firstname }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.middlename">
-											<span>Middle name: <b>{{ resume.personal_data.middlename }}</b></span>
+											<span>{{ resume.fields['middlename'] || 'Middlename' }}: <b>{{ resume.personal_data.middlename }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Lastname: <b>{{ resume.personal_data.lastname }}</b></span>
+											<span>{{ resume.fields['lastname'] || 'Lastname' }}: <b>{{ resume.personal_data.lastname }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Age: <b>{{ calculateAge(resume.personal_data.birthday) }}</b></span>
+											<span>{{ resume.fields['age'] || 'Age' }}: <b>{{ calculateAge(resume.personal_data.birthday) }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>City: <b>{{ resume.personal_data.city }}</b></span>
+											<span>{{ resume.fields['city'] || 'City' }}: <b>{{ resume.personal_data.city }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Country: <b>{{ resume.personal_data.country.name }}</b></span>
+											<span>{{ resume.fields['country'] || 'Country' }}: <b>{{ resume.personal_data.country.name }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Email: <b>{{ resume.personal_data.email }}</b></span>
+											<span>{{ resume.fields['email'] || 'Email' }}: <b>{{ resume.personal_data.email }}</b></span>
 										</v-flex>
 										<v-flex xs12 sm6 class="pa-2">
-											<span>Phone number: <b>{{ resume.personal_data.phone_number }}</b></span>
+											<span>{{ resume.fields['phone_number'] || 'Phone number' }}: <b>{{ resume.personal_data.phone_number }}</b></span>
 										</v-flex>
 									</v-layout>
 									<v-layout row wrap class="px-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
 										<v-flex xs12 sm6 v-if="resume.personal_data.nationalities">
 											<div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
-												<span>Nationalities:</span>
+												<span>{{ resume.fields['nationalities'] || 'Nationalities' }}:</span>
 												<ul class="list-horizontal">
 													<li v-for="(nationality, index) in nationalities" :key="index"
 													><b>{{ nationality.name }}</b></li>
 												</ul>
 											</div>
 											<div v-else>
-												<span>Nationality: <b>{{ resume.personal_data.nationalities[0].name }}</b></span>
+												<span>{{ resume.fields['nationality'] || 'Nationality' }}: <b>{{ resume.personal_data.nationalities[0].name }}</b></span>
 											</div>
 										</v-flex>
 										<v-flex xs12 sm6 class="text-xs-center pa-2" v-if="resume.languages">
 											<div v-if="resume.languages.length > 1" class="text-xs-left">
-												<span>Languages:</span>
+												<span>{{ resume.fields['languages'] || 'Languages'}}:</span>
 												<ul class="list-horizontal">
 													<li v-for="(language, index) in languages" :key="index"
 													>
@@ -63,7 +63,7 @@
 												</ul>
 											</div>
 											<div v-else>
-												<span>Language: {{ resume.languages[0].name }}</span>
+												<span>{{ resume.fields['language'] || 'language' }}: {{ resume.languages[0].name }}</span>
 											</div>
 										</v-flex>
 									</v-layout>
@@ -72,21 +72,14 @@
 											<span>{{ resume.personal_data.short_description }}</span>
 										</v-flex>
 									</v-layout>
-									<v-layout class="my-3 px-2" v-if="resume.social_links">
-										<v-flex xs12 class="text-xs-center">
-											<v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link">
-												<font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />
-											</v-chip>
-										</v-flex>
-									</v-layout>
 
-									<v-layout class="my-3 px-2">
-										<v-flex xs12 class="text-xs-center">
-											<v-chip label class="social-link">
-												<font-awesome-icon :icon="['fab', 'facebook-f']" size="2x" />
-											</v-chip>
-										</v-flex>
-									</v-layout>
+									<v-layout class="my-3 px-2" v-if="resume.social_networks">
+                                        <v-flex xs12 class="text-xs-center">
+                                            <v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link" @click="redirectTo(social_network.link)">
+                                                <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />
+                                            </v-chip>
+                                        </v-flex>
+                                    </v-layout>
 								</v-flex>
 								<v-flex xs12 sm4>
 									<v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="profile picture" />
@@ -108,7 +101,7 @@
 				    sm8
 				    offset-sm2
 				>
-					<h2 class="text-xs-center display-1 primary-color">Education</h2>
+					<h2 class="text-xs-center display-1 primary-color">{{ resume.menus['education'] || 'Education' }}</h2>
 					<br />
 					<v-card class="secondary-color-background">
 						<v-expansion-panel
@@ -123,14 +116,14 @@
 								<template v-slot:header>
 									<h3>
 										<v-icon
-										    :color="primaryColor"
 										    class="mr-2"
+											:color="colors.primaryColor"
 										>school</v-icon> {{ education.title }}, {{ education.school }}
 									</h3>
 								</template>
 								<v-icon
 								    slot="actions"
-								    color="primary"
+									:color="colors.primaryColor"
 								>$vuetify.icons.expand</v-icon>
 								<v-card>
 									<v-card-text class="tertiary-color-background">
@@ -163,7 +156,7 @@
 				    sm8
 				    offset-sm2
 				>
-					<h2 class="text-xs-center display-1 primary-color">Work experience</h2>
+					<h2 class="text-xs-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
 					<br />
 					<v-card class="secondary-color-background">
 						<v-expansion-panel
@@ -178,14 +171,14 @@
 								<template v-slot:header>
 									<h3>
 										<v-icon
-										    :color="primaryColor"
 										    class="mr-2"
+											:color="colors.primaryColor"
 										>work</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}
 									</h3>
 								</template>
 								<v-icon
 								    slot="actions"
-								    color="primary"
+									:color="colors.primaryColor"
 								>$vuetify.icons.expand</v-icon>
 								<v-card>
 									<v-card-text class="tertiary-color-background">
@@ -218,7 +211,7 @@
 				    sm8
 				    offset-sm2
 				>
-					<h2 class="text-xs-center display-1 primary-color">Skills</h2>
+					<h2 class="text-xs-center display-1 primary-color">{{ resume.menus['skills'] || 'Skills' }}</h2>
 					<br />
 					<v-card class="secondary-color-background">
 						<v-layout
@@ -241,8 +234,7 @@
 												:size="100"
 												:width="15"
 												:value="s.value"
-												:color="primaryColor"
-												style=""
+												class="primary-color"
 											>
 												{{ s.value }}%
 											</v-progress-circular><br />
@@ -261,9 +253,8 @@
 											<v-progress-linear
 												height="15"
 												:value="s.value"
-												:color="primaryColor"
 												class="my-2"
-												style="border-radius: 10px; margin: 0px 0px;"
+												:color="colors.primaryColor"
 											></v-progress-linear>
 										</div>
 									</v-flex>
@@ -286,7 +277,7 @@
 				    sm8
 				    offset-sm2
 				>
-					<h2 class="text-xs-center display-1 primary-color">Files</h2>
+					<h2 class="text-xs-center display-1 primary-color">{{ resume.menus['files'] || 'Files' }}</h2>
 					<br />
 					<v-layout
 					    row
@@ -315,8 +306,7 @@
 									<font-awesome-icon
 									    :icon="['fas', 'file-pdf']"
 									    size="5x"
-									    :color="primaryColor"
-									    class=""
+									    class="primary-color"
 									/><br />
 								</v-card-text>
 							</v-card>
@@ -338,7 +328,7 @@
 				    sm8
 				    offset-sm2
 				>
-					<h2 class="text-xs-center display-1 primary-color">Contact Me</h2>
+					<h2 class="text-xs-center display-1 primary-color">{{ resume.menus['contact'] || 'Contact' }}</h2>
 					<br /><br />
 					<v-form>
 						<v-layout
@@ -354,9 +344,9 @@
 								    outline
 								    name="firstname_template1"
 								    label="First name"
-								    :color="primaryColor"
-								    :background-color="primaryColor"
-								    dark
+									:color="colors.primaryColor"
+									:background-color="colors.primaryColor"
+									dark
 								></v-text-field>
 							</v-flex>
 							<v-flex
@@ -367,8 +357,8 @@
 								    outline
 								    name="lastname_template1"
 								    label="Last name"
-								    :color="primaryColor"
-								    :background-color="primaryColor"
+								    :color="colors.primaryColor"
+									:background-color="colors.primaryColor"
 								    dark
 								></v-text-field>
 							</v-flex>
@@ -377,8 +367,8 @@
 								    outline
 								    name="email_template1"
 								    label="Your Email"
-								    :color="primaryColor"
-								    :background-color="primaryColor"
+								    :color="colors.primaryColor"
+									:background-color="colors.primaryColor"
 								    dark
 								></v-text-field>
 							</v-flex>
@@ -387,8 +377,8 @@
 								    outline
 								    name="message_template1"
 								    label="Your message"
-								    :color="primaryColor"
-								    :background-color="primaryColor"
+								    :color="colors.primaryColor"
+									:background-color="colors.primaryColor"
 								    dark
 								></v-textarea>
 							</v-flex>
@@ -396,9 +386,8 @@
 							    round
 							    block
 							    large
-							    class="white--text"
-							    style="padding-top: 0px; padding-bottom: 0px;"
-							    :color="primaryColor"
+							    class="white--text button"
+								:color="colors.primaryColor"
 							>Send message</v-btn>
 						</v-layout>
 					</v-form>
@@ -408,8 +397,7 @@
 		</div>
 
 		<v-footer
-		    :color="primaryColor"
-		    class="white--text justify-center pa-4"
+		    class="white--text justify-center pa-4 primary-color-background"
 		>
 			<nuxt-link
 			    to="/"
@@ -435,7 +423,7 @@
 	export default {
 		props: ["colors"],
 		mounted() {
-			this.primaryColor =this.colors.primaryColor		
+			this.primaryColor = this.colors.primaryColor		
 			this.secondaryColor = this.colors.secondaryColor
 			this.tertiaryColor =this.colors.tertiaryColor
 			this.backgroundColor = this.colors.backgroundColor
@@ -481,7 +469,7 @@
 							level: 60
 						}
 					],
-					social_network: [
+					social_networks: [
 						{
 							name: "Github",
 							slug: "github",
@@ -599,6 +587,8 @@
 						files: 'Files',
 						contact: 'Contact'
 					},
+					fields: {},
+					contact_form_validation: {},
 					parameters: {
 						show_contact_form: true,
 						show_language_level: true
@@ -645,7 +635,7 @@
 				return this.resume.uploads.find(
 					upload => upload.type === "profile_picture"
 				)
-			}
+			},
 		},
 		methods: {
 			calculateAge(birthday) {
@@ -692,8 +682,15 @@
 		display: inline-block;
 		width: 1em;
 	}
+	.button {
+		padding-top: 0px;
+		padding-bottom: 0px;
+	}
 	.primary-color {
 		color: var(--primary-color);
+	}
+	.primary-color-background {
+		background: var(--primary-color);
 	}
 	.secondary-color {
 		color: var(--secondary-color);
@@ -729,6 +726,12 @@
 	.social-link:hover {
 		background-color: var(--primary-color);
 		color: var(--background-color);
+	}
+	.progress-linear {
+		border-radius: 10px;
+		margin: 0px 0px;
+		background: var(--primary-color);
+		color: var(--primary-color);
 	}
 	>>> .v-chip__content {
 		cursor: pointer !important;

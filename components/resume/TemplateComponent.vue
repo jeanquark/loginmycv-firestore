@@ -3,7 +3,7 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
 			<!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
@@ -24,15 +24,20 @@
                                     <!-- <div class="text-xs-center">{{ template.name }}</div> -->
                                     <!-- <div class="text-xs-center">{{ template.description }}</div> -->
                                 </v-card>
-                                <v-layout align-center justify-center class="transparent-background">
-                                    <font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users }}</span>
-                                    <font-awesome-icon :icon="['fas', 'cubes' ]" class="" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
+								<v-layout class="transparent-background">
+									<v-layout justify-start align-center >
+										<font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users }}</span>
+										<font-awesome-icon :icon="['fas', 'cubes' ]" class="" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
 
-                                    <v-btn small flat color="secondary" @click.stop="openDialog(template.slug)">
-                                        <!-- <v-icon>remove_red_eye</v-icon> -->
-                                        View
-                                    </v-btn>
-                                </v-layout>
+										
+									</v-layout>
+									<v-layout justify-end align-center>
+										<v-btn small flat color="secondary" @click.stop="openDialog(template.slug)">
+											<!-- <v-icon>remove_red_eye</v-icon> -->
+											View
+										</v-btn>
+									</v-layout>
+								</v-layout>
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -209,11 +214,11 @@
         </v-layout>
 
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-            <v-card>
+            <v-card style="position: fixed; top: 0; left: 0; z-index: 999; width: 100%; height: 20vh;">
                 <v-toolbar dark color="primary">
 					<v-spacer></v-spacer>
                     <v-toolbar-title>Close</v-toolbar-title>
-                    <v-btn icon dark @click="dialog = false">
+                    <v-btn icon dark @click="dialog = false" class="mr-2">
                         <v-icon>close</v-icon>
                     </v-btn>
                 </v-toolbar>
@@ -230,7 +235,7 @@
                     <vue-colorpicker v-model="userResume.colors.textColor" class="ml-2 mr-3"></vue-colorpicker>
                 </v-layout>
 
-                <component :is="component" v-if="component" :colors="userResume.colors" />
+                <component :is="component" v-if="component" :colors="userResume.colors" style="height: 80vh; overflow-y: scroll;" />
             </v-card>
         </v-dialog>
     </div>
@@ -259,7 +264,7 @@
 			await this.$store.dispatch('templates/fetchTemplates')
 			if (!this.resumeSlug) {
 				const template = this.$store.getters['templates/loadedTemplates'].find(
-					template => template.slug === 'template1'
+					template => template.slug === 'Template1'
 				)
 				if (template) {
 					this.userResume.template_id = template.id
@@ -320,8 +325,9 @@
 			},
 			openDialog(templateSlug) {
 				console.log('templateSlug: ', templateSlug)
-				// this.component = () => import(`~/components/templatesModels/template1`)
-				this.component = () => import(`~/components/templatesModels/${templateSlug}`)
+				const templateName = templateSlug.charAt(0).toUpperCase() + templateSlug.slice(1);
+				console.log('templateName: ', templateName)
+				this.component = () => import(`~/components/templatesModels/${templateName}`)
 				this.dialog = true
 			}
 		},

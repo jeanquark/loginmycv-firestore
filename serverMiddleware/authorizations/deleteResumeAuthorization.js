@@ -12,9 +12,9 @@ module.exports = app.use(async function (req, res) {
 	try {
 		console.log('req.body: ', req.body);
         const authorization = req.body;
-        console.log('authorization: ', authorization);
+        // console.log('authorization: ', authorization);
 		
-		// await admin.firestore().collection('authorizations').doc(authorization.id).delete();
+		await admin.firestore().collection('authorizations').doc(authorization.id).delete();
 	
 		res.send('POST request to delete authorization went successfully.');
   	} catch (error) {

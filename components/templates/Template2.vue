@@ -255,7 +255,6 @@
 									<v-avatar
 										size="350"
 										color="grey lighten-4"
-										v-
 									>
 										<v-img 
 											:src="profilePicture.downloadUrl"

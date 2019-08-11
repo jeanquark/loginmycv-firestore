@@ -6,14 +6,14 @@
 
 		<v-flex xs12 class="text-xs-center">
 
-			<b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br />
+			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
 			<!-- new_authorizations_received: {{ new_authorizations_received }}<br /><br /> -->
 			<!-- new_authorizations_sent: {{ new_authorizations_sent }}<br /><br /> -->
 			<!-- new_authorizations_status: {{ new_authorizations_status }}<br /><br /> -->
 
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
-					List of authorizations people asked you for
+					<p class="subheading font-weight-medium">List of authorizations people asked you for:</p>
 				</v-card-title>
 				<v-card-text>
 					<v-data-table
@@ -45,11 +45,11 @@
 								<td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']"></v-checkbox>
 								</td> -->
-								<td>
+								<!-- <td>
 									<v-checkbox class="checkbox-center" color="secondary" readonly v-model="props.item.authorizations['files']"></v-checkbox>
-								</td>
+								</td> -->
 								<!-- <td>{{ parseInt(props.item._created_at) | moment('from') }}</td>-->
-								<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
+								<td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
 								<!-- <td>
 									<v-layout class="justify-center">
 										<v-avatar size="34" class="mr-2 avatar-edit">
@@ -70,17 +70,13 @@
 										</v-avatar>
 									</v-layout>
 								</td> -->
-								<td class="fill-height layout px-0">
-									<v-layout class="justify-center">
-										<v-btn flat icon nuxt :to="`/candidate/resumes/${props.item.slug}`">
-											<v-icon small color="success" @click="openModal('edit', 'userGivenAuthorizations', props.index)">
-												edit
-											</v-icon>
+								<td class="text-xs-left">
+									<v-layout align-center fill-height>
+										<v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', props.index)">
+											<v-icon small color="success">edit</v-icon>
 										</v-btn>
-										<v-btn flat icon>
-											<v-icon small color="error" @click="openModal('delete', 'userGivenAuthorizations', props.index)">
-												delete
-											</v-icon>
+										<v-btn flat icon @click="requestConfirmation(props.item)">
+											<v-icon small color="error">delete</v-icon>
 										</v-btn>
 									</v-layout>
 								</td>
@@ -92,10 +88,10 @@
 		</v-flex>
 
 		<v-flex xs12 class="text-xs-center">
-			<b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br />
+			<!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
 			<v-card flat class="ma-2">
 				<v-card-title primary-title class="justify-center">
-					List of authorizations you requested
+					<p class="subheading font-weight-medium">List of the authorizations you requested:</p>
 				</v-card-title>
 				<v-card-text>
 					<v-data-table
@@ -109,9 +105,9 @@
 								<td class="text-xs-left">{{ props.item.resume.firstname }}</td>
 								<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
 								<!-- <td class="text-xs-left">{{ props.item.resume.email }}</td> -->
-								<td class="text-xs-left"><v-btn small color="success" nuxt :to="`/resume/${props.item.resume.id}`" target="_blank">View resume</v-btn></td>
+								<td class="text-xs-left"><v-btn small color="success" nuxt :to="`/resume/${props.item.resume.id}`" target="_blank" :disabled="props.item.status.slug !== 'accorded'">View resume</v-btn></td>
 								<td class="text-xs-left">{{ props.item.status ? props.item.status.name : '' }}</td>
-								<td>
+								<!-- <td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
 								</td>
 								<td>
@@ -125,25 +121,17 @@
 								</td>
 								<td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']" readonly></v-checkbox>
-								</td>
+								</td> -->
 								<!-- <td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>-->
-								<td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-								<td class="">
-									<v-layout class="justify-center">
-										<v-icon
-											small
-											class="mr-2 icon"
-											@click="editItem(props.item)"
-										>
-											edit
-										</v-icon>
-										<v-icon
-											small
-											@click="deleteItem(props.item)"
-											class="icon"
-										>
-											delete
-										</v-icon>
+								<td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
+								<td class="text-xs-left">
+									<v-layout align-center fill-height>
+										<v-btn flat icon @click="openModal('edit', 'userReceivedAuthorizations', props.index)">
+											<v-icon small color="success">edit</v-icon>
+										</v-btn>
+										<v-btn flat icon @click="requestConfirmation(props.item)">
+											<v-icon small color="error">delete</v-icon>
+										</v-btn>
 									</v-layout>
 								</td>
 							</tr>
@@ -205,12 +193,12 @@
 								></v-select>
 							</v-flex>
 							<!-- Files: -->
-							<v-flex xs12>
+							<!-- <v-flex xs12>
 								<v-layout class="justify-center">
 									Authorizations:
 								</v-layout>
 								<v-checkbox label="View files" color="secondary" v-model="loadedUserGivenAuthorizations[authorizationIndex].authorizations.files"></v-checkbox>
-							</v-flex>
+							</v-flex> -->
 			              	<!-- <v-flex xs12 style="border: 1px solid #fff; border-radius: 5px;">
 			              		<v-checkbox label="All" v-model="isCheckAll" @click.stop="checkAll" style="justify-content: center;"></v-checkbox>
 			              	</v-flex> -->
@@ -259,6 +247,15 @@
 		    </v-card>
 		</v-dialog>
 
+		<v-snackbar v-model="snackbarDeleteAuthorization" :timeout="5000" :bottom="true" :auto-height="true">
+			<span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete authorization?</span>
+			<v-btn color="pink" flat @click.stop="deleteAuthorization">
+				<span style="font-size: 1.3em;">Yes</span>
+			</v-btn>
+			<v-btn color="secondary" flat @click="snackbarDeleteAuthorization = false">
+				<span style="font-size: 1.3em;">No</span>
+			</v-btn>
+		</v-snackbar>
 	</v-layout>
 </template>
 
@@ -310,7 +307,7 @@
 					{ text: 'Email', value: 'user.email' },
 					{ text: 'Message', value: 'user.message' },
 					{ text: 'Status', align: 'left', value: 'status.slug' },
-					{ text: 'View files', align: 'left', value: 'authorizations.files' },
+					// { text: 'View files', align: 'left', value: 'authorizations.files' },
 		          	// { text: 'View Personal data', value: 'authorizations.personal_data' },
 		          	// { text: 'View Picture', value: 'authorizations.picture' },
 		          	// { text: 'View Education', value: 'authorizations.education' },
@@ -324,16 +321,16 @@
 		          	{ text: 'Firstname', align: 'left', value: 'firstname' },
 		          	{ text: 'Lastname', value: 'lastname' },
 					// { text: 'Email', value: 'email' },
-					{ text: 'Resume', value: 'resume.id' },
+					{ text: 'Resume', align: 'left', value: 'resume.id' },
 					{ text: 'Status', align: 'left', value: 'status' },
-		          	{ text: 'View Personal data', value: 'authorizations.personal_data' },
-		          	{ text: 'View Picture', value: 'authorizations.picture' },
-		          	{ text: 'View Education', value: 'authorizations.education' },
-		          	{ text: 'View Work experience', value: 'authorizations.work_experience' },
-		          	{ text: 'View Skills', value: 'authorizations.skills' },
+		          	// { text: 'View Personal data', value: 'authorizations.personal_data' },
+		          	// { text: 'View Picture', value: 'authorizations.picture' },
+		          	// { text: 'View Education', value: 'authorizations.education' },
+		          	// { text: 'View Work experience', value: 'authorizations.work_experience' },
+		          	// { text: 'View Skills', value: 'authorizations.skills' },
 		          	// { text: 'Created at', value: '_created_at' },
-		          	{ text: 'Last update', value: '_updated_at' },
-		          	{ text: 'Actions', sortable: false }
+		          	{ text: 'Last update', align: 'left', value: '_updated_at' },
+		          	{ text: 'Actions', align: 'left', sortable: false }
 		        ],
 				modal: false,
 				action: '',
@@ -394,6 +391,8 @@
 				new_authorizations_sent: [],
 				new_authorizations_received: [],
 				new_authorizations_status: [],
+				authorization: {},
+				snackbarDeleteAuthorization: false
 			}
 		},
 		computed: {
@@ -411,8 +410,13 @@
 			}
 		},
 		methods: {
-			abc () {
-				this.selectAll = false
+			// abc () {
+			// 	this.selectAll = false
+			// },
+			requestConfirmation(authorization) {
+				console.log('requestConfirmation')
+				this.authorization = authorization
+				this.snackbarDeleteAuthorization = true
 			},
 			updateCheckAll (authorization) {
 		      	if (this.selectedAuthorizations.length == this.allAuthorizations.length) {
