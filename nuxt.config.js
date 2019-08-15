@@ -59,7 +59,8 @@ module.exports = {
             	id: 'UA-71694605-8'
 			}
 		],
-		'@nuxtjs/sentry'
+		'@nuxtjs/sentry',
+		'nuxt-leaflet',
     ],
     axios: {
         proxyHeaders: false
