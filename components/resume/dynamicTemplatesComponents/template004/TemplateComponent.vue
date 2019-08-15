@@ -9,19 +9,14 @@
         </v-layout>
 
         <!-- Draggable list of subdivisions -->
-        <div :class="primaryColor">
-            <h2>ABC</h2>
-        </div>
-		<div class="red lighten-1">
-			<h2>DEF</h2>
-		</div>
         <v-layout row wrap>
             <v-flex xs12>
                 allSubdivisions: {{ allSubdivisions }}<br /><br />
                 <!-- selectedSubdivisions: {{ selectedSubdivisions }}<br /> -->
                 userResume.template.map_subdivisions: {{ userResume.template.map_subdivisions }}<br /><br />
-                primaryColor: {{ userResume.colors.primaryColor }}<br /><br />
-                secondaryColor: {{ userResume.colors.secondaryColor }}<br /><br />
+                <!-- primaryColor: {{ userResume.colors.primaryColor }}<br /><br /> -->
+                <!-- secondaryColor: {{ userResume.colors.secondaryColor }}<br /><br /> -->
+				cssProps: {{ cssProps }}<br /><br />
             </v-flex>
 
             <v-flex xs6 style="border: 1px solid yellow;">
@@ -33,8 +28,14 @@
             </v-flex>
             <v-flex xs6 style="border: 1px solid red;">
                 <h2>Selected states</h2><br />
+				<v-btn small color="error" @click.stop="setColors()">Set all red</v-btn>
                 <draggable v-model="userResume.template.map_subdivisions" group="subdivisions" @start="drag=true" @end="drag=false">
-                    <div v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" :class="[`abc${[index]}`]" style="padding: 10px; border: 1px dashed yellow;">{{ subdivision.name }}-{{ index }}</div>
+                    <div v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" style="padding: 10px; border: 1px dashed yellow;">
+						<span>{{ subdivision.name }}-{{ index }}</span>
+						<div :class="[`abc${[index]}`]" style="width: 40px; height: 40px;"></div>
+						<vue-colorpicker v-model="userResume.template.map_subdivisions[index].color" class=""></vue-colorpicker>
+
+						</div>
                 </draggable>
             </v-flex>
         </v-layout>
@@ -43,10 +44,11 @@
 
 <script>
 	import Draggable from 'vuedraggable'
+	import { VueColorpicker } from 'vue-pop-colorpicker'
 	export default {
 		inject: ['$validator'], // Inject parent validator
 		props: ['resumeSlug', 'loadedTemplate'],
-		components: { Draggable },
+		components: { Draggable, VueColorpicker },
 		data() {
 			return {
 				allSubdivisions: [],
@@ -58,7 +60,7 @@
 			cssProps() {
 				return {
 					'--primary-color': this.userResume.colors.primaryColor,
-					'--secondary-color': this.userResume.colors.secondaryColor + ' lighten-1'
+					'--secondary-color': this.userResume.colors.secondaryColor
 					// '--tertiary-color': this.colors.tertiaryColor,
 					// '--background-color': this.colors.backgroundColor,
 					// '--text-color': this.colors.textColor
@@ -84,18 +86,59 @@
 						this.allSubdivisions.push(subdivision)
 					})
 				}
+			},
+			setColors() {
+				this.userResume.template.map_subdivisions.forEach(subdivision => {
+					subdivision.color = 'rgb(255, 0, 0)'
+				})
 			}
 		}
 	}
 </script>
 
-<style scoped lang="scss">
+<!--<style scoped lang="scss">
+	$linkcolour: #0000ff;
 	.abc0 {
-		/* background: yellow; */
+		color: $linkcolour;
+	}
+
+	.abc1 {
+		color: lighten($linkcolour, 25%);
+	}
+
+	.abc2 {
+		color: lighten($linkcolour, 50%);
+	}
+
+	.abc3 {
+		color: lighten($linkcolour, 75%);
+	}
+</style>-->
+
+<style scoped>
+	.abc0 {
 		background: var(--primary-color);
+		/* background: var(--v-primary-lighten2); */
+		filter: brightness(200%);
 	}
 	.abc1 {
-		/* background: red; */
-		background: var(--secondary-color);
+		background: var(--primary-color);
+		filter: brightness(180%);
+	}
+	.abc2 {
+		background: var(--primary-color);
+		filter: brightness(100%);
+	}
+	.abc3 {
+		background: var(--primary-color);
+		filter: brightness(60%);
+	}
+	.abc4 {
+		background: var(--primary-color);
+		filter: brightness(100%);
+	}
+	.abc5 {
+		background: var(--primary-color);
+		filter: brightness(110%);
 	}
 </style>

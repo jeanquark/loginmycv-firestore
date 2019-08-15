@@ -2,7 +2,7 @@
     <v-layout row wrap>
         <v-flex xs12>
             <!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
-            <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br />
+            <!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
             <!-- getStatistics: {{ getStatistics }}<br /><br /> -->
             <!-- dark: {{ dark }}<br /><br /> -->
             <!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />

@@ -54,7 +54,7 @@
                     <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
                     <p class="text-xs-center">{{ loadedTemplate.description }}</p>
 
-                    <component :is="dynamicComponent" :userResume="userResume" :resumeSlug="resumeSlug" :loadedTemplate="loadedTemplate" v-if="dynamicComponent" />
+                    <component :is="dynamicComponent" :resumeSlug="resumeSlug" :loadedTemplate="loadedTemplate" v-if="dynamicComponent" />
 
                     <!-- <br /><br /><br /><br /> -->
                     <v-layout row align-center class="mb-2" v-if="userResume">
