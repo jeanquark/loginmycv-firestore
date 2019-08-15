@@ -816,11 +816,14 @@
 	.italic {
 		font-style: italic;
 	}
-	/* >>>.v-chip__content { */
-	>>>.v-chip__content.pointer {
-		cursor: pointer !important;
-	}
 	.rounded-border {
 		border-bottom-left-radius: 0px;
 	}
+	>>>.v-chip__content.pointer {
+		cursor: pointer !important;
+	}
+	>>>.v-text-field--outline .v-label {
+		color: var(--text-color);
+	}
+	
 </style>

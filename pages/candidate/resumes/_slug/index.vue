@@ -162,24 +162,27 @@
             // console.log('Created from EditResumeComponent')
             const resume = this.$route.params.slug
             // console.log('resume: ', resume)
-            this.resumeSlug = resume
-            this.$store.commit('clearError')
-            this.$store.commit('setLoadingFiles', false)
-            this.$store.commit('setLoadingResume', false)
-
+			this.resumeSlug = resume
+			
+			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+				await this.$store.dispatch('resumes/fetchUserResumes')
+			}
             if (this.$store.getters['countries/loadedCountries'].length < 1) {
-                // console.log('Fetching countries...')
                 await this.$store.dispatch('countries/fetchCountries')
             }
-            // if (this.$store.getters['languages/loadedLanguages'].length < 1) {
+            if (this.$store.getters['languages/loadedLanguages'].length < 1) {
                 await this.$store.dispatch('languages/fetchLanguages')
-            // }
-            // if (this.$store.getters['competences/loadedCompetences'].length < 1) {
+            }
+            if (this.$store.getters['competences/loadedCompetences'].length < 1) {
                 await this.$store.dispatch('competences/fetchCompetences')
-            // }
-            // if (this.$store.getters['socialNetworks/loadedSocialNetworks'].length < 1) {
+            }
+            if (this.$store.getters['socialNetworks/loadedSocialNetworks'].length < 1) {
                 await this.$store.dispatch('socialNetworks/fetchSocialNetworks')
-            // }
+			}
+			
+			this.$store.commit('clearError')
+            this.$store.commit('setLoadingFiles', false)
+            this.$store.commit('setLoadingResume', false)
         },
         async mounted () {
         },

@@ -2,7 +2,7 @@
     <v-layout row wrap>
         <v-flex xs12>
             <!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
-            <!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
+            <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br />
             <!-- getStatistics: {{ getStatistics }}<br /><br /> -->
             <!-- dark: {{ dark }}<br /><br /> -->
             <!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
@@ -143,7 +143,7 @@
 
         <v-snackbar :value="snackbarNoResume" :timeout="0" :bottom="true" :auto-height="true">
             <v-avatar size="48" color="grey lighten-4" class="mr-3">
-                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                <img src="/images/ivan-min.jpg" alt="avatar">
             </v-avatar>
 
             <span class="pa-2" style="font-size: 1.3em;">Hem... it looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
@@ -171,13 +171,13 @@
 		async created() {
 			this.$store.commit('setLoading', false)
 			this.$store.getters['users/loadedUser']
-			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
-			await this.$store.dispatch('resumes/fetchUserResumes')
-			// }
+
+			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+				await this.$store.dispatch('resumes/fetchUserResumes')
+			}
 			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
 				this.snackbarNoResume = true
 			}
-
 			if (this.$store.getters['loadedDarkTheme']) {
 				this.chartOptions.backgroundColor = '#424242'
 				this.chartOptions.hAxis.textStyle.color = '#FFF'

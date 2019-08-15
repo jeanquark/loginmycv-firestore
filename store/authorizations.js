@@ -4,24 +4,25 @@ import Noty from 'noty'
 import axios from 'axios'
 
 export const state = () => ({
-	user_received_authorizations_array: [],
+	user_received_authorizations: [],
 	user_received_authorizations_object: {},
-	user_given_authorizations_array: [],
+	user_given_authorizations: [],
 	// user_given_authorizations_object: {}
 })
 
 export const mutations = {
-	setUserReceivedAuthorizationsArray (state, payload) {
-		console.log('Call to setUserAuthorizationsArray mutation: ', payload)
-		state.user_received_authorizations_array = payload
+	setUserReceivedAuthorizations (state, payload) {
+		console.log('Call to setUserAuthorizations mutation: ', payload)
+		state.user_received_authorizations = payload
         // state.loadedEvents = Object.assign({}, state.loadedEvents, { [payload.date]: payload })
 	},
+	// Object for rapid lookup of user authorizations on each resume on homepage
 	setUserReceivedAuthorizationsObject (state, payload) {
 		state.user_received_authorizations_object = payload
 	},
-	setUserGivenAuthorizationsArray (state, payload) {
-		console.log('Call to setUserGivenAuthorizationsArray mutation: ', payload)
-		state.user_given_authorizations_array = payload
+	setUserGivenAuthorizations (state, payload) {
+		console.log('Call to setUserGivenAuthorizations mutation: ', payload)
+		state.user_given_authorizations = payload
 	},
 	// setUserGivenAuthorizationsObject (state, payload) {
 	// 	state.user_given_authorizations_object = payload
@@ -42,7 +43,7 @@ export const actions = {
 					authorizationsArray.push({ ...doc.data(), id: doc.id })
 				})
 				commit('setUserReceivedAuthorizationsObject', authorizationsObject)
-				commit('setUserReceivedAuthorizationsArray', authorizationsArray)
+				commit('setUserReceivedAuthorizations', authorizationsArray)
 			})
 		} catch (error) {
 			console.log('error from fetchUserReceivedAuthorizations: ', error)
@@ -63,7 +64,7 @@ export const actions = {
 					authorizationsArray.push({ ...doc.data(), id: doc.id })
 				})
 				// commit('setUserGivenAuthorizationsObject', authorizationsObject)
-				commit('setUserGivenAuthorizationsArray', authorizationsArray)
+				commit('setUserGivenAuthorizations', authorizationsArray)
 			})
 		} catch (error) {
 			console.log('error from fetchUserGivenAuthorizations: ', error)
@@ -96,14 +97,14 @@ export const actions = {
 }
 
 export const getters = {
-	loadedUserReceivedAuthorizationsArray (state) {
-		return state.user_received_authorizations_array
+	loadedUserReceivedAuthorizations (state) {
+		return state.user_received_authorizations
 	},
 	loadedUserReceivedAuthorizationsObject (state) {
 		return state.user_received_authorizations_object
 	},
-	loadedUserGivenAuthorizationsArray (state) {
-		return state.user_given_authorizations_array
+	loadedUserGivenAuthorizations (state) {
+		return state.user_given_authorizations
 	},
 	// loadedUserGivenAuthorizationsObject (state) {
 	// 	return state.user_given_authorizations_object

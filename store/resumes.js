@@ -7,9 +7,11 @@ import axios from 'axios'
 export const state = () => ({
 	allResumes: [],
 	shortResumes: [],
+	// shortResumes: {},
 	resumes: [],
 	userResumes: [],
-	newResume: {}
+	newResume: {},
+	lastVisible: null
 })
 
 
@@ -18,8 +20,27 @@ export const mutations = {
 		state.allResumes = payload
 	},
 	setShortResumes (state, payload) {
-		// console.log('Call to setShortResumes mutation: ', payload)
-		state.shortResumes = payload
+		console.log('Call to setShortResumes mutation: ', payload)
+		// state.shortResumes = payload
+        // state.shortResumes = Object.assign({}, state.shortResumes, { [payload.id]: payload })
+	},
+	addShortResumes (state, payload) {
+		console.log('Call to addShortResumes mutation: ', payload)
+		// state.shortResumes = state.shortResumes.push(payload)
+		payload.forEach(resume => {
+			state.shortResumes.push(resume)
+		})
+        // state.shortResumes = Object.assign({}, state.shortResumes, { [payload[0].id]: payload[0] })
+	},
+	setLastVisible (state, payload) {
+		console.log('setLastVisible mutation: ', payload)
+		// const abc = JSON.parse(JSON.stringify(payload))
+		state.lastVisible = payload
+	},
+	clearShortResumes (state) {
+		console.log('clearShortResumes')
+		// state.shortResumes = {}
+		state.shortResumes = []
 	},
 	setResumes (state, payload) {
 		// console.log('Call to setResumes mutation: ', payload)
@@ -31,7 +52,10 @@ export const mutations = {
 	},
 	setEmptyResume (state) {
 		state.newResume = {
-			template_id: '',
+			// template_id: '',
+			template: {
+				id: '',
+			},
 			// slug: 'johndoe',
 			slug: '',
 			// job_title: 'Web developer',
@@ -105,8 +129,9 @@ export const actions = {
 		console.log('resumesArray: ', resumesArray)
 		commit('setAllResumes', resumesArray)
 	},
+	// TOBEDELETED
 	async fetchShortResumes ({ commit }) {
-		// console.log('Call to fetchShortResumes actions')
+		console.log('Call to fetchShortResumes actions')
 		firestore.collection('resumes_short').where('active', '==', true).where('visibility', '>=', 'public').onSnapshot(snapshot => {
 			const shortResumesArray = []
 			snapshot.forEach(resume => {
@@ -116,6 +141,36 @@ export const actions = {
 			commit('setShortResumes', shortResumesArray)
 		})
 	},
+
+
+
+
+
+
+
+
+
+
+	async fetchShortResumesPerPage ({ commit, getters }, payload) {
+		console.log('!!!Call to fetchShortResumesPerPage: ')
+		const lastVisible = getters['loadedLastVisible']
+		console.log('lastVisible from vuex: ', lastVisible)
+		if (lastVisible) {
+			const snapshot = await firestore.collection('resumes_short').where('public', '==', true).where('active', '==', true).orderBy('_created_at', 'desc').startAt(lastVisible).limit(8).get()
+			
+			return snapshot		
+		}
+	},
+
+
+
+
+
+
+
+
+
+
 	async fetchLongResume ({ commit, dispatch, rootGetters }, payload) {
 		try {
 			// console.log('Call to fetchLongResume action: ', payload)
@@ -171,7 +226,7 @@ export const actions = {
 	},
 	async fetchUserResumes ({ commit, rootGetters }) {
 		try {
-			// console.log('Call to fetchUserResumes action')
+			console.log('Call to fetchUserResumes action')
 			const userId = rootGetters['users/loadedUser'].id
 			// console.log('authUserId: ', userId)
 
@@ -536,7 +591,13 @@ export const getters = {
 	loadedUserResumes (state) {
 		return state.userResumes
 	},
+	userResumes (state) {
+		return state.userResumes
+	},
 	loadedNewResume (state) {
 		return state.newResume
+	},
+	loadedLastVisible (state) {
+		return state.lastVisible
 	}
 }

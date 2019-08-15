@@ -1,8 +1,16 @@
 <template>
     <div class="text-xs-center">
-        <v-carousel style="width: 100%; margin: 0px; padding: 0px;">
+        <!-- <v-carousel style="width: 100%; margin: 0px; padding: 0px;">
             <v-carousel-item v-for="(item,i) in carouselItems" :key="i" :src="item.src" :lazy="true"></v-carousel-item>
-        </v-carousel>
+        </v-carousel> -->
+
+    	<div>
+			loadedShortResumes: {{ loadedShortResumes }}<br /><br />
+			loadedUserReceivedAuthorizations: {{ loadedUserReceivedAuthorizations }}<br /><br />
+			<!-- ref.resumesNext: {{ ref.resumesNext }}<br /><br /> -->
+			<!-- <p>lastVisible: {{ lastVisible }}</p> -->
+			<!-- loadedLastVisible: {{ loadedLastVisible }}<br /><br /> -->
+		</div>
 
         <v-container grid-list-md text-xs-center>
             <v-layout row wrap justify-center class="mb-5">
@@ -148,8 +156,8 @@
                 </v-dialog>
             </v-layout>
 
-            <masonry :cols="{default: 1, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}" v-if="infiniteScrollReady">
-                <div v-for="resume of resumes" :key="resume.id">
+            <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}" v-if="infiniteScrollReady">
+                <div v-for="resume of loadedShortResumes" :key="resume.id">
                     <v-hover>
                         <v-card flat class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
                             <v-layout row wrap>
@@ -176,6 +184,7 @@
                                         <div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
                                         <div class="pt-1 px-2 text-xs-center">Visibility: {{ resume.visibility }}</div>
                                         <div class="pt-1 px-2 text-xs-center">Public: {{ resume.public }}</div>
+										<div class="pt-1 px-2 text-xs-center">_created_at: {{ resume._created_at }}</div>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-layout justify-center v-if="resume.visibility === 'public'">
@@ -185,7 +194,7 @@
                                             <div v-if="loadedUser">
                                                 <div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
                                                     <v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.resume_long_id}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
-                                                    <v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
+                                                    <v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is being processed</v-chip>
                                                     <v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
                                                     <v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
                                                 </div>
@@ -202,8 +211,9 @@
                         </v-card>
                     </v-hover>
                 </div>
-                <infinite-loading @infinite="infiniteHandler">></infinite-loading>
+                <!-- <infinite-loading @infinite="fetchMoreResumes" v-if="infiniteScrollReady"></infinite-loading> -->
             </masonry>
+			<infinite-loading @infinite="fetchMoreResumes" v-if="infiniteScrollReady"></infinite-loading>
 
             <!-- <div v-for="(item, index) in list" :key="index">
                 {{ index }}: {{ item.title }}
@@ -227,67 +237,112 @@
 </template>
 
 <script>
-	import firebase from "firebase/app"; // To be removed
-	import { firestore } from "~/plugins/firebase-client-init.js"; // To be removed
-	import Noty from "noty";
-	import axios from "axios";
-	import RequestAuthorization from "~/components/RequestAuthorization";
-	import Avatar from "vue-avatar";
+	import firebase from 'firebase/app' // To be removed
+	import { firestore } from '~/plugins/firebase-client-init.js' // To be removed
+	import Noty from 'noty'
+	import axios from 'axios'
+	import RequestAuthorization from '~/components/RequestAuthorization'
+	import Avatar from 'vue-avatar'
 	// import InfiniteLoading from 'vue-infinite-loading'
+	import moment from 'moment'
 	export default {
 		components: { RequestAuthorization, Avatar },
-		layout: "layoutFront",
+		layout: 'layoutFront',
+		// asyncData({ params }) {
+		// 	console.log('asyncData')
+		// },
 		async created() {
+			if (process.server) {
+				console.log('server side call')
+			}
 			// try {
 			// 	await this.$store.dispatch("resumes/fetchShortResumes");
 			// } catch (error) {
 			// 	this.$sentry.captureException(new Error(error));
 			// }
-			const authUser = this.$store.getters["users/loadedUser"];
+			const authUser = this.$store.getters['users/loadedUser']
 			if (authUser) {
 				await this.$store.dispatch(
-					"authorizations/fetchUserReceivedAuthorizations",
+					'authorizations/fetchUserReceivedAuthorizations',
 					authUser.id
-				);
+				)
 			}
+			console.log('moment().unix(): ', moment().unix())
+			console.log('moment().valueOf(): ', moment().valueOf())
 
-			this.$store.commit("clearError");
-			this.$store.commit("closeLoginModal");
-			this.$store.commit("closeRequestAuthorizationModal");
-			this.$store.commit("clearOpenComponent");
-			this.$store.commit("clearRedirect");
+			this.$store.commit('clearError')
+			this.$store.commit('closeLoginModal')
+			this.$store.commit('closeRequestAuthorizationModal')
+			this.$store.commit('clearOpenComponent')
+			this.$store.commit('clearRedirect')
+			// this.$store.commit('resumes/clearShortResumes')
+			// this.$store.commit('resumes/setLastVisible', moment().unix())
+			// this.$store.commit('resumes/setLastVisible', 300)
+
+			if (!this.$store.getters['resumes/loadedLastVisible']) {
+				this.$store.commit('resumes/setLastVisible', moment().unix())
+			}
+			console.log('firebase.firestore.FieldValue.serverTimestamp(): ', firebase.firestore.FieldValue.serverTimestamp())
 
 			// this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
 			// const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
 			// this.handleQuestions(firstPage)
 
-			this.ref.resumes = firestore
-				.collection("resumes_short")
-				.where("public", "==", true)
-				.where("active", "==", true)
-				.orderBy("_created_at", "desc");
-			const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page);
-			this.handleResumes(firstPage);
+			// let abc
+			// if (process.server) {
+			// 	console.log('PROCESS SERVER')
+			// 	abc = await this.$store.dispatch('resumes/fetchShortResumesPerPage')
+			// } else {
+			// 	// this.infiniteScrollReady = true
+			// }
+			// console.log('abc: ', abc)
+			// // this.$store.commit('resumes/clearShortResumes')
+			// if (abc !== undefined) {
+			// 	this.$store.commit('resumes/clearShortResumes')
+			// 	const resumesArray = []
+ 			// 	abc.forEach(resume => {
+			// 		resumesArray.push({ ...resume.data(), id: resume.id })
+			// 	})
+			// 	console.log('resumesArray: ', resumesArray)
+			// 	this.$store.commit('resumes/setShortResumes', resumesArray)
+			// 	this.infiniteScrollReady = true
+			// 	if (abc.empty) {
+			// 		this.paging.end = true
+			// 	}
+			// 	const lastVisible = abc.docs[abc.size - 1]
+			// 	console.log('lastVisible: ', lastVisible)
+			// 	this.ref.resumesNext = lastVisible
+			// 	// this.$store.commit('resumes/setLastVisible', lastVisible)
+			// }
+			// this.ref.resumes = firestore
+			// 	.collection('resumes_short')
+			// 	.where('public', '==', true)
+			// 	.where('active', '==', true)
+			// 	.orderBy('_created_at', 'desc')
+			// const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
+			// this.handleResumes(firstPage)
 
 			// this.$sentry.captureException(new Error('oups, there is an error from the server'))
 			// myUndefinedFunction();
 		},
-		mounted() {},
+		mounted() {
+			this.infiniteScrollReady = true
+		},
 		data() {
 			return {
 				// loading: false,
 				candidateResume: {},
 				carouselItems: [
 					{
-						src: "/images/carousel1.png"
+						src: '/images/carousel1.png'
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
 					},
 					{
-						src: "/images/carousel2.png"
+						src: '/images/carousel2.png'
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
 					},
 					{
-						src: "/images/carousel3.png"
+						src: '/images/carousel3.png'
 						// src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
 					}
 					// {
@@ -297,6 +352,7 @@
 				page: 1,
 				list: [],
 				lastVisible: {},
+				lastVisible2: {},
 				//
 				resumes: [],
 				paging: {
@@ -309,108 +365,134 @@
 					resumesNext: null
 				},
 				infiniteScrollReady: false
-			};
+			}
 		},
 		computed: {
 			auth() {
-				return firebase.auth().currentUser;
+				return firebase.auth().currentUser
 			},
 			loadedUser() {
-				return this.$store.getters["users/loadedUser"];
+				return this.$store.getters['users/loadedUser']
 			},
 			loadedShortResumes() {
-				return this.$store.getters["resumes/loadedShortResumes"];
+				return this.$store.getters['resumes/loadedShortResumes']
 			},
 			loadedUserReceivedAuthorizations() {
-				return this.$store.getters[
-					"authorizations/loadedUserReceivedAuthorizationsObject"
-				];
+				// return this.$store.getters['authorizations/loadedUserReceivedAuthorizations']
+				return this.$store.getters['authorizations/loadedUserReceivedAuthorizationsObject']
 			},
 			requestAuthorizationModal() {
-				return this.$store.getters["requestAuthorizationModal"];
-			}
+				return this.$store.getters['requestAuthorizationModal']
+			},
+			// loadedLastVisible () {
+			// 	return this.$store.getters['resumes/loadedLastVisible']
+			// }
 		},
 		methods: {
 			async showAuthModal(resume) {
-				this.candidateResume = resume;
+				this.candidateResume = resume
 				if (!this.loadedUser) {
-					this.$store.commit("setRedirect", "/");
-					this.$store.commit(
-						"setOpenComponent",
-						"openRequestAuthorizationModal"
-					);
-					this.$store.commit("openLoginModal");
+					this.$store.commit('setRedirect', '/')
+					this.$store.commit('setOpenComponent', 'openRequestAuthorizationModal')
+					this.$store.commit('openLoginModal')
 					new Noty({
-						type: "info",
-						text:
-							"You need to be authenticated to request an authorization.",
+						type: 'info',
+						text: 'You need to be authenticated to request an authorization.',
 						timeout: 5000,
-						theme: "metroui"
-					}).show();
-					return;
+						theme: 'metroui'
+					}).show()
+					return
 				} else {
-					this.$store.commit("openRequestAuthorizationModal");
+					this.$store.commit('openRequestAuthorizationModal')
 				}
 			},
 			onCloseAuthModal() {
-				this.$store.commit("closeRequestAuthorizationModal");
+				this.$store.commit('closeRequestAuthorizationModal')
 			},
 			async logout() {
 				try {
-					await this.$store.dispatch("firebase-auth/signOut");
-					this.$router.replace("/");
+					await this.$store.dispatch('firebase-auth/signOut')
+					this.$router.replace('/')
 				} catch (error) {
-					this.$sentry.captureException(new Error(error));
+					this.$sentry.captureException(new Error(error))
 				}
 			},
 			async handleResumes(ref) {
 				// console.log('ref: ', ref)
-				console.log("this.infiniteScrollReady: ", this.infiniteScrollReady);
-				const documentSnapshots = await ref.get();
-				this.infiniteScrollReady = true;
+				console.log('this.infiniteScrollReady: ', this.infiniteScrollReady)
+				const documentSnapshots = await ref.get()
+				this.infiniteScrollReady = true
 				/* If documentSnapshots is empty, then we have loaded all of pages */
 				if (documentSnapshots.empty) {
-					this.paging.end = true;
-					return documentSnapshots;
+					this.paging.end = true
+					return documentSnapshots
 				}
 
 				documentSnapshots.forEach(doc => {
-					let questionData = doc.data();
-					questionData.id = doc.id;
-					this.resumes.push(questionData);
-				});
+					let questionData = doc.data()
+					questionData.id = doc.id
+					this.resumes.push(questionData)
+				})
 
 				/* Build reference for next page */
-				const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1];
+				const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
 
 				if (!lastVisible) {
-					return;
+					return
 				}
 
 				this.ref.resumesNext = this.ref.resumes
 					.startAfter(lastVisible)
-					.limit(this.paging.resumes_per_page);
+					.limit(this.paging.resumes_per_page)
 
-				return documentSnapshots;
+				return documentSnapshots
 			},
 			async infiniteHandler($state) {
 				if (this.paging.end) {
-					$state.complete();
-					return;
+					$state.complete()
+					return
 				}
 
-				this.paging.loading = true;
-				const documentSnapshots = await this.handleResumes(
-					this.ref.resumesNext
-				);
+				this.paging.loading = true
+				const documentSnapshots = await this.handleResumes(this.ref.resumesNext)
 				setTimeout(() => {
-					$state.loaded();
-					this.paging.loading = false;
+					$state.loaded()
+					this.paging.loading = false
 					if (documentSnapshots.empty) {
 						/* If there is no more questions to load, set paging.end to true */
-						this.paging.end = true;
+						this.paging.end = true
 					}
-				}, 2000);
+				}, 2000)
+			},
+			async fetchMoreResumes($state) {
+				console.log('fetchMoreResumes')
+				// this.lastVisible = {name: 'abc'}
+				if (this.paging.end) {
+					$state.complete()
+					return
+				}
+				this.paging.loading = true
+
+				const snapshot = await this.$store.dispatch('resumes/fetchShortResumesPerPage')
+				setTimeout(() => {
+					console.log('snapshot: ', snapshot)
+
+					$state.loaded()
+					this.paging.loading = false
+					if (snapshot.empty) {
+						this.paging.end = true
+						return
+					}
+					const shortResumesArray = []
+					snapshot.forEach(resume => {
+						shortResumesArray.push({ ...resume.data(), id: resume.id })
+					})
+					console.log('shortResumesArray: ', shortResumesArray)
+					this.$store.commit('resumes/addShortResumes', shortResumesArray)
+					const lastVisible = shortResumesArray[shortResumesArray.length - 1]._created_at
+					console.log('lastVisible: ', lastVisible)
+					this.$store.commit('resumes/setLastVisible', lastVisible - 1)
+				}, 3000)
 			},
 			// handleResumes2(ref) {
 			// 	return new Promise((resolve, reject) => {
@@ -468,54 +550,51 @@
 			// },
 			loadMore() {
 				if (this.paging.end) {
-					return;
+					return
 				}
 
-				this.paging.loading = true;
-				this.handleQuestions(this.ref.resumesNext).then(
-					documentSnapshots => {
-						this.paging.loading = false;
+				this.paging.loading = true
+				this.handleQuestions(this.ref.resumesNext).then(documentSnapshots => {
+					this.paging.loading = false
 
-						if (documentSnapshots.empty) {
-							/* If there is no more questions to load, set paging.end to true */
-							this.paging.end = true;
-						}
+					if (documentSnapshots.empty) {
+						/* If there is no more questions to load, set paging.end to true */
+						this.paging.end = true
 					}
-				);
+				})
 			},
 			handleQuestions(ref) {
 				return new Promise((resolve, reject) => {
 					ref.get().then(documentSnapshots => {
 						/* If documentSnapshots is empty, then we have loaded all of pages */
 						if (documentSnapshots.empty) {
-							this.paging.end = true;
-							resolve(documentSnapshots);
+							this.paging.end = true
+							resolve(documentSnapshots)
 						}
 
 						documentSnapshots.forEach(doc => {
-							let questionData = doc.data();
-							questionData.id = doc.id;
-							this.resumes.push(questionData);
-						});
+							let questionData = doc.data()
+							questionData.id = doc.id
+							this.resumes.push(questionData)
+						})
 
 						/* Build reference for next page */
-						const lastVisible =
-							documentSnapshots.docs[documentSnapshots.size - 1];
+						const lastVisible = documentSnapshots.docs[documentSnapshots.size - 1]
 
 						if (!lastVisible) {
-							return;
+							return
 						}
 
 						this.ref.resumesNext = this.ref.resumes
 							.startAfter(lastVisible)
-							.limit(this.paging.resumes_per_page);
+							.limit(this.paging.resumes_per_page)
 
-						resolve(documentSnapshots);
-					});
-				});
+						resolve(documentSnapshots)
+					})
+				})
 			}
 		}
-	};
+	}
 </script>
 
 <style scoped>

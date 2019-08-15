@@ -28,7 +28,8 @@
 								<td class="text-xs-left">{{ props.item.user.firstname }}</td>
 								<td class="text-xs-left">{{ props.item.user.lastname }}</td>
 								<td class="text-xs-left">{{ props.item.user.email }}</td>
-								<td class="text-xs-left">{{ props.item.user.message.substr(0, 6) }} [...]</td>
+								<td class="text-xs-left" v-if="props.item.user.message">{{ props.item.user.message.substr(0, 6) }} [...]</td>
+								<td class="text-xs-left" v-else></td>
 								<td class="text-xs-left" :class="[ new_authorizations_status.includes(props.item.id) ? 'fadeOut' : '']">{{ props.item.status ? props.item.status.name : '' }}</td>
 								<!-- <td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
@@ -269,8 +270,12 @@
 		middleware: [],
 		async mounted () {
 			try {
-				await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations')
-				await this.$store.dispatch('authorizations/fetchUserGivenAuthorizations')
+				if (this.$store.getters['authorizations/loadedUserReceivedAuthorizations'].length < 1) {
+					await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations')
+				}
+				if (this.$store.getters['authorizations/loadedUserGivenAuthorizations'].length < 1) {
+					await this.$store.dispatch('authorizations/fetchUserGivenAuthorizations')
+				}
 			} catch (error) {
 				new Noty({
 					type: 'error',
@@ -403,10 +408,10 @@
 				return this.$store.getters['user/loadedUser']
 			},
 			loadedUserReceivedAuthorizations () {
-				return this.$store.getters['authorizations/loadedUserReceivedAuthorizationsArray']
+				return this.$store.getters['authorizations/loadedUserReceivedAuthorizations']
 			},
 			loadedUserGivenAuthorizations () {
-				return this.$store.getters['authorizations/loadedUserGivenAuthorizationsArray']
+				return this.$store.getters['authorizations/loadedUserGivenAuthorizations']
 			}
 		},
 		methods: {

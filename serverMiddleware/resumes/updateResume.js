@@ -13,7 +13,7 @@ module.exports = app.use(async function (req, res, next) {
 	try {
 		let updatedResume = req.body;
 		console.log('updatedResume: ', updatedResume);
-		updatedResume._updated_at = moment().unix();
+		updatedResume._updated_at = moment().valueOf();
 
 		// 1) Check API KEY (so that we know request is sent from server)
         console.log('app-key: ', req.get('app-key'));		
@@ -137,6 +137,7 @@ module.exports = app.use(async function (req, res, next) {
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages,
 				visibility: updatedResume.visibility,
+				_updated_at: moment().valueOf()
 			});
 
 			await batch.commit();
@@ -213,7 +214,9 @@ module.exports = app.use(async function (req, res, next) {
 				picture: picture ? picture.downloadUrl : null,
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages ? updatedResume.languages : null,
-				visibility: updatedResume.visibility
+				visibility: updatedResume.visibility,
+				_updated_at: moment().valueOf(),
+				timestamp: admin.firestore.FieldValue.serverTimestamp()
 			});
 			await batch.commit();
 

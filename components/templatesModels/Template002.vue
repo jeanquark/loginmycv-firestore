@@ -234,18 +234,18 @@
                         <v-form>
                             <v-layout row wrap>
                                 <v-flex xs6 class="pr-3">
-                                    <v-text-field outline name="firstname_template2" label="First name" :color="colors.primaryColor" :background-color="colors.primaryColor" dark></v-text-field>
+                                    <v-text-field outline name="firstname_template2" :label="resume.fields['firstname'] || 'Firstname'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 class="pl-3">
-                                    <v-text-field outline name="lastname_template2" label="Last name" :color="colors.primaryColor" :background-color="colors.primaryColor" dark></v-text-field>
+                                    <v-text-field outline dark name="lastname_template2" :label="resume.fields['lastname'] || 'Lastname'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.lastnameRules" v-model="contactForm.lastname"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-text-field outline name="email_template2" label="Your Email" :color="colors.primaryColor" :background-color="colors.primaryColor" dark></v-text-field>
+                                    <v-text-field outline dark name="email_template2" :label="resume.fields['email'] || 'Email'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.emailRules" v-model="contactForm.email"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-textarea outline name="message_template2" label="Your message" :color="colors.primaryColor" :background-color="colors.primaryColor" dark></v-textarea>
+                                    <v-textarea outline dark name="message_template2" :label="resume.fields['message'] || 'Message'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.messageRules" v-model="contactForm.message"></v-textarea>
                                 </v-flex>
-                                <v-btn round block large :color="colors.primaryColor" class="white--text button">Send message</v-btn>
+                                <v-btn round block large :color="colors.primaryColor" class="white--text button">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
                             </v-layout>
                         </v-form>
                     </v-flex>
@@ -282,6 +282,13 @@
 				tertiaryColor: "",
 				backgroundColor: "",
 				textColor: "",
+				contactForm: {
+					valid: true,
+					firstname: '',
+					lastname: '',
+					email: '',
+					message: '',
+				},
 				resume: {
 					job_title: "Product Designer",
 					job_description:
@@ -444,6 +451,8 @@
 						files: 'Files',
 						contact: 'Contact'
 					},
+					fields: {},
+					contact_form_validation: {},
 					parameters: {
 						show_contact_form: true,
 						show_language_level: true
@@ -635,5 +644,7 @@
 	>>> .v-chip__content {
 		cursor: pointer !important;
 	}
-
+	>>>.v-text-field--outline .v-label {
+		color: var(--text-color);
+	}
 </style>

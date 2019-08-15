@@ -68,8 +68,8 @@ module.exports = app.use(async function (req, res) {
         console.log('newResume.package_valid_until: ', newResume.package_valid_until)
 
         
-        newResume._created_at = moment().unix();
-        newResume._updated_at = moment().unix();
+        newResume._created_at = moment().valueOf();
+        newResume._updated_at = moment().valueOf();
         newResume['uploads'] = [];
         const password = newResume.password;
         delete newResume['id'];

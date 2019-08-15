@@ -241,7 +241,7 @@
                                 <v-text-field name="firstname_contact" :label="resume.fields['firstname'] || 'Firstname'" outline dark :color="primaryColor" :background-color="primaryColor" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
                             </v-flex>
                             <v-flex xs6 class="pl-3">
-                                <v-text-field outline name="lastname_template1" :label="resume.fields['lastname'] || 'Lastname'" :rules="contactForm.firstnameRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.lastname"></v-text-field>
+                                <v-text-field outline name="lastname_template1" :label="resume.fields['lastname'] || 'Lastname'" :rules="contactForm.lastnameRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.lastname"></v-text-field>
                             </v-flex>
                             <v-flex xs12>
                                 <v-text-field outline name="email_template1" :label="resume.fields['email'] || 'Email'" :rules="contactForm.emailRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.email"></v-text-field>
@@ -520,5 +520,8 @@
 	}
 	>>> .v-chip__content {
 		cursor: pointer !important;
+	}
+	>>>.v-text-field--outline .v-label {
+		color: var(--text-color);
 	}
 </style>

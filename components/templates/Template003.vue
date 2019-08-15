@@ -642,4 +642,7 @@
 		/* background: #555; */
 		background: var(--text-color);
 	}
+	>>>.v-text-field--outline .v-label {
+		color: var(--text-color);
+	}
 </style>

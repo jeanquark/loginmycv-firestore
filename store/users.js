@@ -5,8 +5,8 @@ import axios from 'axios'
 import moment from 'moment'
 
 export const state = () => ({
-	loadedUser: null,
-	loadedAllUsers: []
+	user: null,
+	allUsers: []
 })
 
 export const mutations = {
@@ -21,10 +21,10 @@ export const mutations = {
 		// if (email === 'jeanquark3@visitor.loginmycv.com') {
 			// payload.status = 'visitor'
 		// }
-		state.loadedUser = payload
+		state.user = payload
 	},
 	setAllUsers (state, payload) {
-		state.loadedAllUsers = payload
+		state.allUsers = payload
 	}
 }
 
@@ -172,9 +172,9 @@ export const actions = {
 
 export const getters = {
 	loadedUser (state) {
-		return state.loadedUser
+		return state.user
 	},
 	loadedAllUsers (state) {
-		return state.loadedAllUsers
+		return state.allUsers
 	}
 }

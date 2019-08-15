@@ -10,8 +10,11 @@ npm-debug.log
 # Nuxt generate
 dist
 
+database
+
 # serviceAccountKey.js
 
 .env
 .accountCredentials.json
 # jsonToFirestore.js
+.serviceAccountKey.json

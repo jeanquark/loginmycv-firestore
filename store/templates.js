@@ -15,7 +15,7 @@ export const mutations = {
 export const actions = {
 	async fetchTemplates ({ commit }) {
 		console.log('Call to fetchTemplates action')
-		const snapshot = await firestore.collection('templates').get()
+		const snapshot = await firestore.collection('templates').where('active', '==', true).get()
 		const templatesArray = []
 		snapshot.forEach(doc => {
 			templatesArray.push({...doc.data(), id: doc.id})
