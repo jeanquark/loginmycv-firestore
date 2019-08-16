@@ -6,6 +6,8 @@
             <!-- errors: {{ errors }}<br /><br /> -->
             <!-- userResume.education: {{ userResume.education }}<br /><br /> -->
             <!-- educationErrors: {{ educationErrors }}<br /><br /> -->
+            <!-- userResume: {{ userResume }}<br /><br /> -->
+			expanded: {{ expanded }}<br /><br />
         </div>
         <h2>Education</h2>
         <v-layout row wrap class="pa-3" v-if="userResume">
@@ -16,7 +18,7 @@
                 <v-icon>add</v-icon>
             </v-btn>
             <v-expansion-panel style="">
-                <v-dialog v-model="modalNewEducation" width="500" persistent>
+                <v-dialog lazy v-model="modalNewEducation" width="500" :persistent="false">
                     <v-card>
                         <v-card-title class="headline" primary-title>
                             <v-layout class="justify-center">
@@ -47,6 +49,9 @@
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field label="Graduation date" name="education_graduation_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_graduation_date') : null" data-vv-as="Graduation date" v-model="newEducation.end_date" :counter="50"></v-text-field>
                                 </v-flex>
+								<v-flex xs12 class="mt-4 pl-2">
+									<component :is="dynamicComponent" :resumeSlug="resumeSlug" v-if="dynamicComponent" />
+								</v-flex>
                             </v-layout>
                             <!--<v-layout row>
                                 <v-flex xs6>
@@ -93,10 +98,10 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-                <!-- candidateLongResume: {{ candidateLongResume }}<br /><br /> -->
-                <!-- candidateEducation: {{ candidateEducation }}<br /><br /> -->
+
+
                 <draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
-                    <v-expansion-panel-content v-for="(education, index) in candidateEducation" :key="index">
+                    <v-expansion-panel-content lazy v-for="(education, index) in candidateEducation" :key="index" v-model="expanded[index]">
                         <!-- <v-icon slot="actions" color="primary"><v-icon>cross</v-icon></v-icon> -->
                         <!-- <v-icon slot="actions" color="teal">done</v-icon> -->
                         <!-- <v-icon color="teal">cross</v-icon> -->
@@ -129,87 +134,55 @@
                                     <!-- abc: {{ new Date().toISOString().substr(0, 7) }} -->
                                     <!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /> -->
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <!-- v-validate="{ required: true, max: 50 }"
-                                            :error-messages="errors ? errors.collect('title') : null"
-                                            data-vv-as="Title" -->
-
                                         <v-text-field label="Title" :name="`education_title_${index}`" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`education_title_${index}`) : null" data-vv-as="Title" v-model="candidateEducation[index].title" :counter="50"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <!--  -->
                                         <v-text-field label="University/School/Institute name" :name="`education_school_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_school_${index}`) : null" data-vv-as="University/School/Institute" v-model="candidateEducation[index].school" :counter="50"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <!--  -->
                                         <v-text-field label="City" :name="`education_city_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_city_${index}`) : null" data-vv-as="City" v-model="candidateEducation[index].city" :counter="50"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <!--  -->
                                         <v-text-field label="Country" :name="`education_country_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_country_${index}`) : null" data-vv-as="Country" v-model="candidateEducation[index].country" :counter="50"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 class="pa-3">
-
-                                        <!--  -->
                                         <v-textarea label="Education description" :name="`education_description_${index}`" v-validate="{ max: 200 }" :error-messages="errors ? errors.collect(`education_description_${index}`) : null" data-vv-as="Description" v-model="candidateEducation[index].description" :counter="200"></v-textarea>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
-                                        <!--  -->
                                         <v-text-field label="Start date" :name="`education_start_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_start_date_${index}`) : null" data-vv-as="Start date" v-model="candidateEducation[index].start_date" :counter="50"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
                                         <v-text-field label="Graduation date" :name="`education_graduation_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_graduation_date_${index}`) : null" data-vv-as="Graduation date" v-model="candidateEducation[index].end_date" :counter="50"></v-text-field>
                                     </v-flex>
+                                    
+									<!-- <v-layout row wrap> -->
 									<v-flex xs12 class="pa-3">
-										<component :is="dynamicComponent" :resumeSlug="resumeSlug" v-if="dynamicComponent" />
+										<!-- <div style="width: 100%; max-height: 500px;"> -->
+										<!-- <div> -->
+										<component :is="dynamicComponent" :resumeSlug="resumeSlug" :index="index" v-if="dynamicComponent && expanded[index]" />
+										<!-- </div> -->
 									</v-flex>
-                                    <!--<v-flex xs12 sm6 class="pa-3">
-                                        <v-layout row>
-                                            <v-flex xs6>
-                                                <v-dialog
-                                                    v-model="form.modalEndDate"
-                                                    persistent
-                                                    lazy
-                                                    full-width
-                                                    width="300px"
-                                                >
-                                                    <v-text-field
-                                                        slot="activator"
-                                                        v-model="candidateEducation[index].end_date"
-                                                        label="Graduation date"
-                                                        prepend-icon="event"
-                                                        readonly
-                                                    ></v-text-field>
-                                                    <v-date-picker v-model="candidateEducation[index].end_date" :type="form.editEndDateType" :scrollable="false">
-                                                        <v-layout justify-center>
-                                                            <v-btn flat color="error" @click="deleteEndDate(index)">Remove</v-btn>
-                                                            <v-btn flat color="secondary" @click="form.modalEndDate = false">Cancel</v-btn>
-                                                            <v-btn flat color="success" @click="form.modalEndDate = false">OK</v-btn>
-                                                        </v-layout>
-                                                    </v-date-picker>
-                                                </v-dialog>
-                                            </v-flex>
-                                            <v-flex xs6>
-                                                <v-layout justify-center>
-                                                    <div>
-                                                        <v-radio-group v-model="form.editEndDateType" row>
-                                                            <v-radio label="Month" value="month" color="secondary"></v-radio>
-                                                            <v-radio label="Day" value="date" color="secondary"></v-radio>
-                                                        </v-radio-group>
-                                                    </div>
-                                                </v-layout>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-flex>-->
+								<!-- </v-layout> -->
                                 </v-layout>
                             </v-card-text>
                         </v-card>
                     </v-expansion-panel-content>
                 </draggable>
-                <!-- <v-card-actions class="justify-center">
-                    <v-btn color="orange" @click="saveEducation">Save</v-btn>
-                </v-card-actions> -->
+
+                
             </v-expansion-panel>
+
         </v-layout>
+        <!-- <v-layout row wrap>
+            <v-flex xs12 sm12 md8>
+                <div style="width: 100%; max-height: 500px;">
+                    <component :is="dynamicComponent" :resumeSlug="resumeSlug" v-if="dynamicComponent" />
+                </div>
+            </v-flex>
+            <v-flex xs12 sm12 md4>
+                Markers:
+            </v-flex>
+        </v-layout> -->
     </div>
 </template>
 
@@ -253,7 +226,8 @@
 					start_date: '',
 					end_date: ''
 				},
-				dynamicComponent: null
+				dynamicComponent: null,
+				expanded: [] // Control expansion panel open/close state. Necessary for the map inside Leaflet component (template004) to render on mounted
 				// education: [
 				//     {
 				//         name: 'Graphic Design',

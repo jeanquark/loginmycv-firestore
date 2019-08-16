@@ -26,7 +26,7 @@ export default ({ store }) => {
 			// })
 			reducer: state => ({
 				users: {
-					user: state.users.user
+					// user: state.users.user
 				},
 				resumes: {
 					userResumes: state.resumes.userResumes

@@ -174,10 +174,11 @@
 
 			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
+				if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+					this.snackbarNoResume = true
+				}
 			}
-			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
-				this.snackbarNoResume = true
-			}
+			
 			if (this.$store.getters['loadedDarkTheme']) {
 				this.chartOptions.backgroundColor = '#424242'
 				this.chartOptions.hAxis.textStyle.color = '#FFF'

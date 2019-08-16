@@ -3,7 +3,7 @@
         <div>
             <!-- resumeSlug: {{ this.resumeSlug }}<br /> -->
             <!-- edit: {{ this.edit }}<br /> -->
-            userResume: {{ userResume }}<br /><br />
+            <!-- userResume: {{ userResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /> -->
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
             <!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->

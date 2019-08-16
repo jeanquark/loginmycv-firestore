@@ -164,9 +164,10 @@
             // console.log('resume: ', resume)
 			this.resumeSlug = resume
 			
-			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+			// Problem: userResumes is not reactive
+			// if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
-			}
+			// }
             if (this.$store.getters['countries/loadedCountries'].length < 1) {
                 await this.$store.dispatch('countries/fetchCountries')
             }
