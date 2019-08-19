@@ -146,7 +146,7 @@
                 <img src="/images/ivan-min.jpg" alt="avatar">
             </v-avatar>
 
-            <span class="pa-2" style="font-size: 1.3em;">Hem... it looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
+            <span class="pa-2" style="font-size: 1.3em;">Hey! It looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
                 <v-icon>add</v-icon>
                 </v-btn> button</span>
             <v-btn color="secondary" flat @click="snackbarNoResume = false">

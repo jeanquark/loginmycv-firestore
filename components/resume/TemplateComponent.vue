@@ -8,7 +8,8 @@
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
             <!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
             <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
-            userResume.template_id: {{ userResume.template_id }}<br /><br />
+            userResume.template.id: {{ userResume.template.id }}<br /><br />
+			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
         </div>
         <v-layout row wrap class="pa-2">
             <v-flex xs12>
@@ -20,7 +21,7 @@
                     <v-card-text>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template_id === template.id ? 'active' : null]">
+                                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template.id === template.id ? 'active' : null]">
                                     <v-img :src="`/images/templates/${template.image}`" :lazy-src="`/images/templates/${template.image}`" aspect-ratio="1.5"></v-img>
                                     <!-- <div class="text-xs-center">{{ template.name }}</div> -->
                                     <!-- <div class="text-xs-center">{{ template.description }}</div> -->
@@ -28,7 +29,7 @@
                                 <v-layout class="transparent-background">
                                     <v-layout justify-start align-center>
                                         <font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users || 0 }}</span>
-                                        <font-awesome-icon :icon="['fas', 'cubes' ]" class="" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
+                                        <font-awesome-icon :icon="['fas', 'cubes' ]" :class="[template.package.slug]" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
 
                                     </v-layout>
                                     <v-layout justify-end align-center>
@@ -54,10 +55,7 @@
                     <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
                     <p class="text-xs-center">{{ loadedTemplate.description }}</p>
 
-                    <component :is="dynamicComponent" :resumeSlug="resumeSlug" :loadedTemplate="loadedTemplate" v-if="dynamicComponent" />
-
-                    <!-- <br /><br /><br /><br /> -->
-                    <v-layout row align-center class="mb-2" v-if="userResume">
+                    <v-layout row align-center class="my-3" v-if="userResume">
                         <v-flex xs6 sm4 class="text-xs-center">
                             Primary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
@@ -79,6 +77,10 @@
                             <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                         </v-flex>
                     </v-layout>
+
+					<v-layout row class="my-3">
+                    	<component :is="dynamicComponent" :resumeSlug="resumeSlug" 	:loadedTemplate="loadedTemplate" v-if="dynamicComponent" />
+					</v-layout>
 
                     <!-- <v-img :src="`/images/templates/${loadedTemplate.image}`" width="100%" /> -->
                     <!-- userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br /> -->
@@ -144,7 +146,7 @@
                         <h2 class="headline mb-0 text-xs-center">
                             <font-awesome-icon :icon="['fas', 'language']" />
                             Translation <small>(optional)</small><br />
-                            <small class="body-1">Below you can specify menu names and field names as you wish they appear on your resume</small>
+                            <small class="body-1">You may specify below menu names and field names as you wish they appear on your resume</small>
                         </h2>
                     </v-card-title>
 
@@ -268,24 +270,25 @@
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
 			await this.$store.dispatch('templates/fetchTemplates')
-			if (!this.resumeSlug) {
-				const template = this.$store.getters['templates/loadedTemplates'].find(
-					template => template.slug === 'template001'
-				)
-				if (template) {
-					this.userResume.template_id = template.id
-					this.userResume.colors = template.colors
-					template.menus.forEach(menu => {
-						this.userResume.menus[menu.slug] = menu.name
-					})
-					template.fields.forEach(field => {
-						this.userResume.fields[field.slug] = field.name
-					})
-					template.contact_form_validation.forEach(field => {
-						this.userResume.contact_form_validation[field.slug] = field.value
-					})
-				}
-			}
+			// if (!this.resumeSlug) {
+			// 	const template = this.$store.getters['templates/loadedTemplates'].find(
+			// 		template => template.slug === 'template001'
+			// 	)
+			// 	console.log('template 1: ', template)
+			// 	if (template) {
+			// 		this.userResume.template.id = template.id
+			// 		this.userResume.colors = template.colors
+			// 		template.menus.forEach(menu => {
+			// 			this.userResume.menus[menu.slug] = menu.name
+			// 		})
+			// 		template.fields.forEach(field => {
+			// 			this.userResume.fields[field.slug] = field.name
+			// 		})
+			// 		template.contact_form_validation.forEach(field => {
+			// 			this.userResume.contact_form_validation[field.slug] = field.value
+			// 		})
+			// 	}
+			// }
 		},
 		mounted() {
 			this.loadDynamicComponent()
@@ -293,6 +296,7 @@
 					this.dynamicComponent = () => this.loadDynamicComponent()
 				})
 				.catch(() => {
+					console.log('error dynamic component')
 					this.dynamicComponent = null
 				})
 		},
@@ -313,7 +317,7 @@
 			},
 			loadedTemplate() {
 				return this.loadedTemplates.find(
-					template => template.id === this.userResume.template_id
+					template => template.id === this.userResume.template.id
 				)
 			},
 			userResume() {
@@ -343,17 +347,17 @@
 				// 	this.userResume.template_id.charAt(0).toUpperCase() +
 				// 	this.userResume.template_id.substring(1)
 				// console.log('templateFile: ', templateFile)
-				return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template_id}/TemplateComponent`)
+				return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
 				// return () => import(`~/components/resume/DynamicTemplatesComponents/Template001`)
 			}
 		},
 		methods: {
 			async selectTemplate(template) {
-				// console.log('template', template)
+				console.log('template', template)
 				if (!this.resumeSlug) {
 					this.userResume.colors = template.colors
 				}
-				this.userResume.template_id = template.id
+				this.userResume.template.id = template.id
 
 				this.loadDynamicComponent()
 					.then(() => {
@@ -448,5 +452,11 @@
 	}
 	.transparent-background {
 		background: rgba(122, 82, 143, 0.6);
+	}
+	.basic {
+		color: var(--v-secondary-base);
+	}
+	.classic {
+		color: var(--v-tertiary-base);
 	}
 </style>
