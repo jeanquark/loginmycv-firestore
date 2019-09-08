@@ -7,7 +7,7 @@
             <!-- dark: {{ dark }}<br /><br /> -->
             <!-- new Date("2019-01-01"): {{ new Date("2019-01-01") }}<br /><br />
 			minDate: {{ minDate }}<br /><br />
-      minDate2: {{ minDate2 }}<br /><br />-->
+     		minDate2: {{ minDate2 }}<br /><br />-->
             <!-- loadedDarkTheme: {{ loadedDarkTheme }}<br /><br /> -->
             <!-- chartOptions2.backgroundColor: {{ chartOptions2.backgroundColor }}<br /><br /> -->
             <!-- loadingArray: {{ loadingArray }}<br /><br /> -->
@@ -172,9 +172,9 @@
 			this.$store.commit('setLoading', false)
 			this.$store.getters['users/loadedUser']
 
-			if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+			if (!this.loadedUserResumes || this.loadedUserResumes.length < 1) {
 				await this.$store.dispatch('resumes/fetchUserResumes')
-				if (this.$store.getters['resumes/loadedUserResumes'].length < 1) {
+				if (this.loadedUserResumes.length < 1) {
 					this.snackbarNoResume = true
 				}
 			}
