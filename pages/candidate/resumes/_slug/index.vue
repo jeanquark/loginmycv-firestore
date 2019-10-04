@@ -1,13 +1,20 @@
 <template>
-    <div>
-        <v-layout row wrap>
-            <v-flex xs12>
+    <!-- <div> -->
+	<v-container>
+        <!-- <v-layout row wrap> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs12> -->
+			<v-col xs="12">
                 <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
                 <br />
-            </v-flex>
-        </v-layout>
-        <v-layout row>
-            <v-flex xs12>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
+        <!-- <v-layout row> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs12> -->
+			<v-col xs="12">
                 <v-stepper v-model="step">
  
                     <v-stepper-header>
@@ -92,12 +99,16 @@
                             Next <v-icon>keyboard_arrow_right</v-icon>
                         </v-btn>
                     </v-card-actions>
-                    <v-layout justify-center>
+                    <!-- <v-layout justify-center> -->
+					<v-row justify="center">
                         <v-btn class="success" :loading="loadingResume || loadingFiles" @click="updateResume">Update</v-btn>
-                    </v-layout>          
+                    <!-- </v-layout> -->
+					</v-row>
                 </v-stepper>
-            </v-flex>
-        </v-layout>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
 
         <!-- Modal to update resume -->
         <v-dialog
@@ -105,8 +116,10 @@
             width="500"
             persistent
         >
-            <v-layout>
-                <v-flex xs12> 
+            <!-- <v-layout> -->
+			<v-row no-gutters>
+                <!-- <v-flex xs12> -->
+				<v-col xs="12"> 
                     <v-card light>
                         <v-card-title
                             class="headline justify-center primary white--text"
@@ -138,10 +151,13 @@
                             <br /><br /><br />
                         </v-card-text>
                     </v-card>
-                </v-flex>
-            </v-layout>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
         </v-dialog>
-    </div>
+    <!-- </div> -->
+	</v-container>
 </template>
 
 <script>

@@ -1,17 +1,14 @@
 {
-  "name": "loginmycv",
+  "name": "loginmycv2",
   "version": "1.0.0",
-  "description": "Nuxt.js project",
-  "author": "jeanquark <jm.kleger@gmail.com>",
+  "description": "My magnificent Nuxt.js project",
+  "author": "jeanquark",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint",
-    "heroku-postbuild": "npm run build"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
@@ -22,6 +19,8 @@
     "@nuxtjs/dotenv": "^1.3.0",
     "@nuxtjs/google-analytics": "^2.2.0",
     "@nuxtjs/sentry": "^3.0.0",
+    "nuxt": "^2.0.0",
+    "vuetify": "^2.0.0",
     "axios": "^0.18.0",
     "cookie-parser": "^1.4.4",
     "firebase": "^5.8.5",
@@ -29,12 +28,10 @@
     "firestore-export-import": "^0.1.7",
     "fullpage-nuxt": "0.0.3",
     "html2pdf.js": "^0.9.1",
-    "jquery": "^3.3.1",
     "mailgun-js": "^0.22.0",
     "moment": "^2.24.0",
     "multer": "^1.4.1",
     "noty": "^3.2.0-beta",
-    "nuxt": "^2.0.0",
     "nuxt-client-init-module": "^0.1.4",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-leaflet": "0.0.19",
@@ -55,11 +52,11 @@
     "vue-stripe-elements-plus": "^0.2.10",
     "vue2-scrollspy": "^2.3.1",
     "vuedraggable": "^2.20.0",
-    "vuetify": "^1.5.4",
     "vuetify-toast-snackbar": "^0.3.0",
     "vuex-persist": "^2.0.0"
   },
   "devDependencies": {
+    "@mdi/font": "^4.4.95",
     "babel-eslint": "^10.0.1",
     "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^4.0.1",

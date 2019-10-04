@@ -5,27 +5,36 @@
         </v-carousel> -->
 
     	<div>
-			loadedShortResumes: {{ loadedShortResumes }}<br /><br />
+			<!-- loadedShortResumes: {{ loadedShortResumes }}<br /><br /> -->
 			loadedUserReceivedAuthorizations: {{ loadedUserReceivedAuthorizations }}<br /><br />
 			<!-- ref.resumesNext: {{ ref.resumesNext }}<br /><br /> -->
 			<!-- <p>lastVisible: {{ lastVisible }}</p> -->
 			<!-- loadedLastVisible: {{ loadedLastVisible }}<br /><br /> -->
 		</div>
 
-        <v-container grid-list-md text-xs-center>
-            <v-layout row wrap justify-center class="mb-5">
-                <v-flex xs12>
+        <!-- <v-container grid-list-md text-xs-center> -->
+		<v-container class="text-center">
+            <!-- <v-layout row wrap justify-center class="mb-5"> -->
+			<v-row no-gutters justify="center" class="mb-5">
+                <!-- <v-flex xs12> -->
+				<v-col>
                     <h1>Welcome to LoginMyCV</h1>
                     <h2 class="grey--text text--lighten-1" style="font-weight: normal;">Your online CV provider</h2><br />
 
-                    <v-layout justify-center>
+                    <!-- <v-layout justify-center> -->
+					<v-row no-gutters justify="center">
                         <v-img src="/images/logo3.png" :lazy-src="'/images/logo3.png'" max-width="220" />
-                    </v-layout>
-                </v-flex>
-            </v-layout>
+                    <!-- </v-layout> -->
+					</v-row>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
 
-            <v-layout row wrap class="mb-5">
-                <v-flex xs12 sm4>
+            <!-- <v-layout row wrap class="mb-5"> -->
+			<v-row no-gutters class="mb-5">
+                <!-- <v-flex xs12 sm4> -->
+				<v-col>
                     <v-card flat class="transparent ma-2">
                         <v-card-text class="text-xs-center">
                             <font-awesome-icon :icon="['fas', 'file-alt']" size="2x" class="primaryColor" />
@@ -37,8 +46,10 @@
                             Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
                         </v-card-text>
                     </v-card>
-                </v-flex>
-                <v-flex xs12 sm4>
+                <!-- </v-flex> -->
+				</v-col>
+                <!-- <v-flex xs12 sm4> -->
+				<v-col>
                     <v-card flat class="transparent ma-2">
                         <v-card-text class="text-xs-center">
                             <font-awesome-icon :icon="['fas', 'lock']" size="2x" class="primaryColor" />
@@ -50,8 +61,10 @@
                             All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
                         </v-card-text>
                     </v-card>
-                </v-flex>
-                <v-flex xs12 sm4>
+                <!-- </v-flex> -->
+				</v-col>
+                <!-- <v-flex xs12 sm4> -->
+				<v-col>
                     <v-card flat class="transparent ma-2">
                         <v-card-text class="text-xs-center">
                             <font-awesome-icon :icon="['fas', 'search']" size="2x" class="primaryColor" />
@@ -63,24 +76,36 @@
                             An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. In addition, you are informed of the number of people who clicked on your resume.
                         </v-card-text>
                     </v-card>
-                </v-flex>
-            </v-layout>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
 
-            <v-layout row wrap justify-center class="mb-5">
-                <v-flex xs12>
+            <!-- <v-layout row wrap justify-center class="mb-5"> -->
+			<v-row no-gutters justify="center" class="mb-5">
+                <!-- <v-flex xs12> -->
+				<v-col>
                     <h2 class="subtitle display-1 mb-2">How it works</h2>
-                    <v-layout>
-                        <v-flex xs6>
+                    <!-- <v-layout> -->
+					<v-row no-gutters>
+                        <!-- <v-flex xs6> -->
+						<v-col cols="6">
                             <h4 class="primaryColor">Create a new resume:</h4><br />
                             <!-- <v-img src="/images/frontpage-text.svg" /> -->
                             <v-img src="/images/gifs/create_resume.gif"></v-img>
-                        </v-flex>
-                        <v-flex xs6>
+                        <!-- </v-flex> -->
+						</v-col>
+                        <!-- <v-flex xs6> -->
+						<v-col cols="6">
                             <v-img src="/images/frontpage-img6.png"></v-img>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-            </v-layout>
+                        <!-- </v-flex> -->
+						</v-col>
+                    <!-- </v-layout> -->
+					</v-row>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
 
             <!--<v-layout row wrap justify-center>
                 <v-flex xs12>
@@ -141,27 +166,35 @@
             </v-layout>-->
 
             <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
-            <v-layout row wrap justify-center>
-                <v-flex xs12 sm6>
+            <!-- <v-layout row wrap justify-center> -->
+			<v-row no-gutters justify="center">
+                <!-- <v-flex xs12 sm6> -->
+				<v-col :sm="6">
                     <video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%; height: 500px;">
                         <!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
                     </video>
-                </v-flex>
-            </v-layout>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
 
-            <v-layout row wrap>
+            <!-- <v-layout row wrap> -->
+			<v-row no-gutters>
                 <!-- Request Authorization Modal -->
-                <v-dialog v-model="requestAuthorizationModal" width="500" lazy persistent>
+                <v-dialog v-model="requestAuthorizationModal" width="500" persistent>
                     <RequestAuthorization :resume="candidateResume" @closeModal="onCloseAuthModal" />
                 </v-dialog>
-            </v-layout>
+            <!-- </v-layout> -->
+			</v-row>
 
             <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}" v-if="infiniteScrollReady">
                 <div v-for="resume of loadedShortResumes" :key="resume.id">
                     <v-hover>
-                        <v-card flat class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
-                            <v-layout row wrap>
-                                <v-flex xs12 style="white-space: nowrap;">
+                        <v-card text class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
+                            <!-- <v-layout row wrap> -->
+							<v-row no-gutters>
+                                <!-- <v-flex xs12 style="white-space: nowrap;"> -->
+								<v-col cols="12" style="white-space: nowrap;">
                                     <div class="country-flag" v-if="resume.country">
                                         <v-img :src="`/images/countries/${resume.country.slug}.png`" width="20" class="mb-1"></v-img>
                                     </div>
@@ -171,13 +204,18 @@
                                     <v-avatar :size="78" class="mb-2" v-if="resume.picture">
                                         <img :src="`${resume.picture}`" alt="Candidate picture">
                                     </v-avatar>
-                                    <v-layout justify-center v-else>
+                                    <!-- <v-layout justify-center v-else> -->
+									<v-row justify="center" v-else>
                                         <avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-xs-center mb-2"></avatar>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
+                                    <!-- </v-layout> -->
+									</v-row>
+                                <!-- </v-flex> -->
+								</v-col>
+                            <!-- </v-layout> -->
+							</v-row>
 
-                            <v-layout fill-height align-center justify-space-around>
+                            <!-- <v-layout fill-height align-center justify-space-around> -->
+							<v-row justify="space-around" align="center" class="fill-height">
                                 <div>
                                     <v-card-text>
                                         <h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
@@ -187,10 +225,13 @@
 										<div class="pt-1 px-2 text-xs-center">_created_at: {{ resume._created_at }}</div>
                                     </v-card-text>
                                     <v-card-actions>
-                                        <v-layout justify-center v-if="resume.visibility === 'public'">
+                                        <!-- <v-layout justify-center v-if="resume.visibility === 'public'"> -->
+										<v-row no-gutters justify="center" v-if="resume.visibility === 'public'">
                                             <v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`">View resume</v-btn>
-                                        </v-layout>
-                                        <v-layout justify-center v-if="resume.visibility === 'semi-private'">
+                                        <!-- </v-layout> -->
+										</v-row>
+                                        <!-- <v-layout justify-center v-if="resume.visibility === 'semi-private'"> -->
+										<v-row no-gutters justify="center" v-if="resume.visibility === 'semi-private'">
                                             <div v-if="loadedUser">
                                                 <div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
                                                     <v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.resume_long_id}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
@@ -204,10 +245,12 @@
                                             <div v-else>
                                                 <v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
                                             </div>
-                                        </v-layout>
+                                        <!-- </v-layout> -->
+										</v-row>
                                     </v-card-actions>
                                 </div>
-                            </v-layout>
+                            <!-- </v-layout> -->
+							</v-row>
                         </v-card>
                     </v-hover>
                 </div>

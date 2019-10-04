@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<!-- <div> -->
+	<v-container>
 		<v-breadcrumbs divider="/">
 	  		<v-breadcrumbs-item
 		        v-for="link in links"
@@ -11,61 +12,66 @@
 	    		{{ link.text }}
 	  		</v-breadcrumbs-item>
 		</v-breadcrumbs>
-	  	<v-flex xs12 sm10 offset-sm1>
-	  		<br /><br />
-	      	<h1 class="text-md-center">Resumes</h1>
-	      	<br /><br />
-			<v-card>
-			    <v-card-title>
-					Resumes
-			      	<v-spacer></v-spacer>
-					<v-text-field
-						append-icon="search"
-						label="Search"
-						single-line
-						hide-details
-						v-model="search"
-					></v-text-field>
-			    </v-card-title>
+	  	<!-- <v-flex xs12 sm10 offset-sm1> -->
+		<v-row no-gutters>
+			<v-col xs="12" sm="10" offset-sm="1">
+				<br /><br />
+				<h1 class="text-md-center">Resumes</h1>
+				<br /><br />
+				<v-card>
+					<v-card-title>
+						Resumes
+						<v-spacer></v-spacer>
+						<v-text-field
+							append-icon="search"
+							label="Search"
+							single-line
+							hide-details
+							v-model="search"
+						></v-text-field>
+					</v-card-title>
 
-			    <v-data-table
-			      :headers="dessertsHeaders"
-			      :items="desserts"
-			      class="elevation-1"
-			    ></v-data-table>
+					<v-data-table
+						:headers="dessertsHeaders"
+						:items="desserts"
+						class="elevation-1"
+					></v-data-table>
 
-			    <!-- <v-data-table
-				    :headers="headers"
-				    :items="loadedAllResumes"
-				    :search="search"
-			    >
-					<template v-slot:items="props">
-						<td>{{ props.index + 1 }}</td>
-						<td>{{ props.item.personal_data.firstname }}</td>
-						<td>{{ props.item.personal_data.lastname }}</td>
-						<td>{{ props.item.personal_data.email }}</td>
-						<td>{{ props.item.visibility }}</td>
-						<td>{{ props.item.active }}</td>
-						<td>{{ props.item._updated_at | moment('DD MMM YYYY') }}</td>
-						<td style="white-space: nowrap;">
-							<v-btn icon class="mx-0" disabled @click="editItem(props.item)">
-								<v-icon color="teal">edit</v-icon>
-							</v-btn>
-							<v-btn icon class="mx-0" @click="deleteItem(props.item)">
-								<v-icon color="pink">delete</v-icon>
-							</v-btn>
-				        </td>
-					</template>
+					<!-- <v-data-table
+						:headers="headers"
+						:items="loadedAllResumes"
+						:search="search"
+					>
+						<template v-slot:items="props">
+							<td>{{ props.index + 1 }}</td>
+							<td>{{ props.item.personal_data.firstname }}</td>
+							<td>{{ props.item.personal_data.lastname }}</td>
+							<td>{{ props.item.personal_data.email }}</td>
+							<td>{{ props.item.visibility }}</td>
+							<td>{{ props.item.active }}</td>
+							<td>{{ props.item._updated_at | moment('DD MMM YYYY') }}</td>
+							<td style="white-space: nowrap;">
+								<v-btn icon class="mx-0" disabled @click="editItem(props.item)">
+									<v-icon color="teal">edit</v-icon>
+								</v-btn>
+								<v-btn icon class="mx-0" @click="deleteItem(props.item)">
+									<v-icon color="pink">delete</v-icon>
+								</v-btn>
+							</td>
+						</template>
 
-					<template v-slot:no-data>
-						<v-alert :value="true" color="error" icon="warning">
-							Sorry, nothing to display here :(
-						</v-alert>
-					</template>
-			    </v-data-table> -->
-			</v-card>
-	    </v-flex>
-	</div>
+						<template v-slot:no-data>
+							<v-alert :value="true" color="error" icon="warning">
+								Sorry, nothing to display here :(
+							</v-alert>
+						</template>
+					</v-data-table> -->
+				</v-card>
+			</v-col>
+	    <!-- </v-flex> -->
+		</v-row>
+	<!-- </div> -->
+	</v-container>
 </template>
 
 <script>

@@ -1,9 +1,13 @@
 <template>
-    <div v-if="!loading">
-        <v-layout row wrap>
-            <v-flex xs12 class="mb-3">
-                <h2 class="text-xs-center">Create a new resume</h2>
-            </v-flex>
+    <!-- <div v-if="!loading"> -->
+	<v-container v-if="!loading">
+        <!-- <v-layout row wrap> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs12 class="mb-3"> -->
+			<v-col xs="12" class="mb-3">
+                <h2 class="text-center">Create a new resume</h2>
+            <!-- </v-flex> -->
+			</v-col>
             <!-- error: {{ error }}<br /> -->
             <!-- step: {{ step }}<br /> -->
             <!-- loadedUserResumes: {{ loadedUserResumes }}<br /><br /> -->
@@ -19,20 +23,28 @@
             <!-- stepEducationErrorsArray: {{ stepEducationErrorsArray }}<br /><br /> -->
             <!-- stepPersonalDataErrors: {{ stepPersonalDataErrors }}<br /><br /> -->
             <!-- acceptConditions: {{ acceptConditions }}<br /><br /> -->
-        </v-layout>
+        <!-- </v-layout> -->
+		</v-row>
 
-        <v-layout row wrap align-center v-if="loadedUserResumes.length > 0">
-            <v-flex xs9 sm4 offset-sm6 md3 offset-md8>
+        <!-- <v-layout row wrap align-center v-if="loadedUserResumes.length > 0"> -->
+		<v-row align="center" v-if="loadedUserResumes.length > 0">
+            <!-- <v-flex xs9 sm4 offset-sm6 md3 offset-md8> -->
+			<v-col xs="9" sm="4" offset-sm="6" offset-md="8">
                 <v-select label="Select a resume to import" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"> </v-select>
-            </v-flex>
-            <v-flex xs3 sm2 md1 class="text-xs-right">
+            <!-- </v-flex> -->
+			</v-col>
+            <!-- <v-flex xs3 sm2 md1 class="text-xs-right"> -->
+			<v-col xs="3" sm="2" md="1" class="text-right">
                 <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
-            </v-flex>
-        </v-layout>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
 
-        <v-layout row>
-            <v-flex xs12>
-
+        <!-- <v-layout row> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs12> -->
+			<v-col xs="12">
                 <v-stepper v-model="step">
                     <v-stepper-header>
                         <v-stepper-step :step="1" editable v-if="stepTemplateErrors === false">Choose Template</v-stepper-step>
@@ -112,13 +124,16 @@
                             Next <v-icon>keyboard_arrow_right</v-icon>
                         </v-btn>
                     </v-card-actions>
-                    <v-layout justify-center>
+                    <!-- <v-layout justify-center> -->
+					<v-row no-gutters justify="center">
                         <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click.stop="creatingResumeDialog = true">Save</v-btn>
-
-                    </v-layout>
+                    <!-- </v-layout> -->
+					</v-row>
                 </v-stepper>
-            </v-flex>
-        </v-layout>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
 
         <!-- Modal to create resume -->
         <v-dialog v-model="creatingResumeDialog" width="500" persistent>
@@ -129,14 +144,18 @@
 
                 <v-card-text>
 
-                    <v-layout row wrap justify-center align-center>
-                        <v-flex xs2 class="text-xs-center">
+                    <!-- <v-layout row wrap justify-center align-center> -->
+					<v-row no-gutters justify="center" align="center">
+                        <!-- <v-flex xs2 class="text-xs-center"> -->
+						<v-col xs="2" class="text-center">
                             <v-avatar size="46" color="grey lighten-4" class="mr-3">
                                 <img src="/images/ivan-min.png" alt="avatar">
                             </v-avatar>
-                        </v-flex>
+                        <!-- </v-flex> -->
+						</v-col>
 
-                        <v-flex xs10>
+                        <!-- <v-flex xs10> -->
+						<v-col xs="10">
                             <p class="px-2 my-0">Your new online resume is about to be created.</p>
                             <ul>
                                 <li v-if="!loadedNewResume.education.length">&#8226; You did not add any education &#128528;. That's OK, you can add some later on &#128077;
@@ -144,11 +163,14 @@
                                 <li v-if="!loadedNewResume.work_experience.length">&#8226; You did not add any work experience &#128528;. That's OK, you can add some later on &#128077;
                                 </li>
                             </ul>
-                        </v-flex>
+                        <!-- </v-flex> -->
+						</v-col>
 
-                    </v-layout>
+                    <!-- </v-layout> -->
+					</v-row>
 
-                    <v-layout justify-center>
+                    <!-- <v-layout justify-center> -->
+					<v-row no-gutters justify="center">
                         <v-checkbox color="primary" v-model="acceptConditions">
                             <template v-slot:label>
                                 <div>
@@ -164,12 +186,15 @@
                                 </div>
                             </template>
                         </v-checkbox>
-                    </v-layout>
+                    <!-- </v-layout> -->
+					</v-row>
 
-                    <v-layout justify-center>
+                    <!-- <v-layout justify-center> -->
+					<v-row no-gutters justify="center">
                         <v-btn color="primary" @click.stop="saveResume" :disabled="!acceptConditions" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
-                        <v-btn flat color="secondary" @click.stop="creatingResumeDialog = false">Cancel</v-btn>
-                    </v-layout>
+                        <v-btn text color="secondary" @click.stop="creatingResumeDialog = false">Cancel</v-btn>
+                    <!-- </v-layout> -->
+					</v-row>
 
                     <v-alert :value="loadingUploadFiles" color="secondary" outline>
                         <div class="text-xs-center">
@@ -184,7 +209,8 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-    </div>
+    <!-- </div> -->
+	</v-container>
 </template>
 
 <script>

@@ -24,7 +24,7 @@
                     label="Email"
                     name="email"
                     type="email"
-                    prepend-icon="person"
+                    prepend-icon="mdi-account"
                     v-model="form.email"
                 ></v-text-field>
 
@@ -32,36 +32,48 @@
                     label="Password" 
                 	name="password" 
                     type="password"
-                    prepend-icon="lock" 
+                    prepend-icon="mdi-lock-question" 
                     v-model="form.password"
                 ></v-text-field>
 
-                <v-layout justify-center class="mb-2">
+                <!-- <v-layout justify-center class="mb-2"> -->
+				<v-row no-gutters justify="center" class="mb-2">
                     <v-btn color="primary" type="submit" :loading="loading">Login</v-btn>
-                </v-layout>
+                <!-- </v-layout> -->
+				</v-row>
 
-                <v-layout row wrap class="mt-3 mb-2">
-                    <v-flex xs12 sm6 class="px-2">
+                <!-- <v-layout row wrap class="mt-3 mb-2"> -->
+				<v-row no-gutters class="mt-3 mb-2">
+                    <!-- <v-flex xs12 sm6 class="px-2"> -->
+					<v-col xs="12" sm="6" class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Login with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
-                    </v-flex>
-                    <v-flex xs12 sm6 class="px-2">
+                    <!-- </v-flex> -->
+					</v-col>
+                    <!-- <v-flex xs12 sm6 class="px-2"> -->
+					<v-col xs="12" sm="6" class="px-2">
                         <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Login with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
-                    </v-flex>
-                </v-layout>
+                    <!-- </v-flex> -->
+					</v-col>
+                <!-- </v-layout> -->
+				</v-row>
 
-                <v-layout justify-center class="mb-1"> 
-                    <v-btn flat color="secondary" @click="switchToForgotPassword">
+                <!-- <v-layout justify-center class="mb-1">  -->
+				<v-row no-gutters justify="center" class="mb-1">
+                    <v-btn text color="secondary" @click="switchToForgotPassword">
                         I forgot my password
                     </v-btn>
-                </v-layout>
-                <v-layout justify-center>
-                    <v-btn flat color="primary" @click="switchToRegister">
+                <!-- </v-layout> -->
+				</v-row>
+                <!-- <v-layout justify-center> -->
+				<v-row no-gutters justify="center">
+                    <v-btn text color="primary" @click="switchToRegister">
                         Switch to register
                     </v-btn>
-                    <v-btn flat color="secondary" @click="closeModal">
+                    <v-btn text color="secondary" @click="closeModal">
                         Close
                     </v-btn>
-                </v-layout>
+                <!-- </v-layout> -->
+				</v-row>
             </v-form>
         </v-card-text>
     </v-card>

@@ -1,0 +1,2128 @@
+{
+	"template001": {
+		"file": "Template1",
+		"description": "Clean and minimalistic design",
+		"author": {
+			"username": "jeanquark",
+			"id": "XG5SaLYuWIM9Ank9wjsoo2lQfzA3",
+			"image": "",
+			"lastname": "Kleger",
+			"firstname": "Jean-Marc"
+		},
+		"active": true,
+		"template_specific_components": [
+			{
+				"name": "Map",
+				"component": "template",
+				"slug": "map"
+			}
+		],
+		"image": "template001.jpg",
+		"name": "Template 1",
+		"colors": {
+			"secondaryColor": "#202026",
+			"textColor": "#FFF",
+			"tertiaryColor": "#424242",
+			"primaryColor": "#7A528F",
+			"backgroundColor": "#FFF"
+		},
+		"contact_form_validation": [
+			{
+				"value_fr": "Le champ prénom est requis",
+				"slug": "firstname_is_required",
+				"name": "Firstname is required",
+				"value_en": "Firstname is required"
+			},
+			{
+				"name": "Firstname max length (50)",
+				"value_en": "Firstname must be less than 50 characters",
+				"value_fr": "Le champ prénom ne doit pas contenir plus de 50 caractères",
+				"slug": "firstname_max_length"
+			},
+			{
+				"value_fr": "Le champ nom est requis",
+				"slug": "lastname_is_required",
+				"name": "Lastname is required",
+				"value_en": "Lastname is required"
+			},
+			{
+				"value_fr": "Le champ nom ne doit pas contenir plus de 50 caractères",
+				"slug": "lastname_max_length",
+				"name": "Lastname max length (50)",
+				"value_en": "Lastname must be less than 50 characters"
+			},
+			{
+				"value_fr": "Le champ e-mail est requis",
+				"slug": "email_is_required",
+				"name": "Email is required",
+				"value_en": "Email is required"
+			},
+			{
+				"name": "Email must be valid",
+				"value_en": "Email must be valid",
+				"value_fr": "Le champ email doit être valide",
+				"slug": "email_must_be_valid"
+			},
+			{
+				"name": "Message is required",
+				"value_en": "Message is required",
+				"value_fr": "Le champ message est requis",
+				"slug": "message_is_required"
+			},
+			{
+				"value_fr": "Le champ message ne doit pas contenir plus de 2056 caractères",
+				"slug": "message_max_length",
+				"name": "Message max length (2056)",
+				"value_en": "Message must be less than 2056 characters"
+			},
+			{
+				"value_fr": "Votre message a été envoyé avec succès.",
+				"slug": "sucess_message",
+				"name": "Send success message",
+				"value_en": "Your message was sent successfully."
+			},
+			{
+				"value_fr": "Une erreur est survenue et votre message n'a pas pu être envoyé.",
+				"slug": "failure_message",
+				"name": "Send failure message",
+				"value_en": "Sorry, an error occured and your message could not be sent."
+			},
+			{
+				"value_fr": "Veuillez contrôler les erreurs de validation.",
+				"slug": "validation_errors",
+				"name": "Check validation errors",
+				"value_en": "Please check validation errors."
+			}
+		],
+		"menus": [
+			{
+				"name_en": "Presentation",
+				"name": "Presentation",
+				"name_fr": "Présentation",
+				"slug": "presentation"
+			},
+			{
+				"name": "Education",
+				"name_fr": "Formation",
+				"slug": "education",
+				"name_en": "Education"
+			},
+			{
+				"slug": "work_experience",
+				"name_en": "Work Experience",
+				"name": "Work Experience",
+				"name_fr": "Expérience professionnelle"
+			},
+			{
+				"name": "Skills",
+				"name_fr": "Compétences",
+				"slug": "skills",
+				"name_en": "Skills"
+			},
+			{
+				"name": "Files",
+				"name_fr": "Fichiers",
+				"slug": "files",
+				"name_en": "Files"
+			},
+			{
+				"name": "Contact",
+				"name_fr": "Contact",
+				"slug": "contact",
+				"name_en": "Contact"
+			}
+		],
+		"count_users": 2,
+		"package": {
+			"slug": "basic",
+			"name": "Basic"
+		},
+		"slug": "template001",
+		"fields": [
+			{
+				"name_en": "Firstname",
+				"name": "Firstname",
+				"name_fr": "Prénom",
+				"slug": "firstname"
+			},
+			{
+				"slug": "lastname",
+				"name_en": "Lastname",
+				"name": "Lastname",
+				"name_fr": "Nom"
+			},
+			{
+				"slug": "middlename",
+				"name_en": "Middlename",
+				"name": "Middlename",
+				"name_fr": "Deuxième prénom"
+			},
+			{
+				"slug": "age",
+				"name_en": "Age",
+				"name": "Age",
+				"name_fr": "Âge"
+			},
+			{
+				"slug": "city",
+				"name_en": "City",
+				"name": "City",
+				"name_fr": "Ville"
+			},
+			{
+				"slug": "country",
+				"name_en": "Country",
+				"name": "Country",
+				"name_fr": "Pays"
+			},
+			{
+				"name_en": "Email",
+				"name": "E-mail",
+				"name_fr": "E-mail",
+				"slug": "email"
+			},
+			{
+				"slug": "phone_number",
+				"name_en": "Phone number",
+				"name": "Phone number",
+				"name_fr": "Téléphone"
+			},
+			{
+				"slug": "nationalities",
+				"name_en": "Nationalities",
+				"name": "Nationalities",
+				"name_fr": "Nationalités"
+			},
+			{
+				"name_en": "Nationality",
+				"name": "Nationality",
+				"name_fr": "Nationalité",
+				"slug": "nationality"
+			},
+			{
+				"slug": "languages",
+				"name_en": "Languages",
+				"name": "Languages",
+				"name_fr": "Langues"
+			},
+			{
+				"name": "Language",
+				"name_fr": "Langue",
+				"slug": "language",
+				"name_en": "Language"
+			},
+			{
+				"name": "Send message",
+				"name_fr": "Envoyer message",
+				"slug": "send_message",
+				"name_en": "Send message"
+			},
+			{
+				"slug": "message",
+				"name_en": "Message",
+				"name": "Message",
+				"name_fr": "Message"
+			}
+		],
+		"__collections__": {}
+	},
+	"template002": {
+		"image": "template002.jpg",
+		"name": "Template 2",
+		"colors": {
+			"secondaryColor": "#202026",
+			"textColor": "#FFF",
+			"tertiaryColor": "#424242",
+			"primaryColor": "7A528F",
+			"backgroundColor": "#FFF"
+		},
+		"contact_form_validation": [
+			{
+				"name": "Firstname is required",
+				"value_en": "Firstname is required",
+				"value_fr": "Le champ prénom est requis",
+				"slug": "firstname_is_required"
+			},
+			{
+				"name": "Firstname max length (50)",
+				"value_en": "Firstname must be less than 50 characters",
+				"value_fr": "Le champ prénom ne doit pas contenir plus de 50 caractères",
+				"slug": "firstname_max_length"
+			},
+			{
+				"value_fr": "Le champ nom est requis",
+				"slug": "lastname_is_required",
+				"name": "Lastname is required",
+				"value_en": "Lastname is required"
+			},
+			{
+				"name": "Lastname max length (50)",
+				"value_en": "Lastname must be less than 50 characters",
+				"value_fr": "Le champ nom ne doit pas contenir plus de 50 caractères",
+				"slug": "lastname_max_length"
+			},
+			{
+				"value_fr": "Le champ e-mail est requis",
+				"slug": "email_is_required",
+				"name": "Email is required",
+				"value_en": "Email is required"
+			},
+			{
+				"value_fr": "Le champ email doit être valide",
+				"slug": "email_must_be_valid",
+				"name": "Email must be valid",
+				"value_en": "Email must be valid"
+			},
+			{
+				"name": "Message is required",
+				"value_en": "Message is required",
+				"value_fr": "Le champ message est requis",
+				"slug": "message_is_required"
+			},
+			{
+				"value_fr": "Le champ message ne doit pas contenir plus de 2056 caractères",
+				"slug": "message_max_length",
+				"name": "Message max length (2056)",
+				"value_en": "Message must be less than 2056 characters"
+			},
+			{
+				"name": "Send success message",
+				"value_en": "Your message was sent successfully.",
+				"value_fr": "Votre message a été envoyé avec succès.",
+				"slug": "sucess_message"
+			},
+			{
+				"name": "Send failure message",
+				"value_en": "Sorry, an error occured and your message could not be sent.",
+				"value_fr": "Une erreur est survenue et votre message n'a pas pu être envoyé.",
+				"slug": "failure_message"
+			},
+			{
+				"name": "Check validation errors",
+				"value_en": "Please check validation errors.",
+				"value_fr": "Veuillez contrôler les erreurs de validation.",
+				"slug": "validation_errors"
+			}
+		],
+		"menus": [
+			{
+				"name_en": "Presentation",
+				"name": "Presentation",
+				"name_fr": "Présentation",
+				"slug": "presentation"
+			},
+			{
+				"name_en": "Education",
+				"name": "Education",
+				"name_fr": "Formation",
+				"slug": "education"
+			},
+			{
+				"slug": "work_experience",
+				"name_en": "Work Experience",
+				"name": "Work Experience",
+				"name_fr": "Expérience professionnelle"
+			},
+			{
+				"name": "Skills",
+				"name_fr": "Compétences",
+				"slug": "skills",
+				"name_en": "Skills"
+			},
+			{
+				"slug": "files",
+				"name_en": "Files",
+				"name": "Files",
+				"name_fr": "Fichiers"
+			},
+			{
+				"slug": "contact",
+				"name_en": "Contact",
+				"name": "Contact",
+				"name_fr": "Contact"
+			}
+		],
+		"count_users": 1,
+		"package": {
+			"name": "Basic",
+			"slug": "basic"
+		},
+		"slug": "template002",
+		"fields": [
+			{
+				"name_en": "Firstname",
+				"name": "Firstname",
+				"name_fr": "Prénom",
+				"slug": "firstname"
+			},
+			{
+				"name": "Lastname",
+				"name_fr": "Nom",
+				"slug": "lastname",
+				"name_en": "Lastname"
+			},
+			{
+				"name": "Middlename",
+				"name_fr": "Deuxième prénom",
+				"slug": "middlename",
+				"name_en": "Middlename"
+			},
+			{
+				"slug": "age",
+				"name_en": "Age",
+				"name": "Age",
+				"name_fr": "Âge"
+			},
+			{
+				"name_en": "City",
+				"name": "City",
+				"name_fr": "Ville",
+				"slug": "city"
+			},
+			{
+				"slug": "country",
+				"name_en": "Country",
+				"name": "Country",
+				"name_fr": "Pays"
+			},
+			{
+				"slug": "email",
+				"name_en": "Email",
+				"name": "Email",
+				"name_fr": "E-mail"
+			},
+			{
+				"name": "Phone number",
+				"name_fr": "Téléphone",
+				"slug": "phone_number",
+				"name_en": "Phone number"
+			},
+			{
+				"name_en": "Nationalities",
+				"name": "Nationalities",
+				"name_fr": "Nationalités",
+				"slug": "nationalities"
+			},
+			{
+				"slug": "nationality",
+				"name_en": "Nationality",
+				"name": "Nationality",
+				"name_fr": "Nationalité"
+			},
+			{
+				"name_en": "Languages",
+				"name": "Languages",
+				"name_fr": "Langues",
+				"slug": "languages"
+			},
+			{
+				"slug": "language",
+				"name_en": "Language",
+				"name": "Language",
+				"name_fr": "Langue"
+			},
+			{
+				"name": "Send message",
+				"name_fr": "Envoyer message",
+				"slug": "send_message",
+				"name_en": "Send message"
+			},
+			{
+				"slug": "message",
+				"name_en": "Message",
+				"name": "Message",
+				"name_fr": "Message"
+			}
+		],
+		"file": "Template2",
+		"description": "Conventional format with sleek design",
+		"author": {
+			"username": "jeanquark",
+			"id": "XG5SaLYuWIM9Ank9wjsoo2lQfzA3",
+			"image": "",
+			"lastname": "Kleger",
+			"firstname": "Jean-Marc"
+		},
+		"active": true,
+		"__collections__": {}
+	},
+	"template003": {
+		"file": "Template3",
+		"description": "Full page slides",
+		"author": {
+			"lastname": "Kleger",
+			"firstname": "Jean-Marc",
+			"username": "jeanquark",
+			"id": "XG5SaLYuWIM9Ank9wjsoo2lQfzA3",
+			"image": ""
+		},
+		"active": true,
+		"image": "template003.jpg",
+		"name": "Template 3",
+		"colors": {
+			"secondaryColor": "#202026",
+			"textColor": "#FFF",
+			"tertiaryColor": "#424242",
+			"primaryColor": "#7A528F",
+			"backgroundColor": "#FFF"
+		},
+		"contact_form_validation": [
+			{
+				"value_fr": "Le champ prénom est requis",
+				"slug": "firstname_is_required",
+				"name": "Firstname is required",
+				"value_en": "Firstname is required"
+			},
+			{
+				"name": "Firstname max length (50)",
+				"value_en": "Firstname must be less than 50 characters",
+				"value_fr": "Le champ prénom ne doit pas contenir plus de 50 caractères",
+				"slug": "firstname_max_length"
+			},
+			{
+				"name": "Lastname is required",
+				"value_en": "Lastname is required",
+				"value_fr": "Le champ nom est requis",
+				"slug": "lastname_is_required"
+			},
+			{
+				"name": "Lastname max length (50)",
+				"value_en": "Lastname must be less than 50 characters",
+				"value_fr": "Le champ nom ne doit pas contenir plus de 50 caractères",
+				"slug": "lastname_max_length"
+			},
+			{
+				"name": "Email is required",
+				"value_en": "Email is required",
+				"value_fr": "Le champ e-mail est requis",
+				"slug": "email_is_required"
+			},
+			{
+				"value_fr": "Le champ email doit être valide",
+				"slug": "email_must_be_valid",
+				"name": "Email must be valid",
+				"value_en": "Email must be valid"
+			},
+			{
+				"name": "Message is required",
+				"value_en": "Message is required",
+				"value_fr": "Le champ message est requis",
+				"slug": "message_is_required"
+			},
+			{
+				"value_fr": "Le champ message ne doit pas contenir plus de 2056 caractères",
+				"slug": "message_max_length",
+				"name": "Message max length (2056)",
+				"value_en": "Message must be less than 2056 characters"
+			},
+			{
+				"name": "Send success message",
+				"value_en": "Your message was sent successfully.",
+				"value_fr": "Votre message a été envoyé avec succès.",
+				"slug": "sucess_message"
+			},
+			{
+				"name": "Send failure message",
+				"value_en": "Sorry, an error occured and your message could not be sent.",
+				"value_fr": "Une erreur est survenue et votre message n'a pas pu être envoyé.",
+				"slug": "failure_message"
+			},
+			{
+				"name": "Check validation errors",
+				"value_en": "Please check validation errors.",
+				"value_fr": "Veuillez contrôler les erreurs de validation.",
+				"slug": "validation_errors"
+			}
+		],
+		"menus": [
+			{
+				"slug": "presentation",
+				"name_en": "Presentation",
+				"name": "Presentation",
+				"name_fr": "Présentation"
+			},
+			{
+				"name": "Education",
+				"name_fr": "Formation",
+				"slug": "education",
+				"name_en": "Education"
+			},
+			{
+				"slug": "work_experience",
+				"name_en": "Work Experience",
+				"name": "Work experience",
+				"name_fr": "Expérience professionnelle"
+			},
+			{
+				"slug": "skills",
+				"name_en": "Skills",
+				"name": "Skills",
+				"name_fr": "Compétences"
+			},
+			{
+				"slug": "files",
+				"name_en": "Files",
+				"name": "Files",
+				"name_fr": "Fichiers"
+			},
+			{
+				"name": "Contact",
+				"name_fr": "Contact",
+				"slug": "contact",
+				"name_en": "Contact"
+			}
+		],
+		"count_users": 3,
+		"package": {
+			"slug": "basic",
+			"name": "Basic"
+		},
+		"slug": "template003",
+		"fields": [
+			{
+				"slug": "firstname",
+				"name_en": "Firstname",
+				"name": "Firstname",
+				"name_fr": "Prénom"
+			},
+			{
+				"slug": "lastname",
+				"name_en": "Lastname",
+				"name": "Lastname",
+				"name_fr": "Nom"
+			},
+			{
+				"slug": "middlename",
+				"name_en": "Middlename",
+				"name": "Middlename",
+				"name_fr": "Deuxième prénom"
+			},
+			{
+				"name_en": "Age",
+				"name": "Age",
+				"name_fr": "Âge",
+				"slug": "age"
+			},
+			{
+				"slug": "city",
+				"name_en": "City",
+				"name": "City",
+				"name_fr": "Ville"
+			},
+			{
+				"slug": "country",
+				"name_en": "Country",
+				"name": "Country",
+				"name_fr": "Pays"
+			},
+			{
+				"slug": "email",
+				"name_en": "Email",
+				"name": "Email",
+				"name_fr": "E-mail"
+			},
+			{
+				"name": "Phone number",
+				"name_fr": "Téléphone",
+				"slug": "phone_number",
+				"name_en": "Phone number"
+			},
+			{
+				"name_en": "Nationalities",
+				"name": "Nationalities",
+				"name_fr": "Nationalités",
+				"slug": "nationalities"
+			},
+			{
+				"slug": "nationality",
+				"name_en": "Nationality",
+				"name": "Nationality",
+				"name_fr": "Nationalité"
+			},
+			{
+				"slug": "languages",
+				"name_en": "Languages",
+				"name": "Languages",
+				"name_fr": "Langues"
+			},
+			{
+				"name": "Language",
+				"name_fr": "Langue",
+				"slug": "language",
+				"name_en": "Language"
+			},
+			{
+				"name_en": "Send message",
+				"name": "Send message",
+				"name_fr": "Envoyer message",
+				"slug": "send_message"
+			},
+			{
+				"slug": "message",
+				"name_en": "Message",
+				"name": "Message",
+				"name_fr": "Message"
+			}
+		],
+		"__collections__": {}
+	},
+	"template004": {
+		"package": {
+			"slug": "classic",
+			"name": "Classic"
+		},
+		"slug": "template004",
+		"active": true,
+		"image": "template004.jpg",
+		"name": "Template 4",
+		"maps": [
+			{
+				"active": false,
+				"slug": "usa",
+				"image": "usa_with_states.jpg",
+				"name": "USA",
+				"subdivisions": [
+					{
+					  "slug": "alabama",
+					  "name": "Alabama"
+					},
+					{
+					  "slug": "alaska",
+					  "name": "Alaska"
+					},
+					{
+					  "name": "Arizona",
+					  "slug": "arizona"
+					},
+					{
+					  "slug": "arkansas",
+					  "name": "Arkansas"
+					},
+					{
+					  "slug": "california",
+					  "name": "California"
+					},
+					{
+					  "name": "Colorado",
+					  "slug": "colorado"
+					},
+					{
+					  "slug": "connecticut",
+					  "name": "Connecticut"
+					},
+					{
+					  "slug": "delaware",
+					  "name": "Delaware"
+					},
+					{
+					  "name": "District of Columbia",
+					  "slug": "district_of_columbia"
+					},
+					{
+					  "name": "Florida",
+					  "slug": "florida"
+					},
+					{
+					  "slug": "georgia",
+					  "name": "Georgia"
+					},
+					{
+					  "name": "Hawaii",
+					  "slug": "hawaii"
+					},
+					{
+					  "name": "Idaho",
+					  "slug": "idaho"
+					},
+					{
+					  "slug": "illinois",
+					  "name": "Illinois"
+					},
+					{
+					  "slug": "iowa",
+					  "name": "Iowa"
+					},
+					{
+					  "name": "Kansas",
+					  "slug": "kansas"
+					},
+					{
+					  "slug": "kentucky",
+					  "name": "Kentucky"
+					},
+					{
+					  "name": "Louisiana",
+					  "slug": "louisiana"
+					},
+					{
+					  "name": "Maine",
+					  "slug": "maine"
+					},
+					{
+					  "name": "Maryland",
+					  "slug": "maryland"
+					},
+					{
+					  "name": "Massachusetts",
+					  "slug": "massachusetts"
+					},
+					{
+					  "slug": "michigan",
+					  "name": "Michigan"
+					},
+					{
+					  "name": "Minnesota",
+					  "slug": "minnesota"
+					},
+					{
+					  "name": "Mississippi",
+					  "slug": "mississippi"
+					},
+					{
+					  "name": "Missouri",
+					  "slug": "missouri"
+					},
+					{
+					  "slug": "montana",
+					  "name": "Montana"
+					},
+					{
+					  "name": "Nebraska",
+					  "slug": "nebraska"
+					},
+					{
+					  "name": "Nevada",
+					  "slug": "nevada"
+					},
+					{
+					  "name": "New Hampshire",
+					  "slug": "new_hampshire"
+					},
+					{
+					  "name": "New Jersey",
+					  "slug": "new_jersey"
+					},
+					{
+					  "name": "New mexico",
+					  "slug": "new_mexico"
+					},
+					{
+					  "slug": "new_york",
+					  "name": "New York"
+					},
+					{
+					  "slug": "north_carolina",
+					  "name": "North Carolina"
+					},
+					{
+					  "name": "North_dakota",
+					  "slug": "north_dakota"
+					},
+					{
+					  "slug": "ohio",
+					  "name": "Ohio"
+					},
+					{
+					  "slug": "oklahoma",
+					  "name": "Oklahoma"
+					},
+					{
+					  "name": "Oregon",
+					  "slug": "oregon"
+					},
+					{
+					  "name": "Pennsylvania",
+					  "slug": "pennsylvania"
+					},
+					{
+					  "slug": "puerto_rico",
+					  "name": "Puerto Rico"
+					},
+					{
+					  "name": "Rhode Island",
+					  "slug": "rhode_island"
+					},
+					{
+					  "name": "South Carolina",
+					  "slug": "south_carolina"
+					},
+					{
+					  "name": "South Dakota",
+					  "slug": "south_dakota"
+					},
+					{
+					  "slug": "tennessee",
+					  "name": "Tennessee"
+					},
+					{
+					  "name": "Texas",
+					  "slug": "texas"
+					},
+					{
+					  "slug": "utah",
+					  "name": "Utah"
+					},
+					{
+					  "slug": "vermont",
+					  "name": "Vermont"
+					},
+					{
+					  "slug": "virginia",
+					  "name": "Virginia"
+					},
+					{
+					  "slug": "washington",
+					  "name": "Washington"
+					},
+					{
+					  "name": "West Virginia",
+					  "slug": "west_virginia"
+					},
+					{
+					  "slug": "wisconsin",
+					  "name": "Wisconsin"
+					},
+					{
+					  "slug": "wyoming",
+					  "name": "Wyoming"
+					}
+				],
+				"geoJSON": "usa_with_states_20m.json"
+			},
+			{
+				"subdivisions": [
+					{
+					  "slug": "albania",
+					  "name": "Albania"
+					},
+					{
+					  "slug": "austria",
+					  "name": "Austria"
+					},
+					{
+					  "slug": "belarus",
+					  "name": "Belarus"
+					},
+					{
+					  "slug": "belgium",
+					  "name": "Belgium"
+					},
+					{
+					  "slug": "bosnia_and_herzegovina",
+					  "name": "Bosnia and Herzegovina"
+					},
+					{
+					  "slug": "bulgaria",
+					  "name": "Bulgaria"
+					},
+					{
+					  "slug": "croatia",
+					  "name": "Croatia"
+					},
+					{
+					  "slug": "cyprus",
+					  "name": "Cyprus"
+					},
+					{
+					  "name": "Czech Republic",
+					  "slug": "czech_republic"
+					},
+					{
+					  "slug": "denmark",
+					  "name": "Denmark"
+					},
+					{
+					  "name": "Estonia",
+					  "slug": "estonia"
+					},
+					{
+					  "slug": "finland",
+					  "name": "Finland"
+					},
+					{
+					  "slug": "france",
+					  "name": "France"
+					},
+					{
+					  "name": "Georgia",
+					  "slug": "georgia"
+					},
+					{
+					  "slug": "germany",
+					  "name": "Germany"
+					},
+					{
+					  "name": "Greece",
+					  "slug": "greece"
+					},
+					{
+					  "name": "Hungary",
+					  "slug": "hungary"
+					},
+					{
+					  "slug": "iceland",
+					  "name": "Iceland"
+					},
+					{
+					  "slug": "ireland",
+					  "name": "Ireland"
+					},
+					{
+					  "name": "Italy",
+					  "slug": "italy"
+					},
+					{
+					  "slug": "kosovo",
+					  "name": "Kosovo"
+					},
+					{
+					  "name": "Latvia",
+					  "slug": "latvia"
+					},
+					{
+					  "name": "Lithuania",
+					  "slug": "lithuania"
+					},
+					{
+					  "slug": "luxembourg",
+					  "name": "Luxembourg"
+					},
+					{
+					  "slug": "macedonia",
+					  "name": "Macedonia"
+					},
+					{
+					  "slug": "moldova",
+					  "name": "Moldova"
+					},
+					{
+					  "slug": "montenegro",
+					  "name": "Montenegro"
+					},
+					{
+					  "name": "Netherlands",
+					  "slug": "netherlands"
+					},
+					{
+					  "slug": "northern_cyprus",
+					  "name": "Northern Cyprus"
+					},
+					{
+					  "slug": "norway",
+					  "name": "Norway"
+					},
+					{
+					  "slug": "poland",
+					  "name": "Poland"
+					},
+					{
+					  "slug": "portugal",
+					  "name": "Portugal"
+					},
+					{
+					  "name": "Romania",
+					  "slug": "romania"
+					},
+					{
+					  "name": "Serbia",
+					  "slug": "serbia"
+					},
+					{
+					  "name": "Slovakia",
+					  "slug": "slovakia"
+					},
+					{
+					  "slug": "slovenia",
+					  "name": "Slovenia"
+					},
+					{
+					  "slug": "spain",
+					  "name": "Spain"
+					},
+					{
+					  "slug": "sweden",
+					  "name": "Sweden"
+					},
+					{
+					  "slug": "switzerland",
+					  "name": "Switzerland"
+					},
+					{
+					  "slug": "ukraine",
+					  "name": "Ukraine"
+					},
+					{
+					  "slug": "united_kingdom",
+					  "name": "United Kingdom"
+					}
+				],
+				"geoJSON": "europe_50m.json",
+				"active": false,
+				"slug": "europe",
+				"image": "europe.jpg",
+				"name": "Europe"
+			},
+			{
+				"geoJSON": "switzerland_with_cantons.json",
+				"active": false,
+				"slug": "switzerland",
+				"image": "switzerland.jpg",
+				"name": "Switzerland",
+				"subdivisions": [
+					{
+					  "name": "Aargau",
+					  "slug": "aargau"
+					},
+					{
+					  "name": "Appenzell Ausserrhoden",
+					  "slug": "appenzell_ausserrhoden"
+					},
+					{
+					  "name": "Appenzell Innerrhoden",
+					  "slug": "appenzell_innerrhoden"
+					},
+					{
+					  "name": "Basel Landschaft",
+					  "slug": "basel_landschaft"
+					},
+					{
+					  "name": "Basel Stadt",
+					  "slug": "basel_stadt"
+					},
+					{
+					  "name": "Bern",
+					  "slug": "bern"
+					},
+					{
+					  "slug": "fribourg",
+					  "name": "Fribourg"
+					},
+					{
+					  "name": "Genève",
+					  "slug": "geneve"
+					},
+					{
+					  "slug": "glarus",
+					  "name": "Glarus"
+					},
+					{
+					  "slug": "graubuenden",
+					  "name": "Graubünden"
+					},
+					{
+					  "slug": "jura",
+					  "name": "Jura"
+					},
+					{
+					  "slug": "lucerne",
+					  "name": "Lucerne"
+					},
+					{
+					  "slug": "neuchatel",
+					  "name": "Neuchâtel"
+					},
+					{
+					  "name": "Nidwalden",
+					  "slug": "nidwalden"
+					},
+					{
+					  "slug": "obwalden",
+					  "name": "Obwalden"
+					},
+					{
+					  "name": "Sankt Gallen",
+					  "slug": "sankt_gallen"
+					},
+					{
+					  "name": "Schaffhausen",
+					  "slug": "schaffhausen"
+					},
+					{
+					  "slug": "schwyz",
+					  "name": "Schwyz"
+					},
+					{
+					  "slug": "solothurn",
+					  "name": "Solothurn"
+					},
+					{
+					  "name": "Thurgau",
+					  "slug": "thurgau"
+					},
+					{
+					  "slug": "ticino",
+					  "name": "Ticino"
+					},
+					{
+					  "slug": "uri",
+					  "name": "Uri"
+					},
+					{
+					  "slug": "valais",
+					  "name": "Valais"
+					},
+					{
+					  "name": "Vaud",
+					  "slug": "vaud"
+					},
+					{
+					  "slug": "zuerich",
+					  "name": "Zürich"
+					},
+					{
+					  "slug": "zug",
+					  "name": "Zug"
+					}
+				]
+			},
+			{
+				"name": "World",
+				"subdivisions": [
+					{
+					  "slug": "afghanistan",
+					  "name": "Afghanistan"
+					},
+					{
+					  "name": "Albania",
+					  "slug": "albania"
+					},
+					{
+					  "name": "Algeria",
+					  "slug": "algeria"
+					},
+					{
+					  "name": "American Samoa",
+					  "slug": "american_samoa"
+					},
+					{
+					  "slug": "andorra",
+					  "name": "Andorra"
+					},
+					{
+					  "name": "Angola",
+					  "slug": "angola"
+					},
+					{
+					  "slug": "antigua_and_barbuda",
+					  "name": "Antigua and Barb."
+					},
+					{
+					  "slug": "argentina",
+					  "name": "Argentina"
+					},
+					{
+					  "name": "Armenia",
+					  "slug": "armenia"
+					},
+					{
+					  "slug": "austria",
+					  "name": "Austria"
+					},
+					{
+					  "name": "Azerbaijan",
+					  "slug": "azerbaijan"
+					},
+					{
+					  "name": "Bahamas",
+					  "slug": "bahamas"
+					},
+					{
+					  "slug": "bahrain",
+					  "name": "Bahrain"
+					},
+					{
+					  "name": "Bangladesh",
+					  "slug": "bangladesh"
+					},
+					{
+					  "name": "Barbados",
+					  "slug": "barbados"
+					},
+					{
+					  "name": "Aland",
+					  "slug": "basel_landschaft"
+					},
+					{
+					  "name": "Belarus",
+					  "slug": "belarus"
+					},
+					{
+					  "slug": "belgium",
+					  "name": "Belgium"
+					},
+					{
+					  "slug": "belize",
+					  "name": "Belize"
+					},
+					{
+					  "slug": "benin",
+					  "name": "Benin"
+					},
+					{
+					  "slug": "bermuda",
+					  "name": "Bermuda"
+					},
+					{
+					  "slug": "bhutan",
+					  "name": "Bhutan"
+					},
+					{
+					  "name": "Bolivia",
+					  "slug": "bolivia"
+					},
+					{
+					  "name": "Bosnia and Herz.",
+					  "slug": "bosnia_and_herzegovina"
+					},
+					{
+					  "slug": "botswana",
+					  "name": "Botswana"
+					},
+					{
+					  "name": "Brazil",
+					  "slug": "brazil"
+					},
+					{
+					  "name": "Br. Indian Ocean Ter.",
+					  "slug": "british_indian_ocean_territory"
+					},
+					{
+					  "name": "Brunei",
+					  "slug": "brunei"
+					},
+					{
+					  "slug": "bulgaria",
+					  "name": "Bulgaria"
+					},
+					{
+					  "slug": "burkina_faso",
+					  "name": "Burkina Faso"
+					},
+					{
+					  "name": "Burundi",
+					  "slug": "burundi"
+					},
+					{
+					  "name": "Cambodia",
+					  "slug": "cambodia"
+					},
+					{
+					  "name": "Cameroon",
+					  "slug": "cameroon"
+					},
+					{
+					  "name": "Canada",
+					  "slug": "canada"
+					},
+					{
+					  "name": "Cape Verde",
+					  "slug": "cape_verde"
+					},
+					{
+					  "slug": "cayman_islands",
+					  "name": "Cayman Is."
+					},
+					{
+					  "name": "Central African Rep.",
+					  "slug": "central_african_republic"
+					},
+					{
+					  "slug": "chad",
+					  "name": "Chad"
+					},
+					{
+					  "name": "Chile",
+					  "slug": "chile"
+					},
+					{
+					  "slug": "china",
+					  "name": "China"
+					},
+					{
+					  "slug": "colombia",
+					  "name": "Colombia"
+					},
+					{
+					  "name": "Comoros",
+					  "slug": "comoros"
+					},
+					{
+					  "slug": "congo",
+					  "name": "Congo"
+					},
+					{
+					  "slug": "costa_rica",
+					  "name": "Costa Rica"
+					},
+					{
+					  "name": "Croatia",
+					  "slug": "croatia"
+					},
+					{
+					  "slug": "cuba",
+					  "name": "Cuba"
+					},
+					{
+					  "name": "Curaçao",
+					  "slug": "curacao"
+					},
+					{
+					  "slug": "cyprus",
+					  "name": "Cyprus"
+					},
+					{
+					  "name": "Czech Rep.",
+					  "slug": "czech_republic"
+					},
+					{
+					  "name": "Dem. Rep. Congo",
+					  "slug": "democratic_republic_of_congo"
+					},
+					{
+					  "name": "Dem. Rep. Korea",
+					  "slug": "democratic_republic_of_korea"
+					},
+					{
+					  "name": "Denmark",
+					  "slug": "denmark"
+					},
+					{
+					  "name": "Djibouti",
+					  "slug": "djibouti"
+					},
+					{
+					  "slug": "dominica",
+					  "name": "Dominica"
+					},
+					{
+					  "slug": "dominican_republic",
+					  "name": "Dominican Rep."
+					},
+					{
+					  "name": "Ecuador",
+					  "slug": "ecuador"
+					},
+					{
+					  "slug": "el_salvador",
+					  "name": "El Salvador"
+					},
+					{
+					  "slug": "equatorial_guinea",
+					  "name": "Eq. Guinea"
+					},
+					{
+					  "name": "Eritrea",
+					  "slug": "eritrea"
+					},
+					{
+					  "name": "Estonia",
+					  "slug": "estonia"
+					},
+					{
+					  "name": "Ethiopia",
+					  "slug": "ethiopia"
+					},
+					{
+					  "name": "Falkland Is.",
+					  "slug": "falkland_islands"
+					},
+					{
+					  "slug": "faroe_islands",
+					  "name": "Faeroe Is."
+					},
+					{
+					  "name": "Fiji",
+					  "slug": "fiji"
+					},
+					{
+					  "slug": "finland",
+					  "name": "Finland"
+					},
+					{
+					  "slug": "france",
+					  "name": "France"
+					},
+					{
+					  "slug": "french_polynesia",
+					  "name": "Fr. Polynesia"
+					},
+					{
+					  "name": "Fr. S. Antarctic Lands",
+					  "slug": "french_south_antarctic_lands"
+					},
+					{
+					  "slug": "gabon",
+					  "name": "Gabon"
+					},
+					{
+					  "name": "Gambia",
+					  "slug": "gambia"
+					},
+					{
+					  "slug": "georgia",
+					  "name": "Georgia"
+					},
+					{
+					  "name": "Germany",
+					  "slug": "germany"
+					},
+					{
+					  "slug": "ghana",
+					  "name": "Ghana"
+					},
+					{
+					  "name": "Greece",
+					  "slug": "greece"
+					},
+					{
+					  "name": "Greenland",
+					  "slug": "greenland"
+					},
+					{
+					  "name": "Grenada",
+					  "slug": "grenada"
+					},
+					{
+					  "name": "Guam",
+					  "slug": "guam"
+					},
+					{
+					  "name": "Guatemala",
+					  "slug": "guatemala"
+					},
+					{
+					  "name": "Guinea",
+					  "slug": "guinea"
+					},
+					{
+					  "slug": "guinea_bissau",
+					  "name": "Guinea-Bissau"
+					},
+					{
+					  "slug": "guyana",
+					  "name": "Guyana"
+					},
+					{
+					  "slug": "haiti",
+					  "name": "Haiti"
+					},
+					{
+					  "slug": "heard_island_and_mcdonald_islands",
+					  "name": "Heard I. and McDonald Is."
+					},
+					{
+					  "name": "Honduras",
+					  "slug": "honduras"
+					},
+					{
+					  "name": "Hungary",
+					  "slug": "hungary"
+					},
+					{
+					  "slug": "iceland",
+					  "name": "Iceland"
+					},
+					{
+					  "name": "India",
+					  "slug": "india"
+					},
+					{
+					  "name": "Indonesia",
+					  "slug": "indonesia"
+					},
+					{
+					  "slug": "iran",
+					  "name": "Iran"
+					},
+					{
+					  "name": "Iraq",
+					  "slug": "iraq"
+					},
+					{
+					  "name": "Ireland",
+					  "slug": "ireland"
+					},
+					{
+					  "slug": "isle_of_man",
+					  "name": "Isle of Man"
+					},
+					{
+					  "slug": "israel",
+					  "name": "Israel"
+					},
+					{
+					  "slug": "italy",
+					  "name": "Italy"
+					},
+					{
+					  "name": "Côte d'Ivoire",
+					  "slug": "ivory_coast"
+					},
+					{
+					  "slug": "jamaica",
+					  "name": "Jamaica"
+					},
+					{
+					  "name": "Japan",
+					  "slug": "japan"
+					},
+					{
+					  "name": "Jersey",
+					  "slug": "jersey"
+					},
+					{
+					  "slug": "jordan",
+					  "name": "Jordan"
+					},
+					{
+					  "name": "Kazakhstan",
+					  "slug": "kazakhstan"
+					},
+					{
+					  "name": "Kenya",
+					  "slug": "kenya"
+					},
+					{
+					  "name": "Kiribati",
+					  "slug": "kiribati"
+					},
+					{
+					  "name": "Korea",
+					  "slug": "korea"
+					},
+					{
+					  "name": "Kuwait",
+					  "slug": "kuwait"
+					},
+					{
+					  "slug": "kyrgyzstan",
+					  "name": "Kyrgyzstan"
+					},
+					{
+					  "slug": "lao_people_democratic_republic",
+					  "name": "Lao PDR"
+					},
+					{
+					  "slug": "latvia",
+					  "name": "Latvia"
+					},
+					{
+					  "name": "Lebanon",
+					  "slug": "lebanon"
+					},
+					{
+					  "name": "Lesotho",
+					  "slug": "lesotho"
+					},
+					{
+					  "name": "Liberia",
+					  "slug": "liberia"
+					},
+					{
+					  "slug": "libya",
+					  "name": "Libya"
+					},
+					{
+					  "name": "Liechtenstein",
+					  "slug": "liechtenstein"
+					},
+					{
+					  "slug": "lithuania",
+					  "name": "Lithuania"
+					},
+					{
+					  "slug": "luxembourg",
+					  "name": "Luxembourg"
+					},
+					{
+					  "name": "Macedonia",
+					  "slug": "macedonia"
+					},
+					{
+					  "name": "Madagascar",
+					  "slug": "madagascar"
+					},
+					{
+					  "slug": "malawi",
+					  "name": "Malawi"
+					},
+					{
+					  "name": "Malaysia",
+					  "slug": "malaysia"
+					},
+					{
+					  "name": "Mali",
+					  "slug": "mali"
+					},
+					{
+					  "slug": "malta",
+					  "name": "Malta"
+					},
+					{
+					  "name": "Mauritania",
+					  "slug": "mauritania"
+					},
+					{
+					  "name": "Mauritius",
+					  "slug": "mauritius"
+					},
+					{
+					  "slug": "mexico",
+					  "name": "Mexico"
+					},
+					{
+					  "slug": "micronesia",
+					  "name": "Micronesia"
+					},
+					{
+					  "slug": "moldova",
+					  "name": "Moldova"
+					},
+					{
+					  "slug": "mongolia",
+					  "name": "Mongolia"
+					},
+					{
+					  "name": "Montenegro",
+					  "slug": "montenegro"
+					},
+					{
+					  "name": "Montserrat",
+					  "slug": "montserrat"
+					},
+					{
+					  "slug": "morocco",
+					  "name": "Morocco"
+					},
+					{
+					  "slug": "mozambique",
+					  "name": "Mozambique"
+					},
+					{
+					  "name": "Myanmar",
+					  "slug": "myanmar"
+					},
+					{
+					  "name": "Namibia",
+					  "slug": "namibia"
+					},
+					{
+					  "name": "Nepal",
+					  "slug": "nepal"
+					},
+					{
+					  "name": "Netherlands",
+					  "slug": "netherlands"
+					},
+					{
+					  "name": "New Caledonia",
+					  "slug": "new_caledonia"
+					},
+					{
+					  "name": "New Zealand",
+					  "slug": "new_zealand"
+					},
+					{
+					  "name": "Nicaragua",
+					  "slug": "nicaragua"
+					},
+					{
+					  "slug": "niger",
+					  "name": "Niger"
+					},
+					{
+					  "slug": "nigeria",
+					  "name": "Nigeria"
+					},
+					{
+					  "name": "Niue",
+					  "slug": "niue"
+					},
+					{
+					  "slug": "north_cyprus",
+					  "name": "N. Cyprus"
+					},
+					{
+					  "slug": "northern_cyprus",
+					  "name": "Peru"
+					},
+					{
+					  "slug": "northern_mariana_islands",
+					  "name": "N. Mariana Is."
+					},
+					{
+					  "name": "Norway",
+					  "slug": "norway"
+					},
+					{
+					  "name": "Oman",
+					  "slug": "oman"
+					},
+					{
+					  "slug": "pakistan",
+					  "name": "Pakistan"
+					},
+					{
+					  "name": "Palau",
+					  "slug": "palau"
+					},
+					{
+					  "slug": "palestine",
+					  "name": "Palestine"
+					},
+					{
+					  "name": "Panama",
+					  "slug": "panama"
+					},
+					{
+					  "name": "Papua New Guinea",
+					  "slug": "papua_new_guinea"
+					},
+					{
+					  "slug": "paraguay",
+					  "name": "Paraguay"
+					},
+					{
+					  "name": "Philippines",
+					  "slug": "philippines"
+					},
+					{
+					  "name": "Poland",
+					  "slug": "poland"
+					},
+					{
+					  "slug": "portugal",
+					  "name": "Portugal"
+					},
+					{
+					  "name": "Puerto Rico",
+					  "slug": "puerto_rico"
+					},
+					{
+					  "slug": "qatar",
+					  "name": "Qatar"
+					},
+					{
+					  "slug": "romania",
+					  "name": "Romania"
+					},
+					{
+					  "name": "Russia",
+					  "slug": "russia"
+					},
+					{
+					  "name": "Rwanda",
+					  "slug": "rwanda"
+					},
+					{
+					  "slug": "saint_helena",
+					  "name": "Saint Helena"
+					},
+					{
+					  "name": "Saint Lucia",
+					  "slug": "saint_lucia"
+					},
+					{
+					  "name": "St. Pierre and Miquelon",
+					  "slug": "saint_pierre_and_miquelon"
+					},
+					{
+					  "slug": "saint_vincent_and_the_grenadines",
+					  "name": "St. Vin. and Gren."
+					},
+					{
+					  "slug": "samoa",
+					  "name": "Samoa"
+					},
+					{
+					  "slug": "sao_tome_and_principe",
+					  "name": "São Tomé and Principe"
+					},
+					{
+					  "name": "Saudi Arabia",
+					  "slug": "saudi_arabia"
+					},
+					{
+					  "name": "Senegal",
+					  "slug": "senegal"
+					},
+					{
+					  "name": "Serbia",
+					  "slug": "serbia"
+					},
+					{
+					  "slug": "seychelles",
+					  "name": "Seychelles"
+					},
+					{
+					  "name": "Siachen Glacier",
+					  "slug": "siachen_glacier"
+					},
+					{
+					  "name": "Sierra Leone",
+					  "slug": "sierra_leone"
+					},
+					{
+					  "slug": "singapore",
+					  "name": "Singapore"
+					},
+					{
+					  "name": "Slovakia",
+					  "slug": "slovakia"
+					},
+					{
+					  "name": "Slovenia",
+					  "slug": "slovenia"
+					},
+					{
+					  "name": "Solomon Is.",
+					  "slug": "soloman_islands"
+					},
+					{
+					  "slug": "somalia",
+					  "name": "Somalia"
+					},
+					{
+					  "name": "South Africa",
+					  "slug": "south_africa"
+					},
+					{
+					  "slug": "south_georgia_and_south_sandwich_islands",
+					  "name": "S. Geo. and S. Sandw. Is."
+					},
+					{
+					  "name": "S. Sudan",
+					  "slug": "south_sudan"
+					},
+					{
+					  "name": "Spain",
+					  "slug": "spain"
+					},
+					{
+					  "name": "Sri Lanka",
+					  "slug": "sri_lanka"
+					},
+					{
+					  "name": "Sudan",
+					  "slug": "sudan"
+					},
+					{
+					  "slug": "suriname",
+					  "name": "Suriname"
+					},
+					{
+					  "slug": "swaziland",
+					  "name": "Swaziland"
+					},
+					{
+					  "name": "Sweden",
+					  "slug": "sweden"
+					},
+					{
+					  "name": "Switzerland",
+					  "slug": "switzerland"
+					},
+					{
+					  "slug": "syria",
+					  "name": "Syria"
+					},
+					{
+					  "name": "Tajikistan",
+					  "slug": "tajikistan"
+					},
+					{
+					  "name": "Tanzania",
+					  "slug": "tanzania"
+					},
+					{
+					  "slug": "thailand",
+					  "name": "Thailand"
+					},
+					{
+					  "slug": "timor_leste",
+					  "name": "Timor-Leste"
+					},
+					{
+					  "slug": "togo",
+					  "name": "Togo"
+					},
+					{
+					  "slug": "tonga",
+					  "name": "Tonga"
+					},
+					{
+					  "slug": "trinidad_and_tobago",
+					  "name": "Trinidad and Tobago"
+					},
+					{
+					  "slug": "tunisia",
+					  "name": "Tunisia"
+					},
+					{
+					  "slug": "turkey",
+					  "name": "Turkey"
+					},
+					{
+					  "name": "Turkmenistan",
+					  "slug": "turkmenistan"
+					},
+					{
+					  "name": "Turks and Caicos Is.",
+					  "slug": "turks_and_caicos_islands"
+					},
+					{
+					  "name": "Uganda",
+					  "slug": "uganda"
+					},
+					{
+					  "slug": "ukraine",
+					  "name": "Ukraine"
+					},
+					{
+					  "name": "United Arab Emirates",
+					  "slug": "united_arab_emirates"
+					},
+					{
+					  "slug": "united_kingdom",
+					  "name": "United Kingdom"
+					},
+					{
+					  "slug": "united_states",
+					  "name": "United States"
+					},
+					{
+					  "name": "Uruguay",
+					  "slug": "uruguay"
+					},
+					{
+					  "slug": "us_virgin_islands",
+					  "name": "U.S. Virgin Is."
+					},
+					{
+					  "slug": "uzbekistan",
+					  "name": "Uzbekistan"
+					},
+					{
+					  "slug": "vanuatu",
+					  "name": "Vanuatu"
+					},
+					{
+					  "slug": "venezuela",
+					  "name": "Venezuela"
+					},
+					{
+					  "name": "Vietnam",
+					  "slug": "vietnam"
+					},
+					{
+					  "slug": "western_sahara",
+					  "name": "W. Sahara"
+					},
+					{
+					  "slug": "yemen",
+					  "name": "Yemen"
+					},
+					{
+					  "name": "Zambia",
+					  "slug": "zambia"
+					},
+					{
+					  "name": "Zimbabwe",
+					  "slug": "zimbabwe"
+					}
+				],
+				"geoJSON": "world.json",
+				"active": true,
+				"slug": "world",
+				"image": "world.jpg",
+				"fields": [
+					{
+						"name_en": "Firstname",
+						"name": "Firstname",
+						"name_fr": "Prénom",
+						"slug": "firstname"
+					},
+					{
+						"slug": "lastname",
+						"name_en": "Lastname",
+						"name": "Lastname",
+						"name_fr": "Nom"
+					},
+					{
+						"slug": "middlename",
+						"name_en": "Middlename",
+						"name": "Middlename",
+						"name_fr": "Deuxième prénom"
+					},
+					{
+						"slug": "age",
+						"name_en": "Age",
+						"name": "Age",
+						"name_fr": "Âge"
+					},
+					{
+						"slug": "city",
+						"name_en": "City",
+						"name": "City",
+						"name_fr": "Ville"
+					},
+					{
+						"slug": "country",
+						"name_en": "Country",
+						"name": "Country",
+						"name_fr": "Pays"
+					},
+					{
+						"name_en": "Email",
+						"name": "E-mail",
+						"name_fr": "E-mail",
+						"slug": "email"
+					},
+					{
+						"slug": "phone_number",
+						"name_en": "Phone number",
+						"name": "Phone number",
+						"name_fr": "Téléphone"
+					},
+					{
+						"slug": "nationalities",
+						"name_en": "Nationalities",
+						"name": "Nationalities",
+						"name_fr": "Nationalités"
+					},
+					{
+						"name_en": "Nationality",
+						"name": "Nationality",
+						"name_fr": "Nationalité",
+						"slug": "nationality"
+					},
+					{
+						"slug": "languages",
+						"name_en": "Languages",
+						"name": "Languages",
+						"name_fr": "Langues"
+					},
+					{
+						"name": "Language",
+						"name_fr": "Langue",
+						"slug": "language",
+						"name_en": "Language"
+					},
+					{
+						"name": "Send message",
+						"name_fr": "Envoyer message",
+						"slug": "send_message",
+						"name_en": "Send message"
+					},
+					{
+						"slug": "message",
+						"name_en": "Message",
+						"name": "Message",
+						"name_fr": "Message"
+					}
+				]
+			}
+		],
+		"__collections__": {}
+	}
+}

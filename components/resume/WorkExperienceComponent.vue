@@ -1,6 +1,10 @@
 <template>
     <div class="text-xs-center pa-4" style="margin-top: 0px;" v-if="userResume">
         <h2>Work Experience</h2>
+		<p>
+			dynamicComponent: {{ dynamicComponent }}<br /><br />
+			expanded: {{ expanded }}<br /><br />
+		</p>
         <v-layout row wrap class="pa-3" v-if="userResume">
             <v-alert :value="true" color="warning" icon="priority_high" outline v-if="!userResume.work_experience.length > 0">
                 There is no item in here, please click on the rounded pink button to add one
@@ -9,7 +13,7 @@
                 <v-icon>add</v-icon>
             </v-btn>
             <v-expansion-panel style="">
-                <v-dialog v-model="modalNewWorkExperience" width="500" persistent>
+                <v-dialog lazy dark v-model="modalNewWorkExperience" width="600" persistent>
                     <v-card>
                         <v-card-title class="headline" primary-title>
                             <v-layout class="justify-center">
@@ -40,6 +44,9 @@
                                 <v-flex xs6 class="pl-2">
                                     <v-text-field label="End date" name="work_experience_end_date" v-model="newWorkExperience.end_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_end_date') : null" data-vv-as="End date" :counter="50"></v-text-field>
                                 </v-flex>
+								<v-flex xs12 class="mt-4 pl-2">
+									<component :is="dynamicComponent" :resumeSlug="resumeSlug" :newWorkExperience="newWorkExperience" v-if="dynamicComponent" />
+								</v-flex>
                             </v-layout>
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
@@ -50,7 +57,7 @@
                 </v-dialog>
 
                 <draggable v-model="candidateWorkExperience" group="experience" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
-                    <v-expansion-panel-content v-for="(workExperience, index) in candidateWorkExperience" :key="index">
+                    <v-expansion-panel-content v-for="(workExperience, index) in candidateWorkExperience" :key="index" v-model="expanded[index]">
                         <div slot="header">
                             <v-layout align-center>
                                 <!-- <v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp; -->
@@ -70,7 +77,7 @@
                                 <v-layout row wrap>
                                     <v-flex xs12 sm6 class="pa-3">
                                         <!--  -->
-                                        <v-text-field label="Company" :name="`work_experience_company_${index}`" v-model="candidateWorkExperience[index].company" v-validate="{ max: 2 }" :error-messages="errors ? errors.collect(`work_experience_company_${index}`) : null" data-vv-as="Company" :counter="2"></v-text-field>
+                                        <v-text-field label="Company" :name="`work_experience_company_${index}`" v-model="candidateWorkExperience[index].company" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_company_${index}`) : null" data-vv-as="Company" :counter="2"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 class="pa-3">
                                         <!-- -->
@@ -94,6 +101,9 @@
                                     <v-flex xs12 sm6 class="pa-3">
                                         <v-text-field label="End date" :name="`work_experience_end_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_end_date_${index}`) : null" data-vv-as="End date" v-model="candidateWorkExperience[index].end_date" :counter="50"></v-text-field>
                                     </v-flex>
+									<v-flex xs12 class="pa-3">
+										<component :is="dynamicComponent" :resumeSlug="resumeSlug" :index="index" v-if="dynamicComponent && expanded[index]" />
+									</v-flex>
                                 </v-layout>
                             </v-card-text>
                         </v-card>
@@ -116,8 +126,19 @@
 			console.log("resumeSlug: ", resumeSlug);
 			this.resumeSlug = resumeSlug;
 		},
+		mounted () {
+			this.loadDynamicComponent()
+				.then(() => {
+					this.dynamicComponent = () => this.loadDynamicComponent()
+				})
+				.catch(() => {
+					this.dynamicComponent = null
+				})
+		},
 		data() {
 			return {
+				dynamicComponent: null,
+				expanded: [], // Control expansion panel open/close state. Necessary for the map inside Leaflet component (template004) to render on mounted
 				resumeSlug: "",
 				modalNewWorkExperience: false,
 				modalEditWorkExperience: false,
@@ -201,6 +222,13 @@
 			};
 		},
 		computed: {
+			loadDynamicComponent() {
+				console.log('this.userResume: ', this.userResume)
+				return () =>
+					import(`~/components/resume/dynamicTemplatesComponents/${
+						this.userResume.template.id
+					}/WorkExperienceComponent`)
+			},
 			// error () {
 			//     return this.$store.getters['index/error']
 			// },

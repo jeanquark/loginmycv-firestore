@@ -5,7 +5,8 @@
         </v-toolbar>
         <v-card-text>
             <form @submit.prevent="signUserUp('register')" data-vv-scope="register">
-                <v-layout row wrap>
+                <!-- <v-layout row wrap> -->
+				<v-row no-gutters>
                     <v-alert
                         :value="error"
                         type="error"
@@ -17,53 +18,56 @@
                         {{ error.message }}
                     </v-alert>
 
-                    <v-flex xs6>
+                    <!-- <v-flex xs6> -->
+					<v-col xs="6">
 							<!--  -->
 						
                         <v-text-field
                             label="Firstname"
                             id="firstname"
                             name="firstname"
-                            prepend-icon="person"
+                            prepend-icon="mdi-account"
                             v-validate="'required|max:50'"
                             :counter="50"
                             :error-messages="errors ? errors.collect('register.firstname') : null"
                             v-model="form.firstname"
 							:success="form.firstname.length > 0 ? true : false"
-							:append-icon="form.firstname.length > 0 ? 'check' : ''"
+							:append-icon="form.firstname.length > 0 ? 'mdi-check' : ''"
                         ></v-text-field>
 
                         <v-text-field
                             label="Lastname"
                             id="lastname"
                             name="lastname"
-                            prepend-icon="person"
+                            prepend-icon="mdi-account"
                             v-validate="'required|max:50'"
                             :counter="50"
                             :error-messages="errors ? errors.collect('register.lastname') : null"
                             v-model="form.lastname"
 							:success="form.lastname.length > 0 ? true : false"
-							:append-icon="form.lastname.length > 0 ? 'check' : ''"
+							:append-icon="form.lastname.length > 0 ? 'mdi-check' : ''"
                         ></v-text-field>
                     
                         <v-text-field
                             label="Email"
                             id="email"
                             name="email"
-                            prepend-icon="email"
+                            prepend-icon="mdi-email"
                             v-validate="'required|email'"
                             :error-messages="errors ? errors.collect('register.email') : null"
                             v-model="form.email"
 							:success="form.email.length > 0 ? true : false"
-							:append-icon="form.email.length > 0 ? 'check' : ''"
+							:append-icon="form.email.length > 0 ? 'mdi-check' : ''"
                         ></v-text-field>
-                    </v-flex>
+                    <!-- </v-flex> -->
+					</v-col>
 
-                    <v-flex xs6>
+                    <!-- <v-flex xs6> -->
+					<v-col xs="6">
                         <v-text-field
                             label="Password"
                             name="password"
-                            prepend-icon="lock" 
+                            prepend-icon="mdi-lock-question" 
                             type="password"
                             ref="password"
                             v-validate="'required|min:6|max:30'"
@@ -72,45 +76,57 @@
                             :counter="30"
                             v-model="form.password"
 							:success="form.password.length > 0 ? true : false"
-							:append-icon="errors && errors.collect('register.password').length || !form.password.length ? '' : 'check'"
+							:append-icon="errors && errors.collect('register.password').length || !form.password.length ? '' : 'mdi-check'"
                         ></v-text-field>
 
                         <v-text-field
                             label="Confirm Password"
                             name="password_confirmation"
-                            prepend-icon="lock" 
+                            prepend-icon="mdi-lock-question" 
                             type="password"
                             v-validate="'required|confirmed:password'"
                             :error-messages="errors ? errors.collect('register.password_confirmation') : null"
                             data-vv-as="Password"
                             v-model="form.password_confirmation"
 							:success="form.password_confirmation.length > 0 ? true : false"
-							:append-icon="errors && errors.collect('register.password_confirmation').length || !form.password_confirmation.length ? '' : 'check'"
+							:append-icon="errors && errors.collect('register.password_confirmation').length || !form.password_confirmation.length ? '' : 'mdi-check'"
                         ></v-text-field>        
-                    </v-flex>
-                </v-layout>
+                    <!-- </v-flex> -->
+					</v-col>
+                <!-- </v-layout> -->
+				</v-row>
 
-                <v-layout justify-center>
+                <!-- <v-layout justify-center> -->
+				<v-row justify="center">
                     <v-btn color="primary" type="submit" :loading="loading">Register</v-btn>
-                </v-layout>
+                <!-- </v-layout> -->
+				</v-row>
 
-                <v-layout row wrap class="mt-3 mb-2">
-                    <v-flex xs12 sm6 class="px-2">
+                <!-- <v-layout row wrap class="mt-3 mb-2"> -->
+				<v-row class="mt-3 mb-2">
+                    <!-- <v-flex xs12 sm6 class="px-2"> -->
+					<v-col xs="12" sm="6" class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Register with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
-                    </v-flex>
-                    <v-flex xs12 sm6 class="px-2">
+                    <!-- </v-flex> -->
+					</v-col>
+                    <!-- <v-flex xs12 sm6 class="px-2"> -->
+					<v-col xs="12" sm="6" class="px-2">
                         <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Register with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
-                    </v-flex>
-                </v-layout>
+                    <!-- </v-flex> -->
+					</v-col>
+                <!-- </v-layout> -->
+				</v-row>
 
-                <v-layout justify-center>
-                    <v-btn flat color="primary" @click="switchToLogin">
+                <!-- <v-layout justify-center> -->
+				<v-row justify="center">
+                    <v-btn text color="primary" @click="switchToLogin">
                         Switch to login
                     </v-btn>
-                    <v-btn flat color="secondary" @click="closeModal">
+                    <v-btn text color="secondary" @click="closeModal">
                         Close
                     </v-btn>
-                </v-layout>
+                <!-- </v-layout> -->
+				</v-row>
             </form>
         </v-card-text>
     </v-card>

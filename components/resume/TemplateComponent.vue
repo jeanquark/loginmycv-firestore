@@ -8,7 +8,7 @@
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
             <!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
             <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
-            userResume.template.id: {{ userResume.template.id }}<br /><br />
+            <!-- userResume.template.id: {{ userResume.template.id }}<br /><br /> -->
 			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
         </div>
         <v-layout row wrap class="pa-2">
@@ -353,6 +353,7 @@
 		},
 		methods: {
 			async selectTemplate(template) {
+				this.dynamicComponent = null
 				console.log('template', template)
 				if (!this.resumeSlug) {
 					this.userResume.colors = template.colors

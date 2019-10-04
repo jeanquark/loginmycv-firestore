@@ -1,6 +1,8 @@
 <template>
-    <v-layout row wrap>
-        <v-flex xs12>
+    <!-- <v-layout row wrap> -->
+	<v-row no-gutters>
+        <!-- <v-flex xs12> -->
+		<v-col>
             <!-- <b>loadedUser:</b> {{ loadedUser }}<br /> -->
             <!-- <b>loadedUserResumes:</b> {{ loadedUserResumes }}<br /><br /> -->
             <!-- getStatistics: {{ getStatistics }}<br /><br /> -->
@@ -18,66 +20,80 @@
                 <h1>abc</h1>
 				<p>def</p>
             </div> -->
-        </v-flex>
+        <!-- </v-flex> -->
+		</v-col>
 
-        <v-layout justify-center>
-            <h2>My resumes</h2>
+        <!-- <v-layout justify-center> -->
+		<v-row no-gutters>
+            <h2 class="text-center">My resumes</h2>
             <br />
             <br />
-        </v-layout>
-        <v-flex xs12 class="text-xs-center" id="myDiv">
+        <!-- </v-layout> -->
+		</v-row>
+        <!-- <v-flex xs12 class="text-xs-center" id="myDiv"> -->
+		<v-col cols="12" class="text-center">
             <v-card flat class="ma-2">
-                <v-card-text>
-                    <v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1" :expand="true">
-                        <template v-slot:items="props">
-                            <td class="text-xs-left">{{ props.index + 1 }}</td>
-                            <td class="text-xs-left">
-                                <v-layout align-center fill-height>
-                                    <!-- :value="props.item.name" -->
-                                    <v-text-field :name="`name${props.index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${props.index}`) : null" data-vv-as="Name" :value="props.item.name" @input="updateName($event, props.item.id)" class="mr-2"></v-text-field>
+                <v-card-text class="ma-0 pa-0">
+                    <v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1">
+                        <template v-slot:body="{ items }">
+							<tbody>
+								<tr v-for="(item, index) in items" :key="index">
+									<td class="text-left">{{ index + 1 }}</td>
+									<td class="text-left">
+										<!-- <v-layout align-center fill-height> -->
+										<v-row no-gutters align="center" class="fill-height">
+											<!-- :value="props.item.name" -->
+											<v-text-field :name="`name${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${index}`) : null" data-vv-as="Name" :value="item.name" @input="updateName($event, item.id)" class="mr-2"></v-text-field>
 
-                                    <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newValue: newResumeNameMap.get(props.item.id), index: props.index })" class="icon" v-if="newResumeNameMap.get(props.item.id) !== props.item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
+											<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newValue: newResumeNameMap.get(item.id), index: index })" class="icon" v-if="newResumeNameMap.get(item.id) !== item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
 
-                                    <!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: props.item.id, newName: props.item.name, index: props.index })" class="icon" v-if="resumesNames[props.index] !== props.item.name && !loadingArray.length > 0 && props.item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
-                                    <font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[props.index]" />
-                                </v-layout>
-                            </td>
-                            <td>
-                                <v-checkbox v-model="props.item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: props.item.id, newValue: !props.item.active })"></v-checkbox>
-                            </td>
-                            <td class="text-xs-left">{{ props.item.slug }}</td>
-                            <td class="text-xs-left">{{ props.item.language ? props.item.language.name : '' }}</td>
-                            <td class="text-xs-left">{{ props.item.job_title }}</td>
-                            <td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>
-                            <td>{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-                            <td class="px-0">
-                                <!-- <v-layout class="justify-center fill-height align-center"> -->
-                                <v-layout align-center justify-center fill-height>
-                                    <!-- <v-btn flat icon @click="convertToPdf(props.item.slug)">
-                                        <v-icon small color="blue">picture_as_pdf</v-icon>
-                                    </v-btn> -->
-                                    <v-btn flat icon target="_blank" :href="`/resume/${props.item.slug}`">
-                                        <v-icon small color="secondary">input</v-icon>
-                                    </v-btn>
-                                    <v-btn flat icon nuxt :to="`/candidate/resumes/${props.item.slug}`">
-                                        <v-icon small color="success">edit</v-icon>
-                                    </v-btn>
-                                    <v-btn flat icon @click="requestConfirmation(props.item)">
-                                        <v-icon small color="error">delete</v-icon>
-                                    </v-btn>
-                                </v-layout>
-                            </td>
+											<!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newName: item.name, index: index })" class="icon" v-if="resumesNames[index] !== item.name && !loadingArray.length > 0 && item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
+											<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[index]" />
+										<!-- </v-layout> -->
+										</v-row>
+									</td>
+									<td>
+										<v-checkbox v-model="item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: item.id, newValue: !item.active })"></v-checkbox>
+									</td>
+									<td class="text-left">{{ item.slug }}</td>
+									<td class="text-left">{{ item.language ? item.language.name : '' }}</td>
+									<td class="text-left">{{ item.job_title }}</td>
+									<td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>
+									<td>{{ parseInt(item._updated_at) | moment('from') }}</td>
+									<td class="px-0">
+										<!-- <v-layout class="justify-center fill-height align-center"> -->
+										<!-- <v-layout align-center justify-center fill-height> -->
+										<v-row no-gutters justify="center" align="center" class="fill-height">
+											<!-- <v-btn flat icon @click="convertToPdf(item.slug)">
+												<v-icon small color="blue">picture_as_pdf</v-icon>
+											</v-btn> -->
+											<v-btn text icon target="_blank" :href="`/resume/${item.slug}`">
+												<v-icon small color="secondary">mdi-open-in-new</v-icon>
+											</v-btn>
+											<v-btn text icon nuxt :to="`/candidate/resumes/${item.slug}`">
+												<v-icon small color="success">mdi-pencil</v-icon>
+											</v-btn>
+											<v-btn text icon @click="requestConfirmation(item)">
+												<v-icon small color="error">mdi-delete</v-icon>
+											</v-btn>
+										<!-- </v-layout> -->
+										</v-row>
+									</td>
+								</tr>
+							</tbody>
                         </template>
                     </v-data-table>
                     <v-btn fab absolute small bottom right color="pink" slot="activator" style="z-index: 0" @click="addResume">
-                        <v-icon>add</v-icon>
+                        <v-icon color="white">mdi-plus</v-icon>
                     </v-btn>
                 </v-card-text>
             </v-card>
-        </v-flex>
+        <!-- </v-flex> -->
+		</v-col>
 
-        <v-flex xs10 offset-xs1 class="text-xs-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0">
-            <h2>Statistics</h2>
+        <!-- <v-flex xs10 offset-xs1 class="text-xs-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0"> -->
+		<v-col xs="10" offset-xs="1" class="text-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0">
+            <h2 class="text-center">Statistics</h2>
             <small>(Number of clicks on your resume(s))</small>
             <br />
             <br />
@@ -85,63 +101,70 @@
             <br />
             <br />
 
-            <v-layout row wrap>
-                <v-flex xs12 sm6 class="pa-2">
+            <!-- <v-layout row wrap> -->
+			<v-row no-gutters>
+                <!-- <v-flex xs12 sm6 class="pa-2"> -->
+				<v-col xs="12" sm="6" class="pa-2">
                     <v-dialog ref="dialog" v-model="modalMinDate" :return-value.sync="date" persistent lazy full-width width="290px">
                         <template v-slot:activator="{ on }">
-                            <v-text-field v-model="minDate" label="Min date" prepend-icon="event" readonly v-on="on"></v-text-field>
+                            <v-text-field v-model="minDate" label="Min date" prepend-icon="mdi-calendar-range" readonly v-on="on"></v-text-field>
                         </template>
                         <v-date-picker v-model="minDate" scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn flat color="secondary" @click="modalMinDate = false">Cancel</v-btn>
-                            <v-btn flat color="secondary" @click="updateMinDate">OK</v-btn>
+                            <v-btn text color="secondary" @click="modalMinDate = false">Cancel</v-btn>
+                            <v-btn text color="secondary" @click="updateMinDate">OK</v-btn>
                         </v-date-picker>
                     </v-dialog>
-                </v-flex>
+                <!-- </v-flex> -->
+				</v-col>
 
-                <v-flex xs12 sm6 class="pa-2">
+                <!-- <v-flex xs12 sm6 class="pa-2"> -->
+				<v-col xs="12" sm="6" class="pa-2">
                     <v-dialog ref="dialog" v-model="modalMaxDate" :return-value.sync="date" persistent lazy full-width width="290px">
                         <template v-slot:activator="{ on }">
-                            <v-text-field v-model="maxDate" label="Max date" prepend-icon="event" readonly v-on="on"></v-text-field>
+                            <v-text-field v-model="maxDate" label="Max date" prepend-icon="mdi-calendar-range" readonly v-on="on"></v-text-field>
                         </template>
                         <v-date-picker v-model="maxDate" scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn flat color="secondary" @click="modalMaxDate = false">Cancel</v-btn>
-                            <v-btn flat color="secondary" @click="updateMaxDate">OK</v-btn>
+                            <v-btn text color="secondary" @click="modalMaxDate = false">Cancel</v-btn>
+                            <v-btn text color="secondary" @click="updateMaxDate">OK</v-btn>
                         </v-date-picker>
                     </v-dialog>
-                </v-flex>
-            </v-layout>
+                <!-- </v-flex> -->
+				</v-col>
+            <!-- </v-layout> -->
+			</v-row>
 
             <br />
             <br />
 
             <v-list class="ma-2">
-                <template v-for="(resume, index) in loadedUserResumes">
+                <!--<template v-for="(resume, index) in loadedUserResumes">
                     <v-list-tile avatar :key="resume.id" v-if="resume.statistics_last_visits">
                         <v-list-tile-content class="text-xs-center justify-center">
                             <v-list-tile-sub-title class>
                                 Total number of views for resume "{{ resume.id }}":
-                                <v-chip :color="chartOptions.colors[index]">{{ resume.statistics_last_visits.length }}</v-chip>
+                                <v-chip :color="chartOptions.colors[index]" class="white--text">{{ resume.statistics_last_visits.length }}</v-chip>
                             </v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider :key="index"></v-divider>
-                </template>
+                </template>-->
             </v-list>
-        </v-flex>
+        <!-- </v-flex> -->
+		</v-col>
 
-        <v-snackbar v-model="snackbarDeleteResume" :timeout="5000" :bottom="true" :auto-height="true">
+        <v-snackbar v-model="snackbarDeleteResume" :timeout="5000" :bottom="true">
             <span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete resume {{ resume.slug }}?</span>
-            <v-btn color="pink" flat @click="deleteResume">
+            <v-btn color="pink" text @click="deleteResume">
                 <span style="font-size: 1.3em;">Yes</span>
             </v-btn>
-            <v-btn color="secondary" flat @click="snackbarDeleteResume = false">
+            <v-btn color="secondary" text @click="snackbarDeleteResume = false">
                 <span style="font-size: 1.3em;">No</span>
             </v-btn>
         </v-snackbar>
 
-        <v-snackbar :value="snackbarNoResume" :timeout="0" :bottom="true" :auto-height="true">
+        <v-snackbar :value="snackbarNoResume" :timeout="0" :bottom="true">
             <v-avatar size="48" color="grey lighten-4" class="mr-3">
                 <img src="/images/ivan-min.jpg" alt="avatar">
             </v-avatar>
@@ -149,11 +172,12 @@
             <span class="pa-2" style="font-size: 1.3em;">Hey! It looks like you have no resume at the moment. Start off by clicking the <v-btn fab small color="pink" class="ml-0 disabled-button">
                 <v-icon>add</v-icon>
                 </v-btn> button</span>
-            <v-btn color="secondary" flat @click="snackbarNoResume = false">
+            <v-btn color="secondary" text @click="snackbarNoResume = false">
                 <span style="font-size: 1.3em;">Close</span>
             </v-btn>
         </v-snackbar>
-    </v-layout>
+    <!-- </v-layout> -->
+	</v-row>
 </template>
 
 <script>

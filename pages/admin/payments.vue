@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<!-- <div> -->
+	<v-container>
 		<v-breadcrumbs divider="/">
 	  		<v-breadcrumbs-item
 		        v-for="link in links"
@@ -11,69 +12,77 @@
 	    		{{ link.text }}
 	  		</v-breadcrumbs-item>
 		</v-breadcrumbs>
-	  	<v-flex xs12 sm10 offset-sm1>
-	  		<br /><br />
-	      	<h1 class="text-md-center">Users</h1>
-	      	<br /><br />
-	      	<!-- <v-btn color="primary" dark slot="activator" class="mb-2" to="/admin/events/create">Add a User</v-btn> -->
-			<!-- loadedUsers: {{ loadedUsers }}<br /> -->
-			<v-card>
-			    <v-card-title>
-			      	Users
-			      	<v-spacer></v-spacer>
-					<v-text-field
-						append-icon="search"
-						label="Search"
-						single-line
-						hide-details
-						v-model="search"
-					></v-text-field>
-			    </v-card-title>
-			    <v-data-table
-				    :headers="headers"
-				    :items="loadedUsers"
-				    :search="search"
-			    >
-					<!-- <template v-slot:items="props"> -->
-					<template slot="items" slot-scope="props">
-						<td>{{ props.index + 1 }}</td>
-						<td>{{ props.item.email }}</td>
-						<td>{{ props.item.private && props.item.private.status ? props.item.private.status.name : '' }}</td>
-						<td>{{ props.item.firstname }}</td>
-						<td>{{ props.item.lastname }}</td>
-						<td>{{ props.item.private ? props.item.private.maximum_number_of_resumes : '' }}</td>
-						<td>{{ props.item._created_at | moment('DD MMM YYYY') }}</td>
-						<td style="white-space: nowrap;">
-							<v-btn color="info" small class="" v-if="!props.item.private.status || props.item.private.status.slug !== 'admin'" @click="updateUserClaims(props.item, 'userToAdmin')">
-								Grant Admin privileges&nbsp;&nbsp;
-								<font-awesome-icon :icon="['fas', 'user-tie']" />
-							</v-btn>
-							<v-btn color="warning" small @click="updateUserClaims(props.item, 'adminToUser')" v-if="props.item.private && props.item.private.status && props.item.private.status.slug === 'admin'">
-								Revoke Admin privileges&nbsp;&nbsp;
-								<font-awesome-icon :icon="['fas', 'user-slash']" class="icon" />
-							</v-btn>
-							<v-btn icon class="mx-0" disabled @click="editItem(props.item)">
-								<v-icon color="teal">edit</v-icon>
-							</v-btn>
-							<v-btn icon class="mx-0" @click="deleteItem(props.item)">
-								<v-icon color="pink">delete</v-icon>
-							</v-btn>
-				        </td>
-					</template>
+	  	<!-- <v-flex xs12 sm10 offset-sm1> -->
+		<v-row no-gutters>
+			<v-col xs="12" sm="10" offset-sm="1">
+				<br /><br />
+				<h1 class="text-center">Users</h1>
+				<br /><br />
+				<!-- <v-btn color="primary" dark slot="activator" class="mb-2" to="/admin/events/create">Add a User</v-btn> -->
+				<!-- loadedUsers: {{ loadedUsers }}<br /> -->
+				<v-card>
+					<v-card-title>
+						Users
+						<v-spacer></v-spacer>
+						<v-text-field
+							append-icon="search"
+							label="Search"
+							single-line
+							hide-details
+							v-model="search"
+						></v-text-field>
+					</v-card-title>
+					<v-data-table
+						:headers="headers"
+						:items="loadedUsers"
+						:search="search"
+					>
+						<!-- <template v-slot:items="props"> -->
+						<!-- <template slot="items" slot-scope="props"> -->
+						<template v-slot:body="{ items }">
+							<tr v-for="(item, index) in items" :key="index">
+								<td>{{ index + 1 }}</td>
+								<td>{{ item.email }}</td>
+								<td>{{ item.private && item.private.status ? item.private.status.name : '' }}</td>
+								<td>{{ item.firstname }}</td>
+								<td>{{ item.lastname }}</td>
+								<td>{{ item.private ? item.private.maximum_number_of_resumes : '' }}</td>
+								<td>{{ item._created_at | moment('DD MMM YYYY') }}</td>
+								<td style="white-space: nowrap;">
+									<v-btn color="info" small class="" v-if="!item.private.status || item.private.status.slug !== 'admin'" @click="updateUserClaims(item, 'userToAdmin')">
+										Grant Admin privileges&nbsp;&nbsp;
+										<font-awesome-icon :icon="['fas', 'user-tie']" />
+									</v-btn>
+									<v-btn color="warning" small @click="updateUserClaims(item, 'adminToUser')" v-if="item.private && item.private.status && item.private.status.slug === 'admin'">
+										Revoke Admin privileges&nbsp;&nbsp;
+										<font-awesome-icon :icon="['fas', 'user-slash']" class="icon" />
+									</v-btn>
+									<v-btn icon class="mx-0" disabled @click="editItem(item)">
+										<v-icon color="teal">edit</v-icon>
+									</v-btn>
+									<v-btn icon class="mx-0" @click="deleteItem(item)">
+										<v-icon color="pink">delete</v-icon>
+									</v-btn>
+								</td>
+							</tr>
+						</template>
 
-		      		<!-- <v-alert slot="no-results" :value="true" color="error" icon="warning"> -->
-		      		<!-- <v-alert v-slot:no-results :value="true" color="error" icon="warning">
-		        		Your search for "{{ search }}" found no results.
-		      		</v-alert> -->
-					<template v-slot:no-data>
-						<v-alert :value="true" color="error" icon="warning">
-							Sorry, nothing to display here :(
-						</v-alert>
-					</template>
-			    </v-data-table>
-			</v-card>
-	    </v-flex>
-	</div>
+						<!-- <v-alert slot="no-results" :value="true" color="error" icon="warning"> -->
+						<!-- <v-alert v-slot:no-results :value="true" color="error" icon="warning">
+							Your search for "{{ search }}" found no results.
+						</v-alert> -->
+						<template v-slot:no-data>
+							<v-alert :value="true" color="error" icon="warning">
+								Sorry, nothing to display here :(
+							</v-alert>
+						</template>
+					</v-data-table>
+				</v-card>
+			<!-- </v-flex> -->
+			</v-col>
+		</v-row>
+	<!-- </div> -->
+	</v-container>
 </template>
 
 <script>

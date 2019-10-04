@@ -1,65 +1,71 @@
 <template>
     <div :style="cssProps">
-        <v-layout row wrap>
-            <v-flex xs12 sm6 md4 lg3 v-for="map in loadedTemplate.maps" :key="map.slug">
+        <v-layout row wrap class="mb-2">
+            <v-flex xs12 sm6 md4 lg3 v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug">
                 <v-card hover class="ma-2" @click="selectMap(map)" :class="[userResume.template.map.slug === map.slug ? 'active' : null]">
+                <!-- <v-card hover class="ma-2" @click="selectMap(map)" :class="[selectedMap.slug === map.slug ? 'active' : null]"> -->
                     <v-img :src="`/images/templates/template004/maps/${map.slug}.jpg`" :lazy-src="`/images/templates/template004/maps/${map.slug}.jpg`"></v-img>
                 </v-card>
             </v-flex>
         </v-layout>
 
         <!-- Draggable list of subdivisions -->
-        <v-layout row wrap>
-            <v-flex xs12 class="mb-2">
-                userResume.template: {{ userResume.template }}<br /><br />
-                <!-- allSubdivisions: {{ allSubdivisions }}<br /><br /> -->
+        <v-layout row wrap class="mb-2">
+            <v-flex xs12>
+				<!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
+                <!-- userResume.template: {{ userResume.template }}<br /><br /> -->
+				<!-- userResume.template.map: {{ userResume.template.map }}<br /><br /> -->
+				<!-- selectedMap: {{ selectedMap }}<br /><br /> -->
+				<!-- selectedMap.subdivisions: {{ selectedMap.subdivisions }}<br /><br /> -->
+				<!-- selectedMap2: {{ selectedMap2 }}<br /><br /> -->
                 <!-- selectedSubdivisions: {{ selectedSubdivisions }}<br /> -->
+                <!-- allSubdivisions: {{ allSubdivisions }}<br /><br /> -->
+				<!-- selectedTemplate: {{ selectedTemplate }}<br /><br /> -->
                 <!-- userResume.template.map_subdivisions: {{ userResume.template.map_subdivisions }}<br /><br /> -->
                 <!-- primaryColor: {{ userResume.colors.primaryColor }}<br /><br /> -->
                 <!-- secondaryColor: {{ userResume.colors.secondaryColor }}<br /><br /> -->
                 <!-- cssProps: {{ cssProps }}<br /><br /> -->
-                <h3 class="text-xs-center">Assign colors to states</h3>
+                <!-- selectedSubdivisions: {{ selectedSubdivisions }}<br /><br /> -->
+				<!-- userResume.template.map_subdivisions: {{ userResume.template.map_subdivisions }}<br /><br /> -->
+                <h2 class="text-xs-center">Assign colors to states</h2>
             </v-flex>
 
-            <v-flex xs6 style="border: 1px solid yellow;">
-                <h3 class="text-xs-center">List of States</h3>
-
-                <draggable v-model="allSubdivisions" :group="{ name: 'subdivisions' }" @start="drag = true" @end="drag = false" :sort="false" style="height: 150px; overflow-y: auto;">
-                    <div v-for="subdivision in allSubdivisions" :key="subdivision.slug" style="padding: 10px; border: 1px dashed red; cursor: pointer;">{{ subdivision.name }}</div>
-                </draggable>
+            <v-flex xs6 class="px-3">
+				<h3 class="text-xs-center">Select states</h3>
+                <v-autocomplete :items="selectedMap.subdivisions" :return-object="true" item-text="name" chips :small-chips="false" deletable-chips label="" color="secondary" multiple v-model="userResume.template.map_subdivisions"></v-autocomplete>
             </v-flex>
-            <v-flex xs6 style="border: 1px solid red;">
-                <h3 class="text-xs-center">Selected States</h3>
-                <!-- <v-btn small color="error" @click.stop="setColors()">Set all red</v-btn> -->
-                <draggable v-model="userResume.template.map_subdivisions" :group="{ name: 'subdivisions', put: (to) => { return to.el.children.length < 2 } }" @start="drag = true" @end="drag = false" style="min-height: 150px; overflow-y: auto;">
-                    <v-layout align-center v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" style="padding: 10px; border: 1px dashed yellow; cursor: pointer;">
-                        <span class="mr-2">{{ subdivision.name }}-{{ index }}</span>
-                        <vue-colorpicker v-model="userResume.template.map_subdivisions[index].color"></vue-colorpicker>
-                    </v-layout>
-                </draggable>
+
+            <v-flex xs6 class="px-3">
+				<h3 class="text-xs-center">States color</h3>
+				<v-layout align-center v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" class="my-2">
+					<v-flex xs6 class="text-xs-right mr-3">
+						<span class="">{{ subdivision.name }}</span>
+					</v-flex>
+					<v-flex xs6>
+						<vue-colorpicker v-model="userResume.template.map_subdivisions[index].color"></vue-colorpicker>
+					</v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
     </div>
 </template>
 
 <script>
-	import Draggable from 'vuedraggable'
 	import { VueColorpicker } from 'vue-pop-colorpicker'
 	export default {
 		inject: ['$validator'], // Inject parent validator
 		props: ['resumeSlug', 'loadedTemplate'],
-		components: { Draggable, VueColorpicker },
+		components: { VueColorpicker },
 		created() {
-			// Initialize empty map subdivisions array
-			if (!this.userResume.template.map_subdivisions) {
-				this.userResume.template.map_subdivisions = []
-			}
+			if (this.userResume.template.map) {
+				this.selectedMap = this.loadedTemplate.maps.find(map => map.slug === this.userResume.template.map.slug)
+			} 
+		},
+		mounted () {
 		},
 		data() {
 			return {
-				allSubdivisions: [],
-				selectedSubdivisions: []
-				// subdivisions: []
+				selectedMap: {}
 			}
 		},
 		computed: {
@@ -67,9 +73,6 @@
 				return {
 					'--primary-color': this.userResume.colors.primaryColor,
 					'--secondary-color': this.userResume.colors.secondaryColor
-					// '--tertiary-color': this.colors.tertiaryColor,
-					// '--background-color': this.colors.backgroundColor,
-					// '--text-color': this.colors.textColor
 				}
 			},
 			loading() {
@@ -79,23 +82,26 @@
 				return this.$store.getters['resumes/loadedUserResumes'].find(
 					resume => resume.slug === this.resumeSlug
 				)
-			}
+			},
 		},
 		methods: {
 			selectMap(map) {
 				console.log('selectMap: ', map)
-				this.userResume.template.map = {
-					name: map.name,
-					slug: map.slug,
-					geoJSON: map.geoJSON
-				}
-				this.allSubdivisions = []
-				if (map.subdivisions && this.allSubdivisions.length < 1) {
-					map.subdivisions.forEach(subdivision => {
-						// console.log('subdivision: ', subdivision)
-						this.allSubdivisions.push(subdivision)
-					})
-				}
+				this.selectedMap = { geoJSON: map.geoJSON, image: map.image, name: map.name, slug: map.slug, subdivisions: map.subdivisions }
+				this.userResume.template.map_subdivisions = []
+				this.userResume.template.map = { geoJSON: map.geoJSON, image: map.image, name: map.name, slug: map.slug, subdivisions: map.subdivisions.sort((a, b) => a.name.localeCompare(b.name)) }
+				// return
+				// this.allSubdivisions = []
+				// this.userResume.template.map_subdivisions = []
+				// this.userResume.template.map = {}
+				// if (map.subdivisions && this.allSubdivisions.length < 1) {
+				// 	const sortedMapSubdivisions = map.subdivisions.sort((a, b) =>
+				// 		a.name.localeCompare(b.name)
+				// 	)
+				// 	sortedMapSubdivisions.forEach(subdivision => {
+				// 		this.allSubdivisions.push(subdivision)
+				// 	})
+				// }
 			},
 			setColors() {
 				this.userResume.template.map_subdivisions.forEach(subdivision => {

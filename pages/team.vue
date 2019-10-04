@@ -1,9 +1,12 @@
 <template>
 	<!-- <v-container grid-list-md text-xs-center> -->
-	<div>
+	<!-- <div> -->
+	<v-container>
 		<h1 class="text-xs-center primary-color my-4">The Founders</h1>
-		<v-layout row wrap>
-			<v-flex xs3 offset-xs3 class="pa-3">
+		<!-- <v-layout row wrap> -->
+		<v-row no-gutters>
+			<!-- <v-flex xs3 offset-xs3 class="pa-3"> -->
+			<v-col xs="3" offset-xs="3" class="pa-3">
 				<v-card>
 					<!-- <v-avatar
 						:size="78"
@@ -29,8 +32,10 @@
 						<!-- <v-btn flat color="orange">Explore</v-btn> -->
 					</v-card-actions>
 				</v-card>
-			</v-flex>
-			<v-flex xs3 class="pa-3">
+			<!-- </v-flex> -->
+			</v-col>
+			<!-- <v-flex xs3 class="pa-3"> -->
+			<v-col xs="3" class="pa-3">
 				<v-card>
 					<!-- <v-avatar
 						:size="78"
@@ -56,10 +61,13 @@
 						<!-- <v-btn flat color="orange">Explore</v-btn> -->
 					</v-card-actions>
 				</v-card>
-			</v-flex>
-		</v-layout>
+			<!-- </v-flex> -->
+			</v-col>
+		<!-- </v-layout> -->
+		</v-row>
 	<!-- </v-container> -->
-	</div>
+	<!-- </div> -->
+	</v-container>
 </template>
 
 <script>

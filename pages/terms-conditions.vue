@@ -1,8 +1,11 @@
 <template>
-    <div>
+    <!-- <div> -->
+	<v-container>
         <h1 class="text-xs-center primary-color my-4">Terms & Conditions</h1>
-        <v-layout row wrap>
-            <v-flex xs8 offset-xs2 class="pa-3">
+        <!-- <v-layout row wrap> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs8 offset-xs2 class="pa-3"> -->
+			<v-col xs="8" offset-xs="2" class="pa-3">
                 <v-card class="pa-4">
                     <p class="caption grey--text text-xs-right">Version 1.0.0 - 05 August 2019</p>
                     <p>WHEREAS, LoginMyCV (hereinafter -“LoginMyCV”) is a supplier of web services including, but not limited to loginmycv.com website, live editor tool (the “Services”);</p>
@@ -58,10 +61,13 @@
 
                     <p>11.3. If you are a resident of or a company which place of business is in the US or EU, these Terms and Conditions shall be governed by the laws of the jurisdiction of your place of residence. In other cases the laws of Switzerland shall govern these Terms and Conditions. Additionally, if you are a company which place of business is in the US, you agree that this License shall not be governed by the United Nations Convention on Contracts for the International Sale of Goods, the application of which is expressly excluded. You irrevocably submit to the jurisdiction of the state courts sitting in, and any action or proceeding arising out of these Terms and Conditions will be heard and determined in such court. If for any reason a court of competent jurisdiction finds any provision, or portion thereof, to be unenforceable, such provision will be interpreted in order to give effect to such provision to the maximum extent permitted by law, and the remainder of these Terms and Conditions will continue in full force and effect.</p>
                 </v-card>
-            </v-flex>
+            <!-- </v-flex> -->
+			</v-col>
 
-        </v-layout>
-    </div>
+        <!-- </v-layout> -->
+		</v-row>
+    <!-- </div> -->
+	</v-container>
 </template>
 
 <script>

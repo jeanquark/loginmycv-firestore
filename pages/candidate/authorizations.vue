@@ -1,37 +1,36 @@
 <template>
-	<v-layout row wrap>
-		<v-layout justify-center>
-			<h2>Manage authorizations</h2>
-		</v-layout>
+    <!-- <v-layout row wrap> -->
+    <v-row no-gutters>
+        <!-- <v-layout justify-center> -->
+        <v-row no-gutters justify="center">
+            <h2>Manage authorizations</h2>
+            <!-- </v-layout> -->
+        </v-row>
 
-		<v-flex xs12 class="text-xs-center">
+        <!-- <v-flex xs12 class="text-xs-center"> -->
+        <v-col xs="12" class="text-center">
 
-			<!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
-			<!-- new_authorizations_received: {{ new_authorizations_received }}<br /><br /> -->
-			<!-- new_authorizations_sent: {{ new_authorizations_sent }}<br /><br /> -->
-			<!-- new_authorizations_status: {{ new_authorizations_status }}<br /><br /> -->
+            <!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
+            <!-- new_authorizations_received: {{ new_authorizations_received }}<br /><br /> -->
+            <!-- new_authorizations_sent: {{ new_authorizations_sent }}<br /><br /> -->
+            <!-- new_authorizations_status: {{ new_authorizations_status }}<br /><br /> -->
 
-			<v-card flat class="ma-2">
-				<v-card-title primary-title class="justify-center">
-					<p class="subheading font-weight-medium">List of authorizations people asked you for:</p>
-				</v-card-title>
-				<v-card-text>
-					<v-data-table
-					    :headers="headersGivenAuthorizations"
-					    :items="loadedUserGivenAuthorizations"
-					    class="elevation-1"
-					    :expand="true"
-					>
-					    <template v-slot:items="props">
-							<tr v-bind:class="[ new_authorizations_received.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
-								<td class="text-xs-left">{{ props.item.resume.id }}</td>
-								<td class="text-xs-left">{{ props.item.user.firstname }}</td>
-								<td class="text-xs-left">{{ props.item.user.lastname }}</td>
-								<td class="text-xs-left">{{ props.item.user.email }}</td>
-								<td class="text-xs-left" v-if="props.item.user.message">{{ props.item.user.message.substr(0, 6) }} [...]</td>
-								<td class="text-xs-left" v-else></td>
-								<td class="text-xs-left" :class="[ new_authorizations_status.includes(props.item.id) ? 'fadeOut' : '']">{{ props.item.status ? props.item.status.name : '' }}</td>
-								<!-- <td>
+            <v-card flat class="ma-2">
+                <v-card-title primary-title class="justify-center">
+                    <p class="subheading font-weight-medium">List of authorizations you were asked for:</p>
+                </v-card-title>
+                <v-card-text>
+                    <v-data-table :headers="headersGivenAuthorizations" :items="loadedUserGivenAuthorizations" class="elevation-1" :expand="true">
+                        <template v-slot:items="props">
+                            <tr v-bind:class="[ new_authorizations_received.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
+                                <td class="text-xs-left">{{ props.item.resume.id }}</td>
+                                <td class="text-xs-left">{{ props.item.user.firstname }}</td>
+                                <td class="text-xs-left">{{ props.item.user.lastname }}</td>
+                                <td class="text-xs-left">{{ props.item.user.email }}</td>
+                                <td class="text-xs-left" v-if="props.item.user.message">{{ props.item.user.message.substr(0, 6) }} [...]</td>
+                                <td class="text-xs-left" v-else></td>
+                                <td class="text-xs-left" :class="[ new_authorizations_status.includes(props.item.id) ? 'fadeOut' : '']">{{ props.item.status ? props.item.status.name : '' }}</td>
+                                <!-- <td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
 								</td>
 								<td>
@@ -46,12 +45,12 @@
 								<td>
 									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']"></v-checkbox>
 								</td> -->
-								<!-- <td>
+                                <!-- <td>
 									<v-checkbox class="checkbox-center" color="secondary" readonly v-model="props.item.authorizations['files']"></v-checkbox>
 								</td> -->
-								<!-- <td>{{ parseInt(props.item._created_at) | moment('from') }}</td>-->
-								<td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-								<!-- <td>
+                                <!-- <td>{{ parseInt(props.item._created_at) | moment('from') }}</td>-->
+                                <td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
+                                <!-- <td>
 									<v-layout class="justify-center">
 										<v-avatar size="34" class="mr-2 avatar-edit">
 											<v-icon
@@ -71,144 +70,158 @@
 										</v-avatar>
 									</v-layout>
 								</td> -->
-								<td class="text-xs-left">
-									<v-layout align-center fill-height>
-										<v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', props.index)">
-											<v-icon small color="success">edit</v-icon>
-										</v-btn>
-										<v-btn flat icon @click="requestConfirmation(props.item)">
-											<v-icon small color="error">delete</v-icon>
-										</v-btn>
-									</v-layout>
-								</td>
-							</tr>
-					    </template>
-					</v-data-table>
-				</v-card-text>
-			</v-card>
-		</v-flex>
+                                <td class="text-xs-left">
+                                    <v-layout align-center fill-height>
+                                        <v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', props.index)">
+                                            <v-icon small color="success">edit</v-icon>
+                                        </v-btn>
+                                        <v-btn flat icon @click="requestConfirmation(props.item)">
+                                            <v-icon small color="error">delete</v-icon>
+                                        </v-btn>
+                                    </v-layout>
+                                </td>
+                            </tr>
+                        </template>
+                    </v-data-table>
+                </v-card-text>
+            </v-card>
+            <!-- </v-flex> -->
+        </v-col>
 
-		<v-flex xs12 class="text-xs-center">
-			<!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
-			<v-card flat class="ma-2">
-				<v-card-title primary-title class="justify-center">
-					<p class="subheading font-weight-medium">List of the authorizations you requested:</p>
-				</v-card-title>
-				<v-card-text>
-					<v-data-table
-					    :headers="headersReceivedAuthorizations"
-					    :items="loadedUserReceivedAuthorizations"
-					    class="elevation-1"
-					    :expand="true"
-					>
-					    <template v-slot:items="props">
-							<tr v-bind:class="[ new_authorizations_sent.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index" v-if="props.item.authorizations">
-								<td class="text-xs-left">{{ props.item.resume.firstname }}</td>
-								<td class="text-xs-left">{{ props.item.resume.lastname }}</td>
-								<!-- <td class="text-xs-left">{{ props.item.resume.email }}</td> -->
-								<td class="text-xs-left"><v-btn small color="success" nuxt :to="`/resume/${props.item.resume.id}`" target="_blank" :disabled="props.item.status.slug !== 'accorded'">View resume</v-btn></td>
-								<td class="text-xs-left">{{ props.item.status ? props.item.status.name : '' }}</td>
-								<!-- <td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" readonly></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['picture']" readonly></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']" readonly></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']" readonly></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']" readonly></v-checkbox>
-								</td> -->
-								<!-- <td>{{ parseInt(props.item._created_at) | moment('DD MMM YYYY') }}</td>-->
-								<td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-								<td class="text-xs-left">
-									<v-layout align-center fill-height>
-										<v-btn flat icon @click="openModal('edit', 'userReceivedAuthorizations', props.index)">
-											<v-icon small color="success">edit</v-icon>
-										</v-btn>
-										<v-btn flat icon @click="requestConfirmation(props.item)">
-											<v-icon small color="error">delete</v-icon>
-										</v-btn>
-									</v-layout>
-								</td>
-							</tr>
-					    </template>
-					</v-data-table>
-				</v-card-text>
-			</v-card>
-		</v-flex>
+        <!-- <v-flex xs12 class="text-xs-center"> -->
+        <v-col xs="12" class="text-center">
+            <!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
+            <v-card flat class="ma-2">
+                <v-card-title primary-title class="justify-center">
+                    <p class="subheading font-weight-medium">List of the authorizations you requested:</p>
+                </v-card-title>
+                <v-card-text>
+                    <v-data-table :headers="headersReceivedAuthorizations" :items="loadedUserReceivedAuthorizations" class="elevation-1" :expand="true">
+                        <!-- <template v-slot:items="props"> -->
+						<template v-slot:body="{ items }">
+							<tbody>
+                            	<tr v-bind:class="[ new_authorizations_sent.includes(item.id) ? 'fadeOut' : '']" :key="index" v-if="item.authorizations">
+									<td class="text-xs-left">{{ item.resume.firstname }}</td>
+									<td class="text-xs-left">{{ item.resume.lastname }}</td>
+									<!-- <td class="text-xs-left">{{ item.resume.email }}</td> -->
+									<td class="text-xs-left">
+										<v-btn small color="success" nuxt :to="`/resume/${item.resume.id}`" target="_blank" :disabled="item.status.slug !== 'accorded'">View resume</v-btn>
+									</td>
+									<td class="text-xs-left">{{ item.status ? item.status.name : '' }}</td>
+									<!-- <td>
+										<v-checkbox class="checkbox-center" v-model="item.authorizations['personal_data']" readonly></v-checkbox>
+									</td>
+									<td>
+										<v-checkbox class="checkbox-center" v-model="item.authorizations['picture']" readonly></v-checkbox>
+									</td>
+									<td>
+										<v-checkbox class="checkbox-center" v-model="item.authorizations['education']" readonly></v-checkbox>
+									</td>
+									<td>
+										<v-checkbox class="checkbox-center" v-model="item.authorizations['work_experience']" readonly></v-checkbox>
+									</td>
+									<td>
+										<v-checkbox class="checkbox-center" v-model="item.authorizations['skills']" readonly></v-checkbox>
+									</td> -->
+									<!-- <td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>-->
+									<td class="text-xs-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
+									<td class="text-xs-left">
+										<!-- <v-layout align-center fill-height> -->
+										<v-row align="center" class="fill-height">
+											<v-btn text icon @click="openModal('edit', 'userReceivedAuthorizations', index)">
+												<v-icon small color="success">edit</v-icon>
+											</v-btn>
+											<v-btn text icon @click="requestConfirmation(item)">
+												<v-icon small color="error">delete</v-icon>
+											</v-btn>
+										<!-- </v-layout> -->
+										</v-row>
+									</td>
+                            	</tr>
+							</tbody>
+                        </template>
+                    </v-data-table>
+                </v-card-text>
+            </v-card>
+            <!-- </v-flex> -->
+        </v-col>
 
-
-		<v-dialog
-		    v-model="modal"
-		    max-width="500"
-			persistent
-		>
-		    <v-card>
-		        <v-card-title class="headline">
-					<v-layout class="justify-center">
-						{{ action === 'edit' ? 'Edit authorization' : 'Are you sure?' }}
-					</v-layout>
-				</v-card-title>
-		        <v-card-text>
-		          	<v-container grid-list-md v-if="action === 'edit' && authorizationType === 'userGivenAuthorizations'">
-		            	<v-layout row wrap>
-							<!-- authorization: {{ authorization }}<br /><br /> -->
-							<!-- loadedUserGivenAuthorizations: {{ loadedUserGivenAuthorizations[authorizationIndex] }}<br /> -->
-							<v-flex xs6>
-								Firstname:
-							</v-flex>
-							<v-flex xs6>
-								{{ loadedUserGivenAuthorizations[authorizationIndex].user.firstname }}
-							</v-flex>
-							<v-flex xs6>
-								Lastname:
-							</v-flex>
-							<v-flex xs6>
-								{{ loadedUserGivenAuthorizations[authorizationIndex].user.lastname }}
-							</v-flex>
-							<v-flex xs6>
-								Email:
-							</v-flex>
-							<v-flex xs6>
-								{{ loadedUserGivenAuthorizations[authorizationIndex].user.email }}
-							</v-flex>
-							<v-flex xs6>
-								Message:
-							</v-flex>
-							<v-flex xs6>
-								{{ loadedUserGivenAuthorizations[authorizationIndex].user.message }}
-							</v-flex>
-							<v-flex xs12 class="mt-2">
-								<v-select
-									:items="status"
-									label="Status"
-									item-text="name"
-									return-object
-									color="secondary"
-									v-model="loadedUserGivenAuthorizations[authorizationIndex].status"
-								></v-select>
-							</v-flex>
-							<!-- Files: -->
-							<!-- <v-flex xs12>
+        <v-dialog v-model="modal" max-width="500" persistent>
+            <v-card>
+                <v-card-title class="headline">
+                    <!-- <v-layout class="justify-center"> -->
+                    <v-row no-gutters justify="center">
+                        {{ action === 'edit' ? 'Edit authorization' : 'Are you sure?' }}
+                        <!-- </v-layout> -->
+                    </v-row>
+                </v-card-title>
+                <v-card-text>
+                    <v-container grid-list-md v-if="action === 'edit' && authorizationType === 'userGivenAuthorizations'">
+                        <!-- <v-layout row wrap> -->
+                        <v-row no-gutters>
+                            <!-- authorization: {{ authorization }}<br /><br /> -->
+                            <!-- loadedUserGivenAuthorizations: {{ loadedUserGivenAuthorizations[authorizationIndex] }}<br /> -->
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                Firstname:
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                {{ loadedUserGivenAuthorizations[authorizationIndex].user.firstname }}
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                Lastname:
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                {{ loadedUserGivenAuthorizations[authorizationIndex].user.lastname }}
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                Email:
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                {{ loadedUserGivenAuthorizations[authorizationIndex].user.email }}
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                Message:
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs6> -->
+                            <v-col xs="6">
+                                {{ loadedUserGivenAuthorizations[authorizationIndex].user.message }}
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- <v-flex xs12 class="mt-2"> -->
+                            <v-col xs="12" class="mt-2">
+                                <v-select :items="status" label="Status" item-text="name" return-object color="secondary" v-model="loadedUserGivenAuthorizations[authorizationIndex].status"></v-select>
+                                <!-- </v-flex> -->
+                            </v-col>
+                            <!-- Files: -->
+                            <!-- <v-flex xs12>
 								<v-layout class="justify-center">
 									Authorizations:
 								</v-layout>
 								<v-checkbox label="View files" color="secondary" v-model="loadedUserGivenAuthorizations[authorizationIndex].authorizations.files"></v-checkbox>
 							</v-flex> -->
-			              	<!-- <v-flex xs12 style="border: 1px solid #fff; border-radius: 5px;">
+                            <!-- <v-flex xs12 style="border: 1px solid #fff; border-radius: 5px;">
 			              		<v-checkbox label="All" v-model="isCheckAll" @click.stop="checkAll" style="justify-content: center;"></v-checkbox>
 			              	</v-flex> -->
-			              	<!-- selectedAuthorizations: {{ selectedAuthorizations }}<br /><br />
+                            <!-- selectedAuthorizations: {{ selectedAuthorizations }}<br /><br />
 			              	isCheckAll: {{ isCheckAll }}<br /><br />
 			              	<v-flex xs6 v-for="authorization in allAuthorizations" :key="authorization.slug">
 			                	<v-checkbox :value="authorization" v-model="selectedAuthorizations" :label="authorization.name" @click.stop="updateSelectedAuthorizations(authorization)" color="primary"></v-checkbox>
 			                </v-flex> -->
-			                <!-- <v-flex xs6>
+                            <!-- <v-flex xs6>
 			                	<v-checkbox v-model="form.authorizations.picture" label="Picture" color="primary"></v-checkbox>
 			                </v-flex>
 			                <v-flex xs6>
@@ -223,41 +236,34 @@
 							  <v-flex xs6>
 			                	<v-checkbox v-model="form.authorizations.files" label="Downloadable files" color="primary"></v-checkbox>
 			              	</v-flex> -->
-			            </v-layout>
-			        </v-container>
-		        </v-card-text>
+                            <!-- </v-layout> -->
+                        </v-row>
+                    </v-container>
+                </v-card-text>
 
-		        <v-card-actions class="justify-center">
-		          	<v-btn
-		            	color="success"
-		            	@click="updateAuthorization"
-						v-if="action === 'edit'"
-						:loading="loading"
-		          	>
-		            	Update
-		          	</v-btn>
-					<v-btn
-		            	color="error"
-		            	@click="deleteAuthorization"
-						v-if="action === 'delete'"
-		          	>
-		            	Yes, delete
-		          	</v-btn>
-		          	<v-btn color="secondary" flat @click="modal = false">Close</v-btn>
-		        </v-card-actions>
-		    </v-card>
-		</v-dialog>
+                <v-card-actions class="justify-center">
+                    <v-btn color="success" @click="updateAuthorization" v-if="action === 'edit'" :loading="loading">
+                        Update
+                    </v-btn>
+                    <v-btn color="error" @click="deleteAuthorization" v-if="action === 'delete'">
+                        Yes, delete
+                    </v-btn>
+                    <v-btn color="secondary" flat @click="modal = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
-		<v-snackbar v-model="snackbarDeleteAuthorization" :timeout="5000" :bottom="true" :auto-height="true">
-			<span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete authorization?</span>
-			<v-btn color="pink" flat @click.stop="deleteAuthorization">
-				<span style="font-size: 1.3em;">Yes</span>
-			</v-btn>
-			<v-btn color="secondary" flat @click="snackbarDeleteAuthorization = false">
-				<span style="font-size: 1.3em;">No</span>
-			</v-btn>
-		</v-snackbar>
-	</v-layout>
+        <v-snackbar v-model="snackbarDeleteAuthorization" :timeout="5000" :bottom="true" :auto-height="true">
+            <span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete authorization?</span>
+            <v-btn color="pink" text @click.stop="deleteAuthorization">
+                <span style="font-size: 1.3em;">Yes</span>
+            </v-btn>
+            <v-btn color="secondary" text @click="snackbarDeleteAuthorization = false">
+                <span style="font-size: 1.3em;">No</span>
+            </v-btn>
+        </v-snackbar>
+        <!-- </v-layout> -->
+    </v-row>
 </template>
 
 <script>
@@ -268,7 +274,7 @@
 	export default {
 		layout: 'layoutBack',
 		middleware: [],
-		async mounted () {
+		async mounted() {
 			try {
 				if (this.$store.getters['authorizations/loadedUserReceivedAuthorizations'].length < 1) {
 					await this.$store.dispatch('authorizations/fetchUserReceivedAuthorizations')
@@ -291,7 +297,7 @@
 					if (notification.value === 'new_authorization_sent') {
 						this.new_authorizations_sent.push(notification.authorization_id)
 					}
-					
+
 					if (notification.value === 'new_authorization_received') {
 						this.new_authorizations_received.push(notification.authorization_id)
 					}
@@ -303,40 +309,40 @@
 			// Delete all user notifications that are of type "authorization"
 			this.$store.dispatch('users/deleteUserNotifications')
 		},
-		data () {
+		data() {
 			return {
-		        headersGivenAuthorizations: [
-					{ text: 'Resume', value: 'resume.id'},
-		          	{ text: 'Firstname', align: 'left', value: 'user.firstname' },
-		          	{ text: 'Lastname', value: 'user.lastname' },
+				headersGivenAuthorizations: [
+					{ text: 'Resume', value: 'resume.id' },
+					{ text: 'Firstname', align: 'left', value: 'user.firstname' },
+					{ text: 'Lastname', value: 'user.lastname' },
 					{ text: 'Email', value: 'user.email' },
 					{ text: 'Message', value: 'user.message' },
 					{ text: 'Status', align: 'left', value: 'status.slug' },
 					// { text: 'View files', align: 'left', value: 'authorizations.files' },
-		          	// { text: 'View Personal data', value: 'authorizations.personal_data' },
-		          	// { text: 'View Picture', value: 'authorizations.picture' },
-		          	// { text: 'View Education', value: 'authorizations.education' },
-		          	// { text: 'View Work experience', value: 'authorizations.work_experience' },
-		          	// { text: 'View Skills', value: 'authorizations.skills' },
-		          	// { text: 'Created at', value: '_created_at' },
-		          	{ text: 'Last update', value: '_updated_at' },
-		          	{ text: 'Actions', sortable: false }
-		        ],
+					// { text: 'View Personal data', value: 'authorizations.personal_data' },
+					// { text: 'View Picture', value: 'authorizations.picture' },
+					// { text: 'View Education', value: 'authorizations.education' },
+					// { text: 'View Work experience', value: 'authorizations.work_experience' },
+					// { text: 'View Skills', value: 'authorizations.skills' },
+					// { text: 'Created at', value: '_created_at' },
+					{ text: 'Last update', value: '_updated_at' },
+					{ text: 'Actions', sortable: false }
+				],
 				headersReceivedAuthorizations: [
-		          	{ text: 'Firstname', align: 'left', value: 'firstname' },
-		          	{ text: 'Lastname', value: 'lastname' },
+					{ text: 'Firstname', align: 'left', value: 'firstname' },
+					{ text: 'Lastname', value: 'lastname' },
 					// { text: 'Email', value: 'email' },
 					{ text: 'Resume', align: 'left', value: 'resume.id' },
 					{ text: 'Status', align: 'left', value: 'status' },
-		          	// { text: 'View Personal data', value: 'authorizations.personal_data' },
-		          	// { text: 'View Picture', value: 'authorizations.picture' },
-		          	// { text: 'View Education', value: 'authorizations.education' },
-		          	// { text: 'View Work experience', value: 'authorizations.work_experience' },
-		          	// { text: 'View Skills', value: 'authorizations.skills' },
-		          	// { text: 'Created at', value: '_created_at' },
-		          	{ text: 'Last update', align: 'left', value: '_updated_at' },
-		          	{ text: 'Actions', align: 'left', sortable: false }
-		        ],
+					// { text: 'View Personal data', value: 'authorizations.personal_data' },
+					// { text: 'View Picture', value: 'authorizations.picture' },
+					// { text: 'View Education', value: 'authorizations.education' },
+					// { text: 'View Work experience', value: 'authorizations.work_experience' },
+					// { text: 'View Skills', value: 'authorizations.skills' },
+					// { text: 'Created at', value: '_created_at' },
+					{ text: 'Last update', align: 'left', value: '_updated_at' },
+					{ text: 'Actions', align: 'left', sortable: false }
+				],
 				modal: false,
 				action: '',
 				authorizationType: '',
@@ -356,42 +362,42 @@
 					}
 				],
 				allAuthorizations: [
-		        	{
-		        		name: 'Personal data',
-		        		slug: 'personal_data'
-		        	},
-		        	{
-		        		name: 'Picture',
-		        		slug: 'picture'
+					{
+						name: 'Personal data',
+						slug: 'personal_data'
 					},
 					{
-		        		name: 'Education',
-		        		slug: 'education'
+						name: 'Picture',
+						slug: 'picture'
 					},
 					{
-		        		name: 'Work experience',
-		        		slug: 'work_experience'
+						name: 'Education',
+						slug: 'education'
+					},
+					{
+						name: 'Work experience',
+						slug: 'work_experience'
 					},
 					{
 						name: 'Skills',
 						slug: 'skills'
 					},
 					{
-		        		name: 'Downloadable files',
-		        		slug: 'downloadable_files'
-		        	}
-		        ],
-		        selectedAuthorizations: [],
-		        form: {
-		        	authorizations: {
-		        		personal_data: true,
-		        		picture: true,
-		        		education: true,
-		        		work_experience: true,
-		        		skills: true
-		        	}
-		        },
-		        selectAll: true,
+						name: 'Downloadable files',
+						slug: 'downloadable_files'
+					}
+				],
+				selectedAuthorizations: [],
+				form: {
+					authorizations: {
+						personal_data: true,
+						picture: true,
+						education: true,
+						work_experience: true,
+						skills: true
+					}
+				},
+				selectAll: true,
 				isCheckAll: false,
 				new_authorizations_sent: [],
 				new_authorizations_received: [],
@@ -401,16 +407,16 @@
 			}
 		},
 		computed: {
-			loading () {
+			loading() {
 				return this.$store.getters['loading']
 			},
-			loadedUser () {
+			loadedUser() {
 				return this.$store.getters['user/loadedUser']
 			},
-			loadedUserReceivedAuthorizations () {
+			loadedUserReceivedAuthorizations() {
 				return this.$store.getters['authorizations/loadedUserReceivedAuthorizations']
 			},
-			loadedUserGivenAuthorizations () {
+			loadedUserGivenAuthorizations() {
 				return this.$store.getters['authorizations/loadedUserGivenAuthorizations']
 			}
 		},
@@ -423,34 +429,34 @@
 				this.authorization = authorization
 				this.snackbarDeleteAuthorization = true
 			},
-			updateCheckAll (authorization) {
-		      	if (this.selectedAuthorizations.length == this.allAuthorizations.length) {
-		         	this.isCheckAll = true;
-		      	} else {
-		         	this.isCheckAll = false;
-		      	}
-		    },
-		    updateSelectedAuthorizations (authorization) {
-		    	if (!this.selectedAuthorizations.find(item => item === authorization)) {
-		    		this.selectedAuthorizations.push(authorization)
-		    		this.updateCheckAll()
-		    	} else {
-		    		this.selectedAuthorizations = this.selectedAuthorizations.filter(item => item != authorization)
-		    		this.updateCheckAll()
-		    	}
-		    },
-		    checkAll () {
-		    	console.log('checkAll')
-		    	if (this.isCheckAll) {
-		    		this.isCheckAll = false
-		    		this.selectedAuthorizations = []
-			    } else {
-			    	this.isCheckAll = true
-			    	for (let authorization in this.allAuthorizations) {
-			    		this.selectedAuthorizations.push(this.allAuthorizations[authorization])
-			    	}
-			    }
-		    },
+			updateCheckAll(authorization) {
+				if (this.selectedAuthorizations.length == this.allAuthorizations.length) {
+					this.isCheckAll = true
+				} else {
+					this.isCheckAll = false
+				}
+			},
+			updateSelectedAuthorizations(authorization) {
+				if (!this.selectedAuthorizations.find(item => item === authorization)) {
+					this.selectedAuthorizations.push(authorization)
+					this.updateCheckAll()
+				} else {
+					this.selectedAuthorizations = this.selectedAuthorizations.filter(item => item != authorization)
+					this.updateCheckAll()
+				}
+			},
+			checkAll() {
+				console.log('checkAll')
+				if (this.isCheckAll) {
+					this.isCheckAll = false
+					this.selectedAuthorizations = []
+				} else {
+					this.isCheckAll = true
+					for (let authorization in this.allAuthorizations) {
+						this.selectedAuthorizations.push(this.allAuthorizations[authorization])
+					}
+				}
+			},
 			select() {
 				console.log('select: ', this.selectAll)
 				// this.selectAll = !this.selectAll
@@ -474,7 +480,7 @@
 				}
 				this.selectAll = !this.selectAll
 			},
-			async updateAuthorization () {
+			async updateAuthorization() {
 				try {
 					console.log('authorizationType: ', this.authorizationType)
 					console.log('authorizationIndex: ', this.authorizationIndex)
@@ -507,7 +513,7 @@
 					}).show()
 				}
 			},
-			async deleteAuthorization () {
+			async deleteAuthorization() {
 				try {
 					this.$store.commit('setLoading', true, { root: true })
 					console.log('authorizationType: ', this.authorizationType)
@@ -540,7 +546,7 @@
 					}).show()
 				}
 			},
-			async updateAuthorization2 (authorization, action) {
+			async updateAuthorization2(authorization, action) {
 				if (action === 'grant_access') {
 					this.authorizationModal = true
 					return
@@ -552,7 +558,7 @@
 				const abc = await axios.post('/update-resume-authorization', { auth_user_id, authorization, action })
 				console.log('abc: ', abc)
 			},
-			openModal (action, type, index) {
+			openModal(action, type, index) {
 				console.log('action: ', action)
 				console.log('type: ', type)
 				console.log('index: ', index)
@@ -567,15 +573,15 @@
 
 <style scoped>
 	/*.v-input__slot {
-	  align-items: center;
-	  justify-content: center;
-	}*/
+		  align-items: center;
+		  justify-content: center;
+		}*/
 	.hidden {
 		display: none;
 	}
 	.checkbox-center {
 		justify-content: center;
-		padding-top: 10px; 
+		padding-top: 10px;
 	}
 	.avatar-edit:hover {
 		background: var(--v-info-base);
@@ -596,22 +602,27 @@
 		color: #fff;
 	}
 	.fade-enter-active {
-  		transition: opacity 4s;
+		transition: opacity 4s;
 		background-color: var(--v-secondary-base);
 	}
-	.fade-enter, .fade-leave-to {
-  		opacity: 0;
+	.fade-enter,
+	.fade-leave-to {
+		opacity: 0;
 	}
 
 	.fadeOut {
 		background-color: var(--v-secondary-base);
-    	animation: fadeout 8s linear forwards;
-    	-webkit-animation: fadeout 8s linear forwards;
+		animation: fadeout 8s linear forwards;
+		-webkit-animation: fadeout 8s linear forwards;
 	}
 	@keyframes fadeout {
-  		100% { background-color: transparent; }
+		100% {
+			background-color: transparent;
+		}
 	}
 	@-webkit-keyframes fadenout {
-  		100% { background-color: transparent; }
+		100% {
+			background-color: transparent;
+		}
 	}
 </style>

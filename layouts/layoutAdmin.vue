@@ -18,12 +18,13 @@
 			>
 				<v-list>
 					<template v-for="item in items">
-						<v-layout
+						<!-- <v-layout
 						  row
 						  v-if="item.heading"
 						  align-center
 						  :key="item.heading"
-						>
+						> -->
+						<v-row no-gutters align="center" :key="item.heading" v-if="item.heading">
 							<v-flex xs6>
 								<v-subheader v-if="item.heading">
 									{{ item.heading }}
@@ -32,7 +33,8 @@
 							<v-flex xs6 class="text-xs-center">
 								<a href="#!" class="body-2 black--text">EDIT</a>
 							</v-flex>
-						</v-layout>
+						<!-- </v-layout> -->
+						</v-row>
 						<v-list-group
 						  v-else-if="item.children"
 						  v-model="item.model"

@@ -1,7 +1,9 @@
 <template>
-	<v-layout row wrap>
+	<!-- <v-layout row wrap> -->
+	<v-row no-gutters>
 		<h2>Dashboard</h2>
-	</v-layout>
+	<!-- </v-layout> -->
+	</v-row>
 </template>
 
 <script>

@@ -5,12 +5,14 @@
         </v-toolbar>
         <v-card-text>
             <v-form>
-                <v-text-field prepend-icon="person" name="email" label="Write your email" type="text" v-model="form.email"></v-text-field>
+                <v-text-field prepend-icon="mdi-account" name="email" label="Write your email" type="text" v-model="form.email"></v-text-field>
                 <!-- <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password"></v-text-field> -->
-                <v-layout justify-center class="mb-2">
+                <!-- <v-layout justify-center class="mb-2"> -->
+				<v-row no-gutters justify="center" class="mb-2">
                     <v-btn color="primary" @click="resetPassword">Reset</v-btn>
-                    <v-btn color="secondary" flat nuxt to="/">Cancel</v-btn>
-                </v-layout>
+                    <v-btn color="secondary" text nuxt to="/">Cancel</v-btn>
+                <!-- </v-layout> -->
+				</v-row>
             </v-form>
         </v-card-text>
     </v-card>

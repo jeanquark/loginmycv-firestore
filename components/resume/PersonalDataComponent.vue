@@ -238,7 +238,7 @@
 
                             <v-flex xs8 sm5 class="px-3">
                                 <v-autocomplete label="Languages" :items="loadedLanguages" item-text="name" :return-object="true" multiple chips small-chips hint="Click checkbox to display levels. Order matters." persistent-hint :deletable-chips="true" color="secondary" v-model="userResume.languages">
-                                    <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
+                                    <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
                                         <v-chip :selected="data.selected" close class="chip--select-multi" @input="removeLanguage(data.item)">
                                             <v-avatar>
@@ -276,7 +276,7 @@
                                     </v-flex>
                                 </v-layout>
                                 <v-slider v-model="language.value" label="" min="0" max="100" step="10" color="secondary" class="mt-0 pl-3"></v-slider>
-                                <v-text-field :label="`Info ${language.name}`" v-model="language.info">
+                                <v-text-field :label="`Info ${language.name} (certificate, travel, etc.)`" v-model="language.info">
                                     <font-awesome-icon :icon="['fas', 'info']" slot="prepend" class="mt-1" />
                                 </v-text-field>
                             </v-flex>
@@ -322,6 +322,12 @@
         </v-layout>
         <br />
 
+		<v-layout row wrap pa-2>
+			<v-flex xs12 style="border: 2px solid yellow;">
+				<component :is="dynamicComponent" :resumeSlug="resumeSlug" :newPersonalData="null" v-if="dynamicComponent" />
+			</v-flex>
+		</v-layout>
+
         <v-layout row wrap pa-2 class="">
             <v-flex xs12 class="">
                 <v-card :elevation="12" class="white--text red-border" style="">
@@ -347,7 +353,7 @@
                                 <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. However to gain full access, visitors either need to ask for your authorization, or they will be prompted to enter the password you specify below.</span>
                             </v-alert>
                             <v-alert value="private" color="warning" icon="warning" v-if="userResume.visibility === 'private'">
-                                <span class="subheading font-weight-medium">Your resume is hidden (visitors are not able to find you without prior knowledge of your resume identifier). To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
+                                <span class="subheading font-weight-medium">Your resume is hidden, <i>i.e.</i> visitors are not able to find you without prior knowledge of your resume identifier. To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
                             </v-alert>
                         </v-layout>
 
@@ -423,9 +429,17 @@
 					})
 				}
 			}
+			this.loadDynamicComponent()
+				.then(() => {
+					this.dynamicComponent = () => this.loadDynamicComponent()
+				})
+				.catch(() => {
+					this.dynamicComponent = null
+				})
 		},
 		data() {
 			return {
+				dynamicComponent: null,
 				resumeSlug: '',
 				imageName: '',
 				imageUrl: '',
@@ -439,6 +453,13 @@
 			}
 		},
 		computed: {
+			loadDynamicComponent() {
+				console.log('this.userResume: ', this.userResume)
+				return () =>
+					import(`~/components/resume/dynamicTemplatesComponents/${
+						this.userResume.template.id
+					}/PersonalDataComponent`)
+			},
 			userResume() {
 				if (!this.resumeSlug) {
 					return this.$store.getters['resumes/loadedNewResume']

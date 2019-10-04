@@ -144,7 +144,9 @@ module.exports = app.use(async function (req, res) {
             key_competences: newResume.key_competences ? newResume.key_competences : null,
             languages: newResume.languages ? newResume.languages : null,
             _created_at: newResume._created_at,
-            _updated_at: newResume._updated_at
+            // _created_at: moment().unix(),
+			_updated_at: newResume._updated_at
+			// _updated_at: moment().unix()
         });
 
         await batch.commit();

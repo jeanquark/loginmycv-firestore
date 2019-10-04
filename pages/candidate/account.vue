@@ -1,69 +1,83 @@
 <template>
-	<v-layout row wrap justify-center>
-		<v-flex xs12 class="text-xs-center">
-			<h2>Manage my Account</h2>
+	<!-- <v-layout row wrap justify-center> -->
+	<v-row no-gutters justify="center">
+		<!-- <v-flex xs12 class="text-xs-center"> -->
+		<v-col xs="12" class="text-center">
+			<h2>Manage my account</h2>
 			<br />
-		</v-flex>
+		<!-- </v-flex> -->
+		</v-col>
 
-		<v-flex xs12>
+		<!-- <v-flex xs12> -->
+		<v-col xs="12">
 			<v-card>
 				<v-card-text>
-					<v-layout row wrap>
-						<v-flex xs12 sm6>
+					<!-- <v-layout row wrap> -->
+					<v-row no-gutters>
+						<!-- <v-flex xs12 sm6 px-3> -->
+						<v-col xs="12" sm="6" class="px-3">
 							<v-text-field
-								prepend-icon="user"
 								v-model="loadedUser.firstname"
 							>
 								<template v-slot:label>
 									Firstname <font-awesome-icon :icon="['fas', 'edit']" />
 								</template>
 							</v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6>
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 px-3> -->
+						<v-col xs="12" sm="6" class="px-3">
 							<v-text-field
-								prepend-icon="user"
 								v-model="loadedUser.lastname"
 							>
 								<template v-slot:label>
 									Lastname <font-awesome-icon :icon="['fas', 'edit']" />
 								</template>
 							</v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6>
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 px-3> -->
+						<v-col xs="12" sm="6" class="px-3">
 							<v-text-field
 								label="Email"
-								prepend-icon="user"
 								readonly
 								v-model="loadedUser.email"
 							></v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6 v-if="loadedUser.status">
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 px-3 v-if="loadedUser.status"> -->
+						<v-col xs="12" sm="6" class="px-3" v-if="loadedUser.status">
 							<v-text-field
 								label="Status"
-								prepend-icon="user"
 								readonly
-								v-model="loadedUser.status"
+								v-model="loadedUser.status.name"
 							></v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6>
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 px-3> -->
+						<v-col xs="12" sm="6" class="px-3">
 							<v-text-field
 								label="Account creation date"
-								prepend-icon="user"
 								readonly
 								:value="loadedUser._created_at | moment('ddd, MMMM Do YYYY HH:mm')"
 							></v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6>
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 px-3> -->
+						<v-col xs="12" sm="6" class="px-3">
 							<v-text-field
 								label="Last update"
-								prepend-icon="user"
 								readonly
 								:value="loadedUser._updated_at | moment('ddd, MMMM Do YYYY HH:MM')"
 							></v-text-field>
-						</v-flex>
-					</v-layout>
-					<v-layout row wrap class="mx-4 my-2 private">
-						<v-flex xs12 sm6>
+						<!-- </v-flex> -->
+						</v-col>
+					<!-- </v-layout> -->
+					</v-row>
+					<!-- <v-layout row wrap class="mx-4 my-2 private"> -->
+					<v-row no-gutters class="mx-4 my-2 private">
+						<!-- <v-flex xs12 sm6> -->
+						<v-col xs="12" sm="6">
 							<v-list class="mx-3">
 								<v-list-tile>
 									<v-list-tile-content>
@@ -84,8 +98,10 @@
 									</v-list-tile-content>		
 								</v-list-tile>
 							</v-list>
-						</v-flex>
-						<v-flex xs12 sm6 class="">
+						<!-- </v-flex> -->
+						</v-col>
+						<!-- <v-flex xs12 sm6 class=""> -->
+						<v-col xs="12" sm="6">
 							<v-list class="mx-3">
 								<v-list-tile
 									avatar
@@ -129,12 +145,15 @@
 									</v-list-tile-content>			
 								</v-list-tile>
 							</v-list>
-						</v-flex>
-					</v-layout>
+						<!-- </v-flex> -->
+						</v-col>
+					<!-- </v-layout> -->
+					</v-row>
 				</v-card-text>
 
 				<v-card-actions>
-					<v-layout justify-center>
+					<!-- <v-layout justify-center> -->
+					<v-row justify="center">
 						<v-btn
 							color="info"
 							:loading="loadingUpdate"
@@ -144,19 +163,22 @@
 						</v-btn>
 						<v-btn
 							color="error"
-							:flat="false"
+							:text="false"
 							:loading="loading"
 							@click.stop="dialog = true"
 						>
 							Delete account
 						</v-btn>
-					</v-layout>
+					<!-- </v-layout> -->
+					</v-row>
 				</v-card-actions>
 			</v-card>
-		</v-flex>
+		<!-- </v-flex> -->
+		</v-col>
 
 		<!-- <v-layout justify-center> -->
-		<v-flex xs12 class="text-xs-center justify-center">
+		<!-- <v-flex xs12 class="text-xs-center justify-center"> -->
+		<v-col xs="12" class="text-center justify-center">
 			<v-dialog
 				v-model="dialog"
 				lazy
@@ -192,22 +214,26 @@
 					<v-divider></v-divider>
 
 					<v-card-actions>
-						<v-layout justify-center>
+						<!-- <v-layout justify-center> -->
+						<v-row no-gutters justify="center">
 							<v-btn
 								color="secondary"
-								:flat="false"
+								:text="false"
 								:disabled="disabled"
 								:loading="loading"
 								@click.stop="deleteAccount"
 							>
 								Delete my account
 							</v-btn>
-						</v-layout>
+						<!-- </v-layout> -->
+						</v-row>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
-		</v-flex>
-	</v-layout>
+		</v-col>
+		<!-- </v-flex> -->
+	<!-- </v-layout> -->
+	</v-row>
 </template>
 
 <script>

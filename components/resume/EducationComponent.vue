@@ -4,7 +4,7 @@
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
             <!-- errors: {{ errors }}<br /><br /> -->
-            <!-- userResume.education: {{ userResume.education }}<br /><br /> -->
+            userResume.education: {{ userResume.education }}<br /><br />
             <!-- educationErrors: {{ educationErrors }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
 			newEducation: {{ newEducation }}<br /><br />
@@ -78,6 +78,8 @@
                         </div>
 
                         <v-card class="mb-5" style="background: black;">
+							candidateEducation: {{ candidateEducation }}<br /><br />
+							<!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /><br /> -->
                             <v-card-text style="">
                                 <v-layout row wrap>
                                     <v-flex xs12 sm6 class="pa-3">
@@ -139,6 +141,8 @@
 		},
 		data() {
 			return {
+				dynamicComponent: null,
+				expanded: [], // Control expansion panel open/close state. Necessary for the map inside Leaflet component (template004) to render on mounted
 				resumeSlug: '',
 				modalNewEducation: false,
 				modalEditEducation: false,
@@ -152,11 +156,16 @@
 					start_date: '',
 					end_date: ''
 				},
-				dynamicComponent: null,
-				expanded: [] // Control expansion panel open/close state. Necessary for the map inside Leaflet component (template004) to render on mounted
 			}
 		},
 		computed: {
+			loadDynamicComponent() {
+				console.log('this.userResume: ', this.userResume)
+				return () =>
+					import(`~/components/resume/dynamicTemplatesComponents/${
+						this.userResume.template.id
+					}/EducationComponent`)
+			},
 			errors() {
 				return this.$store.getters['errors']
 			},
@@ -192,13 +201,6 @@
 			// hasError2 () {
 			//     return true
 			// },
-			loadDynamicComponent() {
-				console.log('this.userResume: ', this.userResume)
-				return () =>
-					import(`~/components/resume/dynamicTemplatesComponents/${
-						this.userResume.template.id
-					}/EducationComponent`)
-			},
 			
 		},
 		methods: {

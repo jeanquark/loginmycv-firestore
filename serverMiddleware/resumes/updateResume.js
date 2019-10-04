@@ -137,7 +137,9 @@ module.exports = app.use(async function (req, res, next) {
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages,
 				visibility: updatedResume.visibility,
-				_updated_at: moment().valueOf()
+				public: updatedResume.visibility === 'private' ? false : true,
+				// _updated_at: moment().valueOf() // timestamp in milliseconds
+				_updated_at: moment().unix()
 			});
 
 			await batch.commit();
@@ -215,8 +217,9 @@ module.exports = app.use(async function (req, res, next) {
 				key_competences: updatedResume.key_competences ? updatedResume.key_competences : null,
 				languages: updatedResume.languages ? updatedResume.languages : null,
 				visibility: updatedResume.visibility,
-				_updated_at: moment().valueOf(),
-				timestamp: admin.firestore.FieldValue.serverTimestamp()
+				public: updatedResume.visibility === 'private' ? false : true,
+				// _updated_at: moment().valueOf() // timestamp in milliseconds
+				_updated_at: moment().unix()
 			});
 			await batch.commit();
 

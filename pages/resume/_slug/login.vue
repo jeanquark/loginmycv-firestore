@@ -1,10 +1,12 @@
 <template>
     <v-app id="inspire">
         <v-content>
-            <v-container fluid fill-height>
-                <v-layout align-center justify-center>
+            <v-container fluid class="fill-height">
+                <!-- <v-layout align-center justify-center> -->
+				<v-row justify="center" align="center">
                     <!-- <v-img src="/images/loader.gif" max-width="200px" v-if="!candidate.resume_long_id"></v-img> -->
-                    <v-flex xs12 sm8 md4 v-cloak>
+                    <!-- <v-flex xs12 sm8 md4 v-cloak> -->
+					<v-col xs="12" sm="8" md="4" v-cloak>
                         <v-card class="elevation-12">
                             <v-toolbar dark color="primary">
                                 <v-toolbar-title>Password protected resume</v-toolbar-title>
@@ -35,11 +37,13 @@
                             </v-card-text>
                             <v-card-actions class="justify-center">
                                 <v-btn nuxt to="/" color="default">Cancel</v-btn>
-                                <v-btn color="primary" @click.prevent="signVisitorIn">Access {{ firstname}} resume</v-btn>
+                                <v-btn color="primary" :loading="loading" @click.prevent="signVisitorIn">Access {{ firstname}} resume</v-btn>
                             </v-card-actions>
                         </v-card>
-                    </v-flex>
-                </v-layout>
+                    <!-- </v-flex> -->
+					</v-col>
+                <!-- </v-layout> -->
+				</v-row>
             </v-container>
         </v-content>
     </v-app>
@@ -96,13 +100,18 @@
 			},
 			errors () {
 				return this.$store.getters['errors']
+			},
+			loading() {
+				return this.$store.getters['loading']
 			}
         },
         methods: {
             async signVisitorIn () {
-				console.log('signVisitorIn')
-				this.$store.commit('clearError', { root: true })				
-                try {
+				try {
+					console.log('signVisitorIn')
+					this.$store.commit('setLoading', true)
+					this.$store.commit('clearError', { root: true })				
+
                     await this.$store.dispatch('firebase-auth/signVisitorIn', { slug: this.slug, password: this.form.password })
                     // console.log('Success!')
                     // new Noty({
@@ -111,9 +120,11 @@
                     //     timeout: 5000,
                     //     theme: 'metroui'
 					// }).show()
+					this.$store.commit('setLoading', false)
 					this.$router.push(`/resume/${this.slug}`)
                 } catch (error) {
-                    console.log('error login: ', error)
+					console.log('error login: ', error)
+					this.$store.commit('setLoading', false)
                     // new Noty({
                     //     type: "error",
                     //     text: "Sorry, an error occured and you could not log in.",

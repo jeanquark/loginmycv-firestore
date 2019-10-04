@@ -1,16 +1,19 @@
 <template>
 	<div>
 		<div v-if="resume && resume.template_id">
-			<!-- resume: {{ resume }}<br /> -->
+			<!-- resume.template_id: {{ resume.template_id }}<br /> -->
 			<component :is="component" :resume="resume" v-if="component" />
 
 		</div>
 		<v-app v-else>
 			<v-content>
-				<v-container fluid fill-height>
-					<v-layout align-center justify-center>
+				<v-container fluid class="fill-height">
+					<!-- resume.template_id: {{ resume.template_id }}<br /> -->
+					<!-- <v-layout align-center justify-center> -->
+					<v-row justify="center" align="center">
 						<v-img src="/images/loader.gif" max-width="200px"></v-img>
-					</v-layout>
+					<!-- </v-layout> -->
+					</v-row>
 				</v-container>
 			</v-content>
 		</v-app>

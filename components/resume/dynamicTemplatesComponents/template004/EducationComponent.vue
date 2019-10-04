@@ -41,14 +41,14 @@
 </template>
 
 <script>
-	let L = { icon() {} };
+	let L = { icon() {} }
 	if (process.browser) {
-		L = require("leaflet");
+		L = require('leaflet')
 	}
 	export default {
-		props: ["resumeSlug", "index", "newEducation"],
+		props: ['resumeSlug', 'index', 'newEducation'],
 		async created() {
-			this.primaryColor = "#7A528F";
+			this.primaryColor = '#7A528F'
 		},
 		created() {
 			if (this.newEducation) {
@@ -56,25 +56,25 @@
 					lat: 51.47888889,
 					lng: 0
 				}
-			// } else if (this.userResume.education[this.index] && !this.userResume.education[this.index].position) {
+				// } else if (this.userResume.education[this.index] && !this.userResume.education[this.index].position) {
 			} else if (this.index) {
-				this.userResume.education[this.index].position = {
-					lat: 51.47888889,
-					lng: 0
-				}
+				// this.userResume.education[this.index].position = {
+				// 	lat: 51.47888889,
+				// 	lng: 0
+				// }
 			}
 		},
 		mounted() {},
 		data() {
 			return {
 				customIcon: L.icon({
-					iconUrl: "/images/icons/SVG/method-draw-image.svg",
+					iconUrl: '/images/icons/SVG/method-draw-image.svg',
 					iconSize: [35, 30],
 					iconAnchor: [25, 25],
 					popupAnchor: [-8, -30]
 				}),
-				primaryColor: "",
-				secondaryColor: "#FFC107",
+				primaryColor: '',
+				secondaryColor: '#FFC107',
 				markers: [
 					{
 						position: [50.0, -85.0]
@@ -84,36 +84,36 @@
 					}
 				],
 				color2: {
-					hex: "#FFFF00",
-					source: "hex"
+					hex: '#FFFF00',
+					source: 'hex'
 				}
-			};
+			}
 		},
 		computed: {
 			userResume() {
-				return this.$store.getters["resumes/loadedUserResumes"].find(
+				return this.$store.getters['resumes/loadedUserResumes'].find(
 					resume => resume.slug === this.resumeSlug
-				);
+				)
 			},
 			candidateEducation: {
 				get() {
-					return this.userResume.education;
+					return this.userResume.education
 				},
 				set(value) {
-					this.userResume.education = value;
+					this.userResume.education = value
 				}
 			}
 		},
 		methods: {
 			moveMarker(LatLng) {
-				const { lat, lng } = LatLng;
-				this.$emit("updateEducation", { position: { lat, lng } });
+				const { lat, lng } = LatLng
+				this.$emit('updateEducation', { position: { lat, lng } })
 			},
 			updateMarkerPosition() {
-				console.log("updateMarkerPosition");
+				console.log('updateMarkerPosition')
 			}
 		}
-	};
+	}
 </script>
 
 <style scoped>
