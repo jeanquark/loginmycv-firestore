@@ -118,10 +118,10 @@
 
                     <v-card-actions class="justify-center">
                         <v-btn color="primary" @click.stop="moveOneStepBackward">
-                            <v-icon>keyboard_arrow_left</v-icon> Previous
+                            <v-icon>mdi-arrow-left-thick</v-icon> Previous
                         </v-btn>
                         <v-btn color="primary" @click.stop="moveOneStepForward">
-                            Next <v-icon>keyboard_arrow_right</v-icon>
+                            Next <v-icon>mdi-arrow-right-thick</v-icon>
                         </v-btn>
                     </v-card-actions>
                     <!-- <v-layout justify-center> -->
@@ -196,12 +196,12 @@
                     <!-- </v-layout> -->
 					</v-row>
 
-                    <v-alert :value="loadingUploadFiles" color="secondary" outline>
+                    <v-alert :value="loadingUploadFiles" color="secondary" outlined>
                         <div class="text-xs-center">
                             <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                         </div>
                     </v-alert>
-                    <v-alert :value="loadingCreateResume" color="primary" outline>
+                    <v-alert :value="loadingCreateResume" color="primary" outlined>
                         <div class="text-xs-center">
                             <v-progress-circular indeterminate color="primary"></v-progress-circular> Saving resume...
                         </div>

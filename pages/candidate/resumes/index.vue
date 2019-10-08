@@ -105,7 +105,7 @@
 			<v-row no-gutters>
                 <!-- <v-flex xs12 sm6 class="pa-2"> -->
 				<v-col xs="12" sm="6" class="pa-2">
-                    <v-dialog ref="dialog" v-model="modalMinDate" :return-value.sync="date" persistent lazy full-width width="290px">
+                    <v-dialog ref="dialog" v-model="modalMinDate" :return-value.sync="date" persistent full-width width="290px">
                         <template v-slot:activator="{ on }">
                             <v-text-field v-model="minDate" label="Min date" prepend-icon="mdi-calendar-range" readonly v-on="on"></v-text-field>
                         </template>
@@ -120,7 +120,7 @@
 
                 <!-- <v-flex xs12 sm6 class="pa-2"> -->
 				<v-col xs="12" sm="6" class="pa-2">
-                    <v-dialog ref="dialog" v-model="modalMaxDate" :return-value.sync="date" persistent lazy full-width width="290px">
+                    <v-dialog ref="dialog" v-model="modalMaxDate" :return-value.sync="date" persistent full-width width="290px">
                         <template v-slot:activator="{ on }">
                             <v-text-field v-model="maxDate" label="Max date" prepend-icon="mdi-calendar-range" readonly v-on="on"></v-text-field>
                         </template>

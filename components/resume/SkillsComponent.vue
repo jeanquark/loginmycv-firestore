@@ -11,7 +11,7 @@
             :value="true"
             color="warning"
             icon="priority_high"
-            outline
+            outlined
             v-if="!userResume.skills || userResume.skills.length < 1"
         >
             You have no item in here, please click on the rounded pink button to add one
@@ -118,7 +118,7 @@
                     </v-card-text>
                     <v-card-actions class="justify-center">
                         <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('skill')).length > 0" @click="addNewSkill()">Add Skill</v-btn>&nbsp;
-                        <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
+                        <v-btn text color="secondary" @click="closeModal">Cancel</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -148,7 +148,7 @@
                                 :value="true"
                                 color="warning"
                                 icon="priority_high"
-                                outline
+                                outlined
                                 v-if="!candidateSkills[index] || candidateSkills[index].length < 1"
                             >
                                 You have no item in this category, please hit the small rounded pink button to add one

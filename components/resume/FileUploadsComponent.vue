@@ -109,7 +109,7 @@
 					</v-card-text>
 
 					<v-card-actions class="justify-center">
-						<v-btn flat color="error" @click="removeUpload(index, file)">Remove</v-btn>
+						<v-btn text color="error" @click="removeUpload(index, file)">Remove</v-btn>
 					</v-card-actions>
 				</v-card>
 			<!-- </v-flex> -->

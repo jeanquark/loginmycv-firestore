@@ -199,7 +199,7 @@
                             </v-flex>
 
                             <v-flex xs12 sm4 class="px-3">
-                                <v-dialog ref="menu" v-model="menu" :return-value.sync="userResume.personal_data.birthday" :persistent="false" lazy full-width width="290px">
+                                <v-dialog ref="menu" v-model="menu" :return-value.sync="userResume.personal_data.birthday" :persistent="false" full-width width="290px">
                                     <template v-slot:activator="{ on }">
                                         <v-text-field label="Birthday date" readonly v-on="on" v-model="userResume.personal_data.birthday">
                                             <font-awesome-icon :icon="['fas', 'birthday-cake']" slot="prepend" style="margin-top: 4px;" />

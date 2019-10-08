@@ -13,14 +13,14 @@
         </div>
         <h2>Education</h2>
         <v-layout row wrap class="pa-3" v-if="userResume">
-            <v-alert :value="true" color="warning" icon="priority_high" outline v-if="!userResume.education.length > 0">
+            <v-alert :value="true" color="warning" icon="priority_high" outlined v-if="!userResume.education.length > 0">
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
             <v-btn fab absolute bottom right color="pink" @click.stop="openNewEducationModal">
                 <v-icon>add</v-icon>
             </v-btn>
             <v-expansion-panel style="">
-                <v-dialog lazy dark v-model="modalNewEducation" width="600" :persistent="false">
+                <v-dialog dark v-model="modalNewEducation" width="600" :persistent="false">
                     <v-card>
                         <v-card-title class="headline" primary-title>
                             <v-layout class="justify-center">
@@ -59,14 +59,14 @@
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
                             <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('education')).length > 0" @click="addNewEducation()">Add</v-btn>&nbsp;
-                            <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
+                            <v-btn text color="secondary" @click="closeModal">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
 
 
                 <draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
-                    <v-expansion-panel-content lazy v-for="(education, index) in candidateEducation" :key="index" v-model="expanded[index]">
+                    <v-expansion-panel-content v-for="(education, index) in candidateEducation" :key="index" v-model="expanded[index]">
                         <div slot="header">
                             <v-layout align-center>
                                 <v-btn style="cursor: move;" icon class="handle ml-0">

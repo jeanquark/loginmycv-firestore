@@ -6,14 +6,14 @@
 			expanded: {{ expanded }}<br /><br />
 		</p>
         <v-layout row wrap class="pa-3" v-if="userResume">
-            <v-alert :value="true" color="warning" icon="priority_high" outline v-if="!userResume.work_experience.length > 0">
+            <v-alert :value="true" color="warning" icon="priority_high" outlined v-if="!userResume.work_experience.length > 0">
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
             <v-btn fab absolute bottom right color="pink" @click.stop="openNewWorkExperienceModal">
                 <v-icon>add</v-icon>
             </v-btn>
             <v-expansion-panel style="">
-                <v-dialog lazy dark v-model="modalNewWorkExperience" width="600" persistent>
+                <v-dialog dark v-model="modalNewWorkExperience" width="600" persistent>
                     <v-card>
                         <v-card-title class="headline" primary-title>
                             <v-layout class="justify-center">
@@ -51,7 +51,7 @@
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
                             <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('work_experience')).length > 0" @click="addNewWorkExperience()">Add</v-btn>&nbsp;
-                            <v-btn flat color="secondary" @click="closeModal">Cancel</v-btn>
+                            <v-btn text color="secondary" @click="closeModal">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>

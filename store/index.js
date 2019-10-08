@@ -110,7 +110,8 @@ export const actions = {
     async nuxtClientInit({ commit, rootGetters }) { // Added package (not present by default in Nuxt)
         try {
             // console.log('nuxtClientInit')
-            const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser'].uid : null
+            const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser']['uid'] : null
+            // const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser']['id'] : null
             // console.log('userId from nuxtClientInit: ', userId)
             // const email = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser'].email : null
             

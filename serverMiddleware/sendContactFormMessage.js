@@ -4,6 +4,7 @@ const express = require('express'),
 
 const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY;
 const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN;
+const EMAIL_RECIPIENT = process.env.EMAIL_RECIPIENT;
 const mailgun = require('mailgun-js')({apiKey: MAILGUN_API_KEY, domain: MAILGUN_DOMAIN});
 
 // global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -23,7 +24,7 @@ module.exports = app.use(async function (req, res, next) {
 
 		const message = {
 			from: 'noreply <noreply@loginmycv.com>',
-			to: 'jm.kleger@gmail.com',
+			to: EMAIL_RECIPIENT,
 			subject: `You received a new message from your resume "${slug}" hosted on www.loginmycv.com`,
 			html: `
 				<h2 style="color: #7A528F;">LoginMyCV</h2>
@@ -38,7 +39,7 @@ module.exports = app.use(async function (req, res, next) {
 		const sendEmail = (recipient, message) => new Promise((resolve, reject) => {
 			const data = {
 				from: message.from,
-				to: 'jm.kleger@gmail.com',
+				to: EMAIL_RECIPIENT,
 				subject: message.subject,
 				html: message.html,
 			};

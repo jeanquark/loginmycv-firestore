@@ -2,20 +2,48 @@
     <v-app id="app" v-cloak>
         <v-navigation-drawer v-model="sideBar" app>
             <v-list dense>
-                <v-list-item>
+                <v-list-item to="/candidate/resumes" ripple>
                     <v-list-item-action>
-                        <v-icon>mdi-home</v-icon>
+                        <v-icon>mdi-folder-account</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title>Home</v-list-item-title>
+                        <v-list-item-title>My Resumes</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item>
+                <v-list-item to="/candidate/authorizations" ripple>
+                    <!-- <v-list-item-action>
+                        <v-icon>mdi-human</v-icon>
+                    </v-list-item-action> -->
                     <v-list-item-action>
-                        <v-icon>mdi-contact-mail</v-icon>
+                        <v-icon v-if="getUserAuthorizationsNotifications < 1">mdi-human</v-icon>
+                        <v-badge color="primary" v-else>
+                            <template v-slot:badge>
+                                <span>{{ getUserAuthorizationsNotifications }}</span>
+                            </template>
+                            <v-icon>mdi-human</v-icon>
+                        </v-badge>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title>Contact</v-list-item-title>
+                        <v-list-item-title>Authorizations</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item to="/candidate/account" ripple>
+                    <v-list-item-action>
+                        <v-icon>mdi-account</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>My Account</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+            <v-divider></v-divider>
+            <v-list subheader>
+                <v-list-item @click="logoutCandidate()" ripple>
+                    <v-list-item-action>
+                        <v-icon>mdi-logout</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Logout</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -35,7 +63,7 @@
         </v-app-bar>
 
         <v-content>
-            <v-container class="fill-height" fluid>
+        	<v-container>
             	<nuxt />
             </v-container>
         </v-content>

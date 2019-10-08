@@ -21,66 +21,69 @@
                 </v-card-title>
                 <v-card-text>
                     <v-data-table :headers="headersGivenAuthorizations" :items="loadedUserGivenAuthorizations" class="elevation-1" :expand="true">
-                        <template v-slot:items="props">
-                            <tr v-bind:class="[ new_authorizations_received.includes(props.item.id) ? 'fadeOut' : '']" :key="props.index">
-                                <td class="text-xs-left">{{ props.item.resume.id }}</td>
-                                <td class="text-xs-left">{{ props.item.user.firstname }}</td>
-                                <td class="text-xs-left">{{ props.item.user.lastname }}</td>
-                                <td class="text-xs-left">{{ props.item.user.email }}</td>
-                                <td class="text-xs-left" v-if="props.item.user.message">{{ props.item.user.message.substr(0, 6) }} [...]</td>
-                                <td class="text-xs-left" v-else></td>
-                                <td class="text-xs-left" :class="[ new_authorizations_status.includes(props.item.id) ? 'fadeOut' : '']">{{ props.item.status ? props.item.status.name : '' }}</td>
-                                <!-- <td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['personal_data']" :disabled="props.item.status !== 'access_granted'"></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" color="secondary" v-model="props.item.authorizations['picture']"></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['education']"></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['work_experience']"></v-checkbox>
-								</td>
-								<td>
-									<v-checkbox class="checkbox-center" v-model="props.item.authorizations['skills']"></v-checkbox>
-								</td> -->
-                                <!-- <td>
-									<v-checkbox class="checkbox-center" color="secondary" readonly v-model="props.item.authorizations['files']"></v-checkbox>
-								</td> -->
-                                <!-- <td>{{ parseInt(props.item._created_at) | moment('from') }}</td>-->
-                                <td class="text-xs-left">{{ parseInt(props.item._updated_at) | moment('from') }}</td>
-                                <!-- <td>
-									<v-layout class="justify-center">
-										<v-avatar size="34" class="mr-2 avatar-edit">
-											<v-icon
-												class="icon-edit"
-												@click="openModal('edit', 'userGivenAuthorizations', props.index)"
-											>
-												edit
-											</v-icon>
-										</v-avatar>
-										<v-avatar size="34" class="avatar-delete">
-											<v-icon
-												class="icon-delete"
-												@click="openModal('delete', 'userGivenAuthorizations', props.index)"
-											>
-												delete
-											</v-icon>
-										</v-avatar>
-									</v-layout>
-								</td> -->
-                                <td class="text-xs-left">
-                                    <v-layout align-center fill-height>
-                                        <v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', props.index)">
-                                            <v-icon small color="success">edit</v-icon>
-                                        </v-btn>
-                                        <v-btn flat icon @click="requestConfirmation(props.item)">
-                                            <v-icon small color="error">delete</v-icon>
-                                        </v-btn>
-                                    </v-layout>
-                                </td>
-                            </tr>
+                        <!-- <template v-slot:items="props"> -->
+                        <template v-slot:body="{ items }">
+                            <tbody>
+                                <tr v-bind:class="[ new_authorizations_received.includes(item.id) ? 'fadeOut' : '']" v-for="(item, index) in items" :key="index">
+                                    <td class="text-xs-left">{{ item.resume.id }}</td>
+                                    <td class="text-xs-left">{{ item.user.firstname }}</td>
+                                    <td class="text-xs-left">{{ item.user.lastname }}</td>
+                                    <td class="text-xs-left">{{ item.user.email }}</td>
+                                    <td class="text-xs-left" v-if="item.user.message">{{ item.user.message.substr(0, 6) }} [...]</td>
+                                    <td class="text-xs-left" v-else></td>
+                                    <td class="text-xs-left" :class="[ new_authorizations_status.includes(item.id) ? 'fadeOut' : '']">{{ item.status ? item.status.name : '' }}</td>
+                                    <!-- <td>
+    									<v-checkbox class="checkbox-center" v-model="item.authorizations['personal_data']" :disabled="item.status !== 'access_granted'"></v-checkbox>
+    								</td>
+    								<td>
+    									<v-checkbox class="checkbox-center" color="secondary" v-model="item.authorizations['picture']"></v-checkbox>
+    								</td>
+    								<td>
+    									<v-checkbox class="checkbox-center" v-model="item.authorizations['education']"></v-checkbox>
+    								</td>
+    								<td>
+    									<v-checkbox class="checkbox-center" v-model="item.authorizations['work_experience']"></v-checkbox>
+    								</td>
+    								<td>
+    									<v-checkbox class="checkbox-center" v-model="item.authorizations['skills']"></v-checkbox>
+    								</td> -->
+                                    <!-- <td>
+    									<v-checkbox class="checkbox-center" color="secondary" readonly v-model="item.authorizations['files']"></v-checkbox>
+    								</td> -->
+                                    <!-- <td>{{ parseInt(item._created_at) | moment('from') }}</td>-->
+                                    <td class="text-xs-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
+                                    <!-- <td>
+    									<v-layout class="justify-center">
+    										<v-avatar size="34" class="mr-2 avatar-edit">
+    											<v-icon
+    												class="icon-edit"
+    												@click="openModal('edit', 'userGivenAuthorizations', index)"
+    											>
+    												edit
+    											</v-icon>
+    										</v-avatar>
+    										<v-avatar size="34" class="avatar-delete">
+    											<v-icon
+    												class="icon-delete"
+    												@click="openModal('delete', 'userGivenAuthorizations', index)"
+    											>
+    												delete
+    											</v-icon>
+    										</v-avatar>
+    									</v-layout>
+    								</td> -->
+                                    <td class="text-xs-left">
+                                        <v-layout align-center fill-height>
+                                            <v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', index)">
+                                                <v-icon small color="success">edit</v-icon>
+                                            </v-btn>
+                                            <v-btn flat icon @click="requestConfirmation(item)">
+                                                <v-icon small color="error">delete</v-icon>
+                                            </v-btn>
+                                        </v-layout>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </template>
                     </v-data-table>
                 </v-card-text>
