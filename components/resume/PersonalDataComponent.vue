@@ -89,32 +89,6 @@
 						</v-row>
 
                         <!-- <v-layout row wrap> -->
-						<v-row no-gutters style="border: 1px solid orange; display: none;">
-                            <!-- <v-flex xs12 sm8 class="px-3"> -->
-							<v-col cols="4" class="px-3">
-                                <v-text-field id="job_title" name="job_title" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('job_title') : null" data-vv-as="Job title" :counter="50" v-model="userResume.job_title">
-                                    <template v-slot:label>
-                                        Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
-                                    </template>
-                                    <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
-                                </v-text-field>
-                            <!-- </v-flex> -->
-							</v-col>
-
-                            <!-- <v-flex d-flex xs12 class="px-3"> -->
-							<v-col cols="8" class="px-3">
-                                <v-textarea id="job_description" name="job_description" v-validate="'required|max:250'" :error-messages="errors ? errors.collect('job_description') : null" data-vv-as="Job description" :counter="250" v-model="userResume.job_description">
-                                    <template v-slot:label>
-                                        Job description* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
-                                    </template>
-                                    <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
-                                </v-textarea>
-                            <!-- </v-flex> -->
-							</v-col>
-                        <!-- </v-layout> -->
-						</v-row>
-
-                        <!-- <v-layout row wrap> -->
 						<v-row no-gutters>
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
 							<v-col xs="12" sm="4" class="px-3">

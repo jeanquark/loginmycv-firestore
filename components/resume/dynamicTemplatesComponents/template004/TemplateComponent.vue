@@ -57,7 +57,7 @@
 		props: ['resumeSlug', 'loadedTemplate'],
 		components: { VueColorpicker },
 		created() {
-			if (this.userResume.template.map) {
+			if (this.userResume && this.userResume.template.map) {
 				this.selectedMap = this.loadedTemplate.maps.find(map => map.slug === this.userResume.template.map.slug)
 			} 
 		},

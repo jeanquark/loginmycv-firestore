@@ -210,7 +210,7 @@
                                 <v-autocomplete label="Resume language" :items="loadedLanguages" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.language">
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" class="chip--select-multi">
+                                        <v-chip :input-value="data.selected" class="chip--select-multi">
                                             <v-avatar>
                                                 <img :src="`/images/languages/${data.item.flag}`">
                                             </v-avatar>

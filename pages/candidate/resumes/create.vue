@@ -1,6 +1,7 @@
 <template>
     <!-- <div v-if="!loading"> -->
-	<v-container v-if="!loading">
+	<v-container>
+		loading: {{ loading }}<br />
         <!-- <v-layout row wrap> -->
 		<v-row no-gutters>
             <!-- <v-flex xs12 class="mb-3"> -->

@@ -4,8 +4,8 @@
         <!-- <v-layout row wrap> -->
 		<v-row no-gutters>
             <!-- <v-flex xs12> -->
-			<v-col xs="12">
-                <h2 class="text-xs-center">Edit resume {{ resumeSlug }}</h2>
+			<v-col cols="12">
+                <h2 class="text-center">Edit resume {{ resumeSlug }}</h2>
                 <br />
             <!-- </v-flex> -->
 			</v-col>
@@ -14,7 +14,7 @@
         <!-- <v-layout row> -->
 		<v-row no-gutters>
             <!-- <v-flex xs12> -->
-			<v-col xs="12">
+			<v-col cols="12" class="">
                 <v-stepper v-model="step">
  
                     <v-stepper-header>
@@ -49,37 +49,37 @@
 
                     <v-stepper-items>
                         <v-stepper-content :step="1">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <template-component :edit="true" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="2">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <personal-data-component v-if="step == 2" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="3">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <education-component :educationErrors="stepEducationErrorsArray" v-if="step == 3" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" v-if="step == 4" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <skills-component :skillErrors="stepSkillErrorsArray" v-if="step == 5" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" v-if="step == 6" />
                             </v-card>
                         </v-stepper-content>
@@ -90,13 +90,13 @@
                             color="primary"
                             @click.stop="moveOneStepBackward"
                         >
-                            <v-icon>keyboard_arrow_left</v-icon> Previous
+                            <v-icon>mdi-arrow-left</v-icon> Previous
                         </v-btn>
                         <v-btn
                             color="primary"
                             @click.stop="moveOneStepForward"
                         >
-                            Next <v-icon>keyboard_arrow_right</v-icon>
+                            Next <v-icon>mdi-arrow-right</v-icon>
                         </v-btn>
                     </v-card-actions>
                     <!-- <v-layout justify-center> -->
@@ -119,7 +119,7 @@
             <!-- <v-layout> -->
 			<v-row no-gutters>
                 <!-- <v-flex xs12> -->
-				<v-col xs="12"> 
+				<v-col cols="12"> 
                     <v-card light>
                         <v-card-title
                             class="headline justify-center primary white--text"
@@ -135,7 +135,7 @@
                                 color="secondary"
                                 outline
                             >
-                                <div class="text-xs-center" >
+                                <div class="text-center" >
                                     <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                                 </div>
                             </v-alert>
@@ -144,7 +144,7 @@
                                 color="primary"
                                 outline
                             >
-                                <div class="text-xs-center">
+                                <div class="text-center">
                                     <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume...
                                 </div>
                             </v-alert>
