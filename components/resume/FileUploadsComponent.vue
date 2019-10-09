@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
+    <div class="text-center" style="padding: 30px; margin-top: 0px;" v-if="userResume">
         <p>
 			<!-- loadedUser: {{ loadedUser }}<br /><br /> -->
             <!-- userResume: {{ userResume }}<br /><br /> -->
@@ -40,11 +40,13 @@
 		<br /><br />
 		<!-- <v-btn color="secondary">Get more space</v-btn> -->
 
-		<v-layout row wrap v-if="userResume.uploads">			
+		<!-- <v-layout row wrap v-if="userResume.uploads"> -->
+		<v-row no-gutters v-if="userResume.uploads">
 			<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
 			<!-- <div > -->
-			<v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index">
+			<!-- <v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index"> -->
+			<v-col xs="12" sm="6" v-for="(file, index) of userResume.uploads" :key="index">
 				<!-- <v-layout > -->
 				<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-if="file.type === 'downloadable_file'" > -->
@@ -114,11 +116,13 @@
 				</v-card>
 			<!-- </v-flex> -->
 		<!-- </v-layout> -->
-			</v-flex>
+			<!-- </v-flex> -->
+			</v-col>
 			<!-- </div> -->
 				<!-- </v-layout> -->
 			<!-- </v-flex> -->
-		</v-layout>
+		<!-- </v-layout> -->
+		</v-row>
     
 		<v-btn
 			fab

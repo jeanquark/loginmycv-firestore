@@ -1,11 +1,12 @@
 <template>
-    <div class="text-xs-center pa-4" style="margin-top: 0px;" v-if="userResume">
+    <div class="text-center pa-4" style="margin-top: 0px;" v-if="userResume">
         <h2>Work Experience</h2>
 		<p>
 			dynamicComponent: {{ dynamicComponent }}<br /><br />
 			expanded: {{ expanded }}<br /><br />
 		</p>
-        <v-layout row wrap class="pa-3" v-if="userResume">
+        <!-- <v-layout row wrap class="pa-3" v-if="userResume"> -->
+		<v-row no-gutters class="pa-3" v-if="userResume">
             <v-alert :value="true" color="warning" icon="priority_high" outlined v-if="!userResume.work_experience.length > 0">
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
@@ -16,38 +17,57 @@
                 <v-dialog dark v-model="modalNewWorkExperience" width="600" persistent>
                     <v-card>
                         <v-card-title class="headline" primary-title>
-                            <v-layout class="justify-center">
+                            <!-- <v-layout class="justify-center"> -->
+							<v-row no-gutters justify="center">
                                 Add a new entry
-                            </v-layout>
+                            <!-- </v-layout> -->
+							</v-row>
                         </v-card-title>
 
                         <v-card-text>
-                            <v-layout row wrap>
-                                <v-flex xs12>
+                            <!-- <v-layout row wrap> -->
+							<v-row no-gutters>
+                                <!-- <v-flex xs12> -->
+								<v-col cols="12">
                                     <v-text-field label="Job title" name="work_experience_job_title" placeholder="Sofware engineer" v-model="newWorkExperience.job_title" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_job_title') : null" data-vv-as="Job title" :counter="50"></v-text-field>
-                                </v-flex>
+                                <!-- </v-flex> -->
+								</v-col>
                                 <v-flex xs12>
+								<v-col cols="12">
                                     <v-text-field label="Company" name="work_experience_company_name" placeholder="Google Inc." v-model="newWorkExperience.company" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_company_name') : null" data-vv-as="Company" :counter="50"></v-text-field>
-                                </v-flex>
+                                <!-- </v-flex> -->
+								</v-col>
                                 <v-flex xs12>
+								<v-col cols="12">
                                     <v-textarea label="Job description/responsibility" name="work_experience_job_description" v-model="newWorkExperience.job_description" v-validate="{ max: 500 }" :error-messages="errors ? errors.collect('work_experience_job_description') : null" data-vv-as="Description" :counter="500"></v-textarea>
-                                </v-flex>
-                                <v-flex xs6 class="pr-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pr-2"> -->
+								<v-col cols="6" class="pr-2">
                                     <v-text-field label="City" name="work_experience_city" placeholder="San Francisco, CA" v-model="newWorkExperience.city" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_city') : null" data-vv-as="City" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pl-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pl-2"> -->
+								<v-col cols="6" class="pl-2">
                                     <v-text-field label="Country" name="work_experience_country" placeholder="USA" v-model="newWorkExperience.country" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_country') : null" data-vv-as="Country" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pr-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pr-2"> -->
+								<v-col cols="6" class="pr-2">
                                     <v-text-field label="Start date" name="work_experience_start_date" v-model="newWorkExperience.start_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_start_date') : null" data-vv-as="Start date" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pl-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pl-2"> -->
+								<v-col cols="6" class="pl-2">
                                     <v-text-field label="End date" name="work_experience_end_date" v-model="newWorkExperience.end_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('work_experience_end_date') : null" data-vv-as="End date" :counter="50"></v-text-field>
-                                </v-flex>
-								<v-flex xs12 class="mt-4 pl-2">
+                                <!-- </v-flex> -->
+								<!-- <v-flex xs12 class="mt-4 pl-2"> -->
+								<v-col cols="6" class="mt-4 pl-2">
 									<component :is="dynamicComponent" :resumeSlug="resumeSlug" :newWorkExperience="newWorkExperience" v-if="dynamicComponent" />
-								</v-flex>
-                            </v-layout>
+								<!-- </v-flex> -->
+								</v-col>
+                            <!-- </v-layout> -->
+							</v-row>
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
                             <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('work_experience')).length > 0" @click="addNewWorkExperience()">Add</v-btn>&nbsp;
@@ -59,7 +79,8 @@
                 <draggable v-model="candidateWorkExperience" group="experience" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
                     <v-expansion-panel-content v-for="(workExperience, index) in candidateWorkExperience" :key="index" v-model="expanded[index]">
                         <div slot="header">
-                            <v-layout align-center>
+                            <!-- <v-layout align-center> -->
+							<v-row no-gutters align="center">
                                 <!-- <v-icon class="handle" style="cursor: move">drag_indicator</v-icon>&nbsp; -->
                                 <v-btn style="cursor: move;" icon class="handle ml-0">
                                     <v-icon>drag_indicator</v-icon>
@@ -69,48 +90,68 @@
                                 <span style="font-size: 1.5em;" :class="{ 'errorTitle': workExperienceErrors[index] }">{{ workExperience.job_title }} at {{ workExperience.company }}</span>
 
                                 <!-- <v-btn small color="secondary">Order</v-btn> -->
-                            </v-layout>
+                            <!-- </v-layout> -->
+							</v-row>
                         </div>
 
                         <v-card style="margin-bottom: 30px; background: black;">
                             <v-card-text style="">
-                                <v-layout row wrap>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                <!-- <v-layout row wrap> -->
+								<v-row no-gutters>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <!--  -->
                                         <v-text-field label="Company" :name="`work_experience_company_${index}`" v-model="candidateWorkExperience[index].company" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_company_${index}`) : null" data-vv-as="Company" :counter="2"></v-text-field>
-                                    </v-flex>
+                                    <!-- </v-flex> -->
+									</v-col>
                                     <v-flex xs12 sm6 class="pa-3">
+									<v-col xs="12" sm="6" class="pa-3">
                                         <!-- -->
                                         <v-text-field label="Job title" :name="`work_experience_job_title_${index}`" v-model="candidateWorkExperience[index].job_title" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`work_experience_job_title_${index}`) : null" data-vv-as="Job title" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 class="pa-3"> -->
+									<v-col cols="12" class="pa-3">
                                         <!--  -->
                                         <v-textarea label="Job description/responsibility" :name="`work_experience_job_decription_${index}`" v-model="candidateWorkExperience[index].job_description" v-validate="{ max: 500 }" :error-messages="errors ? errors.collect(`work_experience_job_decription_${index}`) : null" data-vv-as="Description" :counter="500"></v-textarea>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <!--  -->
                                         <v-text-field label="City" :name="`work_experience_city_${index}`" v-model="candidateWorkExperience[index].city" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_city_${index}`) : null" data-vv-as="City" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <!--  -->
                                         <v-text-field label="Country" :name="`work_experience_country_${index}`" v-model="candidateWorkExperience[index].country" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_country_${index}`) : null" data-vv-as="Country" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="Start date" :name="`work_experience_start_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_start_date_${index}`) : null" data-vv-as="Start date" v-model="candidateWorkExperience[index].start_date" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="End date" :name="`work_experience_end_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`work_experience_end_date_${index}`) : null" data-vv-as="End date" v-model="candidateWorkExperience[index].end_date" :counter="50"></v-text-field>
-                                    </v-flex>
-									<v-flex xs12 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+									<!-- <v-flex xs12 class="pa-3"> -->
+									<v-col cols="12" class="pa-3">
 										<component :is="dynamicComponent" :resumeSlug="resumeSlug" :index="index" v-if="dynamicComponent && expanded[index]" />
-									</v-flex>
-                                </v-layout>
+									<!-- </v-flex> -->
+									</v-col>
+                                <!-- </v-layout> -->
+								</v-row>
                             </v-card-text>
                         </v-card>
                     </v-expansion-panel-content>
                 </draggable>
             </v-expansion-panel>
-        </v-layout>
+        <!-- </v-layout> -->
+		</v-row>
     </div>
 </template>
 

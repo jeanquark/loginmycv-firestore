@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center mt-0 pa-4" style="" v-if="userResume">
+    <div class="text-center mt-0 pa-4" style="" v-if="userResume">
         <div>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
@@ -12,7 +12,8 @@
 			<!-- expanded: {{ expanded }}<br /><br /> -->
         </div>
         <h2>Education</h2>
-        <v-layout row wrap class="pa-3" v-if="userResume">
+        <!-- <v-layout row wrap class="pa-3" v-if="userResume"> -->
+		<v-row no-gutters class="pa-3" v-if="userResume">
             <v-alert :value="true" color="warning" icon="priority_high" outlined v-if="!userResume.education.length > 0">
                 There is no item in here, please click on the rounded pink button to add one
             </v-alert>
@@ -23,39 +24,59 @@
                 <v-dialog dark v-model="modalNewEducation" width="600" :persistent="false">
                     <v-card>
                         <v-card-title class="headline" primary-title>
-                            <v-layout class="justify-center">
+                            <!-- <v-layout class="justify-center"> -->
+							<v-row no-gutters justify="center">
                                 New education entry
 								newEducation: {{ newEducation }}<br />
-                            </v-layout>
+                            <!-- </v-layout> -->
+							</v-row>
                         </v-card-title>
 
                         <v-card-text>
-                            <v-layout row wrap>
-                                <v-flex xs12>
+                            <!-- <v-layout row wrap> -->
+							<v-row no-gutters>
+                                <!-- <v-flex xs12> -->
+								<v-col cols="12">
                                     <v-text-field label="Title" name="education_title" placeholder="Bachelor in Geography" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_title') : null" data-vv-as="Title" v-model="newEducation.title" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs12> -->
+								<v-col cols="12">
                                     <v-text-field label="University/School/Institute" name="education_school" placeholder="University of Geneva" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_school') : null" data-vv-as="School" v-model="newEducation.school" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pr-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pr-2"> -->
+								<v-col cols="6" class="pr-2">
                                     <v-text-field label="City" name="education_city" placeholder="Geneva" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_city') : null" data-vv-as="City" v-model="newEducation.city" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pl-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pl-2"> -->
+								<v-col cols="6" class="pl-2">
                                     <v-text-field label="Country" name="education_country" placeholder="Switzerland" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_country') : null" data-vv-as="Country" v-model="newEducation.country" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs12> -->
+								<v-col cols="12">
                                     <v-textarea label="Description" name="education_description" v-validate="{ max: 500 }" :error-messages="errors ? errors.collect('education_description') : null" data-vv-as="Description" v-model="newEducation.description" :counter="500"></v-textarea>
-                                </v-flex>
-                                <v-flex xs6 class="pr-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pr-2"> -->
+								<v-col cols="6" class="pr-2">
                                     <v-text-field label="Start date" name="education_start_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_start_date') : null" data-vv-as="Start date" v-model="newEducation.start_date" :counter="50"></v-text-field>
-                                </v-flex>
-                                <v-flex xs6 class="pl-2">
+                                <!-- </v-flex> -->
+								</v-col>
+                                <!-- <v-flex xs6 class="pl-2"> -->
+								<v-col cols="6" class="pl-2">
                                     <v-text-field label="Graduation date" name="education_graduation_date" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect('education_graduation_date') : null" data-vv-as="Graduation date" v-model="newEducation.end_date" :counter="50"></v-text-field>
-                                </v-flex>
-								<v-flex xs12 class="mt-4 pl-2">
+                                <!-- </v-flex> -->
+								</v-col>
+								<!-- <v-flex xs12 class="mt-4 pl-2"> -->
+								<v-col cols="12" class="mt-4 pl-2">
 									<component :is="dynamicComponent" :resumeSlug="resumeSlug" :newEducation="newEducation" @updateEducation="onUpdateEducation" v-if="dynamicComponent" />
-								</v-flex>
-                            </v-layout>
+								<!-- </v-flex> -->
+								</v-col>
+                            <!-- </v-layout> -->
+							</v-row>
                         </v-card-text>
                         <v-card-actions class="justify-center" style="padding-bottom: 20px;">
                             <v-btn class="success" :disabled="errors && errors.items && errors.items.filter(item => item.field.includes('education')).length > 0" @click="addNewEducation()">Add</v-btn>&nbsp;
@@ -68,52 +89,72 @@
                 <draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
                     <v-expansion-panel-content v-for="(education, index) in candidateEducation" :key="index" v-model="expanded[index]">
                         <div slot="header">
-                            <v-layout align-center>
+                            <!-- <v-layout align-center> -->
+							<v-row no-gutters align="center">
                                 <v-btn style="cursor: move;" icon class="handle ml-0">
                                     <v-icon>drag_indicator</v-icon>
                                 </v-btn>
                                 <v-icon @click.native.stop="deleteItem(index)" class="mr-3">cancel</v-icon>
                                 <span style="font-size: 1.5em;" :class="{ 'errorTitle': educationErrors[index] }">{{ education.title }}</span>
-                            </v-layout>
+                            <!-- </v-layout> -->
+							</v-row>
                         </div>
 
                         <v-card class="mb-5" style="background: black;">
 							candidateEducation: {{ candidateEducation }}<br /><br />
 							<!-- candidateEducation[index]: {{ candidateEducation[index] }}<br /><br /> -->
                             <v-card-text style="">
-                                <v-layout row wrap>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                <!-- <v-layout row wrap> -->
+								<v-row no-gutters>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="Title" :name="`education_title_${index}`" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`education_title_${index}`) : null" data-vv-as="Title" v-model="candidateEducation[index].title" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="University/School/Institute name" :name="`education_school_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_school_${index}`) : null" data-vv-as="University/School/Institute" v-model="candidateEducation[index].school" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="City" :name="`education_city_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_city_${index}`) : null" data-vv-as="City" v-model="candidateEducation[index].city" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="Country" :name="`education_country_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_country_${index}`) : null" data-vv-as="Country" v-model="candidateEducation[index].country" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-textarea label="Education description" :name="`education_description_${index}`" v-validate="{ max: 200 }" :error-messages="errors ? errors.collect(`education_description_${index}`) : null" data-vv-as="Description" v-model="candidateEducation[index].description" :counter="200"></v-textarea>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="Start date" :name="`education_start_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_start_date_${index}`) : null" data-vv-as="Start date" v-model="candidateEducation[index].start_date" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12 sm6 class="pa-3">
+                                    <!-- </v-flex> -->
+									</v-col>
+                                    <!-- <v-flex xs12 sm6 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
                                         <v-text-field label="Graduation date" :name="`education_graduation_date_${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`education_graduation_date_${index}`) : null" data-vv-as="Graduation date" v-model="candidateEducation[index].end_date" :counter="50"></v-text-field>
-                                    </v-flex>
-                                    
-									<v-flex xs12 class="pa-3">
+                                    <!-- </v-flex> -->
+                                    </v-col>
+									<!-- <v-flex xs12 class="pa-3"> -->
+									<v-col xs="12" sm="6" class="pa-3">
 										<component :is="dynamicComponent" :resumeSlug="resumeSlug" :index="index" v-if="dynamicComponent && expanded[index]" />
-									</v-flex>
-                                </v-layout>
+									<!-- </v-flex> -->
+									</v-col>
+                                <!-- </v-layout> -->
+								</v-row>
                             </v-card-text>
                         </v-card>
                     </v-expansion-panel-content>
                 </draggable>
             </v-expansion-panel>
-        </v-layout>
+        <!-- </v-layout> -->
+		</v-row>
     </div>
 </template>
 

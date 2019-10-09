@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center pa-4" style="margin-top: 0px;" v-if="userResume">
+    <div class="text-center pa-4" style="margin-top: 0px;" v-if="userResume">
         <p>
             <!-- loadedUserResume: {{ loadedUserResume }}<br /><br /> -->
             <!-- loadedNewResume: {{ loadedNewResume }}<br /><br /> -->
@@ -42,8 +42,10 @@
                 
 
                     <v-card-text>
-                        <v-layout row wrap>
-                            <v-flex xs12>
+                        <!-- <v-layout row wrap> -->
+						<v-row no-gutters>
+                            <!-- <v-flex xs12> -->
+							<v-col cols="12">
                                 <v-text-field
                                     label="Skill name"
                                     name="skill_name"
@@ -53,18 +55,22 @@
                                     v-model="newSkill.name"
                                     :counter="50"
                                 ></v-text-field>
-                            </v-flex>
+                            <!-- </v-flex> -->
+							</v-col>
 
-                            <v-flex xs12>
+                            <!-- <v-flex xs12> -->
+							<v-col cols="12">
                                 <v-select
                                     label="Category"
                                     :items="userSkillsCategories"
 									no-data-text="No category available. Add one below."
                                     v-model="newSkill.category"
                                 ></v-select>
-                            </v-flex>
+                            <!-- </v-flex> -->
+							</v-col>
 
-                            <v-flex xs12>
+                            <!-- <v-flex xs12> -->
+							<v-col cols="12">
                                 <v-slider
                                     label="Skill Value"
                                     :max="100"
@@ -73,31 +79,39 @@
                                     v-model="newSkill.value"
                                     color="secondary"
                                 ></v-slider>
-                                <div class="text-xs-center">
+                                <div class="text-center">
                                     {{ newSkill.value }}/100
                                 </div>
-                            </v-flex>
-                        </v-layout>
+                            <!-- </v-flex> -->
+							</v-col>
+                        <!-- </v-layout> -->
+						</v-row>
 
-                        <v-layout class="justify-center">
-                            <v-flex xs12 class="text-xs-center">
-                                    <v-radio-group row v-model="newSkill.type" class="justify-center">
-                                        <v-radio
-                                            label="Pie"
-                                            value="pie"
-                                            color="secondary"
-                                        ></v-radio>
-                                        <v-radio
-                                            label="Bar"
-                                            value="bar"
-                                            color="secondary"
-                                        ></v-radio>
-                                    </v-radio-group>
-                            </v-flex>
-                        </v-layout>
+                        <!-- <v-layout class="justify-center"> -->
+						<v-row no-gutters justify="center">
+                            <!-- <v-flex xs12 class="text-xs-center"> -->
+							<v-col cols="12" class="text-center">
+								<v-radio-group row v-model="newSkill.type" class="justify-center">
+									<v-radio
+										label="Pie"
+										value="pie"
+										color="secondary"
+									></v-radio>
+									<v-radio
+										label="Bar"
+										value="bar"
+										color="secondary"
+									></v-radio>
+								</v-radio-group>
+                            <!-- </v-flex> -->
+							</v-col>
+                        <!-- </v-layout> -->
+						</v-row>
 
-                        <v-layout row wrap align-center>
-                            <v-flex xs8>
+                        <!-- <v-layout row wrap align-center> -->
+						<v-row no-gutters align="center">
+                            <!-- <v-flex xs8> -->
+							<v-col xs="8">
                                 <v-text-field
                                     label="Category name"
                                     name="category_name"
@@ -107,11 +121,15 @@
                                     v-model="newSkillCategory"
                                     :counter="50"
                                 ></v-text-field>
-                            </v-flex>
-                            <v-flex xs4>
+                            <!-- </v-flex> -->
+							</v-col>
+                            <!-- <v-flex xs4> -->
+							<v-col xs="4">
                                 <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
-                            </v-flex>
-                        </v-layout>
+                            <!-- </v-flex> -->
+							</v-col>
+                        <!-- </v-layout> -->
+						</v-row>
 
                         <br /><br />
 
@@ -143,7 +161,8 @@
                 <!-- parentIndex: {{ parentIndex }}<br /><br /> -->
                 <v-card>
                     <v-card-text style="background: black; margin-bottom: 30px;">
-                        <v-layout row wrap>
+                        <!-- <v-layout row wrap> -->
+						<v-row no-gutters>
                             <v-alert
                                 :value="true"
                                 color="warning"
@@ -153,7 +172,8 @@
                             >
                                 You have no item in this category, please hit the small rounded pink button to add one
                             </v-alert>
-                            <v-flex xs12 sm6 class="pa-3">
+                            <!-- <v-flex xs12 sm6 class="pa-3"> -->
+							<v-col xs="12" sm="6" class="pa-3">
                                 <v-text-field
                                     label="Skill name"
                                     :name="`skill_name_${index}`"
@@ -163,18 +183,22 @@
                                     v-model="candidateSkills[index].name"
                                     :counter="50"
                                 ></v-text-field>
-                            </v-flex>
+                            <!-- </v-flex> -->
+							</v-col>
 
-                            <v-flex xs12 sm6 class="pa-3">
+                            <!-- <v-flex xs12 sm6 class="pa-3"> -->
+							<v-col xs="12" sm="6" class="pa-3">
                                 <v-select
                                     label="Skill Category"
                                     v-model="candidateSkills[index].category"
 									no-data-text="No category available. Add one below."
                                     :items="userSkillsCategories"
                                 ></v-select>
-                            </v-flex>
+                            <!-- </v-flex> -->
+							</v-col>
 
-                            <v-flex xs12 sm6 class="pa-3">
+                            <!-- <v-flex xs12 sm6 class="pa-3"> -->
+							<v-col xs="12" sm="6" class="pa-3">
                                 <v-slider
                                     v-model="candidateSkills[index].value"
                                     label="Skill Value"
@@ -183,12 +207,14 @@
                                     :step="candidateSkills[index].maxValue ? candidateSkills[index].maxValue/10 : 10"
                                     color="secondary"
                                 ></v-slider>
-                                <div class="text-xs-center">
+                                <div class="text-center">
                                     {{ candidateSkills[index].value }}/{{ candidateSkills[index].maxValue ? candidateSkills[index].maxValue : 100 }}
                                 </div>
-                            </v-flex>
+                            <!-- </v-flex> -->
+							</v-col>
 
-                            <v-flex xs12 sm6 class="pa-3 text-xs-center">
+                            <!-- <v-flex xs12 sm6 class="pa-3 text-xs-center"> -->
+							<v-col xs="12" sm="6" class="pa-3 text-center">
                                 <span>Display</span><br />
                                 <v-radio-group row v-model="candidateSkills[index].type" class="justify-center">
                                     <v-radio
@@ -202,11 +228,15 @@
                                         color="secondary"
                                     ></v-radio>
                                 </v-radio-group>
-                            </v-flex>
-                        </v-layout>
+                            <!-- </v-flex> -->
+							</v-col>
+                        <!-- </v-layout> -->
+						</v-row>
 
-                        <v-layout row wrap align-center class="pa-3">
-                            <v-flex xs8 sm4>
+                        <!-- <v-layout row wrap align-center class="pa-3"> -->
+						<v-row no-gutters align="center" class="pa-3">
+                            <!-- <v-flex xs8 sm4> -->
+							<v-col xs="8" sm="4">
                                 <v-text-field
                                     label="Category name"
                                     :name="`category_name_${index}`"
@@ -216,11 +246,15 @@
                                     v-model="newSkillCategory"
                                     :counter="50"
                                 ></v-text-field>
-                            </v-flex>
-                            <v-flex xs4 sm2>
+                            <!-- </v-flex> -->
+							</v-col>
+                            <!-- <v-flex xs4 sm2> -->
+							<v-col xs="4" sm="2">
                                 <v-btn small color="primary" @click="addSkillCategory">Add category</v-btn>
-                            </v-flex>
-                        </v-layout>
+                            <!-- </v-flex> -->
+							</v-col>
+                        <!-- </v-layout> -->
+						</v-row>
                     </v-card-text>
                 </v-card>
             </v-expansion-panel-content>
