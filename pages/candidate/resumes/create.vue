@@ -27,24 +27,31 @@
 		</v-row>
 
         <!-- <v-layout row wrap align-center v-if="loadedUserResumes.length > 0"> -->
-		<v-row align="center" v-if="loadedUserResumes.length > 0">
+		<v-row no-gutters justify="center" align="center" v-if="loadedUserResumes.length > 0">
             <!-- <v-flex xs9 sm4 offset-sm6 md3 offset-md8> -->
-			<v-col xs="9" sm="4" offset-sm="6" offset-md="8">
-                <v-select label="Select a resume to import" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"> </v-select>
+			<!-- <v-col sm="3" offset-sm="6">
+                <v-select label="Select a resume to import" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"> </v-select> -->
             <!-- </v-flex> -->
-			</v-col>
+			<!-- </v-col> -->
             <!-- <v-flex xs3 sm2 md1 class="text-xs-right"> -->
-			<v-col xs="3" sm="2" md="1" class="text-right">
-                <v-btn color="primary" @click="importDataFromResume">Import</v-btn>
+			<!-- <v-col cols="3" sm="2" md="1" class="text-right"> -->
+			<!-- <v-row no-gutters justify="end" align="center"> -->
+				<v-col cols="3" offset="8" class="pr-3">
+					<v-select label="Select a resume to import" :items="loadedUserResumes" item-text="id" :return-object="true" :single-line="false" color="secondary" v-model="importResume"> </v-select>
+				</v-col>
+				<v-col cols="1">
+                	<v-btn color="primary" @click="importDataFromResume">Import</v-btn>
+				</v-col>
             <!-- </v-flex> -->
-			</v-col>
+			<!-- </v-col> -->
+			<!-- </v-row> -->
         <!-- </v-layout> -->
 		</v-row>
 
         <!-- <v-layout row> -->
 		<v-row no-gutters>
             <!-- <v-flex xs12> -->
-			<v-col xs="12">
+			<v-col cols="12">
                 <v-stepper v-model="step">
                     <v-stepper-header>
                         <v-stepper-step :step="1" editable v-if="stepTemplateErrors === false">Choose Template</v-stepper-step>
@@ -79,37 +86,37 @@
 
                     <v-stepper-items>
                         <v-stepper-content :step="1">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <template-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="2">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <personal-data-component />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="3">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8" style="">
                                 <education-component :educationErrors="stepEducationErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="4">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <work-experience-component :workExperienceErrors="stepWorkExperienceErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="5">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <skills-component :skillErrors="stepSkillErrorsArray" />
                             </v-card>
                         </v-stepper-content>
 
                         <v-stepper-content :step="6">
-                            <v-card class="mb-5">
+                            <v-card class="mb-8">
                                 <file-uploads-component :fileUploadErrors="stepFileUploadErrorsArray" />
                             </v-card>
                         </v-stepper-content>
@@ -118,14 +125,14 @@
 
                     <v-card-actions class="justify-center">
                         <v-btn color="primary" @click.stop="moveOneStepBackward">
-                            <v-icon>mdi-arrow-left-thick</v-icon> Previous
+                            <v-icon>mdi-arrow-left</v-icon> Previous
                         </v-btn>
                         <v-btn color="primary" @click.stop="moveOneStepForward">
-                            Next <v-icon>mdi-arrow-right-thick</v-icon>
+                            Next <v-icon>mdi-arrow-right</v-icon>
                         </v-btn>
                     </v-card-actions>
                     <!-- <v-layout justify-center> -->
-					<v-row no-gutters justify="center">
+					<v-row no-gutters justify="center" class="mb-2">
                         <v-btn class="success" :loading="loadingCreateResume || loadingUploadFiles" @click.stop="creatingResumeDialog = true">Save</v-btn>
                     <!-- </v-layout> -->
 					</v-row>
@@ -190,7 +197,7 @@
 					</v-row>
 
                     <!-- <v-layout justify-center> -->
-					<v-row no-gutters justify="center">
+					<v-row no-gutters justify="center" class="mb-0">
                         <v-btn color="primary" @click.stop="saveResume" :disabled="!acceptConditions" :loading="loadingCreateResume || loadingUploadFiles">Create</v-btn>
                         <v-btn text color="secondary" @click.stop="creatingResumeDialog = false">Cancel</v-btn>
                     <!-- </v-layout> -->

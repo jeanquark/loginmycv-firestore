@@ -11,9 +11,6 @@
                     </v-list-item-content>
                 </v-list-item>
                 <v-list-item to="/candidate/authorizations" ripple>
-                    <!-- <v-list-item-action>
-                        <v-icon>mdi-human</v-icon>
-                    </v-list-item-action> -->
                     <v-list-item-action>
                         <v-icon v-if="getUserAuthorizationsNotifications < 1">mdi-human</v-icon>
                         <v-badge color="primary" v-else>
@@ -50,11 +47,9 @@
         </v-navigation-drawer>
         <v-app-bar app dark>
             <v-app-bar-nav-icon @click.stop="sideBar = !sideBar"></v-app-bar-nav-icon>
-            <v-img src="/images/logo_small.png" max-width="40" class="mx-2"></v-img>&nbsp;
-            <v-toolbar-title>LoginMyCV</v-toolbar-title>
+            <v-toolbar-title>{{ loadedUser.email }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <div class="hidden-xs-only font-weight-bold">
-                <v-btn class="success mx-2">My resumes</v-btn>
                 <v-btn class="warning mx-2" @click="logout">Logout</v-btn>
                 <v-avatar size="40" color="grey lighten-4" class="mx-2" v-if="loadedUser.picture">
                     <v-img :src="loadedUser.picture" alt="user picture"></v-img>
@@ -86,6 +81,10 @@
 			// const authUserId = this.loadedUser.id
 			// console.log('authUserId from layoutBack: ', authUserId)
 			// await this.$store.dispatch('users/fetchUser', authUserId)
+
+			// this.$vuetify.theme.dark = true
+		},
+		mounted () {
 			this.$vuetify.theme.dark = true
 		},
 		data() {

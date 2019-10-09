@@ -46,7 +46,7 @@
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of getUserFiles" :key="index"> -->
 			<!-- <div > -->
 			<!-- <v-flex xs12 sm6 v-for="(file, index) of userResume.uploads" :key="index"> -->
-			<v-col xs="12" sm="6" v-for="(file, index) of userResume.uploads" :key="index">
+			<v-col cols="12" sm="6" v-for="(file, index) of userResume.uploads" :key="index">
 				<!-- <v-layout > -->
 				<!-- <v-flex xs12> -->
 			<!-- <v-flex xs12 sm6 v-if="file.type === 'downloadable_file'" > -->
@@ -65,7 +65,7 @@
 							label="File Title"
 							:name="`file_title_${index}`"
 							placeholder="eg. My CV, Company X recommandation letter, etc."
-							prepend-icon="title"
+							prepend-icon="mdi-format-title"
 							v-validate="{ max: 50 }"
                             :error-messages="errors ? errors.collect(`file_title_${index}`) : null"
                             data-vv-as="File title"
@@ -89,7 +89,7 @@
 						<!-- :disabled="userResume.uploads[index].new ? false : true || file.type === 'profile_picture'" -->
 						<v-text-field 
 							label="My File" 
-							prepend-icon='attach_file'
+							prepend-icon='mdi-paperclip'
 							:disabled="file.type === 'profile_picture'"
 							@click="pickFile(`file${index}`)"
 							v-model="userResume.uploads[index].name"
@@ -133,7 +133,7 @@
 			slot="activator"
 			@click.stop="newUpload"
 		>
-			<v-icon>add</v-icon>
+			<v-icon>mdi-plus</v-icon>
 		</v-btn>
     </div>
 </template>

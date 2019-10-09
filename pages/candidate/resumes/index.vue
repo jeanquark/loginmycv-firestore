@@ -40,16 +40,12 @@
 								<tr v-for="(item, index) in items" :key="index">
 									<td class="text-left">{{ index + 1 }}</td>
 									<td class="text-left">
-										<!-- <v-layout align-center fill-height> -->
 										<v-row no-gutters align="center" class="fill-height">
-											<!-- :value="props.item.name" -->
 											<v-text-field :name="`name${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${index}`) : null" data-vv-as="Name" :value="item.name" @input="updateName($event, item.id)" class="mr-2"></v-text-field>
 
 											<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newValue: newResumeNameMap.get(item.id), index: index })" class="icon" v-if="newResumeNameMap.get(item.id) !== item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
 
-											<!-- <font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newName: item.name, index: index })" class="icon" v-if="resumesNames[index] !== item.name && !loadingArray.length > 0 && item.name && (errors && errors.items ? errors.items.length < 1 : null)" />-->
 											<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[index]" />
-										<!-- </v-layout> -->
 										</v-row>
 									</td>
 									<td>
@@ -61,12 +57,7 @@
 									<td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>
 									<td>{{ parseInt(item._updated_at) | moment('from') }}</td>
 									<td class="px-0">
-										<!-- <v-layout class="justify-center fill-height align-center"> -->
-										<!-- <v-layout align-center justify-center fill-height> -->
 										<v-row no-gutters justify="center" align="center" class="fill-height">
-											<!-- <v-btn flat icon @click="convertToPdf(item.slug)">
-												<v-icon small color="blue">picture_as_pdf</v-icon>
-											</v-btn> -->
 											<v-btn text icon target="_blank" :href="`/resume/${item.slug}`">
 												<v-icon small color="secondary">mdi-open-in-new</v-icon>
 											</v-btn>
@@ -76,7 +67,6 @@
 											<v-btn text icon @click="requestConfirmation(item)">
 												<v-icon small color="error">mdi-delete</v-icon>
 											</v-btn>
-										<!-- </v-layout> -->
 										</v-row>
 									</td>
 								</tr>
@@ -88,7 +78,6 @@
                     </v-btn>
                 </v-card-text>
             </v-card>
-        <!-- </v-flex> -->
 		</v-col>
 
         <!-- <v-flex xs10 offset-xs1 class="text-xs-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0"> -->
@@ -138,7 +127,7 @@
             <br />
             <br />
 
-            <v-list class="ma-2">
+            <!-- <v-list class="ma-2"> -->
                 <!--<template v-for="(resume, index) in loadedUserResumes">
                     <v-list-tile avatar :key="resume.id" v-if="resume.statistics_last_visits">
                         <v-list-tile-content class="text-xs-center justify-center">
@@ -150,7 +139,7 @@
                     </v-list-tile>
                     <v-divider :key="index"></v-divider>
                 </template>-->
-            </v-list>
+            <!-- </v-list> -->
         <!-- </v-flex> -->
 		</v-col>
 
@@ -189,7 +178,10 @@
 		window.html2pdf = require('html2pdf.js')
 	}
 	export default {
-		inject: ['$validator'], // Inject vee-validate validator
+		// inject: ['$validator'], // Inject vee-validate validator
+		$_veeValidate: {
+			validator: 'new' // Give me my own validator scope.
+		},
 		components: { GChart },
 		layout: 'layoutBack',
 		async created() {

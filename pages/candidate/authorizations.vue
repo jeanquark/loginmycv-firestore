@@ -2,13 +2,13 @@
     <!-- <v-layout row wrap> -->
     <v-row no-gutters>
         <!-- <v-layout justify-center> -->
-        <v-row no-gutters justify="center">
+        <v-row no-gutters justify="center" class="my-2">
             <h2>Manage authorizations</h2>
             <!-- </v-layout> -->
         </v-row>
 
         <!-- <v-flex xs12 class="text-xs-center"> -->
-        <v-col xs="12" class="text-center">
+        <v-col cols="12" class="text-center">
 
             <!-- <b>loadedUserGivenAuthorizations:</b> {{ loadedUserGivenAuthorizations }}<br /><br /> -->
             <!-- new_authorizations_received: {{ new_authorizations_received }}<br /><br /> -->
@@ -17,21 +17,21 @@
 
             <v-card flat class="ma-2">
                 <v-card-title primary-title class="justify-center">
-                    <p class="subheading font-weight-medium">List of authorizations you were asked for:</p>
+                    <h5 class="font-weight-medium">List of authorizations you were asked for</h5>
                 </v-card-title>
                 <v-card-text>
-                    <v-data-table :headers="headersGivenAuthorizations" :items="loadedUserGivenAuthorizations" class="elevation-1" :expand="true">
+                    <v-data-table :headers="headersGivenAuthorizations" :items="loadedUserGivenAuthorizations" class="elevation-1">
                         <!-- <template v-slot:items="props"> -->
                         <template v-slot:body="{ items }">
                             <tbody>
                                 <tr v-bind:class="[ new_authorizations_received.includes(item.id) ? 'fadeOut' : '']" v-for="(item, index) in items" :key="index">
-                                    <td class="text-xs-left">{{ item.resume.id }}</td>
-                                    <td class="text-xs-left">{{ item.user.firstname }}</td>
-                                    <td class="text-xs-left">{{ item.user.lastname }}</td>
-                                    <td class="text-xs-left">{{ item.user.email }}</td>
-                                    <td class="text-xs-left" v-if="item.user.message">{{ item.user.message.substr(0, 6) }} [...]</td>
-                                    <td class="text-xs-left" v-else></td>
-                                    <td class="text-xs-left" :class="[ new_authorizations_status.includes(item.id) ? 'fadeOut' : '']">{{ item.status ? item.status.name : '' }}</td>
+                                    <td class="text-left">{{ item.resume.id }}</td>
+                                    <td class="text-left">{{ item.user.firstname }}</td>
+                                    <td class="text-left">{{ item.user.lastname }}</td>
+                                    <td class="text-left">{{ item.user.email }}</td>
+                                    <td class="text-left" v-if="item.user.message">{{ item.user.message.substr(0, 6) }} [...]</td>
+                                    <td class="text-left" v-else></td>
+                                    <td class="text-left" :class="[ new_authorizations_status.includes(item.id) ? 'fadeOut' : '']">{{ item.status ? item.status.name : '' }}</td>
                                     <!-- <td>
     									<v-checkbox class="checkbox-center" v-model="item.authorizations['personal_data']" :disabled="item.status !== 'access_granted'"></v-checkbox>
     								</td>
@@ -51,7 +51,7 @@
     									<v-checkbox class="checkbox-center" color="secondary" readonly v-model="item.authorizations['files']"></v-checkbox>
     								</td> -->
                                     <!-- <td>{{ parseInt(item._created_at) | moment('from') }}</td>-->
-                                    <td class="text-xs-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
+                                    <td class="text-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
                                     <!-- <td>
     									<v-layout class="justify-center">
     										<v-avatar size="34" class="mr-2 avatar-edit">
@@ -72,13 +72,13 @@
     										</v-avatar>
     									</v-layout>
     								</td> -->
-                                    <td class="text-xs-left">
+                                    <td class="text-left">
                                         <v-layout align-center fill-height>
-                                            <v-btn flat icon @click="openModal('edit', 'userGivenAuthorizations', index)">
-                                                <v-icon small color="success">edit</v-icon>
+                                            <v-btn text icon @click="openModal('edit', 'userGivenAuthorizations', index)">
+                                                <v-icon small color="success">mdi-pencil</v-icon>
                                             </v-btn>
-                                            <v-btn flat icon @click="requestConfirmation(item)">
-                                                <v-icon small color="error">delete</v-icon>
+                                            <v-btn text icon @click="requestConfirmation(item)">
+                                                <v-icon small color="error">mdi-delete</v-icon>
                                             </v-btn>
                                         </v-layout>
                                     </td>
@@ -92,25 +92,25 @@
         </v-col>
 
         <!-- <v-flex xs12 class="text-xs-center"> -->
-        <v-col xs="12" class="text-center">
+        <v-col cols="12" class="text-center">
             <!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
             <v-card flat class="ma-2">
                 <v-card-title primary-title class="justify-center">
-                    <p class="subheading font-weight-medium">List of the authorizations you requested:</p>
+                    <h5 class="font-weight-medium">List of the authorizations you requested</h5>
                 </v-card-title>
                 <v-card-text>
-                    <v-data-table :headers="headersReceivedAuthorizations" :items="loadedUserReceivedAuthorizations" class="elevation-1" :expand="true">
+                    <v-data-table :headers="headersReceivedAuthorizations" :items="loadedUserReceivedAuthorizations" class="elevation-1">
                         <!-- <template v-slot:items="props"> -->
 						<template v-slot:body="{ items }">
 							<tbody>
-                            	<tr v-bind:class="[ new_authorizations_sent.includes(item.id) ? 'fadeOut' : '']" :key="index" v-if="item.authorizations">
-									<td class="text-xs-left">{{ item.resume.firstname }}</td>
-									<td class="text-xs-left">{{ item.resume.lastname }}</td>
-									<!-- <td class="text-xs-left">{{ item.resume.email }}</td> -->
-									<td class="text-xs-left">
+                            	<tr v-bind:class="[ new_authorizations_sent.includes(item.id) ? 'fadeOut' : '']" v-for="(item, index) in items" :key="index">
+									<td class="text-left">{{ item.resume.firstname }}</td>
+									<td class="text-left">{{ item.resume.lastname }}</td>
+									<!-- <td class="text-left">{{ item.resume.email }}</td> -->
+									<td class="text-left">
 										<v-btn small color="success" nuxt :to="`/resume/${item.resume.id}`" target="_blank" :disabled="item.status.slug !== 'accorded'">View resume</v-btn>
 									</td>
-									<td class="text-xs-left">{{ item.status ? item.status.name : '' }}</td>
+									<td class="text-left">{{ item.status ? item.status.name : '' }}</td>
 									<!-- <td>
 										<v-checkbox class="checkbox-center" v-model="item.authorizations['personal_data']" readonly></v-checkbox>
 									</td>
@@ -127,15 +127,15 @@
 										<v-checkbox class="checkbox-center" v-model="item.authorizations['skills']" readonly></v-checkbox>
 									</td> -->
 									<!-- <td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>-->
-									<td class="text-xs-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
-									<td class="text-xs-left">
+									<td class="text-left">{{ parseInt(item._updated_at) | moment('from') }}</td>
+									<td class="text-left">
 										<!-- <v-layout align-center fill-height> -->
-										<v-row align="center" class="fill-height">
+										<v-row no-gutters align="center" class="fill-height">
 											<v-btn text icon @click="openModal('edit', 'userReceivedAuthorizations', index)">
-												<v-icon small color="success">edit</v-icon>
+												<v-icon small color="success">mdi-pencil</v-icon>
 											</v-btn>
 											<v-btn text icon @click="requestConfirmation(item)">
-												<v-icon small color="error">delete</v-icon>
+												<v-icon small color="error">mdi-delete</v-icon>
 											</v-btn>
 										<!-- </v-layout> -->
 										</v-row>
@@ -165,47 +165,47 @@
                             <!-- authorization: {{ authorization }}<br /><br /> -->
                             <!-- loadedUserGivenAuthorizations: {{ loadedUserGivenAuthorizations[authorizationIndex] }}<br /> -->
                             <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <v-col cols="6">
                                 Firstname:
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 {{ loadedUserGivenAuthorizations[authorizationIndex].user.firstname }}
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 Lastname:
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 {{ loadedUserGivenAuthorizations[authorizationIndex].user.lastname }}
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 Email:
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 {{ loadedUserGivenAuthorizations[authorizationIndex].user.email }}
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 Message:
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6> -->
-                            <v-col xs="6">
+                            <!-- <v-flex cols6> -->
+                            <v-col cols="6">
                                 {{ loadedUserGivenAuthorizations[authorizationIndex].user.message }}
                                 <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 class="mt-2"> -->
-                            <v-col xs="12" class="mt-2">
+                            <!-- <v-flex cols12 class="mt-2"> -->
+                            <v-col cols="12" class="mt-2">
                                 <v-select :items="status" label="Status" item-text="name" return-object color="secondary" v-model="loadedUserGivenAuthorizations[authorizationIndex].status"></v-select>
                                 <!-- </v-flex> -->
                             </v-col>
@@ -251,12 +251,12 @@
                     <v-btn color="error" @click="deleteAuthorization" v-if="action === 'delete'">
                         Yes, delete
                     </v-btn>
-                    <v-btn color="secondary" flat @click="modal = false">Close</v-btn>
+                    <v-btn color="secondary" text @click="modal = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
 
-        <v-snackbar v-model="snackbarDeleteAuthorization" :timeout="5000" :bottom="true" :auto-height="true">
+        <v-snackbar v-model="snackbarDeleteAuthorization" :timeout="5000" :bottom="true">
             <span class="pa-2" style="font-size: 1.3em;">Are you sure you want to delete authorization?</span>
             <v-btn color="pink" text @click.stop="deleteAuthorization">
                 <span style="font-size: 1.3em;">Yes</span>

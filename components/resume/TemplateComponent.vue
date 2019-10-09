@@ -10,6 +10,7 @@
             <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
             <!-- userResume.template.id: {{ userResume.template.id }}<br /><br /> -->
 			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
+			dialogResumePreview: {{ dialogResumePreview }}<br /><br />
         </div>
         <!-- <v-layout row wrap class="pa-2"> -->
         <v-row no-gutters class="pa-2">
@@ -17,21 +18,21 @@
             <v-col cols="12">
                 <v-card :elevation="12">
                     <v-card-title class="justify-center pb-0">
-                        <h2 class="headline mb-0">Choose a template</h2>
+                        <h2 class="headline mb-2">Choose a template</h2>
                     </v-card-title>
 
                     <v-card-text>
                         <!-- <v-layout row wrap> -->
                         <v-row no-gutters>
                             <!-- <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2"> -->
-                            <v-col xs="12" sm="6" md="4" lg="3" v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                                <v-card hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template.id === template.id ? 'active' : null]">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-for="template in loadedTemplates" :key="template.id" class="pa-2">
+                                <v-card tile hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template.id === template.id ? 'active' : null]" style="border: 0px solid red;">
                                     <v-img :src="`/images/templates/${template.image}`" :lazy-src="`/images/templates/${template.image}`" aspect-ratio="1.5"></v-img>
                                     <!-- <div class="text-xs-center">{{ template.name }}</div> -->
                                     <!-- <div class="text-xs-center">{{ template.description }}</div> -->
                                 </v-card>
                                 <!-- <v-layout class="transparent-background"> -->
-                                <v-row no-gutters class="transparent-background">
+                                <v-row no-gutters class="transparent-background pa-1">
                                     <!-- <v-layout justify-start align-center> -->
                                     <v-row no-gutters justify="start" align="center">
                                         <font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users || 0 }}</span>
@@ -41,7 +42,7 @@
                                     </v-row>
                                     <!-- <v-layout justify-end align-center> -->
                                     <v-row no-gutters justify="end" align="center">
-                                        <v-btn small text color="secondary" @click.stop="openDialog(template.slug)">
+                                        <v-btn small text color="secondary" @click.stop="openResumePreview(template.slug)">
                                             <!-- <v-icon>remove_red_eye</v-icon> -->
                                             View
                                         </v-btn>
@@ -68,37 +69,37 @@
                     <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
                     <!-- loadedTemplate.colors: {{ loadedTemplate.colors }}<br /> -->
                     <!-- userResume: {{ userResume }}<br /> -->
-                    <h2 class="text-xs-center headline">{{ loadedTemplate.name }}</h2>
-                    <p class="text-xs-center">{{ loadedTemplate.description }}</p>
+                    <h2 class="text-center headline">{{ loadedTemplate.name }}</h2>
+                    <p class="text-center">{{ loadedTemplate.description }}</p>
 
                     <!-- <v-layout row align-center class="my-3" v-if="userResume"> -->
                     <v-row align="center" class="my-3" v-if="userResume">
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col xs="6" sm="4" class="text-center">
+                        <v-col cols="6" sm="4" class="text-center">
                             Primary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col xs="6" sm="4" class="text-center">
+                        <v-col cols="6" sm="4" class="text-center">
                             Secondary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col xs="6" sm="4" class="text-center">
+                        <v-col cols="6" sm="4" class="text-center">
                             Tertiary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col xs="6" sm="4" class="text-center">
+                        <v-col cols="6" sm="4" class="text-center">
                             Background color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col xs="6" sm="4" class="text-xs-center">
+                        <v-col cols="6" sm="4" class="text-center">
                             Text color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                         <!-- </v-flex> -->
@@ -149,31 +150,31 @@
                         <!-- <v-layout row align-center> -->
                         <v-row no-gutters align="center">
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col xs="6" sm="4" class="text-center">
+                            <v-col cols="6" sm="4" class="text-center">
                                 Primary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.primaryColor" v-if="userResume"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col xs="6" sm="4" class="text-center">
+                            <v-col cols="6" sm="4" class="text-center">
                                 Secondary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col xs="6" sm="4" class="text-center">
+                            <v-col cols="6" sm="4" class="text-center">
                                 Tertiary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col xs="6" sm="4" class="text-center">
+                            <v-col cols="6" sm="4" class="text-center">
                                 Background color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col xs="6" sm="4" class="text-center">
+                            <v-col cols="6" sm="4" class="text-center">
                                 Text color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                             <!-- </v-flex> -->
@@ -193,7 +194,7 @@
             <v-col cols="12">
                 <v-card :elevation="12" class="pa-2">
                     <v-card-title class="justify-center">
-                        <h2 class="headline mb-0 text-xs-center">
+                        <h2 class="headline mb-0 text-center">
                             <font-awesome-icon :icon="['fas', 'language']" />
                             Translation <small>(optional)</small><br />
                             <small class="body-1">You may specify below menu names and field names as you wish they appear on your resume</small>
@@ -203,9 +204,9 @@
                     <v-card-text>
 
                         <!-- <v-layout row wrap> -->
-                        <v-row no-gutters>
+                        <v-row no-gutters class="">
                             <!-- <v-flex xs12 sm4 class="px-4"> -->
-                            <v-col xs="12" sm="4" class="px-4">
+                            <v-col cols="12" sm="4" class="px-4">
                                 <v-autocomplete label="Resume language" :items="loadedLanguages" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.language">
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
@@ -233,14 +234,14 @@
                         </v-row>
 
                         <!-- <v-layout row wrap> -->
-                        <v-row no-gutters>
+                        <v-row no-gutters class="">
                             <!-- <v-flex xs12 v-if="loadedTemplate.menus"> -->
-                            <v-col xs="12" v-if="loadedTemplate.menus">
-                                <h4 class="text-xs-center">Menus:</h4>
+                            <v-col cols="12" class="mt-5" v-if="loadedTemplate.menus">
+                                <h3 class="text-center pt-2">Menus:</h3>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index"> -->
-                            <v-col xs="12" sm="6" class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
+                            <v-col cols="12" sm="6" class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
                                 <!-- v-model="userResume.menus[index].name -->
                                 <!-- :value="userResume.menus[index]['name_' + userResume.language.code] ? userResume.menus[index]['name_' + userResume.language.code] : userResume.menus[index].name" -->
                                 <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 30 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="30" v-model="userResume.menus[menu.slug]">
@@ -251,12 +252,12 @@
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs12 class="mt-4" v-if="loadedTemplate.fields"> -->
-                            <v-col xs="12" class="mt-4" v-if="loadedTemplate.fields">
-                                <h4 class="text-xs-center">Fields:</h4>
+                            <v-col cols="12" class="mt-5" v-if="loadedTemplate.fields">
+                                <h3 class="text-center pt-2">Fields:</h3>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug"> -->
-                            <v-col xs="12" sm="6" class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
+                            <v-col cols="12" sm="6" class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
                                 <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="50" v-model="userResume.fields[field.slug]">
                                     <template v-slot:label>
                                         {{ field.name }}
@@ -265,12 +266,12 @@
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs12 class="mt-4" v-if="loadedTemplate.contact_form_validation"> -->
-                            <v-col xs="12" class="mt-4" v-if="loadedTemplate.contact_form_validation">
-                                <h4 class="text-xs-center">Contact form validation:</h4>
+                            <v-col cols="12" class="mt-5" v-if="loadedTemplate.contact_form_validation">
+                                <h3 class="text-center pt-2">Contact form validation:</h3>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug"> -->
-                            <v-col xs="12" sm="6" md="4" class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug">
+                            <v-col cols="12" sm="6" md="4" class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug">
                                 <!-- field: {{ field }} -->
                                 <v-text-field :name="`contact_${field.slug}`" item-text="name" v-validate="{ required: true, max: 100 }" :error-messages="errors ? errors.collect(`contact_${field.slug}`) : null" :data-vv-as="field.name" :counter="100" v-model="userResume.contact_form_validation[field.slug]">
                                     <template v-slot:label>
@@ -289,17 +290,19 @@
         </v-row>
 
         <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition"> -->
-        <v-row no-gutters v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-dialog no-gutters v-model="dialogResumePreview" fullscreen hide-overlay transition="dialog-bottom-transition" style="">
             <v-card style="position: fixed; top: 0; left: 0; z-index: 999; width: 100%; height: 20vh;">
-                <v-toolbar dark color="primary">
+                <v-toolbar dark color="primary" class="align-center">
+					<h3 class="text-center mr-2">Preview <small>(close on right)</small></h3>
+					
                     <v-spacer></v-spacer>
-                    <v-toolbar-title>Close</v-toolbar-title>
-                    <v-btn icon dark @click="dialog = false" class="mr-2">
-                        <v-icon>close</v-icon>
+                    <!-- <v-toolbar-title>Close</v-toolbar-title> -->
+                    <v-btn icon dark @click="dialogResumePreview = false" class="mr-2">
+                        <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
                 <!-- <v-layout row align-center justify-center pa-2 style="border-bottom: 2px solid var(--v-primary-base);"> -->
-                <v-row no-gutters justify="center" align="center" style="border-bottom: 2px solid var(--v-primary-base);">
+                <v-row no-gutters justify="center" align="center" class="py-2" style="border-bottom: 2px solid var(--v-primary-base);">
                     Primary color
                     <vue-colorpicker v-model="userResume.colors.primaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Secondary color
@@ -315,8 +318,7 @@
 
                 <component :is="viewTemplateComponent" v-if="viewTemplateComponent" :colors="userResume.colors" style="height: 80vh; overflow-y: scroll;" />
             </v-card>
-        <!-- </v-dialog> -->
-        </v-row>
+        </v-dialog>
     </div>
 </template>
 
@@ -380,7 +382,7 @@
 				model: '',
 				// template: '',
 				primaryColor: '',
-				dialog: false,
+				dialogResumePreview: false,
 				viewTemplateComponent: null,
 				dynamicComponent: null
 			}
@@ -442,13 +444,13 @@
 						this.dynamicComponent = null
 					})
 			},
-			openDialog(templateSlug) {
+			openResumePreview(templateSlug) {
 				console.log('templateSlug: ', templateSlug)
 				const templateName = templateSlug.charAt(0).toUpperCase() + templateSlug.slice(1)
 				console.log('templateName: ', templateName)
 				this.viewTemplateComponent = () =>
 					import(`~/components/templatesModels/${templateName}`)
-				this.dialog = true
+				this.dialogResumePreview = true
 			}
 		},
 		watch: {

@@ -33,7 +33,7 @@
                     </v-card-title>
                     <div class="text-center">
                         <small>(entries with an * are compulsory)</small><br />
-                        <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>remove_red_eye</v-icon> are public since your resume is not private. See below to change that.)</small>
+                        <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>mdi-eye</v-icon> are public since your resume is not private. See below to change that.)</small>
                         <small v-else>(all entries are private)</small>
                     </div>
 
@@ -41,33 +41,60 @@
                         <!-- <v-layout> -->
 						<v-row no-gutters>
                             <!-- <v-flex xs12 sm4 class="px-3" v-if="!this.resumeSlug"> -->
-							<v-col xs="12" sm="4" class="px-3" v-if="!this.resumeSlug">
-                                <v-text-field name="slug" hint="Must be unique." :persistent-hint="true" v-validate="{ required: true, regex: /^[a-z0-9-]+$/, max: 50 }" :error-messages="errors ? errors.collect('slug') : null" data-vv-as="Resume identifier" :counter="50" v-model="userResume.slug">
+							<v-col cols="4">
+								<v-row no-gutters class="px-3" v-if="!this.resumeSlug">
+									<v-text-field name="slug" hint="Must be unique." :persistent-hint="true" v-validate="{ required: true, regex: /^[a-z0-9-]+$/, max: 50 }" :error-messages="errors ? errors.collect('slug') : null" data-vv-as="Resume identifier" :counter="50" v-model="userResume.slug">
+										<template v-slot:label>
+											Resume identifier* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
+										</template>
+										<font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" />
+									</v-text-field>
+								<!-- </v-flex> -->
+								<!-- </v-col> -->
+								</v-row>
+
+								<!-- <v-flex d-flex xs12 sm8 class="px-3" v-if="userResume.slug"> -->
+								<v-row no-gutters class="px-3" v-if="userResume.slug">
+									<v-text-field label="Path to your resume" :value="userResume.slug ? `https://www.loginmycv.com/resume/${userResume.slug}` : ''" readonly class="no-underline">
+										<font-awesome-icon :icon="['fas', 'link']" size="1x" slot="prepend" style="margin-top: 4px;" />
+									</v-text-field>
+								<!-- </v-flex> -->
+								<!-- </v-col> -->
+								</v-row>
+
+								<v-row no-gutters class="px-3">
+									<v-text-field id="job_title" name="job_title" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('job_title') : null" data-vv-as="Job title" :counter="50" v-model="userResume.job_title">
+										<template v-slot:label>
+											Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
+										</template>
+										<font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
+									</v-text-field>
+								<!-- </v-flex> -->
+								<!-- </v-col> -->
+								</v-row>
+							</v-col>
+
+							<v-col cols="8" class="px-3">
+                                <v-textarea id="job_description" name="job_description" v-validate="'required|max:250'" :error-messages="errors ? errors.collect('job_description') : null" data-vv-as="Job description" :counter="250" v-model="userResume.job_description">
                                     <template v-slot:label>
-                                        Resume identifier* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        Job description* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
-                                    <font-awesome-icon :icon="['fas', 'address-card']" size="1x" slot="prepend" style="margin-top: 4px;" />
-                                </v-text-field>
+                                    <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
+                                </v-textarea>
                             <!-- </v-flex> -->
 							</v-col>
 
-                            <!-- <v-flex d-flex xs12 sm8 class="px-3" v-if="userResume.slug"> -->
-							<v-col d-flex xs12 sm8 class="px-3" v-if="userResume.slug">
-                                <v-text-field label="Path to your resume" :value="userResume.slug ? `https://www.loginmycv.com/resume/${userResume.slug}` : ''" readonly class="no-underline">
-                                    <font-awesome-icon :icon="['fas', 'link']" size="1x" slot="prepend" style="margin-top: 4px;" />
-                                </v-text-field>
-                            <!-- </v-flex> -->
-							</v-col>
+							
                         <!-- </v-layout> -->
 						</v-row>
 
                         <!-- <v-layout row wrap> -->
-						<v-row no-gutters>
+						<v-row no-gutters style="border: 1px solid orange; display: none;">
                             <!-- <v-flex xs12 sm8 class="px-3"> -->
-							<v-col xs="12" sm="8" class="px-3">
+							<v-col cols="4" class="px-3">
                                 <v-text-field id="job_title" name="job_title" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('job_title') : null" data-vv-as="Job title" :counter="50" v-model="userResume.job_title">
                                     <template v-slot:label>
-                                        Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        Job title* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -75,10 +102,10 @@
 							</v-col>
 
                             <!-- <v-flex d-flex xs12 class="px-3"> -->
-							<v-col d-flex xs12 class="px-3">
+							<v-col cols="8" class="px-3">
                                 <v-textarea id="job_description" name="job_description" v-validate="'required|max:250'" :error-messages="errors ? errors.collect('job_description') : null" data-vv-as="Job description" :counter="250" v-model="userResume.job_description">
                                     <template v-slot:label>
-                                        Job description* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        Job description* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'briefcase']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-textarea>
@@ -93,7 +120,7 @@
 							<v-col xs="12" sm="4" class="px-3">
                                 <v-text-field name="firstname" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('firstname') : null" data-vv-as="First name" :counter="50" v-model="userResume.personal_data.firstname">
                                     <template v-slot:label>
-                                        First name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        First name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -104,7 +131,7 @@
 							<v-col xs="12" sm="4" class="px-3">
                                 <v-text-field name="lastname" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('lastname') : null" data-vv-as="Last name" :counter="50" v-model="userResume.personal_data.lastname">
                                     <template v-slot:label>
-                                        Last name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        Last name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -115,7 +142,7 @@
 							<v-col xs="12" sm="4" class="px-3">
                                 <v-text-field name="middlename" v-validate="'max:50'" :error-messages="errors ? errors.collect('middlename') : null" data-vv-as="Middle name" :counter="50" v-model="userResume.personal_data.middlename">
                                     <template v-slot:label>
-                                        Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'user']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -238,7 +265,7 @@
 							<v-col xs="12" sm="4" class="px-3">
                                 <v-text-field :counter="50" v-validate="'max:50'" :error-messages="errors ? errors.collect('City') : null" data-vv-name="City" v-model="userResume.personal_data.city">
                                     <template v-slot:label>
-                                        City (State, Region) <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'visibility_off' : 'visibility'}}</v-icon>
+                                        City (State, Region) <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'city']" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -354,7 +381,7 @@
 						<v-row no-gutters align="center" class="mb-4">
                             <!-- <v-flex xs12 sm4 class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl"> -->
 							<v-col xs="12" sm="4" class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl">
-                                <div class="text-xs-center">
+                                <div class="text-center">
                                     <span>Current picture: </span><br />
                                     <img :src="getCurrentPicture.downloadUrl" height="150" /><br />
 
@@ -366,7 +393,7 @@
 							<v-col xs="4" class="px-3">
                                 <v-text-field @click='pickFile' v-model="imageName">
                                     <template v-slot:label>
-                                        My Picture <v-icon small style="vertical-align: top">remove_red_eye</v-icon>
+                                        My Picture <v-icon small style="vertical-align: top">mdi-eye-off</v-icon>
                                     </template>
                                     <font-awesome-icon :icon="['fas', 'portrait']" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -386,7 +413,7 @@
                                 <div class="text-center">
                                     <img src="/images/loader.gif" width="100" v-if="uploadingNewImage" />
                                 </div>
-                                <div v-if="imageUrl" class="text-xs-center">
+                                <div v-if="imageUrl" class="text-center">
                                     <span>New picture: </span><br />
                                     <img :src="imageUrl" height="150" />
                                 </div>
@@ -405,7 +432,7 @@
 		<!-- <v-layout row wrap pa-2> -->
 		<v-row no-gutters class="pa-2">
 			<!-- <v-flex xs12 style="border: 2px solid yellow;"> -->
-			<v-col cols="12" style="border: 2px solid yellow;">
+			<v-col cols="12">
 				<component :is="dynamicComponent" :resumeSlug="resumeSlug" :newPersonalData="null" v-if="dynamicComponent" />
 			<!-- </v-flex> -->
 			</v-col>
@@ -459,13 +486,13 @@
                             <!-- </v-flex> -->
 							</v-col>
                             <!-- <v-flex xs12 sm6 mx-5> -->
-							<v-col xs="12" sm="6" class="mx-5">
-                                <v-text-field :type="showPassword ? 'text' : 'password'" name="password_visitor" :label="resumeSlug ? 'New password' : 'Password'" prepend-icon="lock" hint="At least 4 characters" :counter="30" :append-icon="showPassword ? 'visibility' : 'visibility_off'" @click:append="showPassword = !showPassword" v-validate="{ required: this.isPasswordRequired, min:4, max:30}" data-vv-as="Password" ref="password" v-model="userResume.password" :error-messages="errors ? errors.collect('password_visitor') : null"></v-text-field>
+							<v-col cols="12" sm="6" class="mx-5">
+                                <v-text-field :type="showPassword ? 'text' : 'password'" name="password_visitor" :label="resumeSlug ? 'New password' : 'Password'" prepend-icon="mdi-lock" hint="At least 4 characters" :counter="30" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="showPassword = !showPassword" v-validate="{ required: this.isPasswordRequired, min:4, max:30}" data-vv-as="Password" ref="password" v-model="userResume.password" :error-messages="errors ? errors.collect('password_visitor') : null"></v-text-field>
                             <!-- </v-flex> -->
 							</v-col>
                             <!-- <v-flex xs12 sm6 mx-5> -->
-							<v-col xs="12" sm="6" class="mx-5">
-                                <v-text-field type="password" name="password_confirmation_visitor" :label="resumeSlug ? 'New Password confirmation' : 'Password confirmation'" prepend-icon="lock" v-validate="{ required: this.userResume.password ? true : false, confirmed: this.userResume.password }" data-vv-as="Password" :error-messages="errors ? errors.collect('password_confirmation_visitor') : null" v-model="userResume.password_confirmation"></v-text-field>
+							<v-col cols="12" sm="6" class="mx-5">
+                                <v-text-field type="password" name="password_confirmation_visitor" :label="resumeSlug ? 'New Password confirmation' : 'Password confirmation'" prepend-icon="mdi-lock" v-validate="{ required: this.userResume.password ? true : false, confirmed: this.userResume.password }" data-vv-as="Password" :error-messages="errors ? errors.collect('password_confirmation_visitor') : null" v-model="userResume.password_confirmation"></v-text-field>
                             <!-- </v-flex> -->
 							</v-col>
                         <!-- </v-layout> -->
