@@ -85,8 +85,8 @@
                 </v-card>
             </v-dialog>
 
-<draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" handle=".handle" style="width: 100%;">
 <v-expansion-panels>
+<draggable v-model="candidateEducation" group="education" @start="drag=true" @end="drag=false" style="width: 100%;">
 	<v-expansion-panel v-for="(education, index) in candidateEducation" :key="index">
 		<v-expansion-panel-header>
 			<v-row no-gutters align="center">
@@ -130,8 +130,9 @@
 			</v-card>
 		</v-expansion-panel-content>
 	</v-expansion-panel>
-</v-expansion-panels>
 </draggable>
+
+</v-expansion-panels>
 
             <v-expansion-panels>
                 <v-expansion-panel v-for="(education, index) in candidateEducation" :key="index" style="border: 1px solid yellow;">

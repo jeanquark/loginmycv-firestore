@@ -19,7 +19,7 @@
                     </v-alert>
 
                     <!-- <v-flex xs6> -->
-					<v-col xs="6">
+					<v-col cols="6">
 							<!--  -->
 						
                         <v-text-field
@@ -63,7 +63,7 @@
 					</v-col>
 
                     <!-- <v-flex xs6> -->
-					<v-col xs="6">
+					<v-col cols="6">
                         <v-text-field
                             label="Password"
                             name="password"
@@ -105,12 +105,12 @@
                 <!-- <v-layout row wrap class="mt-3 mb-2"> -->
 				<v-row class="mt-3 mb-2">
                     <!-- <v-flex xs12 sm6 class="px-2"> -->
-					<v-col xs="12" sm="6" class="px-2">
+					<v-col cols="12" sm="6" class="px-2">
                         <v-btn block color="#df4a32" class="white--text" :loading="loadingGoogle" @click="signInWithGoogle">Register with Google &nbsp;<font-awesome-icon :icon="['fab', 'google']" /></v-btn>
                     <!-- </v-flex> -->
 					</v-col>
                     <!-- <v-flex xs12 sm6 class="px-2"> -->
-					<v-col xs="12" sm="6" class="px-2">
+					<v-col cols="12" sm="6" class="px-2">
                         <v-btn block color="#3c5a99" class="white--text" :loading="loadingFacebook" @click="signInWithFacebook">Register with Facebook &nbsp;<font-awesome-icon :icon="['fab', 'facebook-f']" /></v-btn>
                     <!-- </v-flex> -->
 					</v-col>
