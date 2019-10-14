@@ -1,22 +1,22 @@
 <template>
     <!-- <div> -->
-	<v-container>
+    <v-container>
         <!-- <v-layout row wrap> -->
-		<v-row no-gutters>
+        <v-row no-gutters>
             <!-- <v-flex xs12> -->
-			<v-col cols="12">
+            <v-col cols="12">
                 <h2 class="text-center">Edit resume {{ resumeSlug }}</h2>
                 <br />
-            <!-- </v-flex> -->
-			</v-col>
-        <!-- </v-layout> -->
-		</v-row>
+                <!-- </v-flex> -->
+            </v-col>
+            <!-- </v-layout> -->
+        </v-row>
         <!-- <v-layout row> -->
-		<v-row no-gutters>
+        <v-row no-gutters>
             <!-- <v-flex xs12> -->
-			<v-col cols="12" class="">
+            <v-col cols="12" class="">
                 <v-stepper v-model="step">
- 
+
                     <v-stepper-header>
                         <v-stepper-step :step="1" editable>Choose Template</v-stepper-step>
 
@@ -86,64 +86,43 @@
                     </v-stepper-items>
 
                     <v-card-actions class="justify-center">
-                        <v-btn
-                            color="primary"
-                            @click.stop="moveOneStepBackward"
-                        >
+                        <v-btn color="primary" @click.stop="moveOneStepBackward">
                             <v-icon>mdi-arrow-left</v-icon> Previous
                         </v-btn>
-                        <v-btn
-                            color="primary"
-                            @click.stop="moveOneStepForward"
-                        >
+                        <v-btn color="primary" @click.stop="moveOneStepForward">
                             Next <v-icon>mdi-arrow-right</v-icon>
                         </v-btn>
                     </v-card-actions>
                     <!-- <v-layout justify-center> -->
-					<v-row justify="center">
+                    <v-row justify="center">
                         <v-btn class="success" :loading="loadingResume || loadingFiles" @click="updateResume">Update</v-btn>
-                    <!-- </v-layout> -->
-					</v-row>
+                        <!-- </v-layout> -->
+                    </v-row>
                 </v-stepper>
-            <!-- </v-flex> -->
-			</v-col>
-        <!-- </v-layout> -->
-		</v-row>
+                <!-- </v-flex> -->
+            </v-col>
+            <!-- </v-layout> -->
+        </v-row>
 
         <!-- Modal to update resume -->
-        <v-dialog
-            v-model="updatingResumeDialog"
-            width="500"
-            persistent
-        >
+        <v-dialog v-model="updatingResumeDialog" width="500" persistent>
             <!-- <v-layout> -->
-			<v-row no-gutters>
+            <v-row no-gutters>
                 <!-- <v-flex xs12> -->
-				<v-col cols="12"> 
+                <v-col cols="12">
                     <v-card light>
-                        <v-card-title
-                            class="headline justify-center primary white--text"
-                            primary-title
-                        >
+                        <v-card-title class="headline justify-center primary white--text" primary-title>
                             Updating resume
                         </v-card-title>
 
                         <v-card-text style="min-height: 280px;" class="align-center">
                             <br /><br /><br />
-                            <v-alert
-                                :value="loadingFiles"
-                                color="secondary"
-                                outline
-                            >
-                                <div class="text-center" >
+                            <v-alert :value="loadingFiles" color="secondary" outline>
+                                <div class="text-center">
                                     <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                                 </div>
                             </v-alert>
-                            <v-alert
-                                :value="loadingResume"
-                                color="primary"
-                                outline
-                            >
+                            <v-alert :value="loadingResume" color="primary" outline>
                                 <div class="text-center">
                                     <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume...
                                 </div>
@@ -151,27 +130,39 @@
                             <br /><br /><br />
                         </v-card-text>
                     </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+                    <!-- </v-flex> -->
+                </v-col>
+                <!-- </v-layout> -->
+            </v-row>
         </v-dialog>
-    <!-- </div> -->
-	</v-container>
+        <!-- </div> -->
+    </v-container>
 </template>
 
 <script>
     import templateComponent from '~/components/resume/TemplateComponent'
-    import personalDataComponent from '~/components/resume/PersonalDataComponent'
-    import educationComponent from '~/components/resume/EducationComponent'
-    import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
-    import skillsComponent from '~/components/resume/SkillsComponent'
-    import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
+    // import personalDataComponent from '~/components/resume/PersonalDataComponent'
+    // import educationComponent from '~/components/resume/EducationComponent'
+    // import workExperienceComponent from '~/components/resume/WorkExperienceComponent'
+    // import skillsComponent from '~/components/resume/SkillsComponent'
+	// import fileUploadsComponent from '~/components/resume/FileUploadsComponent'
     import Noty from 'noty'
 
 	export default {
-        inject: ['$validator'], // inject parent validator
-        components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
+		// inject: ['$validator'], // inject parent validator
+		$_veeValidate: {
+			validator: 'new' // Give me my own validator scope.
+		},
+		// components: { templateComponent, personalDataComponent, educationComponent, workExperienceComponent, skillsComponent, fileUploadsComponent },
+		components: {
+			templateComponent,
+			// templateComponent: () => import('~/components/resume/TemplateComponent'),
+			personalDataComponent: () => import('~/components/resume/PersonalDataComponent'),
+			educationComponent: () => import('~/components/resume/EducationComponent'),
+			workExperienceComponent: () => import('~/components/resume/WorkExperienceComponent'),
+			skillsComponent: () => import('~/components/resume/SkillsComponent'),
+			fileUploadsComponent: () => import('~/components/resume/FileUploadsComponent')
+		},
         layout: 'layoutBack',
         middleware: [],
         async created () {
@@ -385,7 +376,7 @@
 </script>
 
 <style scoped>
-    .active {
-        border: 2px solid #FFC107;
-    }
+	.active {
+		border: 2px solid #ffc107;
+	}
 </style>

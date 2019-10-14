@@ -1,17 +1,23 @@
 <template>
-    <div :style="cssProps">
-        <v-layout row wrap class="mb-2">
-            <v-flex xs12 sm6 md4 lg3 v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug">
+    <v-container :style="cssProps">
+        <!-- <v-layout row wrap class="mb-2"> -->
+		<v-row no-gutters class="mb-2">
+            <!-- <v-flex xs12 sm6 md4 lg3 v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug"> -->
+			<v-col cols="12" sm="6" md="4" lg="3" v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug">
                 <v-card hover class="ma-2" @click="selectMap(map)" :class="[userResume.template.map.slug === map.slug ? 'active' : null]">
                 <!-- <v-card hover class="ma-2" @click="selectMap(map)" :class="[selectedMap.slug === map.slug ? 'active' : null]"> -->
                     <v-img :src="`/images/templates/template004/maps/${map.slug}.jpg`" :lazy-src="`/images/templates/template004/maps/${map.slug}.jpg`"></v-img>
                 </v-card>
-            </v-flex>
-        </v-layout>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
 
         <!-- Draggable list of subdivisions -->
-        <v-layout row wrap class="mb-2">
-            <v-flex xs12>
+        <!-- <v-layout row wrap class="mb-2"> -->
+		<v-row no-gutters class="mb-2">
+            <!-- <v-flex xs12> -->
+			<v-col cols="12">
 				<!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
                 <!-- userResume.template: {{ userResume.template }}<br /><br /> -->
 				<!-- userResume.template.map: {{ userResume.template.map }}<br /><br /> -->
@@ -27,27 +33,40 @@
                 <!-- cssProps: {{ cssProps }}<br /><br /> -->
                 <!-- selectedSubdivisions: {{ selectedSubdivisions }}<br /><br /> -->
 				<!-- userResume.template.map_subdivisions: {{ userResume.template.map_subdivisions }}<br /><br /> -->
-                <h2 class="text-xs-center">Assign colors to states</h2>
-            </v-flex>
+                <h2 class="text-center">Assign colors to states</h2>
+            <!-- </v-flex> -->
+			</v-col>
 
-            <v-flex xs6 class="px-3">
-				<h3 class="text-xs-center">Select states</h3>
+            <!-- <v-flex xs6 class="px-3"> -->
+			<v-col cols="6" class="px-3">
+				<h3 class="text-center">Select states</h3>
                 <v-autocomplete :items="selectedMap.subdivisions" :return-object="true" item-text="name" chips :small-chips="false" deletable-chips label="" color="secondary" multiple v-model="userResume.template.map_subdivisions"></v-autocomplete>
-            </v-flex>
+            <!-- </v-flex> -->
+			</v-col>
 
-            <v-flex xs6 class="px-3">
-				<h3 class="text-xs-center">States color</h3>
-				<v-layout align-center v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" class="my-2">
-					<v-flex xs6 class="text-xs-right mr-3">
+            <!-- <v-flex xs6 class="px-3"> -->
+			<v-col cols="6" class="px-3">
+				<h3 class="text-center">States color</h3>
+				<!-- <v-layout align-center v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" class="my-2"> -->
+				<v-row no-gutters align="center" v-for="(subdivision, index) in userResume.template.map_subdivisions" :key="subdivision.slug" class="my-2">
+					<!-- <v-flex xs6 class="text-xs-right mr-3"> -->
+					<v-col cols="6" class="text-right">
 						<span class="">{{ subdivision.name }}</span>
-					</v-flex>
-					<v-flex xs6>
+					<!-- </v-flex> -->
+					</v-col>
+					<!-- <v-flex xs6> -->
+					<v-col cols="6" class="pl-3">
 						<vue-colorpicker v-model="userResume.template.map_subdivisions[index].color"></vue-colorpicker>
-					</v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
-    </div>
+					<!-- </v-flex> -->
+					</v-col>
+                <!-- </v-layout> -->
+			</v-row>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
+    <!-- </div> -->
+	</v-container>
 </template>
 
 <script>

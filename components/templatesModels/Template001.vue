@@ -95,22 +95,59 @@
                 </v-col>
             </v-row>
 
+			<!-- Section Work experience -->
+            <v-row no-gutters class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
+                <v-col cols="12" sm="8" offset-sm="2">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
+                    <br />
+                    <v-card class="secondary-color-background">
+                        <v-expansion-panels v-model="panel">
+                            <v-expansion-panel v-for="(work_experience, index) in resume.work_experience" :key="index">
+								<v-expansion-panel-header>
+                                    <v-row no-gutters align="center">
+                                        <h3>
+                                            <v-icon :color="primaryColor" class="mr-2">mdi-briefcase</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}
+                                        </h3>
+                                    </v-row>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+									<v-card flat>
+                                        <v-card-text class="tertiary-color-background">
+										<p v-if="!work_experience.end_date">
+											{{ work_experience.city }} - {{ work_experience.country }},
+											<i>since {{ work_experience.start_date }}</i>
+										</p>
+										<p v-else>
+											{{ work_experience.city }} - {{ work_experience.country }},
+											<i>from {{ work_experience.start_date }} to {{ work_experience.end_date }}</i>
+										</p>
+										<p>{{ work_experience.job_description }}</p>
+                                        </v-card-text>
+									</v-card>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-card>
+                </v-col>
+            </v-row>
+
             <!-- Section Education -->
             <v-row no-gutters class="margin-bottom" v-if="resume.education && resume.education.length > 0">
                 <v-col cols="12" sm="8" offset-sm="2">
                     <h2 class="text-center display-1 primary-color">{{ resume.menus['education'] || 'Education' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
-                        <v-expansion-panels>
+                        <v-expansion-panels :value="[1]">
                             <v-expansion-panel v-for="(education, index) in resume.education" :key="index">
-                                education: {{ education }}<br />
-                                <v-expansion-panel-content style="background: var(--secondary-color);">
-                                    <template v-slot:header>
+                                <!-- education: {{ education }}<br /> -->
+                                <v-expansion-panel-header>
+                                    <v-row no-gutters align="center">
                                         <h3>
-                                            <v-icon :color="primaryColor" class="mr-2">school</v-icon> {{ education.title }}, {{ education.school }}
-                                        </h3>
-                                    </template>
-                                    <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
+											<v-icon :color="primaryColor" class="mr-2">mdi-school</v-icon> {{ education.title }}, {{ education.school }}
+										</h3>
+                                    </v-row>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
                                     <v-card>
                                         <v-card-text class="tertiary-color-background">
                                             <p v-if="!education.end_date">
@@ -122,42 +159,6 @@
                                                 <i>from {{ education.start_date }} to {{ education.end_date }}</i>
                                             </p>
                                             <p>{{ education.description }}</p>
-                                        </v-card-text>
-                                    </v-card>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
-                    </v-card>
-                </v-col>
-            </v-row>
-
-            <!-- Section Work experience -->
-            <v-row no-gutters class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
-                <v-col cols="12" sm="8" offset-sm="2">
-                    resume.work_experience: {{ resume.work_experience }}<br />
-                    <h2 class="text-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
-                    <br />
-                    <v-card class="secondary-color-background">
-                        <v-expansion-panels>
-                            <v-expansion-panel expand :value="[1]">
-                                <v-expansion-panel-content v-for="(work_experience, index) in resume.work_experience" :key="index" style="background: var(--secondary-color);">
-                                    <template v-slot:header>
-                                        <h3>
-                                            <v-icon :color="primaryColor" class="mr-2">work</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}
-                                        </h3>
-                                    </template>
-                                    <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
-                                    <v-card>
-                                        <v-card-text class="tertiary-color-background">
-                                            <p v-if="!work_experience.end_date">
-                                                {{ work_experience.city }} - {{ work_experience.country }},
-                                                <i>since {{ work_experience.start_date }}</i>
-                                            </p>
-                                            <p v-else>
-                                                {{ work_experience.city }} - {{ work_experience.country }},
-                                                <i>from {{ work_experience.start_date }} to {{ work_experience.end_date }}</i>
-                                            </p>
-                                            <p>{{ work_experience.job_description }}</p>
                                         </v-card-text>
                                     </v-card>
                                 </v-expansion-panel-content>
@@ -209,11 +210,11 @@
                     <h2 class="text-center display-1 primary-color">{{ resume.menus['files'] || 'Files' }}</h2>
                     <br />
                     <v-row no-gutters justify="center">
-                        <v-col xs="6" md="4" lg="3" class="pa-2" v-for="(file, index) in files" :key="index">
+                        <v-col cols="6" md="4" lg="3" class="pa-2" v-for="(file, index) in files" :key="index">
                             <v-card hover @click="redirectTo(file.downloadUrl)" class="secondary-color-background">
                                 <v-card-title class="">
                                     <v-row no-gutters justify="center">
-                                        <h3 class="text-center">{{ file.title }}</h3>
+                                        <h5 class="text-center">{{ file.title }}</h5>
                                     </v-row>
                                 </v-card-title>
                                 <v-card-text class="text-center">
@@ -226,10 +227,9 @@
             </v-row>
 
             <!-- Section Contact -->
-            <v-row no-gutters class="my-5 section" id="contact" v-if="resume.parameters && resume.parameters.show_contact_form">
+            <v-row no-gutters class="margin-bottom" id="contact" v-if="resume.parameters && resume.parameters.show_contact_form">
                 <v-col cols="12" sm="8" offset-sm="2">
                     <h2 class="text-center display-1 primary-color">{{ resume.menus['contact'] || 'Contact' }}</h2>
-                    <br /><br />
                     <v-form ref="form" lazy-validation v-model="contactForm.valid">
                         <v-row class="secondary-color-background pa-5">
                             <v-col xs="6" class="pr-3">
@@ -281,7 +281,7 @@
 				tertiaryColor: '',
 				backgroundColor: '',
 				textColor: '',
-				column: 8,
+				panel: [0, 1],
 				contactForm: {
 					valid: true,
 					firstname: '',

@@ -91,3 +91,4 @@ sw.*
 
 # Firestore Database credentials
 .serviceAccountKey.json
+.accountCredentials.json

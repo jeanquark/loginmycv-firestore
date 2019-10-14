@@ -1,12 +1,16 @@
 <template>
     <div>
-        <v-layout>
-            <v-flex xs12>
+        <!-- <v-layout> -->
+		<v-row no-gutters>
+            <!-- <v-flex xs12> -->
+			<v-col cols="12">
                 index: {{ index }}<br /><br />
                 newWorkExperience: {{ newWorkExperience }}<br /><br />
                 userResume.work_experience[index]: {{ userResume.work_experience[index] }}<br /><br />
-            </v-flex>
-        </v-layout>
+            <!-- </v-flex> -->
+			</v-col>
+        <!-- </v-layout> -->
+		</v-row>
         <div style="width: 100%; height: 400px;">
             <!-- <div id="map-wrap" style=""> -->
             <!-- userResume.education[index]: {{ userResume.education[index] }}<br /><br /> -->
@@ -15,12 +19,14 @@
             <!-- index: {{ index }}<br /><br /> -->
 
             <no-ssr>
+			<!-- <client-only> -->
                 <l-map :zoom="3" :center="[51.47888889, 0]" style="background: rgb(171, 210, 225); z-index: 0; height: 300px; width: 100%; margin: 0px; padding: 0px; position: relative;">
                     <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
                     <l-marker :lat-lng.sync="userResume.work_experience[index].position" :draggable="true" v-if="userResume.work_experience[index]"></l-marker>
                     <l-marker :lat-lng.sync="newWorkExperience.position" :draggable="true" v-if="newWorkExperience"></l-marker>
                 </l-map>
             </no-ssr>
+			<!-- </client-only> -->
         </div>
     </div>
 </template>

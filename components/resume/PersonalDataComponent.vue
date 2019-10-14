@@ -91,7 +91,7 @@
                         <!-- <v-layout row wrap> -->
 						<v-row no-gutters>
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field name="firstname" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('firstname') : null" data-vv-as="First name" :counter="50" v-model="userResume.personal_data.firstname">
                                     <template v-slot:label>
                                         First name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
@@ -102,7 +102,7 @@
 							</v-col>
 
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field name="lastname" v-validate="'required|max:50'" :error-messages="errors ? errors.collect('lastname') : null" data-vv-as="Last name" :counter="50" v-model="userResume.personal_data.lastname">
                                     <template v-slot:label>
                                         Last name* <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
@@ -113,7 +113,7 @@
 							</v-col>
 
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field name="middlename" v-validate="'max:50'" :error-messages="errors ? errors.collect('middlename') : null" data-vv-as="Middle name" :counter="50" v-model="userResume.personal_data.middlename">
                                     <template v-slot:label>
                                         Middle name <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
@@ -135,7 +135,7 @@
         <!-- <v-layout row wrap class="pa-2"> -->
 		<v-row no-gutters class="pa-2">
             <!-- <v-flex xs12> -->
-			<v-col xs="12">
+			<v-col cols="12">
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
                         <h2 class="headline mb-0">Contact & Social</h2>
@@ -143,34 +143,34 @@
                     <v-card-text>
                         <!-- <v-layout row wrap> -->
 						<v-row no-gutters>
-                            <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+                            <!-- <v-flex cols12 sm4 class="px-3"> -->
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field label="Email*" name="email" type="email" v-validate="'required|email|max:50'" :error-messages="errors ? errors.collect('email') : null" data-vv-as="Email" v-model="userResume.personal_data.email">
                                     <font-awesome-icon :icon="['fas', 'envelope']" size="1x" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
                             <!-- </v-flex> -->
 							</v-col>
-                            <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+                            <!-- <v-flex cols12 sm4 class="px-3"> -->
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field label="Personal Website" name="website" hint="https://www.example.com" persistent-hint v-validate="{url: {require_protocol: true }}" :error-messages="errors ? errors.collect('website') : null" v-model="userResume.personal_data.website">
                                     <font-awesome-icon :icon="['fab', 'chrome']" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
                             <!-- </v-flex> -->
 							</v-col>
 
-                            <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+                            <!-- <v-flex cols12 sm4 class="px-3"> -->
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field label="Phone number" name="phone" v-validate="{ regex: /^([ 0-9+()-]+)$/ }" :error-messages="errors ? errors.collect('phone') : null" v-model="userResume.personal_data.phone">
                                     <font-awesome-icon :icon="['fas', 'phone']" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
                             <!-- </v-flex> -->
 							</v-col>
 
-                            <!-- <v-flex xs12 sm8 class="px-3"> -->
-							<v-col xs="12" sm="8" class="px-3">
+                            <!-- <v-flex cols12 sm8 class="px-3"> -->
+							<v-col cols="12" sm="8" class="px-3">
                                 <v-select label="Social networks" :items="loadedSocialNetworks" attach chips multiple dense small-chips deletable-chips color="secondary" item-text="name" return-object v-model="userResume.social_networks">
                                     <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" :color="data.item.color" class="chip--select-multi" @input="removeSocialLink(data.item)">
+                                        <v-chip :input-value="data.selected" :color="data.item.color" class="chip--select-multi" @input="removeSocialLink(data.item)">
                                             {{ data.item.name }}
                                         </v-chip>
                                     </template>
@@ -180,8 +180,8 @@
                             <!-- </v-flex> -->
 							</v-col>
 
-                            <!-- <v-flex xs12 sm4 class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index"> -->
-							<v-col xs="12" sm="4" class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index">
+                            <!-- <v-flex cols12 sm4 class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index"> -->
+							<v-col cols="12" sm="4" class="px-3" v-for="(social_network, index) of userResume.social_networks" :key="index">
                                 <v-text-field :label="`${social_network.name} link`" :name="social_network.slug" hint="Don't forget protocol (https://) for url" v-validate="{ required: true }" :error-messages="errors ? errors.collect(`${social_network.slug}`) : null" :data-vv-as="social_network.name" v-model="userResume.social_networks[index]['link']">
                                     <font-awesome-icon :icon="['fab', `${social_network.fontawesome}`]" slot="prepend" style="margin-top: 4px;" />
                                 </v-text-field>
@@ -210,11 +210,11 @@
                         <!-- <v-layout row wrap class="mb-4"> -->
 						<v-row no-gutters class="mb-4">
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-autocomplete label="Country of residence" :items="loadedCountries" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.personal_data.country">
                                     <font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" class="chip--select-multi">
+                                        <v-chip :input-value="data.selected" class="chip--select-multi">
                                             <v-avatar>
                                                 <img :src="`/images/countries/${data.item.flag}`">
                                             </v-avatar>
@@ -236,7 +236,7 @@
 							</v-col>
 
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-text-field :counter="50" v-validate="'max:50'" :error-messages="errors ? errors.collect('City') : null" data-vv-name="City" v-model="userResume.personal_data.city">
                                     <template v-slot:label>
                                         City (State, Region) <v-icon small class="valign-top">{{ userResume.visibility === 'private' ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
@@ -247,7 +247,7 @@
 							</v-col>
 
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-dialog ref="menu" v-model="menu" :return-value.sync="userResume.personal_data.birthday" :persistent="false" full-width width="290px">
                                     <template v-slot:activator="{ on }">
                                         <v-text-field label="Birthday date" readonly v-on="on" v-model="userResume.personal_data.birthday">
@@ -265,11 +265,11 @@
                         <!-- <v-layout class="mb-4"> -->
 						<v-row no-gutters class="mb-4">
                             <!-- <v-flex xs12 sm4 class="px-3"> -->
-							<v-col xs="12" sm="4" class="px-3">
+							<v-col cols="12" sm="4" class="px-3">
                                 <v-autocomplete label="Nationality-ies" :items="loadedCountries" item-text="name" :return-object="true" multiple chips small-chips hint="Order matters" persistent-hint :deletable-chips="true" color="secondary" v-model="userResume.personal_data.nationalities">
                                     <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" close class="chip--select-multi" @input="removeNationality(data.item)">
+                                        <v-chip :input-value="data.selected" close class="chip--select-multi" @input="removeNationality(data.item)">
                                             <v-avatar>
                                                 <img :src="`/images/countries/${data.item.flag}`">
                                             </v-avatar>
@@ -291,11 +291,11 @@
 							</v-col>
 
                             <!-- <v-flex xs8 sm5 class="px-3"> -->
-							<v-col xs="8" sm="5" class="px-3">
+							<v-col cols="8" sm="5" class="px-3">
                                 <v-autocomplete label="Languages" :items="loadedLanguages" item-text="name" :return-object="true" multiple chips small-chips hint="Click checkbox to display levels. Order matters." persistent-hint :deletable-chips="true" color="secondary" v-model="userResume.languages">
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
-                                        <v-chip :selected="data.selected" close class="chip--select-multi" @input="removeLanguage(data.item)">
+                                        <v-chip :input-value="data.selected" close class="chip--select-multi" @input="removeLanguage(data.item)">
                                             <v-avatar>
                                                 <img :src="`/images/languages/${data.item.flag}`">
                                             </v-avatar>
@@ -354,7 +354,7 @@
                         <!-- <v-layout row wrap align-center class="mb-4"> -->
 						<v-row no-gutters align="center" class="mb-4">
                             <!-- <v-flex xs12 sm4 class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl"> -->
-							<v-col xs="12" sm="4" class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl">
+							<v-col cols="12" sm="4" class="px-3" v-if="resumeSlug && getCurrentPicture && getCurrentPicture.downloadUrl">
                                 <div class="text-center">
                                     <span>Current picture: </span><br />
                                     <img :src="getCurrentPicture.downloadUrl" height="150" /><br />
@@ -383,7 +383,7 @@
                             <!-- </v-flex> -->
 
                             <!-- <v-flex xs12 sm6> -->
-							<v-col xs="12" sm="6">
+							<v-col cols="12" sm="6">
                                 <div class="text-center">
                                     <img src="/images/loader.gif" width="100" v-if="uploadingNewImage" />
                                 </div>
@@ -435,14 +435,14 @@
                         <!-- </v-layout> -->
 						</v-row>
                         <!-- <v-layout row wrap> -->
-						<v-row no-gutters>
-                            <v-alert value="public" color="success" icon="done" v-if="userResume.visibility === 'public'">
+						<v-row no-gutters justify="center">
+                            <v-alert prominent value="public" color="success" icon="mdi-checkbox-marked-circle" v-if="userResume.visibility === 'public'">
                                 <span class="subheading font-weight-medium">An excerpt of your resume with free access to your data appears on the frontpage (recommanded option).</span>
                             </v-alert>
-                            <v-alert value="semi-private" color="info" icon="info" v-if="userResume.visibility === 'semi-private'">
+                            <v-alert prominent value="semi-private" color="info" icon="mdi-information" v-if="userResume.visibility === 'semi-private'">
                                 <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. However to gain full access, visitors either need to ask for your authorization, or they will be prompted to enter the password you specify below.</span>
                             </v-alert>
-                            <v-alert value="private" color="warning" icon="warning" v-if="userResume.visibility === 'private'">
+                            <v-alert prominent value="private" color="warning" icon="mdi-alert" v-if="userResume.visibility === 'private'">
                                 <span class="subheading font-weight-medium">Your resume is hidden, <i>i.e.</i> visitors are not able to find you without prior knowledge of your resume identifier. To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
                             </v-alert>
                         <!-- </v-layout> -->
@@ -487,13 +487,13 @@
                                 <!-- <v-layout v-if="userResume.updateResumeSlug"> -->
 								<v-row no-gutters v-if="userResume.updateResumeSlug">
                                     <!-- <v-flex xs12 sm6 mx-3> -->
-									<v-col xs="12" sm="6" class="mx-3">
+									<v-col cols="12" sm="6" class="mx-3">
                                         <v-text-field label="New resume identifier*" name="new_slug" prepend-icon="perm_identity" hint="Must be unique." :persistent-hint="true" v-validate="{ required: true, regex: /^[a-z0-9-]+$/ }" :error-messages="errors ? errors.collect('new_slug') : null" data-vv-as="Resume identifier" v-model="userResume.new_slug"></v-text-field>
                                     <!-- </v-flex> -->
 									</v-col>
 
                                     <!-- <v-flex xs12 sm8 class="px-3"> -->
-									<v-col xs="12" sm="8" class="px-3">
+									<v-col cols="12" sm="8" class="px-3">
                                         <v-text-field label="New path to your resume" :value="userResume.new_slug ? `https://www.loginmycv.com/resume/${userResume.new_slug}` : ''" readonly prepend-icon="web"></v-text-field>
                                     <!-- </v-flex> -->
 									</v-col>

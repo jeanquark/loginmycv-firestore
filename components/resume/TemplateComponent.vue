@@ -150,31 +150,31 @@
                         <!-- <v-layout row align-center> -->
                         <v-row no-gutters align="center">
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col cols="6" sm="4" class="text-center">
-                                Primary color<br /><br />
+                            <v-col cols="6" class="text-center">
+                                Primary color 2<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.primaryColor" v-if="userResume"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col cols="6" sm="4" class="text-center">
+                            <v-col cols="6" class="text-center">
                                 Secondary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col cols="6" sm="4" class="text-center">
+                            <v-col cols="6" class="text-center">
                                 Tertiary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col cols="6" sm="4" class="text-center">
+                            <v-col cols="6" class="text-center">
                                 Background color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                            <v-col cols="6" sm="4" class="text-center">
+                            <v-col cols="6" class="text-center">
                                 Text color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                             <!-- </v-flex> -->
@@ -292,8 +292,8 @@
         <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition"> -->
         <v-dialog no-gutters v-model="dialogResumePreview" fullscreen hide-overlay transition="dialog-bottom-transition" style="">
             <v-card style="position: fixed; top: 0; left: 0; z-index: 999; width: 100%; height: 20vh;">
-                <v-toolbar dark color="primary" class="align-center">
-					<h3 class="text-center mr-2">Preview <small>(close on right)</small></h3>
+                <v-toolbar dark color="primary" class="align-center" style="cursor: pointer;" @click="dialogResumePreview = false">
+					<h3 class="text-center mr-2">Preview</h3>
 					
                     <v-spacer></v-spacer>
                     <!-- <v-toolbar-title>Close</v-toolbar-title> -->
@@ -346,6 +346,9 @@
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
 			await this.$store.dispatch('templates/fetchTemplates')
+			// if (!this.loadedUserResumes || this.loadedUserResumes.length < 1) {
+			// 	await this.$store.dispatch('resumes/fetchUserResumes')
+			// }
 			// if (!this.resumeSlug) {
 			// 	const template = this.$store.getters['templates/loadedTemplates'].find(
 			// 		template => template.slug === 'template001'
@@ -367,14 +370,17 @@
 			// }
 		},
 		mounted() {
-			this.loadDynamicComponent()
-				.then(() => {
-					this.dynamicComponent = () => this.loadDynamicComponent()
-				})
-				.catch(() => {
-					console.log('error dynamic component')
-					this.dynamicComponent = null
-				})
+			if (this.userResume) {
+
+				this.loadDynamicComponent()
+					.then(() => {
+						this.dynamicComponent = () => this.loadDynamicComponent()
+					})
+					.catch(() => {
+						console.log('error dynamic component')
+						this.dynamicComponent = null
+					})
+			}
 		},
 		data() {
 			return {
@@ -398,6 +404,7 @@
 			},
 			userResume() {
 				if (this.resumeSlug) {
+					// console.log('resumeSlug2: ', this.resumeSlug)
 					return this.$store.getters['resumes/loadedUserResumes'].find(
 						resume => resume.slug === this.resumeSlug
 					)
@@ -414,17 +421,12 @@
 			// 	return this.loadedTemplate.template_specific_components ? this.loadedTemplate.template_specific_components.filter(template => template.component === 'template') : []
 			// },
 			loadDynamicComponent() {
-				console.log('this.userResume: ', this.userResume)
-				// return () => import(`~/components/resume/dynamicTemplatesComponents/Template001`)
-				// if (!this.userResume) {
-				// 	// return () => import(`~/components/resume/dynamicTemplatesComponents/DefaultTemplate`)
+				console.log('this.userResume2: ', this.userResume)
+				// return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
+				// if (this.userResume) {
+					return () => import(`~/components/resume/dynamicTemplatesComponents/template004/TemplateComponent`)
 				// }
-				// const templateFile =
-				// 	this.userResume.template_id.charAt(0).toUpperCase() +
-				// 	this.userResume.template_id.substring(1)
-				// console.log('templateFile: ', templateFile)
-				return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
-				// return () => import(`~/components/resume/DynamicTemplatesComponents/Template001`)
+				// return null
 			}
 		},
 		methods: {
