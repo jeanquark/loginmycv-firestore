@@ -94,7 +94,7 @@
                         </v-btn>
                     </v-card-actions>
                     <!-- <v-layout justify-center> -->
-                    <v-row justify="center">
+                    <v-row justify="center" class="mb-3">
                         <v-btn class="success" :loading="loadingResume || loadingFiles" @click="updateResume">Update</v-btn>
                         <!-- </v-layout> -->
                     </v-row>

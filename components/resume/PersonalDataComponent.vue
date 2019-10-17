@@ -34,7 +34,7 @@
                     <div class="text-center">
                         <small>(entries with an * are compulsory)</small><br />
                         <small v-if="userResume.visibility !== 'private'">(all entries with an <v-icon small>mdi-eye</v-icon> are public since your resume is not private. See below to change that.)</small>
-                        <small v-else>(all entries are private)</small>
+                        <small v-else>All entries are private</small>
                     </div>
 
                     <v-card-text>
@@ -215,20 +215,20 @@
                                     <font-awesome-icon :icon="['fas', 'globe-europe']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
                                         <v-chip :input-value="data.selected" class="chip--select-multi">
-                                            <v-avatar>
-                                                <img :src="`/images/countries/${data.item.flag}`">
+                                            <v-avatar left>
+                                                <v-img :src="`/images/countries/${data.item.flag}`"></v-img>
                                             </v-avatar>
                                             {{ data.item.name }}
                                         </v-chip>
                                     </template>
                                     <template v-slot:item="data">
                                         <template>
-                                            <v-list-tile-avatar>
+                                            <v-list-item-avatar>
                                                 <img :src="`/images/countries/${data.item.flag}`">
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                            </v-list-item-content>
                                         </template>
                                     </template>
                                 </v-autocomplete>
@@ -270,20 +270,20 @@
                                     <font-awesome-icon :icon="['fas', 'flag-usa']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
                                         <v-chip :input-value="data.selected" close class="chip--select-multi" @input="removeNationality(data.item)">
-                                            <v-avatar>
-                                                <img :src="`/images/countries/${data.item.flag}`">
+                                            <v-avatar left>
+                                                <v-img :src="`/images/countries/${data.item.flag}`"></v-img>
                                             </v-avatar>
                                             {{ data.item.name }}
                                         </v-chip>
                                     </template>
                                     <template v-slot:item="data">
                                         <template>
-                                            <v-list-tile-avatar>
+                                            <v-list-item-avatar>
                                                 <img :src="`/images/countries/${data.item.flag}`">
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                            </v-list-item-content>
                                         </template>
                                     </template>
                                 </v-autocomplete>
@@ -296,20 +296,20 @@
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
                                         <v-chip :input-value="data.selected" close class="chip--select-multi" @input="removeLanguage(data.item)">
-                                            <v-avatar>
-                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            <v-avatar left>
+                                                <v-img :src="`/images/languages/${data.item.flag}`"></v-img>
                                             </v-avatar>
                                             {{ data.item.name }}
                                         </v-chip>
                                     </template>
                                     <template v-slot:item="data">
                                         <template>
-                                            <v-list-tile-avatar>
+                                            <v-list-item-avatar>
                                                 <img :src="`/images/languages/${data.item.flag}`">
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                            </v-list-item-content>
                                         </template>
                                     </template>
                                 </v-autocomplete>
@@ -376,7 +376,9 @@
 							</v-col>
                             <!-- <v-flex xs6 class="text-xs-left"> -->
 							<v-col xs="6" class="text-left">
-                                <v-icon @click="removeCurrentPicture" v-if="imageName">delete</v-icon>
+                                <v-hover v-slot:default="{ hover }">
+                                    <v-icon :color="hover ? 'error' : ''" @click="removeCurrentPicture" v-if="imageName">mdi-delete</v-icon>
+                                </v-hover>
                             <!-- </v-flex> -->
 							</v-col>
                             <!-- </v-layout> -->
@@ -436,13 +438,13 @@
 						</v-row>
                         <!-- <v-layout row wrap> -->
 						<v-row no-gutters justify="center">
-                            <v-alert prominent value="public" color="success" icon="mdi-checkbox-marked-circle" v-if="userResume.visibility === 'public'">
+                            <v-alert prominent color="success" icon="mdi-checkbox-marked-circle" v-if="userResume.visibility === 'public'">
                                 <span class="subheading font-weight-medium">An excerpt of your resume with free access to your data appears on the frontpage (recommanded option).</span>
                             </v-alert>
-                            <v-alert prominent value="semi-private" color="info" icon="mdi-information" v-if="userResume.visibility === 'semi-private'">
+                            <v-alert prominent color="info" icon="mdi-information" v-if="userResume.visibility === 'semi-private'">
                                 <span class="subheading font-weight-medium">An excerpt of your resume appears on the frontpage. However to gain full access, visitors either need to ask for your authorization, or they will be prompted to enter the password you specify below.</span>
                             </v-alert>
-                            <v-alert prominent value="private" color="warning" icon="mdi-alert" v-if="userResume.visibility === 'private'">
+                            <v-alert prominent color="warning" icon="mdi-alert" v-if="userResume.visibility === 'private'">
                                 <span class="subheading font-weight-medium">Your resume is hidden, <i>i.e.</i> visitors are not able to find you without prior knowledge of your resume identifier. To gain access to your resume, visitors either need to ask for your authorization, or they will be prompter to enter the password you specify below.</span>
                             </v-alert>
                         <!-- </v-layout> -->

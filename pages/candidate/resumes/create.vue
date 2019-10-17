@@ -5,7 +5,7 @@
         <!-- <v-layout row wrap> -->
 		<v-row no-gutters>
             <!-- <v-flex xs12 class="mb-3"> -->
-			<v-col xs="12" class="mb-3">
+			<v-col cols="12" class="mb-3">
                 <h2 class="text-center">Create a new resume</h2>
             <!-- </v-flex> -->
 			</v-col>

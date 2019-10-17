@@ -17,15 +17,15 @@
             <!-- position: {{ position }}<br /><br /> -->
             <!-- index: {{ index }}<br /><br /> -->
 
-            <no-ssr>
-			<!-- <client-only> -->
+            <!-- <no-ssr> -->
+			<client-only>
                 <l-map :zoom="3" :center="[51.47888889, 0]" style="background: rgb(171, 210, 225); z-index: 0; height: 300px; width: 100%; margin: 0px; padding: 0px; position: relative;">
                     <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
                 	<l-marker :lat-lng.sync="userResume.personal_data.position" :draggable="true" v-if="userResume.personal_data"></l-marker>
                     <!-- <l-marker :lat-lng.sync="newPersonalData.position" :draggable="true" @update:latLng="moveMarker" v-if="newPersonalData"></l-marker> -->
                 </l-map>
-            </no-ssr>
-			<!-- </client-only> -->
+            <!-- </no-ssr> -->
+			</client-only>
         </div>
     </div>
 </template>

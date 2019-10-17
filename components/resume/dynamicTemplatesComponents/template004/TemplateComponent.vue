@@ -1,6 +1,10 @@
 <template>
     <v-container :style="cssProps">
         <!-- <v-layout row wrap class="mb-2"> -->
+        <!-- selectedMap: {{ selectedMap }}<br /><br /> -->
+        <!-- userResume.template: {{ userResume.template }}<br /><br /> -->
+        <!-- userResumeTemplate: {{ userResumeTemplate }}<br /><br /> -->
+        <!-- originalTemplate: {{ originalTemplate }}<br /><br /> -->
 		<v-row no-gutters class="mb-2">
             <!-- <v-flex xs12 sm6 md4 lg3 v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug"> -->
 			<v-col cols="12" sm="6" md="4" lg="3" v-for="map in loadedTemplate.maps.filter(map => map.active !== false)" :key="map.slug">
@@ -72,19 +76,22 @@
 <script>
 	import { VueColorpicker } from 'vue-pop-colorpicker'
 	export default {
-		inject: ['$validator'], // Inject parent validator
+		// inject: ['$validator'], // Inject parent validator
 		props: ['resumeSlug', 'loadedTemplate'],
 		components: { VueColorpicker },
 		created() {
-			if (this.userResume && this.userResume.template.map) {
+			if (this.userResume && this.userResume.template && this.userResume.template.map) {
+
 				this.selectedMap = this.loadedTemplate.maps.find(map => map.slug === this.userResume.template.map.slug)
-			} 
+				this.originalTemplate = JSON.parse(JSON.stringify(this.userResume.template))
+			}
 		},
 		mounted () {
 		},
 		data() {
 			return {
-				selectedMap: {}
+				selectedMap: {},
+				originalTemplate: {}
 			}
 		},
 		computed: {
@@ -105,22 +112,21 @@
 		},
 		methods: {
 			selectMap(map) {
-				console.log('selectMap: ', map)
-				this.selectedMap = { geoJSON: map.geoJSON, image: map.image, name: map.name, slug: map.slug, subdivisions: map.subdivisions }
-				this.userResume.template.map_subdivisions = []
-				this.userResume.template.map = { geoJSON: map.geoJSON, image: map.image, name: map.name, slug: map.slug, subdivisions: map.subdivisions.sort((a, b) => a.name.localeCompare(b.name)) }
-				// return
-				// this.allSubdivisions = []
-				// this.userResume.template.map_subdivisions = []
-				// this.userResume.template.map = {}
-				// if (map.subdivisions && this.allSubdivisions.length < 1) {
-				// 	const sortedMapSubdivisions = map.subdivisions.sort((a, b) =>
-				// 		a.name.localeCompare(b.name)
-				// 	)
-				// 	sortedMapSubdivisions.forEach(subdivision => {
-				// 		this.allSubdivisions.push(subdivision)
-				// 	})
-				// }
+				console.log('selectMap: ', map.slug)
+				// Check if there is original data for the selected map
+				if (this.userResume && this.userResume.template && this.originalTemplate.map && this.originalTemplate.map.slug === map.slug) {
+					console.log('Load existing values')
+					this.selectedMap = { name: map.name, slug: map.slug, image: map.image, geoJSON: map.geoJSON, subdivisions: map.subdivisions.sort((a, b) => a.name.localeCompare(b.name)) }
+					this.userResume.template.map = { name: map.name, slug: map.slug, geoJSON: map.geoJSON, image: map.image }
+					this.userResume.template.map_markers = this.originalTemplate.map_markers
+					this.userResume.template.map_subdivisions = this.originalTemplate.map_subdivisions
+				} else if (this.userResume && this.userResume.template) {
+					console.log('No preexisting values')
+					this.selectedMap = { name: map.name, slug: map.slug, geoJSON: map.geoJSON, image: map.image, subdivisions: map.subdivisions.sort((a, b) => a.name.localeCompare(b.name)) }
+					this.userResume.template.map = { name: map.name, slug: map.slug, geoJSON: map.geoJSON, image: map.image }
+					this.userResume.template.map_markers = []
+					this.userResume.template.map_subdivisions = []
+				}
 			},
 			setColors() {
 				this.userResume.template.map_subdivisions.forEach(subdivision => {

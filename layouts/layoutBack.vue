@@ -1,7 +1,7 @@
 <template>
     <v-app id="app" v-cloak>
-        <v-navigation-drawer v-model="sideBar" app>
-            <v-list dense>
+        <v-navigation-drawer app v-model="sideBar">
+            <v-list dense flat>
                 <v-list-item to="/candidate/resumes" ripple>
                     <v-list-item-action>
                         <v-icon>mdi-folder-account</v-icon>
@@ -47,11 +47,11 @@
         </v-navigation-drawer>
         <v-app-bar app dark>
             <v-app-bar-nav-icon @click.stop="sideBar = !sideBar"></v-app-bar-nav-icon>
-            <v-toolbar-title>{{ loadedUser.email }}</v-toolbar-title>
+            <v-toolbar-title></v-toolbar-title>
             <v-spacer></v-spacer>
             <div class="hidden-xs-only font-weight-bold">
                 <v-btn class="warning mx-2" @click="logout">Logout</v-btn>
-                <v-avatar size="40" color="grey lighten-4" class="mx-2" v-if="loadedUser.picture">
+                <v-avatar size="40" color="grey lighten-4" class="mx-2" v-if="loadedUser && loadedUser.picture">
                     <v-img :src="loadedUser.picture" alt="user picture"></v-img>
                 </v-avatar>
             </div>
@@ -141,8 +141,14 @@
 	.no-hover:before {
 		background-color: transparent;
 	}
-	.v-list__tile--active > div {
-		/* color:#FFC107; */
+	.v-list-item--active {
 		color: var(--v-secondary-base);
 	}
+	.v-list__tile--active > div {
+		/* color:#FFC107; */
+		/*color: var(--v-secondary-base);*/
+	}
+	/*>>>.theme--dark.v-list-item--active:before, .theme--dark.v-list-item--active:hover:before, .theme--dark.v-list-item:focus:before {
+		opacity: 0;
+	}*/
 </style>

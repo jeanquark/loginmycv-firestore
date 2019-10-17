@@ -93,6 +93,7 @@
 		// middleware: [''],
 		mounted() {
 			window.addEventListener('scroll', this.onScroll)
+			this.$vuetify.theme.dark = false
 		},
 		beforeDestroy() {
 			window.removeEventListener('scroll', this.onScroll)

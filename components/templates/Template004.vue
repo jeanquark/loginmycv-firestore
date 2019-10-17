@@ -9,7 +9,8 @@
         <v-btn color="secondary">OK</v-btn>
 		<h1 class="text-xs-center" v-if="loading">Loading map...</h1>
         <div style="height: 100vh" v-if="!loading">
-            <no-ssr>
+            <!-- <no-ssr> -->
+            <client-only>
                 <l-map :zoom="3" :center="resume.template.map.center" style="background: #AADAFF">
                     <l-geo-json :geojson="geojson" :optionsStyle="styleFunction"></l-geo-json>
 					<l-marker v-for="item in markers" :key="item.key" :lat-lng="[item.position.lat, item.position.lng]" :visible="true">
@@ -58,7 +59,8 @@
                         </l-icon>
                     </l-marker> -->
                 </l-map>
-            </no-ssr>
+            <!-- </no-ssr> -->
+        	</client-only>
         </div>
     </v-app>
 </template>

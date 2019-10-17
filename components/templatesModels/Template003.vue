@@ -1,6 +1,6 @@
 <template>
     <v-app :style="cssProps" v-cloak>
-        <div class="fullpage-container background-color text-color">
+        <div class="fullpage-container text-color">
             <div class="button-group ma-4" v-if="resume.menus && (resume.education.length > 0 || resume.work_experience.length < 10 || resume.skills.length > 0)">
                 <button type="button" :class="{active:index == 0}" @click="moveTo(0)">{{ resume.menus.home ? resume.menus.home : 'Presentation' }}</button>
                 <button type="button" :class="{active:index == 1}" @click="moveTo(1)" v-if="resume.education && resume.education.length > 0">{{ resume.menus.education ? resume.menus.education : 'Education'}}</button>
@@ -11,114 +11,134 @@
 
             <div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
                 <!-- Section Personal Data -->
-                <div class="page page-1" data-index="0" style="" ref="page">
-                    <v-layout row wrap align-center class="subpage" style="" v-animate="{value: animationEffect}">
-                        <v-flex xs12 class="pa-4" style="">
-                            <v-layout row wrap>
-                                <!-- files: {{ files }}<br /> -->
-                                <v-flex xs12 sm6 class="text-xs-center" v-if="profilePicture">
+                <div class="page page-1" data-index="0" style="height: 100%; overflow-y: auto;" ref="page">
+                    <v-row no-gutters align="center" class="subpage" v-animate="{value: animationEffect}" style=" height: 80%; overflow-y: auto;">
+                    <!-- <v-col cols="12" class="pa-4"> -->
+                        <!-- <v-row no-gutters> -->
+                        <!-- <v-col cols="12" sm="6" class="text-center" v-if="profilePicture">
+                            <v-avatar :tile="false" :size="300" color="grey lighten-4">
+                                <v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="profile picture" />
+                            </v-avatar>
+                        </v-col> -->
+                        <v-col cols="12" class="text-center secondary-color-background pa-3 rounded-border" style="">
+                            <v-row no-gutters>
+                                <v-col cols="12" sm="6" class="text-center" v-if="profilePicture">
                                     <v-avatar :tile="false" :size="300" color="grey lighten-4">
                                         <v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="profile picture" />
                                     </v-avatar>
-                                </v-flex>
-                                <v-flex v-bind="{[`xs12 sm${column}`]: true}" class="text-xs-center secondary-color-background pa-3 rounded-border">
-                                    <h1 class="primary-color">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename }} {{ resume.personal_data.lastname }}</h1><br />
-                                    <h2>{{ resume.job_title }}</h2><br />
-                                    <h4>{{ resume.job_description }}</h4>
-                                    <br /><br />
-                                    <v-layout row wrap class="text-big text-xs-left">
-                                        <v-flex xs6 class="mb-3" v-if="resume.personal_data.city || resume.personal_data.country">
-                                            <div v-if="resume.personal_data.city">
-                                                <font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.city }} {{ resume.personal_data.country.name }}
-                                            </div>
-                                            <div v-else>
-                                                <font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.country.name }}
-                                            </div>
-                                        </v-flex>
-                                        <v-flex xs6 class="mb-3" v-if="resume.personal_data.email">
-                                            <font-awesome-icon :icon="['fas', 'envelope']" class="icon" /> {{ resume.personal_data.email }}
-                                        </v-flex>
-                                        <v-flex xs6 class="mb-3" v-if="resume.personal_data.phone_number">
-                                            <font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
-                                        </v-flex>
-                                        <v-flex class="mb-3" v-if="resume.personal_data.nationalities">
-                                            <font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
-                                            <span v-for="(nationality, index) in resume.personal_data.nationalities" :key="index">
-                                                {{ nationality.name }}<span v-if="index + 1 < resume.personal_data.nationalities.length">, </span>
-                                            </span>
-                                        </v-flex>
-                                        <v-flex class="mb-3" v-if="resume.languages">
-                                            <font-awesome-icon :icon="['fas', 'language']" class="icon" />
-                                            <v-chip :color="primaryColor" class="pa-1 text-color" v-for="(language, index) in resume.languages" :key="index">
-                                                {{ language.name }}
-                                                <v-progress-linear :color="getLanguageLevelColor(language.value)" height="10" :value="language.value" bottom style="width: 30px; transform: rotate(-90deg);" v-if="language.value"></v-progress-linear>
-                                            </v-chip>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout row wrap class="mt-3">
-                                        <v-flex xs12 class="text-xs-center">
-                                            <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link mx-3" />
-                                        </v-flex>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex v-bind="{[`xs12 sm${presentationColumns}`]: true}" class="pa-4 centered" style="border: 0px solid orangered;">
-                            <div class="text-xs-center" v-for="(file, index) in files" :key="index">
+                                </v-col>
+                            </v-row>
+                            <h1 class="primary-color">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename }} {{ resume.personal_data.lastname }}</h1><br />
+                            <h2>{{ resume.job_title }}</h2><br />
+                            <h4>{{ resume.job_description }}</h4>
+                            <br /><br />
+                            <v-row no-gutters class="text-big text-left">
+                                <v-col xs="6" class="mb-3 text-center" v-if="resume.personal_data.city || resume.personal_data.country">
+                                    <div v-if="resume.personal_data.city">
+                                        <font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country.name }}
+                                    </div>
+                                    <div v-else>
+                                        <font-awesome-icon :icon="['fas', 'map-marker']" /> {{ resume.personal_data.country.name }}
+                                    </div>
+                                </v-col>
+                                <v-col xs="6" class="mb-3 text-center" v-if="resume.personal_data.email">
+                                    <font-awesome-icon :icon="['fas', 'envelope']" class="icon" /> {{ resume.personal_data.email }}
+                                </v-col>
+                                <v-col cols="6" class="mb-3" v-if="resume.personal_data.phone_number">
+                                    <font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
+                                </v-col>
+                                <v-col class="mb-3" v-if="resume.personal_data.nationalities">
+                                    <font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
+                                    <span v-for="(nationality, index) in resume.personal_data.nationalities" :key="index">
+                                        {{ nationality.name }}<span v-if="index + 1 < resume.personal_data.nationalities.length">, </span>
+                                    </span>
+                                </v-col>
+                                <v-col class="mb-3" v-if="resume.languages">
+                                    <font-awesome-icon :icon="['fas', 'language']" class="icon" />
+                                    <v-chip :color="primaryColor" class="px-2 py-1 ma-2 text-background-color" v-for="(language, index) in resume.languages" :key="index">
+                                        {{ language.name }}
+                                        <v-progress-linear :color="getLanguageLevelColor(language.value)" height="10" :value="language.value" bottom style="width: 30px; transform: rotate(-90deg);" v-if="language.value"></v-progress-linear>
+                                    </v-chip>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters class="mt-3">
+                                <v-col cols="12" class="text-center">
+                                    <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link mx-3" />
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters class="pa-4 centered" style="border: 1px solid orangered;">
+                                <div class="text-center mx-4" v-for="(file, index) in files" :key="index">
+                                    <font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" class="social-link" @click="redirectTo(file.downloadUrl)" />
+                                    <br />
+                                    <p>{{ file.name }}</p>
+                                </div>
+                            </v-row>
+                        </v-col>
+                        <!-- </v-row> -->
+                    <!-- </v-col> -->
+
+                        <!-- <v-col cols="12" class="pa-4 centered" style="border: 0px solid orangered;">
+                            <div class="text-center mx-3" v-for="(file, index) in files" :key="index">
                                 <font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" class="social-link" @click="redirectTo(file.downloadUrl)" />
                                 <br />
                                 <p>{{ file.name }}</p>
-                                opts.start: {{ opts.start }}
                             </div>
-                        </v-flex>
-                    </v-layout>
+                        </v-col> -->
+                    </v-row>
                 </div>
 
                 <!-- Section Education -->
-                <div class="page page-2 align-center" data-index="1" style="">
-                    <v-layout row wrap justify-center class="subpage" style="" v-if="resume.education && resume.education.length > 0">
-                        <v-flex xs12 sm6 md4 v-for="education in resume.education" :key="education.title" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;">
-                            <v-card :color="secondaryColor" class="card" style="">
+                <div class="page page-2 align-center" data-index="1" style="height: 100%; overflow-y: auto;">
+                    <v-row no-gutters justify="center" class="subpage" v-if="resume.education && resume.education.length > 0" v-animate="{value: animationEffect}" style="height: 80%; overflow-y: auto;">
+                        <v-col cols="12" sm="6" md="4" v-for="education in resume.education" :key="education.title"  class="pa-2" style="">
+                            <v-card class="card text-color secondary-color-background">
                                 <v-card-title class="card-title">
-                                    {{ education.title }} from&nbsp;<span class="primary-color accentuate italic">{{ education.school }}</span><br />
+                                    <span class="text-color font-weight-bold">{{ education.title }}</span>&nbsp;from&nbsp;<span class="primary-color font-weight-bold font-italic">{{ education.school }}</span><br />
                                 </v-card-title>
-                                <v-card-text class="card-text">
-                                    <p>{{ education.city }}, {{ education.country }}</p>
-                                    <p class="primary-color accentuate" v-if="!education.end_date">{{ education.start_date }}</p>
-                                    <p class="primary-color accentuate" v-else>{{ education.start_date }} - {{ education.end_date }}</p>
-                                    <p>{{ education.description }}</p>
+                                <v-card-text class="card-text text-color" style="">
+                                    <p class="text-color" v-if="!education.end_date">{{ education.start_date }}</p>
+                                    <p class="text-color" v-else>{{ education.start_date }} - {{ education.end_date }}</p>
+                                    <p class="text-color">{{ education.description }}</p>
                                 </v-card-text>
                             </v-card>
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                    </v-row>
                 </div>
 
                 <!-- Section Work experience -->
-                <div class="page page-3 align-center" data-index="2">
-                    <v-layout row justify-center class="subpage" style="" v-if="resume.work_experience && resume.work_experience.length > 0">
-                        <v-flex xs12 sm6 md4 v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;">
-                            <v-card :color="secondaryColor" class="card" style="">
-                                <v-card-title class="card-title">
-                                    {{ work_experience.job_title }} at&nbsp;<span class="primary-color accentuate italic">{{ work_experience.company }}</span><br />
+                <div class="page page-3 align-center" data-index="2" style="height: 100%; overflow-y: auto;">
+                    <!-- <v-layout row justify-center class="subpage" style="" v-if="resume.work_experience && resume.work_experience.length > 0"> -->
+                    <v-row no-gutters justify="center" class="subpage" style="height: 80%; overflow-y: auto;" v-if="resume.work_experience && resume.work_experience.length > 0">
+                        <!-- <v-flex xs12 sm6 md4 v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;"> -->
+                        <v-col cols="12" sm="6" md="4" v-for="(work_experience, index) in resume.work_experience" :key="index" v-animate="{value: animationEffect}" class="pa-2" style="height: 100%;">
+                            <v-card class="card secondary-color-background" style="">
+                                <v-card-title class="card-title text-color">
+                                    <span class="font-weight-bold">{{ work_experience.job_title }}</span>&nbsp;at&nbsp;<span class="primary-color font-weight-bold font-italic">{{ work_experience.company }}</span><br />
                                 </v-card-title>
-                                <v-card-text class="card-text">
-                                    <p class="primary-color accentuate" v-if="!work_experience.end_date">{{ work_experience.start_date }}</p>
-                                    <p class="primary-color accentuate" v-else>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
-                                    <p>{{ work_experience.job_description }}</p>
+                                <v-card-text class="card-text text-color">
+                                    <p class="text-color font-italic" v-if="!work_experience.end_date">{{ work_experience.start_date }}</p>
+                                    <p class="text-color font-italic" v-else>{{ work_experience.start_date }} - {{ work_experience.end_date }}</p>
+                                    <p class="text-color">{{ work_experience.job_description }}</p>
                                 </v-card-text>
                             </v-card>
-                        </v-flex>
-                    </v-layout>
+                        <!-- </v-flex> -->
+                        </v-col>
+                    <!-- </v-layout> -->
+                    </v-row>
                 </div>
 
                 <!-- Section Skills -->
-                <div class="page page-4 align-center" data-index="3">
-                    <v-layout row wrap class="subpage" style="" v-if="resume.skills && resume.skills.length > 0" v-animate="{value: animationEffect}">
+                <div class="page page-4 align-center" data-index="3" style="height: 100%; overflow-y: auto;">
+                    <!-- <v-layout row wrap class="subpage" style="" v-if="resume.skills && resume.skills.length > 0" v-animate="{value: animationEffect}"> -->
+                    <v-row no-gutters class="subpage" style="height: 80%; overflow-y: auto;" v-animate="{value: animationEffect}" v-if="resume.skills && resume.skills.length > 0">
                         <!-- <p class="part-4" v-animate="{value: 'bounceInLeft'}">Skills</p> -->
-                        <v-flex xs12 sm6 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center" style="height: 100%;">
-                            <h2 class="text-xs-center mb-2">{{ skill[0].category }}</h2>
-                            <v-layout row wrap justify-center>
-                                <v-flex xs12 sm6 class="my-4 mx-0 px-3" v-for="s in skill" :key="s.name">
+                        <!-- <v-flex xs12 sm6 v-for="skill in skills" :key="skill.slug" class="pa-4 text-xs-center" style="height: 100%;"> -->
+                        <v-col cols="12" sm="6" v-for="skill in skills" :key="skill.slug" class="pa-4 text-center" style="height: 100%;">
+                            <h2 class="text-center mb-2">{{ skill[0].category }}</h2>
+                            <!-- <v-layout row wrap justify-center> -->
+                            <v-row no-gutters justify="center">
+                                <!-- <v-flex xs12 sm6 class="my-4 mx-0 px-3" v-for="s in skill" :key="s.name"> -->
+                                <v-col cols="12" sm="6" class="my-4 mx-0 px-3" v-for="s in skill" :key="s.name">
                                     <div v-if="s.type === 'pie'" class="">
                                         <v-progress-circular :rotate="270" :size="100" :width="10" :value="s.value" :color="colors.secondaryColor" class="pie">
                                             <span class="text-color">{{ s.value }}%</span>
@@ -126,46 +146,70 @@
                                         {{ s.name }}
                                     </div>
                                     <div v-else class="">
-                                        <v-layout>
-                                            <v-flex class="text-xs-left py-2">
+                                        <!-- <v-layout> -->
+                                        <v-row no-gutters>
+                                            <!-- <v-flex class="text-xs-left py-2"> -->
+                                            <v-col class="text-left py-2">
                                                 <span>{{ s.name }}</span>
-                                            </v-flex>
-                                            <v-flex class="text-xs-right py-2">
+                                            <!-- </v-flex> -->
+                                            </v-col>
+                                            <!-- <v-flex class="text-xs-right py-2"> -->
+                                            <v-col class="text-right py-2">
                                                 <span>{{ s.value }}%</span>
-                                            </v-flex>
-                                        </v-layout>
+                                            <!-- </v-flex> -->
+                                            </v-col>
+                                        <!-- </v-layout> -->
+                                        </v-row>
                                         <v-progress-linear :color="colors.secondaryColor" height="20" :value="s.value" class="bar"></v-progress-linear>
                                     </div>
                                     <!-- </div> -->
-                                </v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
+                                <!-- </v-flex> -->
+                                </v-col>
+                            <!-- </v-layout> -->
+                            </v-row>
+                        <!-- </v-flex> -->
+                        </v-col>
+                    <!-- </v-layout> -->
+                    </v-row>
                 </div>
 
                 <!-- Section Contact -->
-                <div class="page page-5 align-center" data-index="4">
-                    <v-layout row wrap class="subpage" style="" v-animate="{value: animationEffect}" v-if="resume.parameters && resume.parameters.show_contact_form">
-                        <v-flex xs12 sm8 offset-sm2 class="pa-4" style="height: 100%;">
-                            <v-form>
-                                <v-layout row wrap>
-                                    <v-flex xs6 class="pr-3">
-                                        <v-text-field outline name="firstname_template3" :label="resume.fields['firstname'] || 'Firstname'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs6 class="pl-3">
-                                        <v-text-field outline dark name="lastname_template3" :label="resume.fields['lastname'] || 'Lastname'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.lastnameRules" v-model="contactForm.lastname"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12>
-                                        <v-text-field outline dark name="email_template3" :label="resume.fields['email'] || 'Email'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.emailRules" v-model="contactForm.email"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs12>
-                                        <v-textarea outline dark name="message_template3" :label="resume.fields['message'] || 'Message'" :color="colors.primaryColor" :background-color="colors.primaryColor" :rules="contactForm.messageRules" v-model="contactForm.message"></v-textarea>
-                                    </v-flex>
-                                    <v-btn round block large class="white--text pt-0 pb-0" :color="colors.primaryColor">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
-                                </v-layout>
+                <div class="page page-5 align-center" data-index="4" style="height: 100%; overflow-y: auto;">
+                    <!-- <v-layout row wrap class="subpage" style="" v-animate="{value: animationEffect}" v-if="resume.parameters && resume.parameters.show_contact_form"> -->
+                    <v-row no-gutters class="subpage" style="height: 80%; overflow-y: auto;" v-animate="{value: animationEffect}" v-if="resume.parameters && resume.parameters.show_contact_form">
+                        <!-- <v-flex xs12 sm8 offset-sm2 class="pa-4" style="height: 100%;"> -->
+                        <v-col cols="12" sm="8" offset-sm="2" class="pa-4" style="height: 100%;">
+                            <v-form style="">
+                                <!-- <v-layout row wrap> -->
+                                <v-row no-gutters>
+                                    <!-- <v-flex xs6 class="pr-3"> -->
+                                    <v-col cols="6" class="pr-3">
+                                        <v-text-field outlined name="firstname_template3" :label="resume.fields['firstname'] || 'Firstname'" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
+                                    <!-- </v-flex> -->
+                                    </v-col>
+                                    <!-- <v-flex xs6 class="pl-3"> -->
+                                    <v-col cols="6" class="pl-3">
+                                        <v-text-field outlined name="lastname_template3" :label="resume.fields['lastname'] || 'Lastname'" :rules="contactForm.lastnameRules" v-model="contactForm.lastname"></v-text-field>
+                                    <!-- </v-flex> -->
+                                    </v-col>
+                                    <!-- <v-flex xs12> -->
+                                    <v-col cols="12">
+                                        <v-text-field outlined dark name="email_template3" :label="resume.fields['email'] || 'Email'" :rules="contactForm.emailRules" v-model="contactForm.email"></v-text-field>
+                                    <!-- </v-flex> -->
+                                    </v-col>
+                                    <!-- <v-flex xs12> -->
+                                    <v-col cols="12">
+                                        <v-textarea outlined dark name="message_template3" :label="resume.fields['message'] || 'Message'" :rules="contactForm.messageRules" v-model="contactForm.message"></v-textarea>
+                                    <!-- </v-flex> -->
+                                    </v-col>
+                                    <v-btn rounded block large class="white--text pt-0 pb-0" :color="colors.primaryColor">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
+                                <!-- </v-layout> -->
+                                </v-row>
                             </v-form>
-                        </v-flex>
-                    </v-layout>
+                        <!-- </v-flex> -->
+                        </v-col>
+                    <!-- </v-layout> -->
+                    </v-row>
                 </div>
             </div>
         </div>
@@ -288,7 +332,67 @@
 							end_date: '2005',
 							country: 'United Kingdom',
 							city: 'Cambridge'
-						}
+						},
+                        {
+                            title: 'Art & Multimedia 2',
+                            description:
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                            school: 'Oxford University',
+                            start_date: '2005',
+                            end_date: '2008',
+                            country: 'United Kingdom',
+                            city: 'Oxford'
+                        },
+                        {
+                            title: 'Dramatic Arts 2',
+                            description:
+                                'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                            school: 'Cambridge University',
+                            start_date: '2002',
+                            end_date: '2005',
+                            country: 'United Kingdom',
+                            city: 'Cambridge'
+                        },
+                        {
+                            title: 'Art & Multimedia 3',
+                            description:
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                            school: 'Oxford University',
+                            start_date: '2005',
+                            end_date: '2008',
+                            country: 'United Kingdom',
+                            city: 'Oxford'
+                        },
+                        {
+                            title: 'Dramatic Arts 3',
+                            description:
+                                'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                            school: 'Cambridge University',
+                            start_date: '2002',
+                            end_date: '2005',
+                            country: 'United Kingdom',
+                            city: 'Cambridge'
+                        },
+                        {
+                            title: 'Art & Multimedia 4',
+                            description:
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                            school: 'Oxford University',
+                            start_date: '2005',
+                            end_date: '2008',
+                            country: 'United Kingdom',
+                            city: 'Oxford'
+                        },
+                        {
+                            title: 'Dramatic Arts 4',
+                            description:
+                                'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                            school: 'Cambridge University',
+                            start_date: '2002',
+                            end_date: '2005',
+                            country: 'United Kingdom',
+                            city: 'Cambridge'
+                        },
 					],
 					work_experience: [
 						{
@@ -568,7 +672,9 @@
 	.secondary-color-background {
 		background: var(--secondary-color);
 	}
-
+    .text-background-color {
+        color: var(--background-color);
+    }
 	.text-big {
 		font-size: 1.2em;
 	}
@@ -601,20 +707,22 @@
 	}
 
 	.card {
-		color: var(--text-color);
-		background-color: var(--secondary-color);
+		/*color: var(--text-color);*/
+		/*background-color: var(--secondary-color);*/
 		padding: 5px 0px;
 		border-radius: 10px;
 	}
 	.card-title {
+        /*color: var(--primary-color);*/
 		padding: 10px 20px;
 		font-size: 1.3em;
 	}
 	.card-text {
+        /*color: var(--text-color);*/
 		padding: 0px 20px;
 	}
 	.card-date {
-		color: var(--primary-color);
+		/*color: var(--primary-color);*/
 		font-weight: 500;
 		padding: 10px 0px;
 	}
@@ -634,7 +742,13 @@
 	::-webkit-scrollbar-thumb:hover {
 		background: var(--text-color);
 	}
-	>>> .v-text-field--outline .v-label {
+	/*>>> .v-text-field--outline .v-label {
 		color: var(--text-color);
 	}
+    >>> .v-text-field__slot input {
+        color: red
+    }*/
+    >>> .theme--dark.v-label {
+        color: var(--text-color);
+    }
 </style>

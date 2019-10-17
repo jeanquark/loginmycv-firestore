@@ -24,55 +24,57 @@
 		</v-col>
 
         <!-- <v-layout justify-center> -->
-		<v-row no-gutters>
+		<v-col cols="12">
             <h2 class="text-center">My resumes</h2>
             <br />
             <br />
         <!-- </v-layout> -->
-		</v-row>
+		</v-col>
         <!-- <v-flex xs12 class="text-xs-center" id="myDiv"> -->
 		<v-col cols="12" class="text-center">
             <v-card flat class="ma-2">
                 <v-card-text class="ma-0 pa-0">
-                    <v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1">
-                        <template v-slot:body="{ items }">
-							<tbody>
-								<tr v-for="(item, index) in items" :key="index">
-									<td class="text-left">{{ index + 1 }}</td>
-									<td class="text-left">
-										<v-row no-gutters align="center" class="fill-height">
-											<v-text-field :name="`name${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${index}`) : null" data-vv-as="Name" :value="item.name" @input="updateName($event, item.id)" class="mr-2"></v-text-field>
+                	<client-only>
+						<v-data-table :headers="headers" :items="loadedUserResumes" class="elevation-1">
+	                        <template v-slot:body="{ items }">
+								<tbody>
+									<tr v-for="(item, index) in items" :key="index">
+										<td class="text-left">{{ index + 1 }}</td>
+										<td class="text-left">
+											<v-row no-gutters align="center" class="fill-height">
+												<v-text-field :name="`name${index}`" v-validate="{ max: 50 }" :error-messages="errors ? errors.collect(`name${index}`) : null" data-vv-as="Name" :value="item.name" @input="updateName($event, item.id)" class="mr-2"></v-text-field>
 
-											<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newValue: newResumeNameMap.get(item.id), index: index })" class="icon" v-if="newResumeNameMap.get(item.id) !== item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
+												<font-awesome-icon :icon="['fas', 'save']" size="lg" @click="updateResumeName({ resumeId: item.id, newValue: newResumeNameMap.get(item.id), index: index })" class="icon" v-if="newResumeNameMap.get(item.id) !== item.name && !loadingArray.length > 0 && (errors && errors.items ? errors.items.length < 1 : null)" />
 
-											<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[index]" />
-										</v-row>
-									</td>
-									<td>
-										<v-checkbox v-model="item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: item.id, newValue: !item.active })"></v-checkbox>
-									</td>
-									<td class="text-left">{{ item.slug }}</td>
-									<td class="text-left">{{ item.language ? item.language.name : '' }}</td>
-									<td class="text-left">{{ item.job_title }}</td>
-									<td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>
-									<td>{{ parseInt(item._updated_at) | moment('from') }}</td>
-									<td class="px-0">
-										<v-row no-gutters justify="center" align="center" class="fill-height">
-											<v-btn text icon target="_blank" :href="`/resume/${item.slug}`">
-												<v-icon small color="secondary">mdi-open-in-new</v-icon>
-											</v-btn>
-											<v-btn text icon nuxt :to="`/candidate/resumes/${item.slug}`">
-												<v-icon small color="success">mdi-pencil</v-icon>
-											</v-btn>
-											<v-btn text icon @click="requestConfirmation(item)">
-												<v-icon small color="error">mdi-delete</v-icon>
-											</v-btn>
-										</v-row>
-									</td>
-								</tr>
-							</tbody>
-                        </template>
-                    </v-data-table>
+												<font-awesome-icon :icon="['fas', 'spinner']" spin size="lg" v-if="loadingArray.length > 0 && loadingArray[index]" />
+											</v-row>
+										</td>
+										<td>
+											<v-checkbox v-model="item.active" color="success" @click.stop="updateResumeActiveStatus({ resumeId: item.id, newValue: !item.active })"></v-checkbox>
+										</td>
+										<td class="text-left">{{ item.slug }}</td>
+										<td class="text-left">{{ item.language ? item.language.name : '' }}</td>
+										<td class="text-left">{{ item.job_title }}</td>
+										<td>{{ parseInt(item._created_at) | moment('DD MMM YYYY') }}</td>
+										<td>{{ parseInt(item._updated_at) | moment('from') }}</td>
+										<td class="px-0">
+											<v-row no-gutters justify="center" align="center" class="fill-height">
+												<v-btn text icon target="_blank" :href="`/resume/${item.slug}`">
+													<v-icon small color="secondary">mdi-open-in-new</v-icon>
+												</v-btn>
+												<v-btn text icon nuxt :to="`/candidate/resumes/${item.slug}`">
+													<v-icon small color="success">mdi-pencil</v-icon>
+												</v-btn>
+												<v-btn text icon @click="requestConfirmation(item)">
+													<v-icon small color="error">mdi-delete</v-icon>
+												</v-btn>
+											</v-row>
+										</td>
+									</tr>
+								</tbody>
+	                        </template>
+	                    </v-data-table>
+                	</client-only>
                     <v-btn fab absolute small bottom right color="pink" slot="activator" style="z-index: 0" @click="addResume">
                         <v-icon color="white">mdi-plus</v-icon>
                     </v-btn>
@@ -81,12 +83,14 @@
 		</v-col>
 
         <!-- <v-flex xs10 offset-xs1 class="text-xs-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0"> -->
-		<v-col xs="10" offset-xs="1" class="text-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0">
+		<v-col cols="10" offset="1" class="text-center my-5" v-if="loadedUserResumes.length > 0 && getStatistics.length > 0">
             <h2 class="text-center">Statistics</h2>
             <small>(Number of clicks on your resume(s))</small>
             <br />
             <br />
-            <GChart type="ColumnChart" :data="chartData" :options="chartOptions" :resizeDebounce="500" class="ma-2" />
+            <!-- <client-only> -->
+            	<GChart type="ColumnChart" :data="chartData" :options="chartOptions" :resizeDebounce="500" class="ma-2" />
+        	<!-- </client-only> -->
             <br />
             <br />
 
@@ -226,6 +230,101 @@
 					{ text: 'Last update', value: 'updated_at' },
 					{ text: 'Actions', align: 'center', sortable: false }
 				],
+				headers2: [
+          {
+            text: 'Dessert (100g serving)',
+            align: 'left',
+            sortable: false,
+            value: 'name',
+          },
+          { text: 'Calories', value: 'calories' },
+          { text: 'Fat (g)', value: 'fat' },
+          { text: 'Carbs (g)', value: 'carbs' },
+          { text: 'Protein (g)', value: 'protein' },
+          { text: 'Iron (%)', value: 'iron' },
+        ],
+        desserts: [
+          {
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            iron: '1%',
+          },
+          {
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            iron: '1%',
+          },
+          {
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            iron: '7%',
+          },
+          {
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            iron: '8%',
+          },
+          {
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            iron: '16%',
+          },
+          {
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            iron: '0%',
+          },
+          {
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            iron: '2%',
+          },
+          {
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            iron: '45%',
+          },
+          {
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            iron: '22%',
+          },
+          {
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            iron: '6%',
+          },
+        ],
 				snackbarDeleteResume: false,
 				snackbarNoResume: false,
 				confirm: false,

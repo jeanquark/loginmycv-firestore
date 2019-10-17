@@ -10,7 +10,8 @@
             <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
             <!-- userResume.template.id: {{ userResume.template.id }}<br /><br /> -->
 			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
-			dialogResumePreview: {{ dialogResumePreview }}<br /><br />
+            <!-- loadDynamicComponent: {{ loadDynamicComponent }}<br /><br /> -->
+			<!-- dialogResumePreview: {{ dialogResumePreview }}<br /><br /> -->
         </div>
         <!-- <v-layout row wrap class="pa-2"> -->
         <v-row no-gutters class="pa-2">
@@ -18,7 +19,7 @@
             <v-col cols="12">
                 <v-card :elevation="12">
                     <v-card-title class="justify-center pb-0">
-                        <h2 class="headline mb-2">Choose a template</h2>
+                        <h2 class="headline mb-3">Pick up a template</h2>
                     </v-card-title>
 
                     <v-card-text>
@@ -26,7 +27,8 @@
                         <v-row no-gutters>
                             <!-- <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2"> -->
                             <v-col cols="12" sm="6" md="4" lg="3" v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                                <v-card tile hover :value="template.id" @click="selectTemplate(template)" :class="[userResume.template.id === template.id ? 'active' : null]" style="border: 0px solid red;">
+                                <!-- template.id: {{ template.id }} -->
+                                <v-card tile hover :value="template.id" :class="[userResume.template.id === template.id ? 'active' : null]" @click="selectTemplate(template)">
                                     <v-img :src="`/images/templates/${template.image}`" :lazy-src="`/images/templates/${template.image}`" aspect-ratio="1.5"></v-img>
                                     <!-- <div class="text-xs-center">{{ template.name }}</div> -->
                                     <!-- <div class="text-xs-center">{{ template.description }}</div> -->
@@ -73,33 +75,33 @@
                     <p class="text-center">{{ loadedTemplate.description }}</p>
 
                     <!-- <v-layout row align-center class="my-3" v-if="userResume"> -->
-                    <v-row align="center" class="my-3" v-if="userResume">
+                    <v-row no-gutters align="center" class="my-3" v-if="userResume">
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col cols="6" sm="4" class="text-center">
+                        <v-col class="text-center">
                             Primary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col cols="6" sm="4" class="text-center">
+                        <v-col class="text-center">
                             Secondary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col cols="6" sm="4" class="text-center">
+                        <v-col class="text-center">
                             Tertiary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col cols="6" sm="4" class="text-center">
+                        <v-col class="text-center">
                             Background color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
                         <!-- </v-flex> -->
                         </v-col>
                         <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
-                        <v-col cols="6" sm="4" class="text-center">
+                        <v-col class="text-center">
                             Text color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
                         <!-- </v-flex> -->
@@ -152,7 +154,7 @@
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Primary color 2<br /><br />
-                                <vue-colorpicker v-model="userResume.colors.primaryColor" v-if="userResume"></vue-colorpicker>
+                                <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
                             <!-- </v-flex> -->
                             </v-col>
                             <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
@@ -197,7 +199,7 @@
                         <h2 class="headline mb-0 text-center">
                             <font-awesome-icon :icon="['fas', 'language']" />
                             Translation <small>(optional)</small><br />
-                            <small class="body-1">You may specify below menu names and field names as you wish they appear on your resume</small>
+                            <small class="body-1">You may specify menu names and field names as you wish they appear on your resume if the language is other than english</small>
                         </h2>
                     </v-card-title>
 
@@ -211,20 +213,20 @@
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
                                     <template v-slot:selection="data">
                                         <v-chip :input-value="data.selected" class="chip--select-multi">
-                                            <v-avatar>
-                                                <img :src="`/images/languages/${data.item.flag}`">
+                                            <v-avatar left>
+                                                <v-img :src="`/images/languages/${data.item.flag}`"></v-img>
                                             </v-avatar>
                                             {{ data.item.name }}
                                         </v-chip>
                                     </template>
                                     <template v-slot:item="data">
                                         <template>
-                                            <v-list-tile-avatar>
+                                            <v-list-item-avatar>
                                                 <img :src="`/images/languages/${data.item.flag}`">
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-content>
-                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                                            </v-list-tile-content>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                            </v-list-item-content>
                                         </template>
                                     </template>
                                 </v-autocomplete>
@@ -309,14 +311,14 @@
                     <vue-colorpicker v-model="userResume.colors.secondaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Tertiary color
                     <vue-colorpicker v-model="userResume.colors.tertiaryColor" class="ml-1 mr-4"></vue-colorpicker>
-                    Background color
+                    Background coloruserResume
                     <vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-4"></vue-colorpicker>
                     Text color
                     <vue-colorpicker v-model="userResume.colors.textColor" class="ml-2 mr-3"></vue-colorpicker>
                 <!-- </v-layout> -->
                 </v-row>
 
-                <component :is="viewTemplateComponent" v-if="viewTemplateComponent" :colors="userResume.colors" style="height: 80vh; overflow-y: scroll;" />
+                <component :is="viewTemplateComponent" :colors="userResume.colors" style="height: 80vh; overflow-y: scroll;" v-if="viewTemplateComponent" />
             </v-card>
         </v-dialog>
     </div>
@@ -346,6 +348,23 @@
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
 			await this.$store.dispatch('templates/fetchTemplates')
+            // this.selectTemplate()
+            // this.userResume.template.id = 'template004'
+
+            // this.loadDynamicComponent().then(() => {
+            //     this.dynamicComponent = () => this.loadDynamicComponent()
+            // })
+            // .catch(() => {
+            //     this.dynamicComponent = null
+            // })
+
+            try {
+                await this.loadDynamicComponent
+                this.dynamicComponent = () => this.loadDynamicComponent()
+            } catch (error) {
+                this.dynamicComponent = null
+            }
+
 			// if (!this.loadedUserResumes || this.loadedUserResumes.length < 1) {
 			// 	await this.$store.dispatch('resumes/fetchUserResumes')
 			// }
@@ -422,9 +441,9 @@
 			// },
 			loadDynamicComponent() {
 				console.log('this.userResume2: ', this.userResume)
-				// return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
+				return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
 				// if (this.userResume) {
-					return () => import(`~/components/resume/dynamicTemplatesComponents/template004/TemplateComponent`)
+					// return () => import(`~/components/resume/dynamicTemplatesComponents/template004/TemplateComponent`)
 				// }
 				// return null
 			}
@@ -515,7 +534,8 @@
 
 <style scoped>
 	.active {
-		border: 4px solid var(--v-secondary-base);
+        border: 4px solid var(--v-secondary-base);
+		/*border: 4px solid red;*/
 	}
 	.primaryColor {
 		color: red;

@@ -17,7 +17,7 @@
 
             <v-card flat class="ma-2">
                 <v-card-title primary-title class="justify-center">
-                    <h5 class="font-weight-medium">List of authorizations you were asked for</h5>
+                    <h6 class="font-weight-medium">List of authorizations you were asked for</h6>
                 </v-card-title>
                 <v-card-text>
                     <v-data-table :headers="headersGivenAuthorizations" :items="loadedUserGivenAuthorizations" class="elevation-1">
@@ -96,7 +96,7 @@
             <!-- <b>loadedUserReceivedAuthorizations:</b> {{ loadedUserReceivedAuthorizations }}<br /> -->
             <v-card flat class="ma-2">
                 <v-card-title primary-title class="justify-center">
-                    <h5 class="font-weight-medium">List of the authorizations you requested</h5>
+                    <h6 class="font-weight-medium">List of the authorizations you requested</h6>
                 </v-card-title>
                 <v-card-text>
                     <v-data-table :headers="headersReceivedAuthorizations" :items="loadedUserReceivedAuthorizations" class="elevation-1">
