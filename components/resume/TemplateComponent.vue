@@ -12,6 +12,7 @@
 			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
             <!-- loadDynamicComponent: {{ loadDynamicComponent }}<br /><br /> -->
 			<!-- dialogResumePreview: {{ dialogResumePreview }}<br /><br /> -->
+            loading: {{ loading }}<br /><br />
         </div>
         <!-- <v-layout row wrap class="pa-2"> -->
         <v-row no-gutters class="pa-2">
@@ -295,8 +296,7 @@
         <v-dialog no-gutters v-model="dialogResumePreview" fullscreen hide-overlay transition="dialog-bottom-transition" style="">
             <v-card style="position: fixed; top: 0; left: 0; z-index: 999; width: 100%; height: 20vh;">
                 <v-toolbar dark color="primary" class="align-center" style="cursor: pointer;" @click="dialogResumePreview = false">
-					<h3 class="text-center mr-2">Preview</h3>
-					
+					<h3 class="text-center mr-2">Preview <small>(click to exit)</small></h3>
                     <v-spacer></v-spacer>
                     <!-- <v-toolbar-title>Close</v-toolbar-title> -->
                     <v-btn icon dark @click="dialogResumePreview = false" class="mr-2">
@@ -311,7 +311,7 @@
                     <vue-colorpicker v-model="userResume.colors.secondaryColor" class="ml-1 mr-4"></vue-colorpicker>
                     Tertiary color
                     <vue-colorpicker v-model="userResume.colors.tertiaryColor" class="ml-1 mr-4"></vue-colorpicker>
-                    Background coloruserResume
+                    Background color
                     <vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-4"></vue-colorpicker>
                     Text color
                     <vue-colorpicker v-model="userResume.colors.textColor" class="ml-2 mr-3"></vue-colorpicker>
@@ -344,6 +344,7 @@
 			// components
 		},
 		async created() {
+            this.$store.commit('setLoading', true)
 			const resumeSlug = this.$route.params.slug
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
@@ -364,6 +365,7 @@
             } catch (error) {
                 this.dynamicComponent = null
             }
+            this.$store.commit('setLoading', false)
 
 			// if (!this.loadedUserResumes || this.loadedUserResumes.length < 1) {
 			// 	await this.$store.dispatch('resumes/fetchUserResumes')
@@ -390,7 +392,6 @@
 		},
 		mounted() {
 			if (this.userResume) {
-
 				this.loadDynamicComponent()
 					.then(() => {
 						this.dynamicComponent = () => this.loadDynamicComponent()
@@ -413,6 +414,9 @@
 			}
 		},
 		computed: {
+            loading() {
+                return this.$store.getters['loading']
+            },
 			loadedTemplates() {
 				return this.$store.getters['templates/loadedTemplates']
 			},

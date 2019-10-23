@@ -1,28 +1,30 @@
 <template>
     <v-app id="app" v-cloak>
         <v-navigation-drawer v-model="sideBar" app>
-            <v-list dense>
+            <v-list dense nav>
+				<v-list-item-group color="primary">
                 <v-list-item>
                     <v-list-item-action>
-                        <v-icon>mdi-home</v-icon>
+                        <v-icon>mdi-login</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title>Home</v-list-item-title>
+                        <v-list-item-title @click="openLoginModal">Login</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
                 <v-list-item>
                     <v-list-item-action>
-                        <v-icon>mdi-contact-mail</v-icon>
+                        <v-icon>mdi-account-plus</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title>Contact</v-list-item-title>
+                        <v-list-item-title @click="openRegisterModal">Register</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+				</v-list-item-group>
             </v-list>
         </v-navigation-drawer>
 
         <v-app-bar app color="primary" dark>
-            <v-app-bar-nav-icon @click.stop="sideBar = !sideBar"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="sideBar = !sideBar" :class="{'hidden-sm-and-up': !sideBar}"></v-app-bar-nav-icon>
             <v-img src="/images/logo_small.png" max-width="40" class="mx-2"></v-img>&nbsp;
             <v-toolbar-title>LoginMyCV</v-toolbar-title>
             <v-spacer></v-spacer>

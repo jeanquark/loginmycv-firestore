@@ -89,7 +89,7 @@
             <br />
             <br />
             <!-- <client-only> -->
-            	<GChart type="ColumnChart" :data="chartData" :options="chartOptions" :resizeDebounce="500" class="ma-2" />
+            	<!-- <GChart type="ColumnChart" :data="chartData" :options="chartOptions" :resizeDebounce="500" class="ma-2" /> -->
         	<!-- </client-only> -->
             <br />
             <br />

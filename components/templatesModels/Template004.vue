@@ -3,7 +3,8 @@
         colors: {{ colors }}<br /><br />
         markers: {{ markers }}<br /><br />
         <div style="height: 100vh">
-            <no-ssr>
+            <!-- <no-ssr> -->
+			<client-only>
                 <l-map :zoom="3" :center="resume.template.map.center" style="background: #AADAFF">
                     <l-geo-json :geojson="geojson" :optionsStyle="styleFunction"></l-geo-json>
                     <!-- <l-marker :lat-lng="[45.508889, -73.561667]" :draggable="false" :icon="customIcon">
@@ -11,19 +12,27 @@
                             <v-img src="/images/unibe.jpg" width="100"></v-img>
                         </l-popup>
                     </l-marker> -->
-                    <l-marker :lat-lng="[abc.map_marker.lat, abc.map_marker.long]" :draggable="false" v-for="(abc, index) in markers" :key="index">
+                    <!-- <l-marker :lat-lng="[abc.map_marker.lat, abc.map_marker.long]" :draggable="false" v-for="(abc, index) in markers" :key="index">
 						<l-tooltip>Hello!</l-tooltip>
-						<!-- <l-popup>
-							<b>{{ abc.title }}</b> {{ abc.school }}<br />
-							{{ abc.city }}, {{ abc.country }}<br />
-							{{ abc.start_date }} - {{ abc.end_date }}
-						</l-popup>
-                        <l-icon :popupAnchor="[12, -10]">
-                            <v-icon large :color="abc.map_marker.type === 'education' ? colors.primaryColor : colors.secondaryColor">location_on</v-icon>
-                        </l-icon> -->
-                    </l-marker>
+                    </l-marker> -->
+					<l-marker v-for="item in markers" :key="item.key" :lat-lng="[item.position.lat, item.position.lng]" :visible="true">
+						<l-icon :iconSize="[0, 0]" :iconAnchor="[18, 34]" :tooltipAnchor="[10, -20]">
+                            <!-- <v-icon large :color="item.type === 'education' ? '#FFOOOO' : '#00FF00'">mdi-map-marker</v-icon> -->
+							<v-icon large :color="item.type === 'education' ? colors.primaryColor : colors.secondaryColor">mdi-map-marker</v-icon>
+                        </l-icon>
+						<l-tooltip>
+							<div>
+								<h3>{{ item.title }}</h3>
+								<p>{{ item.city }}, {{ item.country }}</p>
+								<p>{{ item.start_date }} - {{ item.end_date }}</p>
+								<v-img :src="`/images/${item.image}`" max-width="200" v-if="item.image"></v-img>
+							</div>
+
+						</l-tooltip>
+					</l-marker>
                 </l-map>
-            </no-ssr>
+            <!-- </no-ssr> -->
+			</client-only>
         </div>
     </v-app>
 </template>
@@ -42,6 +51,10 @@
 		async created() {
 			const { data } = await axios.get(`/geoJSON/${this.resume.template.map.geoJSON}`)
 			this.geojson = data
+		},
+		mounted () {
+			this.primaryColor = this.resume.colors && this.resume.colors.primaryColor ? this.resume.colors.primaryColor : '#7A528F'
+			this.secondaryColor = this.resume.colors && this.resume.colors.secondaryColor ? this.resume.colors.secondaryColor : '#202026'
 		},
 		data() {
 			return {
@@ -103,6 +116,8 @@
 				// 		}
 				// 	}
 				// }
+				primaryColor: '',
+				secondaryColor: '',
 				resume: {
 					job_title: 'Product Designer',
 					job_description:
@@ -136,7 +151,7 @@
 							level: 60
 						}
 					],
-					social_network: [
+					social_networks: [
 						{
 							name: 'Github',
 							slug: 'github',
@@ -169,10 +184,11 @@
 							end_date: '2008',
 							country: 'United Kingdom',
 							city: 'Oxford',
-							map_marker: {
-								lat: 35,
-								long: -110,
-								type: 'education'
+							// type: 'education',
+							image: '/images/oxford.jpg',
+							position: {
+								lat: 51.76412,
+								lng: -1.26324,
 							}
 						},
 						{
@@ -184,10 +200,11 @@
 							end_date: '2005',
 							country: 'United Kingdom',
 							city: 'Cambridge',
-							map_marker: {
-								lat: 40,
-								long: -90,
-								type: 'education'
+							// type: 'education',
+							image: '/images/cambridge.jpg',
+							position: {
+								lat: 52.20167,
+								lng: 0.11779,
 							}
 						}
 					],
@@ -201,10 +218,10 @@
 							company: 'Answer Softwares Ltd',
 							country: 'United Kingdom',
 							city: 'London',
-							map_marker: {
-								lat: 45,
-								long: -120,
-								type: 'work_experience'
+							// type: 'work_experience',
+							position: {
+								lat: 51.50735,
+								lng: -0.12776,
 							}
 						},
 						{
@@ -216,9 +233,11 @@
 							company: 'Asco Int.',
 							country: 'United Kingdom',
 							city: 'London',
-							// map_marker: {
-							// 	type: 'work_experience'
-							// }
+							// type: 'work_experience',
+							position: {
+								lat: 51.50956,
+								lng: -0.07617,
+							}
 						}
 					],
 					skills: [
@@ -281,35 +300,25 @@
 					template: {
 						id: 'template004',
 						map: {
-							name: 'Switzerland',
-							slug: 'switzerland',
-							// geoJSON: 'switzerland_with_cantons.json'
-							geoJSON: 'usa_with_states_20m.json',
-							center: [35.0, -115.0]
+							name: 'World',
+							slug: 'world',
+							geoJSON: 'world.json',
+							center: [51.47777778, 0]
 						},
-						// map_markers: [
-						// 	{
-						// 		name: 'Bachelor in Geography',
-						// 		slug: 'bachelor_in_geography',
-						// 		lat: 25,
-						// 		long: -110
-						// 	},
-						// 	{
-						// 		name: 'Certificate of Webmaster',
-						// 		slug: 'certificate_of_webmaster',
-						// 		lat: 40,
-						// 		long: -90
-						// 	}
-						// ],
 						map_subdivisions: [
 							{
-								name: 'Arizona',
-								slug: 'arizona',
+								name: 'United Kingdom',
+								slug: 'united_kingdom',
 								color: 'rgb(234, 28, 28)'
 							},
 							{
-								name: 'California',
-								slug: 'california',
+								name: 'Switzerland',
+								slug: 'switzerland',
+								color: 'rgb(14, 247, 47)'
+							},
+							{
+								name: 'Poland',
+								slug: 'poland',
 								color: 'rgb(14, 247, 47)'
 							}
 						]
@@ -328,6 +337,25 @@
 			// 	}
 			// }
 			markers() {
+				const markersArray = []
+				markersArray.push({ personal_data: this.resume.personal_data, skills: this.resume.skills, social_networks: this.resume.social_networks, uploads: this.resume.uploads, position: this.resume.personal_data.position })
+				this.resume.education.forEach(education => {
+					if (education.position) {
+						// markersArray.push({ ...education, color: this.resume.colors ? this.resume.colors.primaryColor : this.primaryColor })
+						markersArray.push({ ...education, type: 'education' })
+					}
+				})
+				this.resume.work_experience.forEach(work_experience => {
+					if (work_experience.position) {
+						// markersArray.push({ ...work_experience, color: this.resume.colors ? this.resume.colors.secondaryColor : this.secondaryColor })
+						markersArray.push({ ...work_experience, type: 'work_experience' })
+					}
+				})
+				console.log('markersArray: ', markersArray)
+				console.log('markersArray.filter: ', markersArray.filter(item => item.position))
+				return markersArray.filter(item => item.position)
+			},
+			markers2() {
 				const array = []
 				this.resume.education.forEach(education => {
 					if (education.map_marker) {
