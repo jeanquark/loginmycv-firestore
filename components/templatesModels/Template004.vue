@@ -185,7 +185,7 @@
 							country: 'United Kingdom',
 							city: 'Oxford',
 							// type: 'education',
-							image: '/images/oxford.jpg',
+							image: '/oxford.jpg',
 							position: {
 								lat: 51.76412,
 								lng: -1.26324,
@@ -201,7 +201,7 @@
 							country: 'United Kingdom',
 							city: 'Cambridge',
 							// type: 'education',
-							image: '/images/cambridge.jpg',
+							image: '/cambridge.jpg',
 							position: {
 								lat: 52.20167,
 								lng: 0.11779,

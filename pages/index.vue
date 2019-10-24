@@ -15,12 +15,12 @@
 		<v-container class="text-center">
 			<v-row no-gutters justify="center" class="mb-5">
 				<v-col>
-                    <h1 class="grey--text text--lighten-1 my-8">Uploading your CV online just got easier</h1>
+                    <h1 class="grey--text text--accent-1 my-8">Uploading your CV online just got easier</h1>
 
 					<v-row no-gutters justify="center" align="center" class="">
-						<v-col cols="12" sm="6" class="pa-2">
-		                    <h2 class="text-left font-weight-bold mb-2">Welcome to LoginMyCV, your online CV provider</h2>
-							<p class="text-left subtitle-1">At <span class="primary--text font-weight-bold">loginmycv.com</span>, we make sure anyone can reach global audience with a simple CV. By following our clear and concise guidelines, you will get your resume online in <span class="secondary--text font-weight-bold">no time</span>. At the end of the process, you will have your own personal web page. And you'll find yourself in the <span class="secondary--text font-weight-bold">advantageous</span> position of passing a short url over to potential employers for them to access all your details. You can even make your profile <span class="secondary--text font-weight-bold">stands out</span> right here on the frontpage! <br /><br />We are looking forward to embarking with you on the journey to <span class="secondary--text font-weight-bold">success</span>.</p>
+						<v-col cols="12" sm="6" class="px-6">
+		                    <h2 class="text-center font-weight-bold mb-3">Welcome to LoginMyCV, your online CV provider</h2>
+							<p class="text-left subtitle-1">At <span class="primary--text font-weight-bold">loginmycv.com</span>, we make sure anyone can reach global audience with a simple CV. By following our clear and concise guidelines, you will get your resume online in <span class="secondary--text font-weight-bold">no time</span>. At the end of the process, you will have your own personal web page. And you'll find yourself in the <span class="secondary--text font-weight-bold">advantageous</span> position of passing a short url over to potential employers for them to access all your details. You can even make your profile <span class="secondary--text font-weight-bold">stands out</span> right here on the frontpage! <br /><br />We are looking forward to embarking with you on this journey to <span class="secondary--text font-weight-bold">success</span>.</p>
 							<!-- <div class="text-center hidden-sm-and-down"> -->
 							<v-row justify="center" class="hidden-sm-and-down">
                         		<v-img src="/images/logo3.png" lazy-src="/images/logo3.png" max-width="100"></v-img>
@@ -28,20 +28,22 @@
 							</v-row>
 							<!-- </div> -->
 						</v-col>
-						<v-col cols="12" sm="6" class="pa-2">
-							<v-img src="/images/frontpage1.jpg" lazy-src="/images/frontpage1.jpg"></v-img>
+						<v-col cols="12" sm="6" class="px-6">
+							<v-img src="/images/frontpage2.png" lazy-src="/images/frontpage2.png"></v-img>
 						</v-col>
 					</v-row>
 				</v-col>
 			</v-row>
 
             <!-- <v-layout row wrap class="mb-5"> -->
-			<v-row no-gutters class="mb-5">
+			<v-row no-gutters class="my-8">
                 <!-- <v-flex xs12 sm4> -->
 				<v-col cols="6" sm="4">
                     <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
-                            <font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" class="primaryColor" />
+                        <v-card-text class="text-center pb-0">
+							<v-hover v-slot:default="{ hover }">
+                            	<font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+							</v-hover>
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Your online CV for free</div>
@@ -55,14 +57,14 @@
                 <!-- <v-flex xs12 sm4> -->
 				<v-col cols="6" sm="4">
                     <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
+                        <v-card-text class="text-center pb-0">
                             <font-awesome-icon :icon="['fas', 'lock']" size="2x" class="primaryColor" />
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Private & Secured data</div>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            All of your data is securely saved in the cloud. You decide who has access to which information. At all time your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
+                            All of your data is securely saved in the cloud. You decide who has access to which information. At all times your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
                         </v-card-text>
                     </v-card>
                 <!-- </v-flex> -->
@@ -70,14 +72,14 @@
                 <!-- <v-flex xs12 sm4> -->
 				<v-col cols="6" sm="4">
                     <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
+                        <v-card-text class="text-center pb-0">
                             <font-awesome-icon :icon="['fas', 'search']" size="2x" class="primaryColor" />
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Let recruiters find you</div>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume.
+                            An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. Our custom search tools ensures optimal results on every request.
                         </v-card-text>
                     </v-card>
                 <!-- </v-flex> -->
@@ -85,42 +87,42 @@
 
 				<v-col cols="6" sm="4">
 					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
+                        <v-card-text class="text-center pb-0">
                             <font-awesome-icon :icon="['fas', 'file-pdf']" size="2x" class="primaryColor" />
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Upload PDFs</div>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            Add files to complete your online resume. It could be a porfolio, some scientific article you wrote or any file that is not easy to join on a regular post sending.
+                            Add files to complete your online resume. Whether it is a porfolio, some scientific article or any file that will boost your profile. Your info is now only one single click away from your recruiter. 
                         </v-card-text>
                     </v-card>
 				</v-col>
 
 				<v-col cols="6" sm="4">
 					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
+                        <v-card-text class="text-center pb-0">
                             <font-awesome-icon :icon="['fas', 'chart-bar']" size="2x" class="primaryColor" />
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Get Statistics</div>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            Remain informed on how many people clicked on your resume. Which of your resumes get more attention? 
+                            Remain informed on how many people clicked on your resume. You can have many resumes and see which one performs best to attract visits. 
                         </v-card-text>
                     </v-card>
 				</v-col>
 
 				<v-col cols="6" sm="4">
 					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center">
+                        <v-card-text class="text-center pb-0">
                             <font-awesome-icon :icon="['fas', 'trophy']" size="2x" class="primaryColor" />
                         </v-card-text>
                         <v-card-title primary-title class="layout justify-center">
                             <div class="headline text-center">Go Premium</div>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            Access more templates, get more data insights, improve internal ranking and search results. In a word, be more professional with one of our subscription packages.
+                            Access more templates, get more data insights, improve internal ranking and search results. In a word, be more professional with one of our subscription packages. Learn more <nuxt-link to="/packages">here</nuxt-link>
                         </v-card-text>
                     </v-card>
 				</v-col>
@@ -698,6 +700,9 @@
 	}
 	.primaryColor {
 		color: var(--v-primary-base);
+	}
+	.secondaryColor {
+		color: var(--v-secondary-base);
 	}
 	.subtitle {
 		color: var(--v-secondary-base);
