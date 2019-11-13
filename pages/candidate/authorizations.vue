@@ -293,22 +293,26 @@
 					theme: 'metroui'
 				}).show()
 			}
-			// Displaying notifications effects
-			this.$store.getters['users/loadedUser'].notifications.forEach(notification => {
-				if (notification.type === 'authorization') {
-					console.log('notification: ', notification)
-					if (notification.value === 'new_authorization_sent') {
-						this.new_authorizations_sent.push(notification.authorization_id)
-					}
 
-					if (notification.value === 'new_authorization_received') {
-						this.new_authorizations_received.push(notification.authorization_id)
-					}
-					if (notification.value === 'new_authorization_status') {
-						this.new_authorizations_status.push(notification.authorization_id)
-					}
-				}
-			})
+			// Displaying notifications effects
+            if (this.$store.getters['users/loadedUser']['notifications']) {
+    			this.$store.getters['users/loadedUser']['notifications'].forEach(notification => {
+    				if (notification.type === 'authorization') {
+    					console.log('notification: ', notification)
+    					if (notification.value === 'new_authorization_sent') {
+    						this.new_authorizations_sent.push(notification.authorization_id)
+    					}
+
+    					if (notification.value === 'new_authorization_received') {
+    						this.new_authorizations_received.push(notification.authorization_id)
+    					}
+    					if (notification.value === 'new_authorization_status') {
+    						this.new_authorizations_status.push(notification.authorization_id)
+    					}
+    				}
+    			})
+            }
+            
 			// Delete all user notifications that are of type "authorization"
 			this.$store.dispatch('users/deleteUserNotifications')
 		},

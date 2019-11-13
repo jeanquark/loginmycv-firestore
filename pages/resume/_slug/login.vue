@@ -26,7 +26,7 @@
                                         style="display: none"
                                     ></v-text-field> -->
                                     <v-text-field
-                                        prepend-icon="lock" 
+                                        prepend-icon="mdi-lock" 
                                         name="password" 
                                         label="Password" 
                                         type="password"

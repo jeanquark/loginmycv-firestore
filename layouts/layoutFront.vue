@@ -26,7 +26,7 @@
         <v-app-bar app color="primary" dark>
             <v-app-bar-nav-icon @click.stop="sideBar = !sideBar" :class="{'hidden-sm-and-up': !sideBar}"></v-app-bar-nav-icon>
             <v-img src="/images/logo_small.png" max-width="40" class="mx-2"></v-img>&nbsp;
-            <v-toolbar-title>LoginMyCV</v-toolbar-title>
+            <v-toolbar-title><nuxt-link to="/" class="white--text">LoginMyCV</nuxt-link></v-toolbar-title>
             <v-spacer></v-spacer>
             <div class="hidden-xs-only font-weight-bold" v-if="loadedUser && loadedUser.private">
                 <v-btn class="success mx-2" nuxt to="/candidate/resumes">My resumes</v-btn>
@@ -48,12 +48,12 @@
 				<v-row>
                     <!-- Login Candidate Modal -->
                     <!-- v-model="loginModal" -->
-                    <v-dialog :value="loginModal" width="600" :persistent="true" @input="closeLoginModal">
+                    <v-dialog :value="loginModal" width="600" :persistent="loading ? true : false" @input="closeLoginModal">
                         <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" />
                     </v-dialog>
 
                     <!-- Register Candidate Modal -->
-                    <v-dialog v-model="registerModal" width="750" :persistent="true">
+                    <v-dialog v-model="registerModal" width="750" :persistent="loading ? true : false">
                         <Register v-on:switchToLoginModal="switchToLogin" v-on:closeRegisterModal="closeRegisterModal" />
                     </v-dialog>
 
@@ -63,12 +63,14 @@
                     </v-dialog>
                 <!-- </v-layout> -->
 				</v-row>
+                <br /><br /><br /><br />
+				
             </v-container>
         </v-content>
 
-        <v-footer color="primary lighten-1" padless>
+        <v-footer fixed padless color="primary lighten-1">
             <v-row no-gutters justify="center">
-                <v-btn v-for="(link, index) in links" :key="index" color="white" text rounded class="my-2 font-weight-medium">
+                <v-btn v-for="(link, index) in links" :key="index" :to="link.route" color="white" text rounded class="my-2 font-weight-medium">
                     {{ link.name }}
                 </v-btn>
                 <v-col class="primary lighten-2 py-4 text-center white--text" cols="12">
@@ -110,31 +112,31 @@
 				links: [
 					{
 						name: 'Home',
-						link: '/'
+						route: '/'
 					},
 					{
 						name: 'About',
-						link: '/about'
+						route: '/about'
 					},
 					{
 						name: 'Packages',
-						link: '/packages'
+						route: '/packages'
 					},
 					// {
 					// 	name: "Team",
-					// 	link: "/team"
+					// 	route: "/team"
 					// },
 					{
 						name: 'Terms & Conditions',
-						link: '/terms-conditions'
+						route: '/terms-conditions'
 					},
 					{
 						name: 'FAQ',
-						link: '/faq'
+						route: '/faq'
 					},
 					{
 						name: 'Contact Us',
-						link: '/contact'
+						route: '/contact'
 					}
 				],
 				showFooter: true,

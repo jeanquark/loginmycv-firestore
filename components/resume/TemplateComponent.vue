@@ -8,7 +8,7 @@
             <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
             <!-- loadedTemplate: {{ loadedTemplate }}<br /><br /> -->
             <!-- userResume.language: {{ userResume.language }}<br /><br /> -->
-            <!-- userResume.template.id: {{ userResume.template.id }}<br /><br /> -->
+            userResume.template: {{ userResume.template }}<br /><br />
 			<!-- dynamicComponent: {{ dynamicComponent }}<br /><br /> -->
             <!-- loadDynamicComponent: {{ loadDynamicComponent }}<br /><br /> -->
 			<!-- dialogResumePreview: {{ dialogResumePreview }}<br /><br /> -->
@@ -16,133 +16,92 @@
         </div>
         <!-- <v-layout row wrap class="pa-2"> -->
         <v-row no-gutters class="pa-2">
-            <!-- <v-flex xs12> -->
             <v-col cols="12">
-                <v-card :elevation="12">
+                <v-card :elevation="12" v-if="!loading">
                     <v-card-title class="justify-center pb-0">
-                        <h2 class="headline mb-3">Pick up a template</h2>
+                        <h2 class="headline mb-3">Current template</h2>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row no-gutters justify="center" v-if="userResume.template" class="my-2">
+                            <v-col cols="4">
+                                <v-card tile hover class="active">
+                                    <v-img :src="`/images/templates/${userResume.template.id}.jpg`" :lazy-src="`/images/templates/${userResume.template.id}.jpg`" aspect-ratio="1.5"></v-img>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+
+                    <v-card-title class="justify-center pb-0">
+                        <h2 class="headline mb-3">Choose a template</h2>
                     </v-card-title>
 
                     <v-card-text>
-                        <!-- <v-layout row wrap> -->
+                        
                         <v-row no-gutters>
-                            <!-- <v-flex xs12 sm6 md4 lg3 v-for="template in loadedTemplates" :key="template.id" class="pa-2"> -->
-                            <v-col cols="12" sm="6" md="4" lg="3" v-for="template in loadedTemplates" :key="template.id" class="pa-2">
-                                <!-- template.id: {{ template.id }} -->
+                            <v-col cols="12" sm="6" md="4" lg="6" v-for="template in loadedTemplates" :key="template.id" class="pa-2">
                                 <v-card tile hover :value="template.id" :class="[userResume.template.id === template.id ? 'active' : null]" @click="selectTemplate(template)">
                                     <v-img :src="`/images/templates/${template.image}`" :lazy-src="`/images/templates/${template.image}`" aspect-ratio="1.5"></v-img>
-                                    <!-- <div class="text-xs-center">{{ template.name }}</div> -->
-                                    <!-- <div class="text-xs-center">{{ template.description }}</div> -->
                                 </v-card>
-                                <!-- <v-layout class="transparent-background"> -->
                                 <v-row no-gutters class="transparent-background pa-1">
-                                    <!-- <v-layout justify-start align-center> -->
                                     <v-row no-gutters justify="start" align="center">
                                         <font-awesome-icon :icon="['fas', 'users' ]" class="ml-2" />&nbsp;<span class="mr-3">{{ template.count_users || 0 }}</span>
-                                        <font-awesome-icon :icon="['fas', 'cubes' ]" :class="[template.package.slug]" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
-
-                                    <!-- </v-layout> -->
+                                        <font-awesome-icon :icon="['fas', 'cubes' ]" :class="[template.package.slug]" v-if="template.package" />&nbsp;<span class="mr-3" v-if="template.package">{{ template.package.name }}</span>
                                     </v-row>
-                                    <!-- <v-layout justify-end align-center> -->
                                     <v-row no-gutters justify="end" align="center">
                                         <v-btn small text color="secondary" @click.stop="openResumePreview(template.slug)">
-                                            <!-- <v-icon>remove_red_eye</v-icon> -->
                                             View
                                         </v-btn>
-                                    <!-- </v-layout> -->
                                     </v-row>
-                                <!-- </v-layout> -->
                                 </v-row>
-                            <!-- </v-flex> -->
                             </v-col>
-                        <!-- </v-layout> -->
                         </v-row>
                     </v-card-text>
+                    <v-card-actions>
+                        <v-row justify="center">
+                            <v-btn @click="loadMoreTemplates">More <v-icon>mdi-arrow-down</v-icon></v-btn>
+                        </v-row>
+                    </v-card-actions>
                 </v-card>
-            <!-- </v-flex> -->
             </v-col>    
-        <!-- </v-layout> -->
         </v-row>
 
-        <!-- <v-layout row wrap class="pa-2"> -->
         <v-row no-gutters class="pa-2">
-            <!-- <v-flex xs12> -->
             <v-col cols="12">
                 <v-card :elevation="12" class="pa-2" v-if="loadedTemplate">
-                    <!-- loadedTemplates: {{ loadedTemplates }}<br /> -->
-                    <!-- loadedTemplate.colors: {{ loadedTemplate.colors }}<br /> -->
-                    <!-- userResume: {{ userResume }}<br /> -->
                     <h2 class="text-center headline">{{ loadedTemplate.name }}</h2>
                     <p class="text-center">{{ loadedTemplate.description }}</p>
 
-                    <!-- <v-layout row align-center class="my-3" v-if="userResume"> -->
                     <v-row no-gutters align="center" class="my-3" v-if="userResume">
-                        <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                         <v-col class="text-center">
                             Primary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
-                        <!-- </v-flex> -->
                         </v-col>
-                        <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                         <v-col class="text-center">
                             Secondary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
-                        <!-- </v-flex> -->
                         </v-col>
-                        <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                         <v-col class="text-center">
                             Tertiary color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
-                        <!-- </v-flex> -->
                         </v-col>
-                        <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                         <v-col class="text-center">
                             Background color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
-                        <!-- </v-flex> -->
                         </v-col>
-                        <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                         <v-col class="text-center">
                             Text color<br /><br />
                             <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
-                        <!-- </v-flex> -->
                         </v-col>
-                    <!-- </v-layout> -->
                     </v-row>
 
-					<!-- <v-layout row class="my-3"> -->
                     <v-row no-gutters class="my-3">
                     	<component :is="dynamicComponent" :resumeSlug="resumeSlug" 	:loadedTemplate="loadedTemplate" v-if="dynamicComponent" />
-					<!-- </v-layout> -->
                     </v-row>
-
-                    <!-- <v-img :src="`/images/templates/${loadedTemplate.image}`" width="100%" /> -->
-                    <!-- userResume.colors.primaryColor: {{ userResume.colors.primaryColor }}<br /> -->
-                    <!-- userResume.colors.backgroundColor: {{ userResume.colors.backgroundColor }}<br /> -->
-                    <!-- <image-template1
-					    :colors="userResume.colors"
-					    v-if="userResume.template_id === loadedTemplates[0].id"
-					    class="my-3"
-					/>
-					<image-template2
-					    :colors="userResume.colors"
-					    v-if="userResume.template_id === loadedTemplates[1].id"
-					    class="my-3"
-					/>
-					<image-template3
-					    :colors="userResume.colors"
-					    v-if="userResume.template_id === loadedTemplates[2].id"
-					    class="my-3"
-					/> -->
                 </v-card>
-            <!-- </v-flex> -->
             </v-col>
-        <!-- </v-layout> -->
         </v-row>
 
-        <!-- <v-layout row wrap class="pa-2" style="display: none;"> -->
         <v-row no-gutters class="pa-2" style="display: none;">
-            <!-- <v-flex xs12> -->
             <v-col cols="12">
                 <v-card :elevation="12">
                     <v-card-title class="justify-center">
@@ -150,50 +109,34 @@
                     </v-card-title>
 
                     <v-card-text>
-                        <!-- <v-layout row align-center> -->
                         <v-row no-gutters align="center">
-                            <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Primary color 2<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.primaryColor"></vue-colorpicker>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Secondary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.secondaryColor"></vue-colorpicker>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Tertiary color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.tertiaryColor"></vue-colorpicker>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Background color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.backgroundColor"></vue-colorpicker>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs6 sm4 class="text-xs-center"> -->
                             <v-col cols="6" class="text-center">
                                 Text color<br /><br />
                                 <vue-colorpicker v-model="userResume.colors.textColor"></vue-colorpicker>
-                            <!-- </v-flex> -->
                             </v-col>
-                        <!-- </v-layout> -->
                         </v-row>
                     </v-card-text>
                 </v-card>
-            <!-- </v-flex> -->
             </v-col>
-        <!-- </v-layout> -->
         </v-row>
 
-        <!-- <v-layout row wrap class="pa-2" v-if="loadedTemplate && userResume.menus"> -->
         <v-row no-gutters class="pa-2" v-if="loadedTemplate && userResume.menus">
-            <!-- <v-flex xs12> -->
             <v-col cols="12">
                 <v-card :elevation="12" class="pa-2">
                     <v-card-title class="justify-center">
@@ -206,9 +149,7 @@
 
                     <v-card-text>
 
-                        <!-- <v-layout row wrap> -->
                         <v-row no-gutters class="">
-                            <!-- <v-flex xs12 sm4 class="px-4"> -->
                             <v-col cols="12" sm="4" class="px-4">
                                 <v-autocomplete label="Resume language" :items="loadedLanguages" item-text="name" :return-object="true" chips small-chips :deletable-chips="true" color="secondary" v-model="userResume.language">
                                     <font-awesome-icon :icon="['fas', 'language']" slot="prepend" style="margin-top: 4px;" />
@@ -231,79 +172,55 @@
                                         </template>
                                     </template>
                                 </v-autocomplete>
-                            <!-- </v-flex> -->
                             </v-col>
-                        <!-- </v-layout> -->
                         </v-row>
 
-                        <!-- <v-layout row wrap> -->
                         <v-row no-gutters class="">
-                            <!-- <v-flex xs12 v-if="loadedTemplate.menus"> -->
                             <v-col cols="12" class="mt-5" v-if="loadedTemplate.menus">
                                 <h3 class="text-center pt-2">Menus:</h3>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index"> -->
                             <v-col cols="12" sm="6" class="px-4" v-for="menu in loadedTemplate.menus" :key="menu.index">
-                                <!-- v-model="userResume.menus[index].name -->
-                                <!-- :value="userResume.menus[index]['name_' + userResume.language.code] ? userResume.menus[index]['name_' + userResume.language.code] : userResume.menus[index].name" -->
                                 <v-text-field :name="`menu_${menu.slug}`" item-text="name" v-validate="{ required: true, max: 30 }" :error-messages="errors ? errors.collect(`menu_${menu.slug}`) : null" :data-vv-as="menu.name" :counter="30" v-model="userResume.menus[menu.slug]">
                                     <template v-slot:label>
                                         {{ menu.name }}
                                     </template>
                                 </v-text-field>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 class="mt-4" v-if="loadedTemplate.fields"> -->
                             <v-col cols="12" class="mt-5" v-if="loadedTemplate.fields">
                                 <h3 class="text-center pt-2">Fields:</h3>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug"> -->
                             <v-col cols="12" sm="6" class="px-4" v-for="field in loadedTemplate.fields" :key="field.slug">
                                 <v-text-field :name="`field_${field.slug}`" item-text="name" v-validate="{ required: true, max: 50 }" :error-messages="errors ? errors.collect(`field_${field.slug}`) : null" :data-vv-as="field.name" :counter="50" v-model="userResume.fields[field.slug]">
                                     <template v-slot:label>
                                         {{ field.name }}
                                     </template>
                                 </v-text-field>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 class="mt-4" v-if="loadedTemplate.contact_form_validation"> -->
                             <v-col cols="12" class="mt-5" v-if="loadedTemplate.contact_form_validation">
                                 <h3 class="text-center pt-2">Contact form validation:</h3>
-                            <!-- </v-flex> -->
                             </v-col>
-                            <!-- <v-flex xs12 sm6 md4 class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug"> -->
                             <v-col cols="12" sm="6" md="4" class="px-4" v-for="field in loadedTemplate.contact_form_validation" :key="field.slug">
-                                <!-- field: {{ field }} -->
                                 <v-text-field :name="`contact_${field.slug}`" item-text="name" v-validate="{ required: true, max: 100 }" :error-messages="errors ? errors.collect(`contact_${field.slug}`) : null" :data-vv-as="field.name" :counter="100" v-model="userResume.contact_form_validation[field.slug]">
                                     <template v-slot:label>
                                         {{ field.name }}
                                     </template>
                                 </v-text-field>
-                            <!-- </v-flex> -->
                             </v-col>
-                        <!-- </v-layout> -->
                         </v-row>
                     </v-card-text>
                 </v-card>
-            <!-- </v-flex> -->
             </v-col>
-        <!-- </v-layout> -->
         </v-row>
 
-        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition"> -->
         <v-dialog no-gutters v-model="dialogResumePreview" fullscreen hide-overlay transition="dialog-bottom-transition" style="">
             <v-card style="position: fixed; top: 0; left: 0; z-index: 999; width: 100%; height: 20vh;">
                 <v-toolbar dark color="primary" class="align-center" style="cursor: pointer;" @click="dialogResumePreview = false">
 					<h3 class="text-center mr-2">Preview <small>(click to exit)</small></h3>
                     <v-spacer></v-spacer>
-                    <!-- <v-toolbar-title>Close</v-toolbar-title> -->
                     <v-btn icon dark @click="dialogResumePreview = false" class="mr-2">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <!-- <v-layout row align-center justify-center pa-2 style="border-bottom: 2px solid var(--v-primary-base);"> -->
                 <v-row no-gutters justify="center" align="center" class="py-2" style="border-bottom: 2px solid var(--v-primary-base);">
                     Primary color
                     <vue-colorpicker v-model="userResume.colors.primaryColor" class="ml-1 mr-4"></vue-colorpicker>
@@ -315,7 +232,6 @@
                     <vue-colorpicker v-model="userResume.colors.backgroundColor" class="ml-2 mr-4"></vue-colorpicker>
                     Text color
                     <vue-colorpicker v-model="userResume.colors.textColor" class="ml-2 mr-3"></vue-colorpicker>
-                <!-- </v-layout> -->
                 </v-row>
 
                 <component :is="viewTemplateComponent" :colors="userResume.colors" style="height: 80vh; overflow-y: scroll;" v-if="viewTemplateComponent" />
@@ -348,7 +264,9 @@
 			const resumeSlug = this.$route.params.slug
 			console.log('resumeSlug: ', resumeSlug)
 			this.resumeSlug = resumeSlug
-			await this.$store.dispatch('templates/fetchTemplates')
+            if (this.$store.getters['templates/loadedTemplates'].length < 1) {
+                await this.$store.dispatch('templates/fetchTemplates')                
+            }
             // this.selectTemplate()
             // this.userResume.template.id = 'template004'
 
@@ -359,12 +277,12 @@
             //     this.dynamicComponent = null
             // })
 
-            try {
+            // try {
                 await this.loadDynamicComponent
-                this.dynamicComponent = () => this.loadDynamicComponent()
-            } catch (error) {
-                this.dynamicComponent = null
-            }
+                // this.dynamicComponent = () => this.loadDynamicComponent()
+            // } catch (error) {
+                // this.dynamicComponent = null
+            // }
             this.$store.commit('setLoading', false)
 
 			// if (!this.loadedUserResumes || this.loadedUserResumes.length < 1) {
@@ -391,16 +309,16 @@
 			// }
 		},
 		mounted() {
-			if (this.userResume) {
-				this.loadDynamicComponent()
-					.then(() => {
-						this.dynamicComponent = () => this.loadDynamicComponent()
-					})
-					.catch(() => {
-						console.log('error dynamic component')
-						this.dynamicComponent = null
-					})
-			}
+			// if (this.userResume) {
+			// 	this.loadDynamicComponent()
+			// 		.then(() => {
+			// 			this.dynamicComponent = () => this.loadDynamicComponent()
+			// 		})
+			// 		.catch(() => {
+			// 			console.log('error dynamic component')
+			// 			this.dynamicComponent = null
+			// 		})
+			// }
 		},
 		data() {
 			return {
@@ -444,8 +362,13 @@
 			// 	return this.loadedTemplate.template_specific_components ? this.loadedTemplate.template_specific_components.filter(template => template.component === 'template') : []
 			// },
 			loadDynamicComponent() {
-				console.log('this.userResume2: ', this.userResume)
-				return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
+				try {
+					console.log('this.userResume2: ', this.userResume)
+					return () => import(`~/components/resume/dynamicTemplatesComponents/${this.userResume.template.id}/TemplateComponent`)
+				} catch (error) {
+					this.dynamicComponent = null
+					return null
+				}
 				// if (this.userResume) {
 					// return () => import(`~/components/resume/dynamicTemplatesComponents/template004/TemplateComponent`)
 				// }
@@ -454,8 +377,8 @@
 		},
 		methods: {
 			async selectTemplate(template) {
+				console.log('selectTemplate: ', template)
 				this.dynamicComponent = null
-				console.log('template', template)
 				if (!this.resumeSlug) {
 					this.userResume.colors = template.colors
 				}
@@ -476,7 +399,10 @@
 				this.viewTemplateComponent = () =>
 					import(`~/components/templatesModels/${templateName}`)
 				this.dialogResumePreview = true
-			}
+			},
+            async loadMoreTemplates () {
+                await this.$store.dispatch('templates/fetchTemplates')
+            },
 		},
 		watch: {
 			'userResume.language'() {

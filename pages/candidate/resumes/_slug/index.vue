@@ -117,12 +117,12 @@
 
                         <v-card-text style="min-height: 280px;" class="align-center">
                             <br /><br /><br />
-                            <v-alert :value="loadingFiles" color="secondary" outline>
+                            <v-alert :value="loadingFiles" color="secondary" outlined>
                                 <div class="text-center">
                                     <v-progress-circular indeterminate color="secondary"></v-progress-circular> Uploading files...
                                 </div>
                             </v-alert>
-                            <v-alert :value="loadingResume" color="primary" outline>
+                            <v-alert :value="loadingResume" color="primary" outlined>
                                 <div class="text-center">
                                     <v-progress-circular indeterminate color="primary"></v-progress-circular> Updating resume...
                                 </div>
@@ -306,6 +306,7 @@
                         }).show()
                     } else {
 						console.log('this.loadedUserResume: ', this.loadedUserResume)
+						console.log('this.loadedUserResume.template: ', this.loadedUserResume.template)
 						await this.$store.dispatch('resumes/updateResume', this.loadedUserResume)
                         this.updatingResumeDialog = false
                         new Noty({

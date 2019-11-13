@@ -376,9 +376,9 @@
 							</v-col>
                             <!-- <v-flex xs6 class="text-xs-left"> -->
 							<v-col xs="6" class="text-left">
-                                <v-hover v-slot:default="{ hover }">
-                                    <v-icon :color="hover ? 'error' : ''" @click="removeCurrentPicture" v-if="imageName">mdi-delete</v-icon>
-                                </v-hover>
+                                <!--<v-hover v-slot:default="{ hover }"> -->
+                                    <v-icon color="error" @click="removeCurrentPicture" v-if="imageName">mdi-delete</v-icon>
+                                <!--</v-hover> -->
                             <!-- </v-flex> -->
 							</v-col>
                             <!-- </v-layout> -->

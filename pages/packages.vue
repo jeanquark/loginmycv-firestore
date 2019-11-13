@@ -8,7 +8,7 @@
             <!-- this.amount_in_cents: {{ this.amount_in_cents }}<br /> -->
             <v-layout row wrap justify-center>
                 <v-flex xs12>
-                    <h1 class="text-xs-center secondary-color">Select your package</h1>
+                    <h1 class="text-center secondary-color">Select your package</h1>
                 </v-flex>
 
                 <v-flex xs12 sm6 md4 class="pa-4" v-for="pack in loadedPackages" :key="pack.slug">

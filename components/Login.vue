@@ -143,6 +143,7 @@
 			async signUserIn () {
                 try {
                     // console.log('signUserIn')
+                    this.$store.commit('setLoading', true, { root: true })
                     await this.$store.dispatch('firebase-auth/signUserIn', this.form)
                     // console.log('Success!')
                     this.$store.commit('closeLoginModal')
@@ -172,8 +173,10 @@
             async signInWithGoogle () {
                 try {
                     // console.log('signInWithGoogle')
+                    this.$store.commit('setLoading', true, { root: true })
                     this.loadingGoogle = true
                     await this.$store.dispatch('firebase-auth/signInWithGooglePopup')
+                    this.$store.commit('setLoading', false, { root: true })
                     this.loadingGoogle = false
                     if (this.$store.getters['loadedOpenComponent']) {
                         this.$store.commit(this.$store.getters['loadedOpenComponent'])
@@ -190,6 +193,7 @@
                     }
                 } catch (error) {
 					// console.log('error: ', error)
+                    this.$store.commit('setLoading', false, { root: true })
                     this.loadingGoogle = false
                     new Noty({
 						type: 'error',
@@ -203,14 +207,10 @@
             async signInWithFacebook () {
                 try {
                     // console.log('signInWithFacebook')
+                    this.$store.commit('setLoading', true, { root: true })
                     this.loadingFacebook = true
                     await this.$store.dispatch('firebase-auth/signInWithFacebookPopup')
-                    new Noty({
-                        type: 'success',
-                        text: 'Login went successfully!',
-                        timeout: 5000,
-                        theme: 'metroui'
-                    }).show()
+                    this.$store.commit('setLoading', false, { root: true })
                     this.loadingFacebook = false
                     if (this.$store.getters['loadedOpenComponent']) {
                         this.$store.commit(this.$store.getters['loadedOpenComponent'])
@@ -224,6 +224,7 @@
                     }
                 } catch (error) {
                     // console.log('error: ', error)
+                    this.$store.commit('setLoading', false, { root: true })
                     this.loadingFacebook = false
                     new Noty({
                         type: 'error',

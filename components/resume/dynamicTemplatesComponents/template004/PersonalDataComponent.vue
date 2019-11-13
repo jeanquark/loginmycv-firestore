@@ -6,7 +6,7 @@
 			<v-col cols="12" class="my-2">
                 index: {{ index }}<br /><br />
 				userResume.personal_data.position: {{ userResume.personal_data.position }}<br /><br />
-				<h3 class="text-center">Place your home</h3>
+				<h3 class="text-center">Locate your home place</h3>
             <!-- </v-flex> -->
 			</v-col>
         <!-- </v-layout> -->

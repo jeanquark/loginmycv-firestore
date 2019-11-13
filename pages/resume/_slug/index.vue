@@ -1,9 +1,10 @@
 <template>
 	<div>
-		<div v-if="resume && resume.template_id">
+		<div v-if="resume && resume.template && resume.template.id">
 			<!-- resume.template_id: {{ resume.template_id }}<br /> -->
+			<!-- component: {{ component }}<br /><br /> -->
+			<!-- resume: {{ resume }} -->
 			<component :is="component" :resume="resume" v-if="component" />
-
 		</div>
 		<v-app v-else>
 			<v-content>
@@ -47,22 +48,28 @@
             // 1) Fetch resume if resume is active & public, it is user's resume or user has been registered as a visitor		      
 			const slug = this.$route.params.slug
 			// console.log('this.$route.params: ', this.$route.params)
-			// console.log('slug2: ', slug)
+			console.log('slug: ', slug)
 			try {
 				this.resume = await this.$store.dispatch('resumes/fetchLongResume', slug)
 				// console.log('resume from index.vue: ', this.resume)
 
 				if (this.resume) {
-					// console.log('resume.template_id: ', this.resume.template_id)
-					await this.$store.dispatch('templates/fetchTemplates')
-		            const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
-		            // console.log('template: ', template)
-		            return this.component = () => import(`~/components/templates/${template.file}`)
+					console.log('resume.template.id: ', this.resume.template.id)
+
+					const template = await this.$store.dispatch('templates/fetchTemplate', this.resume.template.id)
+					// console.log('snapshot2: ', snapshot)
+					// await this.$store.dispatch('templates/fetchTemplates')
+		            // const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
+		            console.log('template: ', template)
+		            // return this.component = () => import(`~/components/templates/${template.file}`)
+		            return this.component = () => import(`~/components/templates/Template001`)
+				} else {
+					return this.$router.replace(`/resume/${slug}/login`)
 				}
 			} catch (error) {
-				console.log('error2: ', error)
+				console.log('error: ', error)
 				console.log('No firebase authorization')
-				if (error = 'resume_is_not_active') {
+				if (error === 'resume_is_not_active') {
 					new Noty ({
 						type: 'warning',
 						text: 'The resume you are looking for is not currently active. Please contact author.',
@@ -70,12 +77,20 @@
 						theme: 'metroui'
 					}).show()
 					return this.$router.replace('/')
+				} else if (error === 'no_template_found') {
+					new Noty ({
+						type: 'warning',
+						text: 'No template found for this resume.',
+						timeout: 5000,
+						theme: 'metroui'
+					}).show()
+					return this.$router.replace('/')
 				}
 			}
 
-			console.log('load component')
+			// console.log('load component')
 
-			return this.$router.replace(`/resume/${slug}/login`)
+			// return this.$router.replace(`/resume/${slug}/login`)
 		},
 		data() {
 			return {

@@ -27,7 +27,7 @@
                                 <!-- </v-flex> -->
 								</v-col>
                                 <!-- <v-flex v-bind="{[`xs12 sm${column}`]: true}"> -->
-								<v-col>
+								<v-col v-bind="{[`xs='12' sm='${column}'`]: true}">
                                     <!-- <v-layout row wrap align-center class="text-big"> -->
 									<v-row no-gutters align="center" class="text-big">
                                         <!-- <v-flex xs12 sm6 class="pa-2"> -->

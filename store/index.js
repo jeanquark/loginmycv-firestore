@@ -95,9 +95,14 @@ export const actions = {
     //     }
     // },
 
-    async nuxtServerInit ({ commit, dispatch }, { req }) {
+    async nuxtServerInit ({ commit, context, redirect, dispatch }, { req }) {
         // console.log('Entering nuxtServerInit', moment().format('DD-MM-YYYY HH:mm:ss'))
-        // console.log('req.headers.host: ', req.headers.host)
+		// console.log('req.headers.host: ', req.headers.host)
+		// console.log('req: ', req)
+		// console.log('req.subdomains: ', req.subdomains)
+		// console.log('req.headers.host: ', req.headers.host)
+		// console.log('subdomain: ', req.headers.host.split('.')[0])
+		
         if (req.user) {
             // console.log('User is logged in from nuxtServerInit')
             // console.log('req.user: ', req.user)
@@ -105,11 +110,20 @@ export const actions = {
         } else {
 			// console.log('User is not logged in from nuxtServerInit')
 			// DO NOT PROCESS
-        }
+		}
+		const subdomain = req.headers.host.split('.')[0]
+		if (subdomain !== 'loginmycv') {
+			console.log('subdomain: ', subdomain)
+			// console.log('res: ', res)
+			// console.log('redirect: ', redirect)
+			// res.redirect('http://google.ch')
+			// this.$router.replace('/about')
+		}
+        // console.log('req.url: ', req.url)
     },
     async nuxtClientInit({ commit, rootGetters }) { // Added package (not present by default in Nuxt)
         try {
-            // console.log('nuxtClientInit')
+            console.log('nuxtClientInit')
             const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser']['uid'] : null
             // const userId = rootGetters['users/loadedUser'] ? rootGetters['users/loadedUser']['id'] : null
             // console.log('userId from nuxtClientInit: ', userId)
@@ -119,7 +133,7 @@ export const actions = {
                 firestore.collection('users').doc(userId).onSnapshot(function(doc) {
                     commit('users/setLoadedUser', { ...doc.data(), id: doc.id }, { root: true })
                 })
-            }
+			}
         } catch (error) {
 			// console.log('nuxtClientInit error: ', error)
 			// DO NOT PROCESS

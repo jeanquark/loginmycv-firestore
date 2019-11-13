@@ -149,7 +149,7 @@ export const actions = {
 	},
 	async fetchLongResume ({ commit, dispatch, rootGetters }, payload) {
 		try {
-			// console.log('Call to fetchLongResume action: ', payload)
+			console.log('Call to fetchLongResume action: ', payload)
 			// 1) Fetch resume if its visibility is set to public or you are logged in as a visitor or it is your resume (see database rules) 
 			const snapshot = await firestore.collection('resumes_long').doc(payload).get()
 			const resume = {
@@ -160,9 +160,10 @@ export const actions = {
 				throw 'resume_is_not_active'
 			}
 			// console.log('resume from store: ', resume)
+			// return resume
 
 			// 2) Increment views counter if you are not accessing your own resume
-			if (rootGetters['loadedUser'] && rootGetters['loadedUser'].id === resume.user_id) {
+			if (rootGetters['loadedUser'] && rootGetters['loadedUser']['id'] === resume.user_id) {
 				return resume
 			} else {
 				// console.log('rootGetters[loadedUser]: ', rootGetters['users/loadedUser'])
@@ -533,6 +534,7 @@ export const actions = {
 	},
 	async incrementViewCounter ({ }, payload) {
 		try {
+			console.log('incrementViewCounter: ', payload)
 			const incrementViews = firebase.firestore.FieldValue.increment(1)
 			const lastVisits = payload.lastVisits
 			

@@ -35,6 +35,14 @@
             </v-list>
             <v-divider></v-divider>
             <v-list subheader>
+            	<v-list-item to="/" ripple>
+                    <v-list-item-action>
+                        <v-icon>mdi-arrow-left</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Back to site</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
                 <v-list-item @click="logoutCandidate()" ripple>
                     <v-list-item-action>
                         <v-icon>mdi-logout</v-icon>
