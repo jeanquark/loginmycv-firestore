@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xs-center">
+    <div class="text-center">
         <!-- <v-carousel style="width: 100%; margin: 0px; padding: 0px;">
             <v-carousel-item v-for="(item,i) in carouselItems" :key="i" :src="item.src" :lazy="true"></v-carousel-item>
         </v-carousel> -->
@@ -19,8 +19,8 @@
 				<v-col>
                     <h1 class="grey--text text--darken-1 text--accent-1 my-8">Uploading your CV online just got easier</h1>
 
-					<v-row no-gutters justify="center" align="center" class="">
-						<v-col cols="12" sm="6" class="px-6 py-2">
+					<v-row no-gutters align="center" class="">
+						<v-col cols="12" sm="4" offset-sm="2" class="px-6 py-2">
 		                    <h2 class="grey--text text--darken-3 text-center font-weight-bold mb-3">Welcome to LoginMyCV, your online CV provider</h2>
 							<p class="text-left subtitle-1">At <span class="primary--text font-weight-bold">loginmycv.com</span>, we make sure anyone can reach global audience with a simple CV. By following our clear and concise guidelines, you will get your resume online in <span class="secondary--text font-weight-bold">no time</span>. At the end of the process, you will have your own personal web page. And you'll find yourself in the <span class="secondary--text font-weight-bold">advantageous</span> position of passing a short url over to potential employers for them to access all your details. You can even make your profile <span class="secondary--text font-weight-bold">stands out</span> right here on the frontpage to attract attention! <br /><br />We are looking forward to embarking with you on this journey to <span class="secondary--text font-weight-bold">success</span>.</p>
 							<!-- <div class="text-center hidden-sm-and-down"> -->
@@ -30,115 +30,111 @@
 							</v-row>
 							<!-- </div> -->
 						</v-col>
-						<v-col cols="12" sm="6" class="px-6">
+						<v-col cols="12" sm="4" offset-sm="0" class="px-6">
 							<v-img src="/images/frontpage2.png" lazy-src="/images/frontpage2.png"></v-img>
 						</v-col>
 					</v-row>
 				</v-col>
 			</v-row>
 
-            <!-- <v-layout row wrap class="mb-5"> -->
 			<v-row no-gutters class="my-8">
-                <!-- <v-flex xs12 sm4> -->
-				<v-col cols="6" sm="4">
-                    <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-							<v-hover v-slot:default="{ hover }">
-                            	<font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-							</v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Your online CV for free</div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
-                        </v-card-text>
-                    </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-                <!-- <v-flex xs12 sm4> -->
-				<v-col cols="6" sm="4">
-                    <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-                            <v-hover v-slot:default="{ hover }">
-                            <font-awesome-icon :icon="['fas', 'lock']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-                            </v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Private & Secured data</div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            All of your data is securely saved in the cloud. You decide who has access to which information. At all times your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
-                        </v-card-text>
-                    </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-                <!-- <v-flex xs12 sm4> -->
-				<v-col cols="6" sm="4">
-                    <v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-                            <v-hover v-slot:default="{ hover }">
-                            <font-awesome-icon :icon="['fas', 'search']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-                        </v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Let recruiters find you</div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. Our custom search tools ensures optimal results on every request.
-                        </v-card-text>
-                    </v-card>
-                <!-- </v-flex> -->
-				</v-col>
+				<v-col cols="12" sm="8" offset-sm="2" style="border: 1px solid green;">
+					<v-row no-gutters>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+										<font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+									</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Your online CV for free</div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
+								</v-card-text>
+							</v-card>
+						</v-col>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'lock']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+									</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Private & Secured data</div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									All of your data is securely saved in the cloud. You decide who has access to which information. At all times your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
+								</v-card-text>
+							</v-card>
+						</v-col>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'search']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+								</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Let recruiters find you</div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. Our custom search tools ensures optimal results on every request.
+								</v-card-text>
+							</v-card>
+						</v-col>
 
-				<v-col cols="6" sm="4">
-					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-                            <v-hover v-slot:default="{ hover }">
-                            <font-awesome-icon :icon="['fas', 'file-pdf']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-                        </v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Upload PDFs</div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            Add files to complete your online resume. Whether it is a porfolio, some scientific article or any file that will boost your profile. All of your info is now only a single click away from your recruiter's hand. 
-                        </v-card-text>
-                    </v-card>
-				</v-col>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'file-pdf']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+								</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Upload PDFs</div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									Add files to complete your online resume. Whether it is a porfolio, some scientific article or any file that will boost your profile. All of your info is now only a single click away from your recruiter's hand. 
+								</v-card-text>
+							</v-card>
+						</v-col>
 
-				<v-col cols="6" sm="4">
-					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-                            <v-hover v-slot:default="{ hover }">
-                            <font-awesome-icon :icon="['fas', 'chart-bar']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
-                        </v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Get Statistics</div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            Remain constantly informed on how many people clicked on your resume. Observe which one of your resumes performs best in attracting visitors. Make key adjustments to improve your global reach.
-                        </v-card-text>
-                    </v-card>
-				</v-col>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'chart-bar']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
+								</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Get Statistics</div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									Remain constantly informed on how many people clicked on your resume. Observe which one of your resumes performs best in attracting visitors. Make key adjustments to improve your global reach.
+								</v-card-text>
+							</v-card>
+						</v-col>
 
-				<v-col cols="6" sm="4">
-					<v-card flat class="transparent ma-2">
-                        <v-card-text class="text-center pb-0">
-                            <v-hover v-slot:default="{ hover }">
-                            <font-awesome-icon :icon="['fas', 'trophy']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
-                        </v-hover>
-                        </v-card-text>
-                        <v-card-title primary-title class="layout justify-center">
-                            <div class="headline text-center">Go Premium <small>(coming soon)</small></div>
-                        </v-card-title>
-                        <v-card-text class="body-1">
-                            Access more templates, get more data insights, improve internal ranking & search results. In a word, be more professional with one of our subscription packages. Learn more <nuxt-link to="/packages">here</nuxt-link>.
-                        </v-card-text>
-                    </v-card>
+						<v-col cols="6" sm="4">
+							<v-card flat class="transparent ma-2">
+								<v-card-text class="text-center pb-0">
+									<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'trophy']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
+								</v-hover>
+								</v-card-text>
+								<v-card-title primary-title class="layout justify-center">
+									<div class="headline text-center">Go Premium <small>(coming soon)</small></div>
+								</v-card-title>
+								<v-card-text class="body-1">
+									Access more templates, get more data insights, improve internal ranking & search results. In a word, be more professional with one of our subscription packages. Learn more <nuxt-link to="/packages">here</nuxt-link>.
+								</v-card-text>
+							</v-card>
+						</v-col>
+					</v-row>
 				</v-col>
-            <!-- </v-layout> -->
 			</v-row>
 
 			<v-row no-gutters justify="center" align="center" class="my-5">
@@ -273,7 +269,7 @@
                                     </v-avatar>
                                     <!-- <v-layout justify-center v-else> -->
 									<v-row justify="center" v-else>
-                                        <avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-xs-center mb-2"></avatar>
+                                        <avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-center mb-2"></avatar>
                                     <!-- </v-layout> -->
 									</v-row>
                                 <!-- </v-flex> -->
@@ -285,11 +281,11 @@
 							<v-row justify="space-around" align="center" class="fill-height">
                                 <div>
                                     <v-card-text>
-                                        <h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
-                                        <div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
-                                        <div class="pt-1 px-2 text-xs-center">Visibility: {{ resume.visibility }}</div>
-                                        <div class="pt-1 px-2 text-xs-center">Public: {{ resume.public }}</div>
-										<div class="pt-1 px-2 text-xs-center">_created_at: {{ resume._created_at }}</div>
+                                        <h3 class="headline mb-0 text-center">{{ resume.job_title }}</h3>
+                                        <div class="pt-1 px-2 text-center">{{ resume.job_description }}</div>
+                                        <div class="pt-1 px-2 text-center">Visibility: {{ resume.visibility }}</div>
+                                        <div class="pt-1 px-2 text-center">Public: {{ resume.public }}</div>
+										<div class="pt-1 px-2 text-center">_created_at: {{ resume._created_at }}</div>
                                     </v-card-text>
                                     <v-card-actions>
                                         <!-- <v-layout justify-center v-if="resume.visibility === 'public'"> -->
