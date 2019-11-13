@@ -111,6 +111,7 @@ export const actions = {
 			// console.log('User is not logged in from nuxtServerInit')
 			// DO NOT PROCESS
 		}
+		console.log('req.headers.host: ', req.headers.host)
 		const subdomain = req.headers.host.split('.')[0]
 		if (subdomain !== 'loginmycv') {
 			console.log('subdomain: ', subdomain)
