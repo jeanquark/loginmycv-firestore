@@ -79,13 +79,13 @@ export default {
             	id: 'UA-71694605-8'
 			}
 		],
-		'@nuxtjs/sentry',
+		// '@nuxtjs/sentry',
 		'nuxt-leaflet',
 	],
-	sentry: {
-		dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
-		config: {}, // Additional config
-	},
+	// sentry: {
+	// 	dsn: 'https://3d8ab8e981ad451d8a0b2755e09e7df7@sentry.io/1507843', // Enter your project's DSN here
+	// 	config: {}, // Additional config
+	// },
 	axios: {
         proxyHeaders: false
 	},
