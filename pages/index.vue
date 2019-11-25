@@ -11,7 +11,7 @@
 			<!-- <p>lastVisible: {{ lastVisible }}</p> -->
 			<!-- loadedLastVisible: {{ loadedLastVisible }}<br /><br /> -->
             <nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (/resume/jeanquak)</nuxt-link><br />
-            <a href="http://localhost:3000/jeanquark">Go to jeanquark's resume (/jeanquark.loginmycv.com)</a>
+            <a href="http://localhost:3000/resume/jeanquark">Go to jeanquark's resume (/jeanquark.loginmycv.com)</a>
 		</div>
 
 		<v-container class="text-center">
@@ -147,7 +147,7 @@
             <!-- <v-layout row wrap justify-center class="mb-5"> -->
 			<v-row no-gutters justify="center" class="mb-5">
                 <!-- <v-flex xs12> -->
-				<v-col>
+				<v-col cols="12" sm="8" offset-sm="2">
                     <h2 class="subtitle display-1 mb-2">How it works</h2>
                     <!-- <v-layout> -->
 					<v-row no-gutters>

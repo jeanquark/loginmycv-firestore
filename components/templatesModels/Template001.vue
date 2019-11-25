@@ -13,7 +13,7 @@
                                 </v-col>
                             </v-row>
                             <v-row no-gutters align="start">
-                                <v-col cols="9" style="">
+                                <v-col :cols="profilePicture ? '12' : '12'" style="">
                                     <v-row no-gutters align="center" class="text-big">
                                         <v-col cols="12" sm="6" class="pa-2">
                                             <span>{{ resume.fields['firstname'] || 'Firstname' }}: <b>{{ resume.personal_data.firstname }}</b></span>
@@ -36,7 +36,7 @@
                                         <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.email">
                                             <span>{{ resume.fields['email'] || 'Email' }}: <b>{{ resume.personal_data.email }}</b></span>
                                         </v-col>
-                                        <v-col cols="12" sm="6" class="pa-2">
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.phone_number">
                                             <span>{{ resume.fields['phone_number'] || 'Phone number' }}: <b>{{ resume.personal_data.phone_number }}</b></span>
                                         </v-col>
                                     </v-row>

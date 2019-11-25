@@ -83,28 +83,28 @@
                 <v-row no-gutters class="my-5 section" id="top">
                     <v-col cols="12" sm="8" offset-sm="2">
                         <v-row no-gutters>
-                            <v-col cols="12" sm="6" class="">
+                            <v-col cols="12" :sm="profilePicture ? '6' : '12'" class="">
                                 <v-chip class="primary-color-background text-color rounded-border py-2 px-3" v-if="resume.personal_data.greeting_phrase"><b>{{ resume.personal_data.greeting_phrase }}</b>
                                 </v-chip><br /><br />
-                                <h1 id="fullName" class="">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename ? resume.personal_data.middlename : '' }} {{ resume.personal_data.lastname }}</h1>
-                                <h2 class="">{{ resume.job_title }}</h2><br />
+                                <h1 id="fullName" :class="[profilePicture ? '' : 'text-center']">{{ resume.personal_data.firstname }} {{ resume.personal_data.middlename ? resume.personal_data.middlename : '' }} {{ resume.personal_data.lastname }}</h1>
+                                <h2 :class="[profilePicture ? '' : 'text-center']">{{ resume.job_title }}</h2><br />
 
-                                <div class="mb-1">
+                                <div class="mb-1" :class="[profilePicture ? '' : 'text-center']">
                                     <font-awesome-icon :icon="['fas', 'envelope']" class="icon" />{{ resume.personal_data.email }}
                                 </div>
-                                <div class="mb-1" v-if="resume.personal_data.phone_number">
+                                <div class="mb-1" :class="[profilePicture ? '' : 'text-center']" v-if="resume.personal_data.phone_number">
                                     <font-awesome-icon :icon="['fas', 'phone']" class="icon" /> {{ resume.personal_data.phone_number }}
                                 </div>
-                                <div class="mb-1">
+                                <div class="mb-1" :class="[profilePicture ? '' : 'text-center']">
                                     <font-awesome-icon :icon="['fas', 'map-marker']" class="icon" /> {{ resume.personal_data.city }}, {{ resume.personal_data.country ? resume.personal_data.country.name : null }}
                                 </div>
-                                <div class="mb-1" v-if="resume.personal_data.nationalities">
+                                <div class="mb-1" :class="[profilePicture ? '' : 'text-center']" v-if="resume.personal_data.nationalities">
                                     <font-awesome-icon :icon="['fas', 'flag-usa']" class="icon" />
                                     <span v-for="(nationality, index) in resume.personal_data.nationalities" :key="index">
                                         {{ nationality.name }}<span v-if="index + 1 < resume.personal_data.nationalities.length">, </span>
                                     </span>
                                 </div>
-                                <div class="mb-1" v-if="resume.languages">
+                                <div class="mb-1" :class="[profilePicture ? '' : 'text-center']" v-if="resume.languages">
                                     <font-awesome-icon :icon="['fas', 'language']" class="icon" />
                                     <span v-for="(language, index) in resume.languages" :key="index">
                                         {{ language.name }}<span v-if="index + 1 < resume.languages.length">, </span>
@@ -117,7 +117,7 @@
                                     </v-chip>
                                 </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" v-if="profilePicture">
+                            <v-col cols="6" v-if="profilePicture">
                                 <v-row justify="center">
                                     <v-avatar size="350" color="grey lighten-4">
                                         <v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="Profile picture" />

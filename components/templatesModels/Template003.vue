@@ -11,8 +11,9 @@
 
             <div class="fullpage-wp" v-fullpage="opts" ref="fullpage">
                 <!-- Section Personal Data -->
-                <div class="page page-1" data-index="0" style="height: 100%; overflow-y: auto;" ref="page">
-                    <v-row no-gutters align="center" class="subpage" v-animate="{value: animationEffect}" style=" height: 80%; overflow-y: auto;">
+                <div class="page page-1" data-index="0" style="max-height: 100%; overflow-y: hidden; display: block; border: 2px solid blue;" ref="page">
+                    <v-row no-gutters align="center" class="subpage" v-animate="{value: animationEffect}" style="height: 80%; overflow-y: auto; border: 2px solid green;">
+                    <!-- <v-row no-gutters align="center" class="subpage" v-animate="{value: animationEffect}" style="height: 100%; border: 1px solid green;"> -->
                         <v-col cols="12" class="text-center pa-3 rounded-border" style="">
                             <v-row no-gutters justify="center">
                                 <v-col cols="12" sm="6" class="text-center" v-if="profilePicture">
@@ -57,23 +58,13 @@
                                     <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)" class="social-link mx-3" />
                                 </v-col>
                             </v-row>
-                            <v-row no-gutters class="mt-3 pa-4 centered" style="">
+                            <!--<v-row no-gutters class="mt-3 pa-4 centered" style="">
                                 <div class="text-center mx-4" v-for="(file, index) in files" :key="index">
                                     <font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" class="social-link" @click="redirectTo(file.downloadUrl)" />
                                     <br />
                                     <p>{{ file.name }}</p>
                                 </div>
-								<!-- <div class="text-center mx-4" v-for="(file, index) in files" :key="index">
-									<v-hover v-slot:default="{ hover }">
-										<v-card>
-											<v-card-text>
-												<font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" class="social-link" @click="redirectTo(file.downloadUrl)" />
-												<p>{{ file.name }}</p>
-											</v-card-text>
-										</v-card>
-									</v-hover>
-								</div> -->
-                            </v-row>
+                            </v-row>-->
                         </v-col>
                     </v-row>
                 </div>
@@ -193,237 +184,13 @@
 					dir: 'v',
 					loop: false,
 					duration: 300,
-					beforeChange(ele, current, next) {},
-					afterChange(ele, current) {
-						// console.log('ele.dataset.index: ', ele.dataset.index)
-						this.vm.setIndex(ele.dataset.index)
-					}
-				},
-				column: 6,
-				animationEffect: 'zoomIn',
-				primaryColor: '',
-				secondaryColor: '',
-				tertiaryColor: '',
-				backgroundColor: '',
-				textColor: '',
-				contactForm: {
-					valid: true,
-					firstname: '',
-					lastname: '',
-					email: '',
-					message: ''
-				},
-				resume: {
-					job_title: 'Product Designer',
-					job_description:
-						'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
-					personal_data: {
-						firstname: 'Alex',
-						middlename: '',
-						lastname: 'Johnson',
-						email: 'alex.johnson@example.com',
-						phone: '+12 987 654 32 10',
-						country: {
-							name: 'United Kingdom',
-							slug: 'united_kingdom',
-							flag: 'united_kindom.png'
-						},
-						city: 'London',
-						birthday: '1984-02-28'
+					beforeChange: function(ele, current, next) {
+						console.log('before', current, next)
+						this.index = next
 					},
-					picture: '/images/hero.png',
-					languages: [
-						{
-							name: 'English',
-							slug: 'english',
-							flag: 'english.png',
-							level: 100
-						},
-						{
-							name: 'Spanish',
-							slug: 'spanish',
-							flag: 'spanish.png',
-							level: 60
-						}
-					],
-					social_networks: [
-						{
-							name: 'Github',
-							slug: 'github',
-							fontawesome: 'github',
-							link: 'http://www.github.com',
-							color: '#323131'
-						},
-						{
-							name: 'Twitter',
-							slug: 'twitter',
-							fontawesome: 'twitter',
-							link: 'http://www.twitter.com',
-							color: '#1da1f3'
-						},
-						{
-							name: 'LinkedIn',
-							slug: 'linkedin',
-							fontawesome: 'linkedin-in',
-							link: 'http://www.linkedin.com',
-							color: '#0274b3'
-						}
-					],
-					education: [
-						{
-							title: 'Art & Multimedia',
-							description:
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-							school: 'Oxford University',
-							start_date: '2005',
-							end_date: '2008',
-							country: 'United Kingdom',
-							city: 'Oxford'
-						},
-						{
-							title: 'Dramatic Arts',
-							description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-							school: 'Cambridge University',
-							start_date: '2002',
-							end_date: '2005',
-							country: 'United Kingdom',
-							city: 'Cambridge'
-						},
-						{
-							title: 'Art & Multimedia 2',
-							description:
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-							school: 'Oxford University',
-							start_date: '2005',
-							end_date: '2008',
-							country: 'United Kingdom',
-							city: 'Oxford'
-						},
-						{
-							title: 'Dramatic Arts 2',
-							description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-							school: 'Cambridge University',
-							start_date: '2002',
-							end_date: '2005',
-							country: 'United Kingdom',
-							city: 'Cambridge'
-						},
-						{
-							title: 'Art & Multimedia 3',
-							description:
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-							school: 'Oxford University',
-							start_date: '2005',
-							end_date: '2008',
-							country: 'United Kingdom',
-							city: 'Oxford'
-						},
-						{
-							title: 'Dramatic Arts 3',
-							description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-							school: 'Cambridge University',
-							start_date: '2002',
-							end_date: '2005',
-							country: 'United Kingdom',
-							city: 'Cambridge'
-						},
-						{
-							title: 'Art & Multimedia 4',
-							description:
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-							school: 'Oxford University',
-							start_date: '2005',
-							end_date: '2008',
-							country: 'United Kingdom',
-							city: 'Oxford'
-						},
-						{
-							title: 'Dramatic Arts 4',
-							description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-							school: 'Cambridge University',
-							start_date: '2002',
-							end_date: '2005',
-							country: 'United Kingdom',
-							city: 'Cambridge'
-						}
-					],
-					work_experience: [
-						{
-							job_title: 'UI/UX Designer',
-							job_description:
-								'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-							start_date: '2008',
-							end_date: '2012',
-							company: 'Answer Softwares Ltd',
-							country: 'United Kingdom',
-							city: 'London'
-						},
-						{
-							job_title: 'Product Designer',
-							job_description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
-							start_date: '2012',
-							end_date: '',
-							company: 'Asco Int.',
-							country: 'United Kingdom',
-							city: 'London'
-						}
-					],
-					skills: [
-						{
-							name: 'CSS',
-							category: 'Technical skill',
-							type: 'pie',
-							value: 75
-						},
-						{
-							name: 'Photoshop',
-							category: 'Technical skill',
-							type: 'pie',
-							value: 80
-						},
-						{
-							name: 'Communication',
-							category: 'Soft skill',
-							type: 'bar',
-							value: 80
-						},
-						{
-							name: 'Writing',
-							category: 'Soft skill',
-							type: 'bar',
-							value: 60
-						}
-					],
-					uploads: [
-						{
-							name: 'cv.pdf',
-							title: 'My CV in pdf',
-							type: 'downloadable_file'
-						},
-						{
-							name: 'work_sample.pdf',
-							title: 'Work Samples',
-							type: 'downloadable_file'
-						},
-						{
-							name: 'hero.png',
-							title: 'Profile picture',
-							type: 'profile_picture',
-							downloadUrl: '/images/hero.png'
-						}
-					],
-					menus: {
-						presentation: 'Presentation',
-						education: 'Education',
-						skills: 'Skills',
-						files: 'Files',
-						contact: 'Contact'
-					},
-					fields: {},
-					contact_form_validation: {},
-					parameters: {
-						show_contact_form: true,
-						show_language_level: true
+					afterChange: function(ele, current) {
+						this.index = current
+						console.log('after', current)
 					}
 				}
 			}
@@ -437,79 +204,15 @@
 					'--background-color': this.colors.backgroundColor,
 					'--text-color': this.colors.textColor
 				}
-			},
-			skills() {
-				if (this.resume.skills) {
-					const res = this.resume.skills.reduce((acc, curr) => {
-						if (!acc[curr.category]) acc[curr.category] = [] //If this type wasn't previously stored
-						acc[curr.category].push(curr)
-						return acc
-					}, {})
-					return res
-				}
-			},
-			nationalities() {
-				if (this.resume.personal_data.nationalities) {
-					return this.resume.personal_data.nationalities.slice(0).sort((a, b) => a.priority - b.priority)
-				}
-			},
-			languages() {
-				if (this.resume.languages) {
-					return this.resume.languages.slice(0).sort((a, b) => b.level - a.level)
-				}
-			},
-			files() {
-				if (this.resume.uploads) {
-					return this.resume.uploads.filter(file => file.type === 'downloadable_file')
-				}
-			},
-			profilePicture() {
-				return this.resume.uploads.find(upload => upload.type === 'profile_picture')
-			},
-			presentationColumns() {
-				if (this.files && this.files.length > 0) {
-					return 6
-				}
-				return 12
 			}
 		},
 		methods: {
-			setIndex(newIndex) {
-				// console.log('newIndex: ', newIndex)
-				this.index = newIndex
-			},
-			moveTo(index) {
+			moveTo: function(index) {
 				this.$refs.fullpage.$fullpage.moveTo(index, true)
 			},
-			calculateAge(birthday) {
-				return moment().diff(birthday, 'years')
-			},
-			getLanguageLevelColor(level) {
-				if (level < 25) {
-					return 'error'
-				} else if (level <= 50) {
-					return 'warning'
-				} else if (level <= 75) {
-					return 'info'
-				} else {
-					return 'success'
-				}
-			},
-			getLanguageQualitativeLevel(level) {
-				console.log('level: ', level)
-				if (level < 20) {
-					return 'Beginner'
-				} else if (level < 40) {
-					return 'Low intermediate'
-				} else if (level < 60) {
-					return 'Intermediate'
-				} else if (level < 80) {
-					return 'High intermediate'
-				} else if (level < 100) {
-					return 'Advanced'
-				} else if ((level = 100)) {
-					return 'Mother tongue'
-				}
+			showPage: function() {
+				this.pageNum++
+				this.$refs.fullpage.$fullpage.$update()
 			}
 		}
 	}
@@ -519,41 +222,47 @@
 	[v-cloak] {
 		display: none;
 	}
-	* {
-		-webkit-overflow-scrolling: touch;
-	}
 	body {
 		margin: 0;
-		color: green;
 	}
-	.fullpage-wp {
-		display: flex;
+	.fullpage-container {
+		position: absolute;
+		left: 0;
+		top: 0;
 		width: 100%;
 		height: 100%;
-		flex-flow: column nowrap;
-		justify-content: flex-start;
-		align-items: center;
 	}
-	.fullpage-wp.anim {
-		transform: translate3d(0, 0, 0);
-		-webkit-transition: all 500ms ease-out 0s;
-		transition: all 500ms ease-out 0s;
+	.page {
+		display: block;
+		text-align: center;
+		font-size: 26px;
+		color: #eee;
 	}
-	.fullpage-wp.fullpage-wp-h {
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: flex-start;
-		align-items: center;
+	.page-1 {
+		padding-top: 100px;
+		background: #1bbc9b;
 	}
-
+	.page-2 {
+		padding-top: 100px;
+		background-color: rgb(75, 191, 195);
+	}
+	.page-3 {
+		padding-top: 50px;
+		background: #aabbcc;
+	}
+	h3,
+	p {
+		font-size: 16px;
+	}
 	.button-group {
 		position: absolute;
+		top: 30px;
+		left: 30px;
 		z-index: 9;
-		width: 100%;
-		margin-bottom: 50px;
 	}
 	.button-group button {
 		display: inline-block;
+		margin: 10px;
 		color: #000;
 		background: #fff;
 		background: rgba(255, 255, 255, 0.5);
@@ -566,139 +275,5 @@
 	.button-group button.active {
 		background: rgba(0, 0, 0, 0.5);
 		color: #fff;
-	}
-
-	.animated {
-		opacity: 1;
-	}
-
-	.fullpage-container {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-	}
-	.page {
-		display: block;
-		height: 100%;
-		overflow-y: auto;
-		display: flex;
-		/* align-items: center; */
-		justify-content: center;
-	}
-	.subpage {
-		margin-top: 50px;
-		margin-bottom: 20px;
-	}
-	.page-1 {
-		padding-top: 50px;
-		background-image: linear-gradient(120deg, var(--background-color), #fff);
-	}
-	.page-2 {
-		padding-top: 50px;
-		background-image: linear-gradient(120deg, var(--primary-color), #fff);
-	}
-	.page-3 {
-		padding-top: 50px;
-		background-image: linear-gradient(120deg, var(--background-color), #fff);
-	}
-	.page-4 {
-		padding-top: 50px;
-		background-image: linear-gradient(120deg, var(--primary-color), #fff);
-	}
-	.page-5 {
-		padding-top: 50px;
-		background-image: linear-gradient(120deg, var(--background-color), #fff);
-	}
-
-	.text-color {
-		color: var(--text-color);
-	}
-	.primary-color {
-		/* color: yellow; */
-		color: var(--primary-color);
-	}
-	.secondary-color-background {
-		background: var(--secondary-color);
-	}
-	.text-background-color {
-		color: var(--background-color);
-	}
-	.text-big {
-		font-size: 1.2em;
-	}
-	.centered {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.active {
-		color: red;
-	}
-	.pie {
-		background: var(--primary-color);
-		border-radius: 50px;
-	}
-	.bar {
-		border-radius: 10px;
-		margin: 0px 0px;
-	}
-	.rounded-border {
-		border-radius: 10px;
-	}
-
-	.social-link {
-		color: var(--text-color);
-	}
-	.social-link:hover {
-		color: var(--primary-color);
-		cursor: pointer;
-	}
-
-	.card {
-		/*color: var(--text-color);*/
-		/*background-color: var(--secondary-color);*/
-		padding: 5px 0px;
-		border-radius: 10px;
-	}
-	.card-title {
-		/*color: var(--primary-color);*/
-		padding: 10px 20px;
-		font-size: 1.3em;
-	}
-	.card-text {
-		/*color: var(--text-color);*/
-		padding: 0px 20px;
-	}
-	.card-date {
-		/*color: var(--primary-color);*/
-		font-weight: 500;
-		padding: 10px 0px;
-	}
-
-	::-webkit-scrollbar {
-		width: 15px;
-	}
-	::-webkit-scrollbar-track {
-		background: #f1f1f1;
-		border-radius: 5px;
-		z-index: 10;
-	}
-	::-webkit-scrollbar-thumb {
-		background: var(--background-color);
-		border-radius: 5px;
-	}
-	::-webkit-scrollbar-thumb:hover {
-		background: var(--text-color);
-	}
-	/*>>> .v-text-field--outline .v-label {
-				color: var(--text-color);
-			}
-		    >>> .v-text-field__slot input {
-		        color: red
-		    }*/
-	>>> .theme--dark.v-label {
-		color: var(--text-color);
 	}
 </style>

@@ -3,7 +3,7 @@
 		<div v-if="resume && resume.template && resume.template.id">
 			<!-- resume.template_id: {{ resume.template_id }}<br /> -->
 			<!-- component: {{ component }}<br /><br /> -->
-			<!-- resume: {{ resume }} -->
+			<!-- resume.template: {{ resume.template }} -->
 			<component :is="component" :resume="resume" v-if="component" />
 		</div>
 		<v-app v-else>
@@ -61,8 +61,8 @@
 					// await this.$store.dispatch('templates/fetchTemplates')
 		            // const template = await this.$store.getters['templates/loadedTemplates'].find(template => template.id === this.resume.template_id)
 		            console.log('template: ', template)
-		            // return this.component = () => import(`~/components/templates/${template.file}`)
-		            return this.component = () => import(`~/components/templates/Template001`)
+		            return this.component = () => import(`~/components/templates/${template.file}`)
+		            // return this.component = () => import(`~/components/templates/Template001`)
 				} else {
 					return this.$router.replace(`/resume/${slug}/login`)
 				}

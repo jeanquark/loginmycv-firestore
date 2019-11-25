@@ -1,82 +1,48 @@
 <template>
-    <v-app v-cloak :style="cssProps" id="app" v-if="this.resume">
-        <v-content class="background-color">
-            <!-- <b>this.resume:</b> {{ this.resume }}<br /><br /><br /> -->
-            <!-- <p class="primary-color">
-				primaryColor: {{ this.primaryColor }}<br />
-				secondaryColor: {{ this.secondaryColor }}<br />
-				tertiaryColor: {{ this.tertiaryColor }}<br />
-				backgroundColor: {{ this.backgroundColor }}<br />
-				textColor: {{ this.textColor }}<br />
-			</p><br /><br /> -->
-            <!-- <p class="primary-color">Some random text</p> -->
-
-            <!-- Section Personal data -->
-            <!-- <v-layout row wrap class="margin-top margin-bottom"> -->
-			<v-row no-gutters class="margin-top margin-bottom">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
+        <v-app v-cloak :style="cssProps">
+        <!-- <v-content class="background-color"> -->
+        <v-container class="background-color">
+            <v-row no-gutters class="margin-top margin-bottom">
+                <v-col cols="12" sm="8" offset-sm="2">
                     <v-card elevation-10 v-if="resume.personal_data" class="secondary-color-background">
                         <v-card-text>
-                            <!-- <v-layout row wrap> -->
-							<v-row no-gutters>
-                                <!-- <v-flex xs12 class="mb-4"> -->
-								<v-col xs="12" class="mb-4">
-                                    <h1 class="text-xs-center mb-4 text-color">{{ resume.job_title }}</h1>
-                                    <h3 class="text-xs-center mb-4 px-3">{{ resume.job_description }}</h3>
-                                <!-- </v-flex> -->
-								</v-col>
-                                <!-- <v-flex v-bind="{[`xs12 sm${column}`]: true}"> -->
-								<v-col>
-                                    <!-- <v-layout row wrap align-center class="text-big"> -->
-									<v-row no-gutters align="center" class="text-big">
-                                        <!-- <v-flex xs12 sm6 class="pa-2"> -->
-										<v-col xs="12" sm="6" class="pa-2">
+                            <v-row no-gutters>
+                                <v-col cols="12" class="my-5">
+                                    <h1 class="text-center mb-4 text-color">{{ resume.job_title }}</h1>
+                                    <h3 class="text-center mb-4 px-3">{{ resume.job_description }}</h3>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="start">
+                                <v-col cols="9" style="">
+                                    <v-row no-gutters align="center" class="text-big">
+                                        <v-col cols="12" sm="6" class="pa-2">
                                             <span>{{ resume.fields['firstname'] || 'Firstname' }}: <b>{{ resume.personal_data.firstname }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.middlename"> -->
-										<v-col xs="12" sm="6" class="pa-2" v-if="resume.personal_data.middlename">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.middlename">
                                             <span>{{ resume.fields['middlename'] || 'Middlename' }}: <b>{{ resume.personal_data.middlename }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2"> -->
-										<v-col xs="12" sm="6" class="pa-2">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2">
                                             <span>{{ resume.fields['lastname'] || 'Lastname' }}: <b>{{ resume.personal_data.lastname }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.birthday"> -->
-										<v-col xs="12" sm="6" class="pa-2" v-if="resume.personal_data.birthday">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.birthday">
                                             <span>{{ resume.fields['age'] || 'Age' }}: <b>{{ calculateAge(resume.personal_data.birthday) }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.city"> -->
-										<v-col xs="12" sm="6" class="pa-2" v-if="resume.personal_data.city">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.city">
                                             <span>{{ resume.fields['city'] || 'City' }}: <b>{{ resume.personal_data.city }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.country"> -->
-										<v-col xs="12" sm="6" class="pa-2" v-if="resume.personal_data.country">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.country">
                                             <span>{{ resume.fields['country'] || 'Country' }}: <b>{{ resume.personal_data.country.name }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.email"> -->
-										<v-col xs="12" sm="6" class="pa-2" v-if="resume.personal_data.email">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2" v-if="resume.personal_data.email">
                                             <span>{{ resume.fields['email'] || 'Email' }}: <b>{{ resume.personal_data.email }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="pa-2" v-if="resume.personal_data.phone_number"> -->
-										<v-col xs="12" sm="6" class="pa-2">
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="pa-2">
                                             <span>{{ resume.fields['phone_number'] || 'Phone number' }}: <b>{{ resume.personal_data.phone_number }}</b></span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                    <!-- </v-layout> -->
-									</v-row>
-                                    <!-- <v-layout row wrap class="pa-2 text-big" v-if="resume.personal_data.nationalities || resume.languages"> -->
-									<v-row no-gutters class="pa-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
-                                        <!-- <v-flex xs12 sm6 v-if="resume.personal_data.nationalities"> -->
-										<v-col xs="12" sm="6" v-if="resume.personal_data.nationalities">
-                                            <div v-if="resume.personal_data.nationalities.length > 1" class="text-xs-left">
+                                        </v-col>
+                                    </v-row>
+                                    <v-row no-gutters class="pa-2 text-big" v-if="resume.personal_data.nationalities || resume.languages">
+                                        <v-col cols="12" sm="6" v-if="resume.personal_data.nationalities">
+                                            <div v-if="resume.personal_data.nationalities.length > 1" class="text-left">
                                                 <span>{{ resume.fields['nationalities'] || 'Nationalities' }}:</span>
                                                 <ul class="list-horizontal">
                                                     <li v-for="(nationality, index) in nationalities" :key="index"><b>{{ nationality.name }}</b></li>
@@ -85,12 +51,10 @@
                                             <div v-else>
                                                 <span>{{ resume.fields['nationality'] || 'Nationality' }}: <b>{{ resume.personal_data.nationalities[0].name }}</b></span>
                                             </div>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                        <!-- <v-flex xs12 sm6 class="text-xs-center pa-2" v-if="resume.languages"> -->
-										<v-col xs="12" sm="6" class="text-center pa-2" v-if="resume.languages">
-                                            <div v-if="resume.languages.length > 1" class="text-xs-left">
-                                                <span>{{ resume.fields['languages'] || 'Languages'}}:</span>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" class="text-center pa-2" v-if="resume.languages">
+                                            <div v-if="resume.languages.length > 1" class="text-center">
+                                                <div class="mb-2 text-color">{{ resume.fields['languages'] || 'Languages'}}:</div>
                                                 <ul class="list-horizontal">
                                                     <li v-for="(language, index) in languages" :key="index">
                                                         <b>{{ language.name }}</b>
@@ -101,148 +65,119 @@
                                             <div v-else>
                                                 <span>{{ resume.fields['language'] || 'language' }}: {{ resume.languages[0].name }}</span>
                                             </div>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                    <!-- </v-layout> -->
-									</v-row>
-									<v-row no-gutters class="my-3 px-2">
-                                    <!-- <v-layout class="my-3 px-2"> -->
-                                        <!-- <v-flex xs12 v-if="resume.personal_data.short_description"> -->
-										<v-col xs="12" v-if="resume.personal_data.short_description">
+                                        </v-col>
+                                    </v-row>
+                                    <v-row no-gutters class="my-3 px-2">
+                                        <v-col cols="12" v-if="resume.personal_data.short_description">
                                             <span>{{ resume.personal_data.short_description }}</span>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                    <!-- </v-layout> -->
-									</v-row>
-                                    <!-- <v-layout class="my-3 px-2" v-if="resume.social_networks"> -->
-									<v-row no-gutters class="my-3 px-2" v-if="resume.social_networks">
-                                        <!-- <v-flex xs12 class="text-xs-center"> -->
-										<v-col xs="12" class="text-center">
-                                            <v-chip label v-for="(social_network, index) in resume.social_networks" :key="index" class="social-link" @click="redirectTo(social_network.link)">
-                                                <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" />
-                                            </v-chip>
-                                        <!-- </v-flex> -->
-										</v-col>
-                                    <!-- </v-layout> -->
-									</v-row>
-									<v-row no-gutters class="my-3 px-2" v-if="resume.key_competences">
-                                    <!-- <v-layout class="my-3 px-2" v-if="resume.key_competences"> -->
-                                        <!-- <v-flex xs12> -->
-										<v-col xs="12">
+                                        </v-col>
+                                    </v-row>
+                                    <v-row no-gutters class="my-3 px-2" v-if="resume.social_networks">
+                                        <v-col cols="12" class="text-center">
+                                            <span v-for="(social_network, index) in resume.social_networks" :key="index" @click="redirectTo(social_network.link)">
+                                                <font-awesome-icon :icon="['fab', social_network.fontawesome]" size="2x" class="social-link" />
+                                            </span>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row no-gutters class="my-3 px-2" v-if="resume.key_competences">
+                                        <v-col cols="12">
                                             {{ resume.fields['key_competences'] || 'Key competences' }}
-                                        <!-- </v-flex> -->
-										</v-col>
-                                    <!-- </v-layout> -->
-									</v-row>
+                                        </v-col>
+                                    </v-row>
 
-                                <!-- </v-flex> -->
-								</v-col>
-                                <!-- <v-flex xs12 sm4 v-if="profilePicture"> -->
-								<v-col xs="12" sm="4" v-if="profilePicture">
-                                    <v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" alt="profile picture" />
-                                <!-- </v-flex> -->
-								</v-col>
-                            <!-- </v-layout> -->
-							</v-row>
+                                </v-col>
+                                <v-col cols="3" v-if="profilePicture" style="">
+                                    <v-img :src="profilePicture.downloadUrl" :lazy-src="profilePicture.downloadUrl" max-width="100%" alt="profile picture" />
+                                </v-col>
+                            </v-row>
                         </v-card-text>
                     </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
-
-            <!-- Section Education -->
-            <!-- <v-layout row wrap class="margin-bottom" v-if="resume.education && resume.education.length > 0"> -->
-			<v-row no-gutters class="margin-bottom" v-if="resume.education && resume.education.length > 0">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
-                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['education'] || 'Education' }}</h2>
-                    <br />
-                    <v-card class="secondary-color-background">
-                        <v-expansion-panel expand :value="[1]">
-                            <v-expansion-panel-content v-for="(education, index) in resume.education" :key="index" style="background: var(--secondary-color);">
-                                <template v-slot:header>
-                                    <h3>
-                                        <v-icon :color="primaryColor" class="mr-2">school</v-icon> {{ education.title }}, {{ education.school }}
-                                    </h3>
-                                </template>
-                                <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
-                                <v-card>
-                                    <v-card-text class="tertiary-color-background">
-                                        <p v-if="!education.end_date">
-                                            {{ education.city }} - {{ education.country }},
-                                            <i>since {{ education.start_date }}</i>
-                                        </p>
-                                        <p v-else>
-                                            {{ education.city }} - {{ education.country }},
-                                            <i>from {{ education.start_date }} to {{ education.end_date }}</i>
-                                        </p>
-                                        <p>{{ education.description }}</p>
-                                    </v-card-text>
-                                </v-card>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-                    </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+                </v-col>
+            </v-row>
 
             <!-- Section Work experience -->
-            <!-- <v-layout row wrap class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0"> -->
-			<v-row no-gutters class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
-                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
+            <v-row no-gutters class="margin-bottom" v-if="resume.work_experience && resume.work_experience.length > 0" style="">
+                <v-col cols="12" sm="8" offset-sm="2" style="">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['work_experience'] || 'Work Experience' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
-                        <v-expansion-panel expand :value="[1]">
-                            <v-expansion-panel-content v-for="(work_experience, index) in resume.work_experience" :key="index" style="background: var(--secondary-color);">
-                                <template v-slot:header>
-                                    <h3>
-                                        <v-icon :color="primaryColor" class="mr-2">work</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}
-                                    </h3>
-                                </template>
-                                <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
-                                <v-card>
-                                    <v-card-text class="tertiary-color-background">
-                                        <p v-if="!work_experience.end_date">
-                                            {{ work_experience.city }} - {{ work_experience.country }},
-                                            <i>since {{ work_experience.start_date }}</i>
-                                        </p>
-                                        <p v-else>
-                                            {{ work_experience.city }} - {{ work_experience.country }},
-                                            <i>from {{ work_experience.start_date }} to {{ work_experience.end_date }}</i>
-                                        </p>
-                                        <p>{{ work_experience.job_description }}</p>
-                                    </v-card-text>
-                                </v-card>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
+                        <v-expansion-panels multiple accordion v-model="openedPanels">
+                            <v-expansion-panel v-for="(work_experience, index) in resume.work_experience" :key="index" style="">
+                                <v-expansion-panel-header class="tertiary-color-background" style="">
+                                    <v-row no-gutters align="center">
+                                        <h3>
+                                            <v-icon :color="primaryColor" class="mr-2">mdi-briefcase</v-icon> {{ work_experience.job_title }} at {{ work_experience.company }}
+                                        </h3>
+                                    </v-row>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="tertiary-color-background" style="">
+                                    <v-card flat>
+                                        <v-card-text class="secondary-color-background">
+                                            <p v-if="!work_experience.end_date">
+                                                {{ work_experience.city }} - {{ work_experience.country }},
+                                                <i>since {{ work_experience.start_date }}</i>
+                                            </p>
+                                            <p v-else>
+                                                {{ work_experience.city }} - {{ work_experience.country }},
+                                                <i>from {{ work_experience.start_date }} to {{ work_experience.end_date }}</i>
+                                            </p>
+                                            <p>{{ work_experience.job_description }}</p>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
                     </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+                </v-col>
+            </v-row>
+
+            <!-- Section Education -->
+            <v-row no-gutters class="margin-bottom" v-if="resume.education && resume.education.length > 0">
+                <v-col cols="12" sm="8" offset-sm="2">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['education'] || 'Education' }}</h2>
+                    <br />
+                    <v-card class="secondary-color-background">
+                        <v-expansion-panels multiple accordion v-model="openedPanels">
+                            <v-expansion-panel v-for="(education, index) in resume.education" :key="index">
+                                <v-expansion-panel-header class="tertiary-color-background">
+                                    <v-row no-gutters align="center">
+                                        <h3>
+                                            <v-icon :color="primaryColor" class="mr-2">mdi-school</v-icon> {{ education.title }}, {{ education.school }}
+                                        </h3>
+                                    </v-row>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="tertiary-color-background">
+                                    <v-card flat>
+                                        <v-card-text class="secondary-color-background">
+                                            <p v-if="!education.end_date">
+                                                {{ education.city }} - {{ education.country }},
+                                                <i>since {{ education.start_date }}</i>
+                                            </p>
+                                            <p v-else>
+                                                {{ education.city }} - {{ education.country }},
+                                                <i>from {{ education.start_date }} to {{ education.end_date }}</i>
+                                            </p>
+                                            <p>{{ education.description }}</p>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-card>
+                </v-col>
+            </v-row>
 
             <!-- Section Skills -->
-            <!-- <v-layout row wrap class="margin-bottom" v-if="resume.skills && resume.skills.length > 0"> -->
-			<v-row no-gutters class="margin-bottom" v-if="resume.skills && resume.skills.length > 0">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
-                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['skills'] || 'Skills' }}</h2>
+            <v-row no-gutters class="margin-bottom" v-if="resume.skills && resume.skills.length > 0">
+                <v-col cols="12" sm="8" offset-sm="2">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['skills'] || 'Skills' }}</h2>
                     <br />
                     <v-card class="secondary-color-background">
-                        <!-- <v-layout row wrap justify-center> -->
-						<v-row no-gutters justify="center">
-                            <!-- <v-flex xs12 v-for="(skill, index) in skills" :key="index" class="pa-3 text-xs-center"> -->
-							<v-col xs="12" class="text-center pa-3" v-for="(skill, index) in skills" :key="index">
-                                <!-- skill: {{ skill }}<br /> -->
-                                <h3 class="text-xs-center mb-2">{{ skill[0].category }}</h3>
-                                <!-- <v-layout align-center justify-center> -->
-								<v-row no-gutters justify="center" align="center">
-                                    <!-- <v-flex xs12 sm6 md4 lg3 class="mx-3" v-for="s in skill" :key="s.name"> -->
-									<v-col xs="12" sm="6" lg="3" class="mx-3" v-for="s in skill" :key="s.name">
+                        <v-row no-gutters justify="center">
+                            <v-col cols="12" class="text-center pa-3" v-for="(skill, index) in skills" :key="index">
+                                <h3 class="text-center mb-2">{{ skill[0].category }}</h3>
+                                <v-row no-gutters justify="center" align="center">
+                                    <v-col cols="12" sm="6" lg="3" class="mx-3" v-for="s in skill" :key="s.name">
                                         <div v-if="s.type === 'pie'">
                                             <v-progress-circular :rotate="270" :size="100" :width="15" :value="s.value" :color="primaryColor" style="">
                                                 {{ s.value }}%
@@ -250,120 +185,84 @@
                                             <span color="textColor">{{ s.name }}</span>
                                         </div>
                                         <div v-else>
-                                            <!-- type === 'bar' -->
-                                            <!-- <v-layout class="my-2"> -->
-											<v-row no-gutters class="my-2">
-                                                <!-- <v-flex class="text-xs-left"> -->
-												<v-col class="text-left">
+                                            <v-row no-gutters class="my-2">
+                                                <v-col class="text-left">
                                                     <span>{{ s.name }}</span>
-                                                <!-- </v-flex> -->
-												</v-col>
-                                                <!-- <v-flex class="text-xs-right"> -->
-												<v-col class="text-right">
+                                                </v-col>
+                                                <v-col class="text-right">
                                                     <span>{{ s.value }}%</span>
-                                                <!-- </v-flex> -->
-												</v-col>
-                                            <!-- </v-layout> -->
-											</v-row>
-                                            <!-- {{ s.name }} {{ s.value }}% -->
+                                                </v-col>
+                                            </v-row>
                                             <v-progress-linear height="15" :value="s.value" :color="primaryColor" class="my-2" style="border-radius: 10px; margin: 0px 0px;"></v-progress-linear>
                                         </div>
-                                    <!-- </v-flex> -->
-									</v-col>
-                                <!-- </v-layout> -->
-								</v-row>
-                            <!-- </v-flex> -->
-							</v-col>
-                        <!-- </v-layout> -->
-						</v-row>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
                     </v-card>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+                </v-col>
+            </v-row>
 
             <!-- Section Files -->
-            <!-- <v-layout row wrap class="margin-bottom" v-if="files && files.length > 0"> -->
-			<v-row no-gutters class="margin-bottom" v-if="files && files.length > 0">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
-                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['files'] || 'Files' }}</h2>
+            <v-row no-gutters class="margin-bottom" v-if="files && files.length > 0">
+                <v-col cols="12" sm="8" offset-sm="2">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['files'] || 'Files' }}</h2>
                     <br />
-                    <!-- <v-layout row wrap justify-center> -->
-					<v-row no-gutters justify="center">
-                        <!-- <v-flex xs6 md4 lg3 v-for="(file, index) in files" :key="index" class="pa-2" style=""> -->
-						<v-col xs="6" md="4" lg="3" class="pa-2" v-for="(file, index) in files" :key="index">
-                            <v-card hover @click="redirectTo(file.downloadUrl)" class="secondary-color-background">
-                                <v-card-title class="">
-                                    <!-- <v-layout justify-center> -->
-									<v-row no-gutters justify="center">
-                                        <h3 class="text-xs-center">{{ file.title }}</h3>
-                                    <!-- </v-layout> -->
-									</v-row>
-                                </v-card-title>
-                                <v-card-text class="text-xs-center">
-                                    <font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" :color="primaryColor" class="" /><br />
-                                </v-card-text>
-                            </v-card>
-                        <!-- </v-flex> -->
-						</v-col>
-                    <!-- </v-layout> -->
-					</v-row>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+                    <v-row no-gutters justify="center">
+                        <v-col cols="6" md="4" lg="3" class="pa-2" v-for="(file, index) in files" :key="index">
+                            <v-hover v-slot:default="{ hover }">
+                                <v-card @click="redirectTo(file.downloadUrl)" :elevation="hover ? '12' : '0'" class="secondary-color-background">
+                                    <v-card-title class="">
+                                        <v-row no-gutters justify="center">
+                                            <h5 class="text-center text-color">{{ file.title }}</h5>
+                                        </v-row>
+                                    </v-card-title>
+                                    <v-card-text class="text-center">
+                                        <font-awesome-icon :icon="['fas', 'file-pdf']" size="5x" :class="[hover ? 'tertiary-color' : 'primary-color']" /><br />
+                                    </v-card-text>
+                                </v-card>
+                            </v-hover>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
 
             <!-- Section Contact -->
-            <!-- <v-layout row wrap id="contact" class="my-5 section" v-if="resume.parameters && resume.parameters.show_contact_form"> -->
-			<v-row no-gutters class="my-5 section" id="contact" v-if="resume.parameters && resume.parameters.show_contact_form">
-                <!-- <v-flex xs12 sm8 offset-sm2> -->
-				<v-col xs="12" sm="8" offset-sm="2">
-                    <h2 class="text-xs-center display-1 primary-color">{{ resume.menus['contact'] || 'Contact' }}</h2>
-                    <br /><br />
-                    <v-form ref="form" lazy-validation v-model="contactForm.valid">
-                        <!-- <v-layout row wrap class="secondary-color-background pa-5"> -->
-						<v-row class="secondary-color-background pa-5">
-                            <!-- <v-flex xs6 class="pr-3"> -->
-							<v-col xs="6" class="pr-3">
-                                <v-text-field name="firstname_contact" :label="resume.fields['firstname'] || 'Firstname'" outline dark :color="primaryColor" :background-color="primaryColor" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
-                            <!-- </v-flex> -->
-							</v-col>
-                            <!-- <v-flex xs6 class="pl-3"> -->
-							<v-col xs="6" class="pl-3">
-                                <v-text-field outline name="lastname_template1" :label="resume.fields['lastname'] || 'Lastname'" :rules="contactForm.lastnameRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.lastname"></v-text-field>
-                            <!-- </v-flex> -->
-							</v-col>
-                            <!-- <v-flex xs12> -->
-							<v-col xs="12">
-                                <v-text-field outline name="email_template1" :label="resume.fields['email'] || 'Email'" :rules="contactForm.emailRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.email"></v-text-field>
-                            <!-- </v-flex> -->
-							</v-col>
-                            <!-- <v-flex xs12> -->
-							<v-col xs="12">
-                                <v-textarea outline name="message_template1" :label="resume.fields['message'] || 'Message'" :rules="contactForm.messageRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.message"></v-textarea>
-                            <!-- </v-flex> -->
-							</v-col>
-                            <v-btn rounded block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" :disabled="!contactForm.valid" @click.prevent="sendMessage">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
-                        <!-- </v-layout> -->
-						</v-row>
-                    </v-form>
-                <!-- </v-flex> -->
-				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
-        </v-content>
+            <v-row no-gutters class="margin-bottom" id="contact" v-if="resume.parameters && resume.parameters.show_contact_form">
+                <v-col cols="12" sm="8" offset-sm="2">
+                    <h2 class="text-center display-1 primary-color">{{ resume.menus['contact'] || 'Contact' }}</h2>
+                    <br />
+                    <v-card class="secondary-color-background">
+                        <v-form ref="form" lazy-validation v-model="contactForm.valid">
+                            <v-row class=" pa-5 ">
+                                <v-col xs="6" class="pr-3">
+                                    <v-text-field name="firstname_contact" :label="resume.fields['firstname'] || 'Firstname'" outlined dark :color="primaryColor" :background-color="primaryColor" :rules="contactForm.firstnameRules" v-model="contactForm.firstname"></v-text-field>
+                                </v-col>
+                                <v-col xs="6" class="pl-3">
+                                    <v-text-field outlined name="lastname_template1" :label="resume.fields['lastname'] || 'Lastname'" :rules="contactForm.lastnameRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.lastname"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field outlined name="email_template1" :label="resume.fields['email'] || 'Email'" :rules="contactForm.emailRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.email"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-textarea outlined name="message_template1" :label="resume.fields['message'] || 'Message'" :rules="contactForm.messageRules" :color="primaryColor" :background-color="primaryColor" dark v-model="contactForm.message"></v-textarea>
+                                </v-col>
+                                <v-btn rounded block large class="white--text" style="padding-top: 0px; padding-bottom: 0px;" :color="primaryColor" :disabled="!contactForm.valid" @click.prevent="sendMessage">{{ resume.fields['send_message'] || 'Send message' }}</v-btn>
+                            </v-row>
+                        </v-form>
+                    </v-card>
+                </v-col>
+            </v-row>
+            <!-- </v-content> -->
+        </v-container>
 
-        <v-footer :color="primaryColor" class="white--text justify-center pa-4">
+        <v-footer :color="primaryColor" class="white--text justify-center my-4">
             <nuxt-link to="/" class="link">
-                <!-- <v-layout align-center justify-center> -->
-				<v-row no-gutters justify="center" align="center">
+                <v-row no-gutters justify="center" align="center" class="py-4">
                     <img src="/images/logo_small.png" width="30" />&nbsp;
                     <span class="title">LoginMyCV</span>
-                <!-- </v-layout> -->
-				</v-row>
+                </v-row>
             </nuxt-link>
-            <!-- <span class="ml-2">{{ new Date() | moment('Y') }}</span> -->
         </v-footer>
     </v-app>
 </template>
@@ -423,6 +322,7 @@
 				tertiaryColor: '',
 				backgroundColor: '',
 				textColor: '',
+				openedPanels: [0],
 				profilePicture: {},
 				column: 8,
 				contactForm: {
@@ -551,9 +451,6 @@
 </script>
 
 <style scoped>
-	.abc {
-		background-color: yellow;
-	}
 	p,
 	span,
 	h1,
@@ -580,8 +477,15 @@
 		display: inline-block;
 		width: 1em;
 	}
+	.button {
+		padding-top: 0px;
+		padding-bottom: 0px;
+	}
 	.primary-color {
 		color: var(--primary-color);
+	}
+	.primary-color-background {
+		background: var(--primary-color);
 	}
 	.secondary-color {
 		color: var(--secondary-color);
@@ -611,17 +515,22 @@
 		text-decoration: none;
 	}
 	.social-link {
-		background-color: var(--secondary-color);
-		color: var(--primary-color);
+		margin: 0 8px;
+		cursor: pointer;
 	}
 	.social-link:hover {
-		background-color: var(--primary-color);
 		color: var(--background-color);
 	}
-	>>> .v-chip__content {
-		cursor: pointer !important;
+	.progress-linear {
+		border-radius: 10px;
+		margin: 0px 0px;
+		background: var(--primary-color);
+		color: var(--primary-color);
 	}
-	>>>.v-text-field--outline .v-label {
+	/*>>> .v-text-field--outline .v-label {
+			color: var(--text-color);
+		}*/
+	>>> .theme--dark.v-label {
 		color: var(--text-color);
 	}
 </style>
