@@ -26,7 +26,7 @@
         <v-app-bar app color="primary" dark>
             <v-app-bar-nav-icon @click.stop="sideBar = !sideBar" :class="{'hidden-sm-and-up': !sideBar}"></v-app-bar-nav-icon>
             <v-img src="/images/logo_small.png" max-width="40" class="mx-2"></v-img>&nbsp;
-            <v-toolbar-title><nuxt-link to="/" class="white--text">LoginMyCV</nuxt-link></v-toolbar-title>
+            <v-toolbar-title><nuxt-link to="/" class="link white--text">LoginMyCV</nuxt-link></v-toolbar-title>
             <v-spacer></v-spacer>
             <div class="hidden-xs-only font-weight-bold" v-if="loadedUser && loadedUser.private">
                 <v-btn class="success mx-2" nuxt to="/candidate/resumes">My resumes</v-btn>
@@ -44,10 +44,8 @@
         <v-content>
             <v-container fluid style="padding: 0px;">
                 <nuxt />
-                <!-- <v-layout row wrap> -->
 				<v-row>
                     <!-- Login Candidate Modal -->
-                    <!-- v-model="loginModal" -->
                     <v-dialog :value="loginModal" width="600" :persistent="loading ? true : false" @input="closeLoginModal">
                         <Login v-on:switchToRegisterModal="switchToRegister" v-on:switchToForgotPasswordModal="switchToForgotPassword" v-on:closeLoginModal="closeLoginModal" />
                     </v-dialog>
@@ -61,7 +59,6 @@
                     <v-dialog v-model="forgotPasswordModal" width="750">
                         <ForgotPassword />
                     </v-dialog>
-                <!-- </v-layout> -->
 				</v-row>
                 <br /><br /><br /><br />
 				

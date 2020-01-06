@@ -138,12 +138,13 @@ export const actions = {
 			commit('setShortResumes', shortResumesArray)
 		})
 	},
-	async fetchShortResumesPerPage ({ commit, getters }, payload) {
-		console.log('!!!Call to fetchShortResumesPerPage: ')
+	async fetchShortResumesPerPage ({ commit, getters }) {
+		console.log('Call to fetchShortResumesPerPage: ')
 		const lastVisible = getters['loadedLastVisible']
 		console.log('lastVisible from vuex: ', lastVisible)
 		if (lastVisible) {
 			const snapshot = await firestore.collection('resumes_short').where('public', '==', true).where('active', '==', true).orderBy('_created_at', 'desc').startAt(lastVisible).limit(8).get()
+			// const snapshot = await firestore.collection('resumes_short').where('public', '==', true).where('active', '==', true).orderBy('_created_at', 'desc').limit(8).get()
 			return snapshot		
 		}
 	},

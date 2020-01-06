@@ -119,6 +119,7 @@ export const actions = {
 			// console.log('redirect: ', redirect)
 			// res.redirect('http://google.ch')
 			// this.$router.replace('/about')
+            // this.$router.push('/about')
 		}
         // console.log('req.url: ', req.url)
     },

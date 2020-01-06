@@ -1,262 +1,159 @@
 <template>
-    <div class="text-center">
-        <!-- <v-carousel style="width: 100%; margin: 0px; padding: 0px;">
-            <v-carousel-item v-for="(item,i) in carouselItems" :key="i" :src="item.src" :lazy="true"></v-carousel-item>
-        </v-carousel> -->
-
-    	<div>
-			<!-- loadedShortResumes: {{ loadedShortResumes }}<br /><br /> -->
-			<!-- loadedUserReceivedAuthorizations: {{ loadedUserReceivedAuthorizations }}<br /><br /> -->
-			<!-- ref.resumesNext: {{ ref.resumesNext }}<br /><br /> -->
-			<!-- <p>lastVisible: {{ lastVisible }}</p> -->
-			<!-- loadedLastVisible: {{ loadedLastVisible }}<br /><br /> -->
-            <nuxt-link to="/resume/jeanquark">Go to jeanquark's resume (/resume/jeanquak)</nuxt-link><br />
-            <a href="http://localhost:3000/resume/jeanquark">Go to jeanquark's resume (/jeanquark.loginmycv.com)</a>
-		</div>
-
+    <div class="text-center" id="abc">
 		<v-container class="text-center">
-			<v-row no-gutters justify="center" class="mb-5">
+
+			<!-- <svg width="100%" height="600" xmlns="http://www.w3.org/2000/svg">
+			 <g>
+			  <title>Layer 1</title>
+			  <path id="svg_7" d="m-48.68566,460.38253l353.94909,-49.85585l450.00039,115.78957l389.47403,-78.94744l505.2636,92.10535l371.05296,-92.10535c496.05173,123.54014 335.52796,123.82851 589.47421,42.1053c253.94625,-81.72321 261.84099,-63.30214 260.52654,-65.78953c1.31445,2.48739 359.20951,65.64534 357.89505,63.15795c1.31446,2.48739 -9.21186,-518.56571 -10.52632,-518.42151c1.31446,-0.1442 -3269.74113,-8.03895 -3268.42393,-7.89474c-1.3172,-0.14421 -3.9474,13.01397 1.31438,499.85625z" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#8CD79F"/>
+			 </g>
+			</svg> -->
+
+			<v-row no-gutters justify="center" class="my-4">
 				<v-col>
-                    <h1 class="grey--text text--darken-1 text--accent-1 my-8">Uploading your CV online just got easier</h1>
+                    <h1 class="grey--text text--darken-1 text--accent-1 mb-2">Uploading your CV online just got easier</h1>
 
 					<v-row no-gutters align="center" class="">
-						<v-col cols="12" sm="4" offset-sm="2" class="px-6 py-2">
+						<v-col cols="12" md="6" sm="12" class="px-6 py-2">
 		                    <h2 class="grey--text text--darken-3 text-center font-weight-bold mb-3">Welcome to LoginMyCV, your online CV provider</h2>
 							<p class="text-left subtitle-1">At <span class="primary--text font-weight-bold">loginmycv.com</span>, we make sure anyone can reach global audience with a simple CV. By following our clear and concise guidelines, you will get your resume online in <span class="secondary--text font-weight-bold">no time</span>. At the end of the process, you will have your own personal web page. And you'll find yourself in the <span class="secondary--text font-weight-bold">advantageous</span> position of passing a short url over to potential employers for them to access all your details. You can even make your profile <span class="secondary--text font-weight-bold">stands out</span> right here on the frontpage to attract attention! <br /><br />We are looking forward to embarking with you on this journey to <span class="secondary--text font-weight-bold">success</span>.</p>
-							<!-- <div class="text-center hidden-sm-and-down"> -->
-							<v-row justify="center" class="hidden-sm-and-down">
-                        		<!-- <v-img src="/images/logo3.png" lazy-src="/images/logo3.png" max-width="100"></v-img> -->
-								<!-- <img src="/images/logo3.png" width="100" /> -->
-							</v-row>
-							<!-- </div> -->
 						</v-col>
-						<v-col cols="12" sm="4" offset-sm="0" class="px-6">
+						<v-col cols="12" md="6" sm="12" class="px-6">
 							<v-img src="/images/frontpage2.png" lazy-src="/images/frontpage2.png"></v-img>
 						</v-col>
 					</v-row>
 				</v-col>
 			</v-row>
-
-			<v-row no-gutters class="my-8">
-				<v-col cols="12" sm="8" offset-sm="2" style="border: 1px solid green;">
-					<v-row no-gutters>
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-										<font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-									</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Your online CV for free</div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
-								</v-card-text>
-							</v-card>
-						</v-col>
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-									<font-awesome-icon :icon="['fas', 'lock']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
-									</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Private & Secured data</div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									All of your data is securely saved in the cloud. You decide who has access to which information. At all times your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
-								</v-card-text>
-							</v-card>
-						</v-col>
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-									<font-awesome-icon :icon="['fas', 'search']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+			
+			<v-row no-gutters justify="center" class="my-4">
+				<v-col cols="12" lg="10" md="10">
+					<carousel :margin="20" :nav="false" :loop="true" :items="getItems">
+					    <v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+									<font-awesome-icon :icon="['fas', 'dollar-sign']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
 								</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Let recruiters find you</div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. Our custom search tools ensures optimal results on every request.
-								</v-card-text>
-							</v-card>
-						</v-col>
-
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-									<font-awesome-icon :icon="['fas', 'file-pdf']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Your online CV for free</div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								Make use of one of our templates to build your own resume. Simply follow our guidelines to enter personal data, education and work experience and voilà, in no time your resume will be accessible online at the endpoint of your choice.
+							</v-card-text>
+						</v-card>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+								<font-awesome-icon :icon="['fas', 'lock']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
 								</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Upload PDFs</div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									Add files to complete your online resume. Whether it is a porfolio, some scientific article or any file that will boost your profile. All of your info is now only a single click away from your recruiter's hand. 
-								</v-card-text>
-							</v-card>
-						</v-col>
-
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-									<font-awesome-icon :icon="['fas', 'chart-bar']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
-								</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Get Statistics</div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									Remain constantly informed on how many people clicked on your resume. Observe which one of your resumes performs best in attracting visitors. Make key adjustments to improve your global reach.
-								</v-card-text>
-							</v-card>
-						</v-col>
-
-						<v-col cols="6" sm="4">
-							<v-card flat class="transparent ma-2">
-								<v-card-text class="text-center pb-0">
-									<v-hover v-slot:default="{ hover }">
-									<font-awesome-icon :icon="['fas', 'trophy']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
-								</v-hover>
-								</v-card-text>
-								<v-card-title primary-title class="layout justify-center">
-									<div class="headline text-center">Go Premium <small>(coming soon)</small></div>
-								</v-card-title>
-								<v-card-text class="body-1">
-									Access more templates, get more data insights, improve internal ranking & search results. In a word, be more professional with one of our subscription packages. Learn more <nuxt-link to="/packages">here</nuxt-link>.
-								</v-card-text>
-							</v-card>
-						</v-col>
-					</v-row>
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Private & Secured data</div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								All of your data is securely saved in the cloud. You decide who has access to which information. At all times your remain in full control of your data and if you decide to remove some information, it will be completely wiped out from our database.
+							</v-card-text>
+						</v-card>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+								<font-awesome-icon :icon="['fas', 'search']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+							</v-hover>
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Let recruiters find you</div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								An excerpt of your resume can be made visible on the frontpage for potential recruiters to reach out to you or request a full access to your resume. Our custom search tools ensures optimal results on every request.
+							</v-card-text>
+						</v-card>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+								<font-awesome-icon :icon="['fas', 'file-pdf']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor' ]" />
+							</v-hover>
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Upload PDFs</div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								Add files to complete your online resume. Whether it is a porfolio, some scientific article or any file that will boost your profile. All of your info is now only a single click away from your recruiter's hand. 
+							</v-card-text>
+						</v-card>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+								<font-awesome-icon :icon="['fas', 'chart-bar']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
+							</v-hover>
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Get Statistics</div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								Remain constantly informed on how many people clicked on your resume. Observe which one of your resumes performs best in attracting visitors. Make key adjustments to improve your global reach.
+							</v-card-text>
+						</v-card>
+						<v-card flat class="transparent ma-2">
+							<v-card-text class="text-center pb-0">
+								<v-hover v-slot:default="{ hover }">
+								<font-awesome-icon :icon="['fas', 'trophy']" size="2x" :class="[ hover ? 'secondaryColor' : 'primaryColor']" />
+							</v-hover>
+							</v-card-text>
+							<v-card-title primary-title class="layout justify-center">
+								<div class="headline text-center">Go Premium <small>(coming soon)</small></div>
+							</v-card-title>
+							<v-card-text class="body-1">
+								Access more templates, get more data insights, improve internal ranking & search results. In a word, be more professional with one of our subscription packages. Learn more <nuxt-link to="/packages">here</nuxt-link>.
+							</v-card-text>
+						</v-card>
+						<!-- <template slot="prev"><span class="">Previous</span></template> -->
+						<!-- <template slot="next"><span class="">Next</span></template> -->
+					</carousel>
 				</v-col>
 			</v-row>
 
-			<v-row no-gutters justify="center" align="center" class="my-5">
+			
+
+			<v-row no-gutters justify="center" align="center" class="my-10">
 				<v-col>
-					<!-- <h2 class="subtitle display-1 primary--text">Try it now! <v-icon color="secondary" size="30">mdi-arrow-right-circle</v-icon></h2> -->
-                    <v-btn color="primary">Try it now! <v-icon>mdi-arrow-right</v-icon></v-btn>
+                    <v-btn rounded x-large color="success">Try it now! <v-icon>mdi-arrow-right</v-icon></v-btn>
 				</v-col>
 			</v-row>
 
-            <!-- <v-layout row wrap justify-center class="mb-5"> -->
 			<v-row no-gutters justify="center" class="mb-5">
-                <!-- <v-flex xs12> -->
-				<v-col cols="12" sm="8" offset-sm="2">
+				<v-col cols="12" sm="8">
                     <h2 class="subtitle display-1 mb-2">How it works</h2>
-                    <!-- <v-layout> -->
 					<v-row no-gutters>
-                        <!-- <v-flex xs6> -->
 						<v-col cols="6">
                             <h4 class="primaryColor">Create a new resume:</h4><br />
-                            <!-- <v-img src="/images/frontpage-text.svg" /> -->
                             <v-img src="/images/gifs/create_resume.gif"></v-img>
-                        <!-- </v-flex> -->
 						</v-col>
-                        <!-- <v-flex xs6> -->
 						<v-col cols="6">
                             <v-img src="/images/frontpage-img6.png"></v-img>
-                        <!-- </v-flex> -->
 						</v-col>
-                    <!-- </v-layout> -->
 					</v-row>
-                <!-- </v-flex> -->
 				</v-col>
-            <!-- </v-layout> -->
 			</v-row>
 
-            <!--<v-layout row wrap justify-center>
-                <v-flex xs12>
-                    <h2 class="subtitle display-1">Browse candidates</h2>
-                    <br />
-                </v-flex>
-                <v-flex xs12 sm6 md4 lg12 v-for="resume of loadedShortResumes" :key="resume.username">
-                    <v-hover>
-                        <v-card flat height="300" class="ma-2 align-center" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }" style="overflow-x: hidden; overflow-y: auto;">
-                            <v-layout row wrap>
-                                <v-flex xs12 style="white-space: nowrap;">
-                                    <div class="country-flag" v-if="resume.country">
-                                        <v-img :src="`/images/countries/${resume.country.slug}.png`" width="20" class="mb-1"></v-img>
-                                    </div>
-                                    <div class="language-flag">
-                                        <v-img :src="`/images/languages/${language.slug}.png`" width="20" class="mb-1" v-for="(language, index) in resume.languages" :key="index"></v-img>
-                                    </div>
-                                    <v-avatar :size="78" class="mb-2" v-if="resume.picture">
-                                        <img :src="`${resume.picture}`" alt="Candidate picture">
-                                    </v-avatar>
-                                    <v-layout justify-center v-else>
-                                        <avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-xs-center mb-2"></avatar>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-
-                            <v-layout fill-height align-center justify-space-around>
-                                <div>
-                                    <v-card-text>
-                                        <h3 class="headline mb-0 text-xs-center">{{ resume.job_title }}</h3>
-                                        <div class="pt-1 px-2 text-xs-center">{{ resume.job_description }}</div>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-layout justify-center v-if="resume.visibility === 'public'">
-                                            <v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`">View resume</v-btn>
-                                        </v-layout>
-                                        <v-layout justify-center v-if="resume.visibility === 'semi-private'">
-                                            <div v-if="loadedUser">
-                                                <div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
-                                                    <v-btn small nuxt color="success" class="white--text elevation-2" :to="`/resume/${resume.resume_long_id}`" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]['user']['id'] === loadedUser.id && loadedUserReceivedAuthorizations[resume.resume_long_id].status && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug === 'accorded'">View resume</v-btn>
-                                                    <v-chip small color="info white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'in_process'">Your access request is in process stage</v-chip>
-                                                    <v-chip small color="warning white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'revoked'">Your access request has been revoked</v-chip>
-                                                    <v-chip small color="error white--text" v-if="loadedUserReceivedAuthorizations[resume.resume_long_id].status  && loadedUserReceivedAuthorizations[resume.resume_long_id].status.slug=== 'refused'">Your access request was refused</v-chip>
-                                                </div>
-                                                <v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)" v-if="resume.user_id !== loadedUser.id && !loadedUserReceivedAuthorizations[resume.resume_long_id]">Request access</v-btn>
-                                                <v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`" v-if="resume.user_id === loadedUser.id">View my resume</v-btn>
-                                            </div>
-                                            <div v-else>
-                                                <v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
-                                            </div>
-                                        </v-layout>
-                                    </v-card-actions>
-                                </div>
-                            </v-layout>
-                        </v-card>
-                    </v-hover>
-                </v-flex>
-            </v-layout>-->
-
-            <!-- <br /><br /><br /><br /><br /><br /><br /><br /> -->
-            <!-- <v-layout row wrap justify-center> -->
-			<v-row no-gutters justify="center">
-                <!-- <v-flex xs12 sm6> -->
+			<!-- <v-row no-gutters justify="center">
 				<v-col :sm="6">
                     <video autoplay loop muted playsinline controls class poster="/images/logo.png" style="border: 1px solid red; width: 100%; height: 500px;">
-                        <!-- <source type="video/mp4" src="/videos/video-tif.mp4"> -->
                     </video>
-                <!-- </v-flex> -->
 				</v-col>
-            <!-- </v-layout> -->
-			</v-row>
+			</v-row> -->
 
-            <!-- <v-layout row wrap> -->
 			<v-row no-gutters>
-                <!-- Request Authorization Modal -->
                 <v-dialog v-model="requestAuthorizationModal" width="500" persistent>
                     <RequestAuthorization :resume="candidateResume" @closeModal="onCloseAuthModal" />
                 </v-dialog>
-            <!-- </v-layout> -->
 			</v-row>
 
             <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}" v-if="infiniteScrollReady">
+            <!-- <masonry :cols="{default: 4, 1904: 4, 1264: 3, 960: 2, 600: 1}" :gutter="{default: '30px', 1904: '30px', 600: '15px'}"> -->
                 <div v-for="resume of loadedShortResumes" :key="resume.id">
                     <v-hover>
                         <v-card text class="my-4" :class="[`elevation-${hover ? 12 : 2}`]" slot-scope="{ hover }">
-                            <!-- <v-layout row wrap> -->
 							<v-row no-gutters>
-                                <!-- <v-flex xs12 style="white-space: nowrap;"> -->
 								<v-col cols="12" style="white-space: nowrap;">
                                     <div class="country-flag" v-if="resume.country">
                                         <v-img :src="`/images/countries/${resume.country.slug}.png`" width="20" class="mb-1"></v-img>
@@ -267,17 +164,12 @@
                                     <v-avatar :size="78" class="mb-2" v-if="resume.picture">
                                         <img :src="`${resume.picture}`" alt="Candidate picture">
                                     </v-avatar>
-                                    <!-- <v-layout justify-center v-else> -->
 									<v-row justify="center" v-else>
                                         <avatar justify-center :username="`${resume.firstname} ${resume.lastname}`" :size="78" class="text-center mb-2"></avatar>
-                                    <!-- </v-layout> -->
 									</v-row>
-                                <!-- </v-flex> -->
 								</v-col>
-                            <!-- </v-layout> -->
 							</v-row>
 
-                            <!-- <v-layout fill-height align-center justify-space-around> -->
 							<v-row justify="space-around" align="center" class="fill-height">
                                 <div>
                                     <v-card-text>
@@ -288,12 +180,9 @@
 										<div class="pt-1 px-2 text-center">_created_at: {{ resume._created_at }}</div>
                                     </v-card-text>
                                     <v-card-actions>
-                                        <!-- <v-layout justify-center v-if="resume.visibility === 'public'"> -->
 										<v-row no-gutters justify="center" v-if="resume.visibility === 'public'">
                                             <v-btn small color="success" class="white--text elevation-2" nuxt :to="`resume/${resume.resume_long_id}`">View resume</v-btn>
-                                        <!-- </v-layout> -->
 										</v-row>
-                                        <!-- <v-layout justify-center v-if="resume.visibility === 'semi-private'"> -->
 										<v-row no-gutters justify="center" v-if="resume.visibility === 'semi-private'">
                                             <div v-if="loadedUser">
                                                 <div v-if="loadedUserReceivedAuthorizations[resume.resume_long_id]">
@@ -308,37 +197,17 @@
                                             <div v-else>
                                                 <v-btn small color="primary" class="white--text elevation-2" @click="showAuthModal(resume)">Request access</v-btn>
                                             </div>
-                                        <!-- </v-layout> -->
 										</v-row>
                                     </v-card-actions>
                                 </div>
-                            <!-- </v-layout> -->
 							</v-row>
                         </v-card>
                     </v-hover>
                 </div>
-                <!-- <infinite-loading @infinite="fetchMoreResumes" v-if="infiniteScrollReady"></infinite-loading> -->
             </masonry>
+
 			<infinite-loading @infinite="fetchMoreResumes" v-if="infiniteScrollReady"></infinite-loading>
-
-            <!-- <br /><br /><br /><br /> -->
-
-            <!-- <div v-for="(item, index) in list" :key="index">
-                {{ index }}: {{ item.title }}
-            </div>
-            <infinite-loading @infinite="infiniteHandler"></infinite-loading> -->
-
-            <!-- <div v-for="(item, index) in resumes" :key="index">
-                {{ index }}: {{ item.resume_long_id }}
-            </div>
-            <v-btn small color="info" @click.stop="loadMore()">Load more</v-btn> -->
-
-            <!-- <v-layout row wrap justify-center>
-                <div v-for="(item, index) in resumes" :key="index">
-                    {{ index }}: {{ item.resume_long_id }}<br />
-                </div>
-				<infinite-loading @infinite="infiniteHandler" v-if="infiniteScrollReady"></infinite-loading>
-            </v-layout> -->
+			<!-- <infinite-loading @infinite="fetchMoreResumes"></infinite-loading> -->
 
         </v-container>
     </div>
@@ -353,6 +222,12 @@
 	import Avatar from 'vue-avatar'
 	// import InfiniteLoading from 'vue-infinite-loading'
 	import moment from 'moment'
+
+	import Vue from 'vue'
+	if (typeof window !==  'undefined') {
+	    const carousel = () => import('vue-owl-carousel');
+	    Vue.component('carousel', carousel);
+	}
 	export default {
 		components: { RequestAuthorization, Avatar },
 		layout: 'layoutFront',
@@ -389,8 +264,9 @@
 
 			if (!this.$store.getters['resumes/loadedLastVisible']) {
 				this.$store.commit('resumes/setLastVisible', moment().unix())
+				// this.$store.commit('resumes/setLastVisible', 1)
 			}
-			console.log('firebase.firestore.FieldValue.serverTimestamp(): ', firebase.firestore.FieldValue.serverTimestamp())
+			// console.log('firebase.firestore.FieldValue.serverTimestamp(): ', firebase.firestore.FieldValue.serverTimestamp())
 
 			// this.ref.resumes = firestore.collection('resumes_short').orderBy('_created_at', 'desc')
 			// const firstPage = this.ref.resumes.limit(this.paging.resumes_per_page)
@@ -435,6 +311,7 @@
 		},
 		mounted() {
 			this.infiniteScrollReady = true
+			console.log(this.$vuetify.breakpoint)
 		},
 		data() {
 			return {
@@ -495,6 +372,16 @@
 			// loadedLastVisible () {
 			// 	return this.$store.getters['resumes/loadedLastVisible']
 			// }
+			getItems () {
+				switch (this.$vuetify.breakpoint.name) {
+					case 'xs': return 1
+					case 'sm': return 2
+					case 'md': return 3
+					case 'lg': return 3
+					case 'xl': return 4
+					default: return 1
+				}
+			}
 		},
 		methods: {
 			async showAuthModal(resume) {
@@ -732,5 +619,8 @@
 		position: absolute;
 		top: 15px;
 		right: 0px;
+	}
+	#abc {
+		background-image: url('/images/svg/abc.svg');
 	}
 </style>

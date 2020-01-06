@@ -61,7 +61,7 @@
 							></v-textarea>
 						<!-- </v-flex> -->
 						</v-col>
-						<v-btn round block large class="white--text" type="submit" style="padding-top: 0px; padding-bottom: 0px;" color="primary">Send message</v-btn>
+						<v-btn rounded block large class="white--text" type="submit" style="padding-top: 0px; padding-bottom: 0px;" color="primary">Send message</v-btn>
 					<!-- </v-layout> -->
 					</v-row>
 				</v-form>
